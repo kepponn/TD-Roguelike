@@ -10,7 +10,6 @@ albedo_color = Color(1, 1, 0, 1)
 material = SubResource("StandardMaterial3D_mdonw")
 
 [node name="Test Item 1" type="StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, 1)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("ConvexPolygonShape3D_go5sf")

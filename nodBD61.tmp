@@ -1,0 +1,196 @@
+[gd_scene load_steps=11 format=3 uid="uid://c01s5hyeaaliw"]
+
+[ext_resource type="MeshLibrary" uid="uid://bpq8ija5ngli5" path="res://Tiles.tres" id="1_h285d"]
+[ext_resource type="PackedScene" uid="uid://j4h1g8pxc77l" path="res://test_item_1.tscn" id="2_3s8ui"]
+[ext_resource type="PackedScene" uid="uid://wil6fipqm8m1" path="res://test_item_2.tscn" id="3_xe3a5"]
+
+[sub_resource type="GDScript" id="GDScript_sae41"]
+script/source = "extends CharacterBody3D
+
+
+const SPEED = 5.0
+const JUMP_VELOCITY = 4.5
+
+# Get the gravity from the project settings to be synced with RigidBody nodes.
+var gravity = ProjectSettings.get_setting(\"physics/3d/default_gravity\")
+
+var player_ableInteract: bool = false
+var player_isHoldingItem: bool = false
+var player_interactedItem
+var player_interactedItem_Temp
+
+func _physics_process(delta):
+	# Add the gravity.
+	if not is_on_floor():
+		velocity.y -= gravity * delta
+
+	# Handle jump.
+	if Input.is_action_just_pressed(\"ui_accept\") and is_on_floor():
+		velocity.y = JUMP_VELOCITY
+
+	# Get the input direction and handle the movement/deceleration.
+	# As good practice, you should replace UI actions with custom gameplay actions.
+	var input_dir = Input.get_vector(\"ui_left\", \"ui_right\", \"ui_up\", \"ui_down\")
+	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	
+	if direction:
+		velocity.x = direction.x * SPEED
+		velocity.z = direction.z * SPEED
+	else:
+		velocity.x = move_toward(velocity.x, 0, SPEED)
+		velocity.z = move_toward(velocity.z, 0, SPEED)
+
+	move_and_slide()
+	player_movingItems()
+	character_rotation(input_dir)
+	
+
+func character_rotation(input_dir):
+	$Node3D.rotation = input_dir
+	
+
+func check_grid(import_pos, export_pos):
+	# read the docs more, round() function is just what we want, it round .5 to up
+	# could be done directly in-line because this support vector3
+	export_pos.position.x = round(import_pos.global_position.x) # X-AXIS
+	export_pos.global_position.y = floor(import_pos.global_position.y) # Y-AXIS (sometimes messed up by the character interact area)
+	export_pos.position.z = round(import_pos.global_position.z) # Z-AXIS
+
+func player_movingItems():
+	#Picking Up Items
+	#Not HOLDING item and can move item
+	if player_ableInteract == true and player_isHoldingItem == false and Input.is_action_just_pressed(\"interact\"):
+		player_isHoldingItem = true
+		
+		#Saving interacted ITEM DATA and then remove it
+		player_interactedItem = player_interactedItem_Temp
+		
+		player_interactedItem.reparent($\"Holded Item\",true)
+		player_interactedItem.set_collision_layer_value(1,false)
+		player_interactedItem.position = Vector3(0.5, 1, 0)
+		
+		#Maybe not needed because if item is moved over character's head
+		#then interaction zone body exited will triggered to change player_ableInteract to false
+		#player_ableInteract = false
+		
+		
+	
+	#Dropping Down Items
+	#HOLDING an items and CANNOT or NOT interacting with other items
+	elif player_ableInteract == false and player_isHoldingItem == true and  Input.is_action_just_pressed(\"interact\"):
+		
+		player_interactedItem.reparent($\"../Item\",true)
+		player_interactedItem.set_collision_layer_value(1,true)
+		
+		check_grid($\"Interaction Zone\",player_interactedItem)
+		
+		print($\"Interaction Zone\".global_position)
+		print(player_interactedItem.position)
+		
+		player_isHoldingItem = false
+	
+	#Swapping Items
+	#HOLDING an items and CAN interact with other items
+	elif player_ableInteract == true and player_isHoldingItem == true and Input.is_action_just_pressed(\"interact\"):
+		print(\"swapped item\")
+		
+		player_interactedItem.reparent($\"../Item\",true)
+		player_interactedItem.set_collision_layer_value(1,true)
+		player_interactedItem.position = player_interactedItem_Temp.position
+		
+		player_interactedItem = player_interactedItem_Temp
+		player_interactedItem.reparent($\"Holded Item\",true)
+		player_interactedItem.set_collision_layer_value(1,false)
+		player_interactedItem.position = Vector3(0.5, 1, 0)
+		
+#func dropdown():
+	#if player_isHoldingItem == true and Input.is_action_just_pressed(\"interact\"):
+		#print(\"dropped item\")
+		#player_isHoldingItem = false
+
+func _on_interaction_zone_body_entered(body):
+	if body.get_parent().name == 'Item':
+		player_interactedItem_Temp = body
+		player_ableInteract = true
+		print(\"Item Detected Name : \" + body.name)
+		print(\"player able to interact\")
+
+func _on_interaction_zone_body_exited(_body):
+	
+	player_ableInteract = false
+	print(\"player UNABLE to interact\")
+"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pgh5w"]
+albedo_color = Color(0.403922, 0.403922, 0.403922, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_pqfoc"]
+material = SubResource("StandardMaterial3D_pgh5w")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ebtej"]
+albedo_color = Color(0.960784, 0.564706, 0.376471, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_lthf8"]
+material = SubResource("StandardMaterial3D_ebtej")
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_3nlo6"]
+height = 0.5
+radius = 0.25
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_x73qa"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.76664, 0)
+script = SubResource("GDScript_sae41")
+
+[node name="Node3D" type="Node3D" parent="Player"]
+
+[node name="Body" type="MeshInstance3D" parent="Player/Node3D"]
+mesh = SubResource("CapsuleMesh_pqfoc")
+skeleton = NodePath("../..")
+
+[node name="Face" type="MeshInstance3D" parent="Player/Node3D"]
+transform = Transform3D(0.617571, 0, 0, 0, 0.15997, 0, 0, 0, 0.627695, 0.354745, 0.434902, 0)
+mesh = SubResource("CylinderMesh_lthf8")
+skeleton = NodePath("../../..")
+
+[node name="Interaction Zone" type="Area3D" parent="Player/Node3D"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player/Node3D/Interaction Zone"]
+shape = SubResource("CylinderShape3D_3nlo6")
+
+[node name="Holded Item" type="Node3D" parent="Player/Node3D"]
+unique_name_in_owner = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+shape = SubResource("CapsuleShape3D_x73qa")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 15, 0)
+
+[node name="GridMap" type="GridMap" parent="."]
+mesh_library = ExtResource("1_h285d")
+cell_size = Vector3(1, 1, 1)
+cell_center_x = false
+cell_center_y = false
+cell_center_z = false
+data = {
+"cells": PackedInt32Array(65531, 65531, 0, 65531, 65532, 0, 65531, 65533, 0, 65531, 65534, 0, 65531, 65535, 0, 65531, 0, 0, 65531, 1, 0, 65531, 2, 0, 65531, 3, 0, 65531, 4, 0, 65532, 65531, 0, 65532, 65532, 0, 65532, 65533, 0, 65532, 65534, 0, 65532, 65535, 0, 65532, 0, 0, 65532, 1, 0, 65532, 2, 0, 65532, 3, 0, 65532, 4, 0, 65533, 65531, 0, 65533, 65532, 0, 65533, 65533, 0, 65533, 65534, 0, 65533, 65535, 0, 65533, 0, 0, 65533, 1, 0, 65533, 2, 0, 65533, 3, 0, 65533, 4, 0, 65534, 65531, 0, 65534, 65532, 0, 65534, 65533, 0, 65534, 65534, 0, 65534, 65535, 0, 65534, 0, 0, 65534, 1, 0, 65534, 2, 0, 65534, 3, 0, 65534, 4, 0, 65535, 65531, 0, 65535, 65532, 0, 65535, 65533, 0, 65535, 65534, 0, 65535, 65535, 0, 65535, 0, 0, 65535, 1, 0, 65535, 2, 0, 65535, 3, 0, 65535, 4, 0, 0, 65531, 0, 0, 65532, 0, 0, 65533, 0, 0, 65534, 0, 0, 65535, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 1, 65531, 0, 1, 65532, 0, 1, 65533, 0, 1, 65534, 0, 1, 65535, 0, 1, 0, 0, 1, 1, 0, 1, 2, 0, 1, 3, 0, 1, 4, 0, 2, 65531, 0, 2, 65532, 0, 2, 65533, 0, 2, 65534, 0, 2, 65535, 0, 2, 0, 0, 2, 1, 0, 2, 2, 0, 2, 3, 0, 2, 4, 0, 3, 65531, 0, 3, 65532, 0, 3, 65533, 0, 3, 65534, 0, 3, 65535, 0, 3, 0, 0, 3, 1, 0, 3, 2, 0, 3, 3, 0, 3, 4, 0, 4, 65531, 0, 4, 65532, 0, 4, 65533, 0, 4, 65534, 0, 4, 65535, 0, 4, 0, 0, 4, 1, 0, 4, 2, 0, 4, 3, 0, 4, 4, 0, 65526, 65526, 0, 65526, 65527, 0, 65526, 65528, 0, 65526, 65529, 0, 65526, 65530, 0, 65526, 65531, 0, 65526, 65532, 0, 65526, 65533, 0, 65526, 65534, 0, 65526, 65535, 0, 65526, 0, 0, 65526, 1, 0, 65526, 2, 0, 65526, 3, 0, 65526, 4, 0, 65526, 5, 0, 65526, 6, 0, 65526, 7, 0, 65526, 8, 0, 65526, 9, 0, 65527, 65526, 0, 65527, 65527, 0, 65527, 65528, 0, 65527, 65529, 0, 65527, 65530, 0, 65527, 65531, 0, 65527, 65532, 0, 65527, 65533, 0, 65527, 65534, 0, 65527, 65535, 0, 65527, 0, 0, 65527, 1, 0, 65527, 2, 0, 65527, 3, 0, 65527, 4, 0, 65527, 5, 0, 65527, 6, 0, 65527, 7, 0, 65527, 8, 0, 65527, 9, 0, 65528, 65526, 0, 65528, 65527, 0, 65528, 65528, 0, 65528, 65529, 0, 65528, 65530, 0, 65528, 65531, 0, 65528, 65532, 0, 65528, 65533, 0, 65528, 65534, 0, 65528, 65535, 0, 65528, 0, 0, 65528, 1, 0, 65528, 2, 0, 65528, 3, 0, 65528, 4, 0, 65528, 5, 0, 65528, 6, 0, 65528, 7, 0, 65528, 8, 0, 65528, 9, 0, 65529, 65526, 0, 65529, 65527, 0, 65529, 65528, 0, 65529, 65529, 0, 65529, 65530, 0, 65529, 65531, 0, 65529, 65532, 0, 65529, 65533, 0, 65529, 65534, 0, 65529, 65535, 0, 65529, 0, 0, 65529, 1, 0, 65529, 2, 0, 65529, 3, 0, 65529, 4, 0, 65529, 5, 0, 65529, 6, 0, 65529, 7, 0, 65529, 8, 0, 65529, 9, 0, 65530, 65526, 0, 65530, 65527, 0, 65530, 65528, 0, 65530, 65529, 0, 65530, 65530, 0, 65530, 65531, 0, 65530, 65532, 0, 65530, 65533, 0, 65530, 65534, 0, 65530, 65535, 0, 65530, 0, 0, 65530, 1, 0, 65530, 2, 0, 65530, 3, 0, 65530, 4, 0, 65530, 5, 0, 65530, 6, 0, 65530, 7, 0, 65530, 8, 0, 65530, 9, 0, 65531, 65526, 0, 65531, 65527, 0, 65531, 65528, 0, 65531, 65529, 0, 65531, 65530, 0, 65531, 5, 0, 65531, 6, 0, 65531, 7, 0, 65531, 8, 0, 65531, 9, 0, 65532, 65526, 0, 65532, 65527, 0, 65532, 65528, 0, 65532, 65529, 0, 65532, 65530, 0, 65532, 5, 0, 65532, 6, 0, 65532, 7, 0, 65532, 8, 0, 65532, 9, 0, 65533, 65526, 0, 65533, 65527, 0, 65533, 65528, 0, 65533, 65529, 0, 65533, 65530, 0, 65533, 5, 0, 65533, 6, 0, 65533, 7, 0, 65533, 8, 0, 65533, 9, 0, 65534, 65526, 0, 65534, 65527, 0, 65534, 65528, 0, 65534, 65529, 0, 65534, 65530, 0, 65534, 5, 0, 65534, 6, 0, 65534, 7, 0, 65534, 8, 0, 65534, 9, 0, 65535, 65526, 0, 65535, 65527, 0, 65535, 65528, 0, 65535, 65529, 0, 65535, 65530, 0, 65535, 5, 0, 65535, 6, 0, 65535, 7, 0, 65535, 8, 0, 65535, 9, 0, 0, 65526, 0, 0, 65527, 0, 0, 65528, 0, 0, 65529, 0, 0, 65530, 0, 0, 5, 0, 0, 6, 0, 0, 7, 0, 0, 8, 0, 0, 9, 0, 1, 65526, 0, 1, 65527, 0, 1, 65528, 0, 1, 65529, 0, 1, 65530, 0, 1, 5, 0, 1, 6, 0, 1, 7, 0, 1, 8, 0, 1, 9, 0, 2, 65526, 0, 2, 65527, 0, 2, 65528, 0, 2, 65529, 0, 2, 65530, 0, 2, 5, 0, 2, 6, 0, 2, 7, 0, 2, 8, 0, 2, 9, 0, 3, 65526, 0, 3, 65527, 0, 3, 65528, 0, 3, 65529, 0, 3, 65530, 0, 3, 5, 0, 3, 6, 0, 3, 7, 0, 3, 8, 0, 3, 9, 0, 4, 65526, 0, 4, 65527, 0, 4, 65528, 0, 4, 65529, 0, 4, 65530, 0, 4, 5, 0, 4, 6, 0, 4, 7, 0, 4, 8, 0, 4, 9, 0, 5, 65526, 0, 5, 65527, 0, 5, 65528, 0, 5, 65529, 0, 5, 65530, 0, 5, 65531, 0, 5, 65532, 0, 5, 65533, 0, 5, 65534, 0, 5, 65535, 0, 5, 0, 0, 5, 1, 0, 5, 2, 0, 5, 3, 0, 5, 4, 0, 5, 5, 0, 5, 6, 0, 5, 7, 0, 5, 8, 0, 5, 9, 0, 6, 65526, 0, 6, 65527, 0, 6, 65528, 0, 6, 65529, 0, 6, 65530, 0, 6, 65531, 0, 6, 65532, 0, 6, 65533, 0, 6, 65534, 0, 6, 65535, 0, 6, 0, 0, 6, 1, 0, 6, 2, 0, 6, 3, 0, 6, 4, 0, 6, 5, 0, 6, 6, 0, 6, 7, 0, 6, 8, 0, 6, 9, 0, 7, 65526, 0, 7, 65527, 0, 7, 65528, 0, 7, 65529, 0, 7, 65530, 0, 7, 65531, 0, 7, 65532, 0, 7, 65533, 0, 7, 65534, 0, 7, 65535, 0, 7, 0, 0, 7, 1, 0, 7, 2, 0, 7, 3, 0, 7, 4, 0, 7, 5, 0, 7, 6, 0, 7, 7, 0, 7, 8, 0, 7, 9, 0, 8, 65526, 0, 8, 65527, 0, 8, 65528, 0, 8, 65529, 0, 8, 65530, 0, 8, 65531, 0, 8, 65532, 0, 8, 65533, 0, 8, 65534, 0, 8, 65535, 0, 8, 0, 0, 8, 1, 0, 8, 2, 0, 8, 3, 0, 8, 4, 0, 8, 5, 0, 8, 6, 0, 8, 7, 0, 8, 8, 0, 8, 9, 0, 9, 65526, 0, 9, 65527, 0, 9, 65528, 0, 9, 65529, 0, 9, 65530, 0, 9, 65531, 0, 9, 65532, 0, 9, 65533, 0, 9, 65534, 0, 9, 65535, 0, 9, 0, 0, 9, 1, 0, 9, 2, 0, 9, 3, 0, 9, 4, 0, 9, 5, 0, 9, 6, 0, 9, 7, 0, 9, 8, 0, 9, 9, 0, 65545, 65527, 589824, 65545, 65528, 589824, 65545, 65529, 589824, 65545, 65530, 589824, 65545, 65531, 589824, 65545, 65532, 589824, 65545, 65533, 589824, 65545, 65534, 589824, 65545, 65535, 589824, 65545, 0, 589824, 65545, 1, 589824, 65545, 2, 589824, 65545, 3, 589824, 65545, 4, 589824, 65545, 5, 589824, 65545, 6, 589824, 65545, 7, 589824, 65545, 8, 589824, 65545, 9, 589824, 131062, 65526, 589824, 131063, 65526, 589824, 131064, 65526, 589824, 131065, 65526, 589824, 131066, 65526, 589824, 131067, 65526, 589824, 131068, 65526, 589824, 131069, 65526, 589824, 131070, 65526, 589824, 131071, 65526, 589824, 65536, 65526, 589824, 65537, 65526, 589824, 65538, 65526, 589824, 65539, 65526, 589824, 65540, 65526, 589824, 65541, 65526, 589824, 65542, 65526, 589824, 65543, 65526, 589824, 65544, 65526, 589824, 65545, 65526, 589824, 131062, 65527, 589824, 131062, 65528, 589824, 131062, 65529, 589824, 131062, 65530, 589824, 131062, 65531, 589824, 131062, 65532, 589824, 131062, 65533, 589824, 131062, 65534, 589824, 131062, 65535, 589824, 131062, 0, 589824, 131062, 1, 589824, 131062, 2, 589824, 131062, 3, 589824, 131062, 4, 589824, 131062, 5, 589824, 131062, 6, 589824, 131062, 7, 589824, 131062, 8, 589824, 131062, 9, 589824, 131063, 9, 589824, 131064, 9, 589824, 131065, 9, 589824, 131066, 9, 589824, 131067, 9, 589824, 131068, 9, 589824, 131069, 9, 589824, 131070, 9, 589824, 131071, 9, 589824, 65536, 9, 589824, 65537, 9, 589824, 65538, 9, 589824, 65539, 9, 589824, 65540, 9, 589824, 65541, 9, 589824, 65542, 9, 589824, 65543, 9, 589824, 65544, 9, 589824, 131081, 65526, 589824, 131081, 65527, 589824, 131081, 65528, 589824, 131081, 65529, 589824, 131081, 65530, 589824, 131081, 65531, 589824, 131081, 65532, 589824, 131081, 65533, 589824, 131081, 65534, 589824, 131081, 65535, 589824, 131081, 0, 589824, 131081, 1, 589824, 131081, 2, 589824, 131081, 3, 589824, 131081, 4, 589824, 131081, 5, 589824, 131081, 6, 589824, 131081, 7, 589824, 131081, 8, 589824, 131081, 9, 589824, 196598, 9, 589824, 196599, 9, 589824, 196600, 9, 589824, 196601, 9, 589824, 196602, 9, 589824, 196603, 9, 589824, 196604, 9, 589824, 196605, 9, 589824, 196606, 9, 589824, 196607, 9, 589824, 131072, 9, 589824, 131073, 9, 589824, 131074, 9, 589824, 131075, 9, 589824, 131076, 9, 589824, 131077, 9, 589824, 131078, 9, 589824, 131079, 9, 589824, 131080, 9, 589824, 196598, 65526, 589824, 196598, 65527, 589824, 196598, 65528, 589824, 196598, 65529, 589824, 196598, 65530, 589824, 196598, 65531, 589824, 196598, 65532, 589824, 196598, 65533, 589824, 196598, 65534, 589824, 196598, 65535, 589824, 196598, 0, 589824, 196598, 1, 589824, 196598, 2, 589824, 196598, 3, 589824, 196598, 4, 589824, 196598, 5, 589824, 196598, 6, 589824, 196598, 7, 589824, 196598, 8, 589824, 196599, 65526, 589824, 196600, 65526, 589824, 196601, 65526, 589824, 196602, 65526, 589824, 196603, 65526, 589824, 196604, 65526, 589824, 196605, 65526, 589824, 196606, 65526, 589824, 196607, 65526, 589824, 131072, 65526, 589824, 131073, 65526, 589824, 131074, 65526, 589824, 131075, 65526, 589824, 131076, 65526, 589824, 131077, 65526, 589824, 131078, 65526, 589824, 131079, 65526, 589824, 131080, 65526, 589824, 65542, 5, 589824, 65542, 3, 589824, 65542, 2, 589824, 65542, 1, 589824, 65541, 6, 589824, 65540, 6, 589824, 65538, 6, 589824, 65537, 6, 589824, 65536, 6, 589824, 131073, 6, 589824, 131072, 6, 589824, 131078, 5, 589824, 131078, 4, 589824, 131078, 3, 589824, 131078, 2, 589824, 131078, 1, 589824, 131078, 6, 851968, 65542, 6, 589824, 65542, 65534, 589824, 65541, 65534, 589824, 65540, 65534, 589824, 65539, 65534, 589824, 65538, 65534, 589824, 65537, 65534, 589824, 65536, 65534, 589824, 131071, 65534, 589824, 131070, 65534, 589824, 131078, 65534, 589824, 131077, 65534, 589824, 131076, 65534, 589824, 131075, 65534, 589824, 131074, 65534, 589824, 131073, 65534, 589824, 131072, 65534, 589824, 196607, 65534, 589824, 196606, 65534, 589824, 131069, 65534, 589824, 131069, 65535, 589824, 131069, 0, 589824, 131069, 1, 589824, 131069, 2, 589824, 131069, 3, 589824, 131069, 4, 589824, 196605, 65534, 589824, 196605, 65535, 589824, 196605, 0, 589824, 196605, 1, 589824, 196605, 2, 589824, 196605, 3, 589824, 196605, 4, 589824, 196605, 5, 589824, 131069, 5, 589824, 65539, 65533, 589824, 65539, 65532, 589824, 65539, 65531, 589824, 65539, 65530, 589824, 65539, 65529, 589824, 131075, 65533, 589824, 131075, 65532, 589824, 131075, 65531, 589824, 131075, 65530, 589824, 131075, 65529, 589824, 196605, 65527, 589824, 196605, 65528, 589824, 196605, 65529, 589824, 196605, 65530, 589824, 131069, 65530, 589824, 131069, 65529, 589824, 131069, 65528, 589824, 131069, 65527, 589824, 131068, 65534, 589824, 131067, 65534, 589824, 131066, 65534, 589824, 131065, 65534, 589824, 131065, 65533, 589824, 131065, 65532, 589824, 196604, 65534, 589824, 196603, 65534, 589824, 196602, 65534, 589824, 196601, 65534, 589824, 196601, 65533, 589824, 196601, 65532, 589824, 65538, 5, 851968, 65541, 5, 851968, 196613, 6, 851968, 196612, 6, 851968, 196611, 6, 851968, 196610, 6, 851968, 196610, 7, 851968, 196611, 7, 851968, 196612, 7, 851968, 196613, 7, 851968, 196613, 8, 851968, 196612, 8, 851968, 196611, 8, 851968, 196610, 8, 851968, 196610, 9, 851968, 196611, 9, 851968, 196612, 9, 851968, 196613, 9, 851968, 262146, 9, 589825, 262147, 9, 589825, 262148, 9, 589825, 262149, 9, 589825, 262149, 8, 327681, 262149, 7, 327681, 262149, 6, 327681, 262146, 8, 327681, 262146, 7, 327681, 262146, 6, 327681, 196614, 6, 327680, 196614, 5, 327680, 196614, 4, 327680, 196614, 3, 327680, 196614, 2, 327680, 196614, 1, 327680, 196609, 6, 327680, 196608, 6, 327680, 65538, 4, 327680, 65539, 4, 327680, 65541, 4, 327680, 65542, 4, 327680, 65540, 4, 327680, 65540, 5, 327680, 65539, 5, 327680, 65539, 6, 327680, 131077, 6, 327680, 131076, 6, 327680, 131075, 6, 327680, 131074, 6, 327680, 131074, 5, 327680, 131075, 5, 327680, 131076, 5, 327680, 131077, 5, 327680, 65541, 3, 851970, 65540, 3, 851970, 65539, 3, 851970, 65538, 3, 851970, 131077, 4, 851970, 131076, 4, 851970, 131075, 4, 851970, 131074, 4, 851970, 196613, 5, 851970, 196612, 5, 851970, 196611, 5, 851970, 196610, 5, 851970, 21, 65534, 851970, 65557, 65534, 851970, 131093, 65534, 851970, 196629, 65534, 851970)
+}
+metadata/_editor_floor_ = Vector3(0, 3, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 23, 0)
+
+[node name="Item" type="Node3D" parent="."]
+
+[node name="Test Item 1" parent="Item" instance=ExtResource("2_3s8ui")]
+
+[node name="Test Item 2" parent="Item" instance=ExtResource("3_xe3a5")]
+
+[connection signal="body_entered" from="Player/Node3D/Interaction Zone" to="Player" method="_on_interaction_zone_body_entered"]
+[connection signal="body_exited" from="Player/Node3D/Interaction Zone" to="Player" method="_on_interaction_zone_body_exited"]

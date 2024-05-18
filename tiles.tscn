@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://3gqer4y51pga"]
+[gd_scene load_steps=11 format=3 uid="uid://3gqer4y51pga"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_glujn"]
 
@@ -20,9 +20,18 @@ left_to_right = 0.0
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_1t1rq"]
 points = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kpsav"]
+albedo_color = Color(1, 0.376471, 1, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_o5ld1"]
+material = SubResource("StandardMaterial3D_kpsav")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_5w5pj"]
+
 [node name="Tiles" type="Node3D"]
 
 [node name="Floor" type="MeshInstance3D" parent="."]
+visible = false
 mesh = SubResource("BoxMesh_hv58a")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Floor"]
@@ -31,6 +40,7 @@ mesh = SubResource("BoxMesh_hv58a")
 shape = SubResource("ConvexPolygonShape3D_hxgs7")
 
 [node name="Test1" type="MeshInstance3D" parent="."]
+visible = false
 mesh = SubResource("CylinderMesh_a0jnk")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Test1"]
@@ -39,9 +49,18 @@ mesh = SubResource("CylinderMesh_a0jnk")
 shape = SubResource("ConvexPolygonShape3D_bdl1n")
 
 [node name="Test2" type="MeshInstance3D" parent="."]
+visible = false
 mesh = SubResource("PrismMesh_qvh6a")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Test2"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Test2/StaticBody3D"]
 shape = SubResource("ConvexPolygonShape3D_1t1rq")
+
+[node name="Test Item 2" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_o5ld1")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Test Item 2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Test Item 2/StaticBody3D"]
+shape = SubResource("SphereShape3D_5w5pj")

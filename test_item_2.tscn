@@ -9,7 +9,6 @@ material = SubResource("StandardMaterial3D_6skwo")
 [sub_resource type="SphereShape3D" id="SphereShape3D_5712s"]
 
 [node name="Test Item 2" type="StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_728mc")

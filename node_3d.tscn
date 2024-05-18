@@ -45,31 +45,11 @@ func _physics_process(delta):
 	
 
 func check_grid(import_pos, export_pos):
-	# check for positive on position x
-	if import_pos.position.x > 0: 
-		if (fmod(import_pos.global_position.x, 1) <= 0.49):
-			export_pos.position.x = floor(export_pos.position.x)
-		else:
-			export_pos.position.x = ceil(export_pos.position.x)
-	# check for negative on position x
-	else:
-		if (fmod(import_pos.global_position.x, 1) <= -0.49):
-			export_pos.position.x = floor(export_pos.position.x)
-		else:
-			export_pos.position.x = ceil(export_pos.position.x)
-	
-	# check for positive on position z
-	if import_pos.position.y > 0:
-		if (fmod(import_pos.global_position.z, 1) <= 0.49):
-			export_pos.position.z = floor(export_pos.position.z)
-		else:
-			export_pos.position.z = ceil(export_pos.position.z)
-	# check for negative on position z
-	else:
-		if (fmod(import_pos.global_position.z, 1) <= -0.49):
-			export_pos.position.z = floor(export_pos.position.z)
-		else:
-			export_pos.position.z = ceil(export_pos.position.z)
+	# read the docs more, round() function is just what we want, it round .5 to up
+	# could be done directly in-line because this support vector3
+	export_pos.position.x = round(import_pos.global_position.x) # X-AXIS
+	export_pos.global_position.y = floor(import_pos.global_position.y) # Y-AXIS (sometimes messed up by the character interact area)
+	export_pos.position.z = round(import_pos.global_position.z) # Z-AXIS
 
 func player_movingItems():
 	#Picking Up Items

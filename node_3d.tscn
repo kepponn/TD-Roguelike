@@ -46,7 +46,11 @@ func _physics_process(delta):
 	move_and_slide()
 	player_movingItems()
 	character_rotation(direction.x, direction.z)
-	
+	exit()
+
+func exit():
+	if Input.is_action_just_pressed(\"exit\"):
+		get_tree().quit()
 
 func character_rotation(x, z):
 	if x > 0:
@@ -65,7 +69,8 @@ func check_grid(import_pos, export_pos):
 	# read the docs more, round() function is just what we want, it round .5 to up
 	# could be done directly in-line because this support vector3
 	export_pos.position.x = round(import_pos.global_position.x) # X-AXIS
-	export_pos.global_position.y = floor(import_pos.global_position.y) # Y-AXIS (sometimes messed up by the character interact area)
+	# The Y-AXIS is depend on how the %\"Interaction Zone\" placement is in the world. before it was 1.501, now it is 1.33
+	export_pos.position.y = round(import_pos.global_position.y) # Y-AXIS (sometimes messed up by the character interact area)
 	export_pos.position.z = round(import_pos.global_position.z) # Z-AXIS
 
 func player_movingItems():
@@ -90,8 +95,8 @@ func player_movingItems():
 	#Dropping Down Items
 	#HOLDING an items and CANNOT or NOT interacting with other items
 	elif player_ableInteract == false and player_isHoldingItem == true and  Input.is_action_just_pressed(\"interact\"):
-		
-		player_interactedItem.reparent($\"../Item\",true)
+		# Should change the name of item placeholder into someting more unique, for now it stand as %Item
+		player_interactedItem.reparent(%Item,true)
 		player_interactedItem.set_collision_layer_value(1,true)
 		
 		check_grid(%\"Interaction Zone\",player_interactedItem)
@@ -106,7 +111,7 @@ func player_movingItems():
 	elif player_ableInteract == true and player_isHoldingItem == true and Input.is_action_just_pressed(\"interact\"):
 		print(\"swapped item\")
 		
-		player_interactedItem.reparent($\"../Item\",true)
+		player_interactedItem.reparent(%Item,true)
 		player_interactedItem.set_collision_layer_value(1,true)
 		player_interactedItem.position = player_interactedItem_Temp.position
 		
@@ -180,7 +185,7 @@ skeleton = NodePath("../../..")
 
 [node name="Interaction Zone" type="Area3D" parent="Player/Node3D"]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -0.161922, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player/Node3D/Interaction Zone"]
 shape = SubResource("CylinderShape3D_3nlo6")
@@ -225,6 +230,7 @@ data = {
 metadata/_editor_floor_ = Vector3(0, 3, 0)
 
 [node name="Item" type="Node3D" parent="NavigationRegion3D"]
+unique_name_in_owner = true
 
 [node name="Test Item 1" parent="NavigationRegion3D/Item" instance=ExtResource("2_3s8ui")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1, 6)

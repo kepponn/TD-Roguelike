@@ -44,22 +44,37 @@ func _physics_process(delta):
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 	
+	if direction != Vector3.ZERO:
+		# Calculate the target rotation
+		var target_rotation = direction.y * 180 / PI
+		var target_direction = direction.angle_to(Vector3(0, 0, -1))
+
+		# Apply the rotation to the body node
+		$Node3D.rotation.y = lerp_angle($Node3D.rotation.y, target_direction, 0.1)
+
 	move_and_slide()
 	player_movingItems()
-	player_rotation(direction)
+	character_rotation(input_dir)
 	exit()
 
 func exit():
 	if Input.is_action_just_pressed(\"exit\"):
 		get_tree().quit()
 
-func player_rotation(direction):
-	if direction != Vector3.ZERO:
-		var target_rotation = atan2(direction.x, direction.z) - PI / 2
-		# more of math wizardry, last param in lerp_angle() determine how fast the character rotate
-		$Node3D.rotation.y = lerp_angle($Node3D.rotation.y, target_rotation, 0.3)
-	# rotation of items are being modified by this code while being held on hand
-	# and repaired back to grid by check_grid()
+func character_rotation(dir):
+	pass
+	# should be able to use input_dir in here to change how the player point to
+	#if x > 0:
+		#$Node3D.rotation_degrees.y = 0
+	#elif x < 0 :
+		#$Node3D.rotation_degrees.y = 180
+	#
+	#if z > 0:
+		#$Node3D.rotation_degrees.y = 270
+	#elif z < 0:
+		#$Node3D.rotation_degrees.y = 90
+	
+	
 
 func check_grid(import_pos, export_pos):
 	# read the docs more, round() function is just what we want, it round .5 to up
@@ -68,10 +83,10 @@ func check_grid(import_pos, export_pos):
 	# The Y-AXIS is depend on how the %\"Interaction Zone\" placement is in the world. before it was 1.501, now it is 1.33
 	export_pos.position.y = round(import_pos.global_position.y) # Y-AXIS (sometimes messed up by the character interact area)
 	export_pos.position.z = round(import_pos.global_position.z) # Z-AXIS
-	# disable janky item rotation when held by player to align with grid
-	export_pos.rotation.y = 0
 
 func player_movingItems():
+	if player_isHoldingItem == true:
+		print(player_interactedItem.find_children(\"Blocks\"))
 	#Picking Up Items
 	#Not HOLDING item and can move item
 	if player_ableInteract == true and player_isHoldingItem == false and Input.is_action_just_pressed(\"interact\"):
@@ -84,8 +99,20 @@ func player_movingItems():
 		player_interactedItem.set_collision_layer_value(1,false)
 		player_interactedItem.position = Vector3(0.5, 1, 0)
 		
-		player_checkRange(player_interactedItem)
 		
+		#can be used for showing attack range of holded item, just need to find if there is \"Range\" node in holded item's child
+		#if there is \"Range\" node it should return true, otherwise return null
+		#idk why but this didnt work
+		
+		#print(player_interactedItem.find_children('Range'))
+		#if player_interactedItem.find_children('Range') != null:
+			#
+			#$\"Node3D/Holded Item/Item Range\".mesh.top_radius = player_interactedItem.range
+			#$\"Node3D/Holded Item/Item Range\".mesh.bottom_radius = player_interactedItem.range
+			#$\"Node3D/Holded Item/Item Range\".visible = true
+		#else:
+			#pass
+			
 		#Maybe not needed because if item is moved over character's head
 		#then interaction zone body exited will triggered to change player_ableInteract to false
 		player_ableInteract = false
@@ -99,7 +126,7 @@ func player_movingItems():
 		player_interactedItem.reparent(%Item,true)
 		player_interactedItem.set_collision_layer_value(1,true)
 		 
-		player_checkRange(player_interactedItem, false)
+		
 		check_grid(%\"Interaction Zone\",player_interactedItem)
 		
 		print(%\"Interaction Zone\".global_position)
@@ -115,36 +142,12 @@ func player_movingItems():
 		player_interactedItem.reparent(%Item,true)
 		player_interactedItem.set_collision_layer_value(1,true)
 		player_interactedItem.position = player_interactedItem_Temp.position
-		player_interactedItem.rotation.y = 0
-		player_checkRange(player_interactedItem, false)
 		
 		player_interactedItem = player_interactedItem_Temp
 		player_interactedItem.reparent(%\"Holded Item\",true)
 		player_interactedItem.set_collision_layer_value(1,false)
 		player_interactedItem.position = Vector3(0.5, 1, 0)
-		player_checkRange(player_interactedItem, true)
-
-func player_checkRange(item, enable: bool = true):
-	#can be used for showing attack range of holded item, just need to find if there is \"Range\" node in holded item's child
-	#if there is \"Range\" node it should return true, otherwise return null
-	#idk why but this didnt work
-	#var item_child = item.get_childern()
-	#print(item_child)
-	#if item.find_child(\"*\", \"Range\") != null:
-		#$\"Node3D/Holded Item/Item Range\".mesh.top_radius = player_interactedItem.range
-		#$\"Node3D/Holded Item/Item Range\".mesh.bottom_radius = player_interactedItem.range
-		#$\"Node3D/Holded Item/Item Range\".visible = true
 		
-	# need to add some regex to check for all the name id of turret
-	# for example all turret name start with 'turret_name_affix_suffix_whatever'
-	# check for match regex on 'turret' and be happy
-	if item.name == \"Turret\" and enable:
-		# modify temp variable to match the item range and show the area
-		$\"Node3D/Holded Item/Item Range\".mesh.top_radius = player_interactedItem.range
-		$\"Node3D/Holded Item/Item Range\".mesh.bottom_radius = player_interactedItem.range
-		$\"Node3D/Holded Item/Item Range\".visible = true
-	if item.name == \"Turret\" and !enable:
-		$\"Node3D/Holded Item/Item Range\".visible = false
 
 func _on_interaction_zone_body_entered(body):
 	if body.get_parent().name == 'Item':
@@ -258,11 +261,7 @@ visible = false
 mesh = SubResource("CylinderMesh_i5sef")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
-transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_x73qa")
-
-[node name="Camera3D2" type="Camera3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 8.23336, 0)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 23, 0)
@@ -385,6 +384,9 @@ debug_shape_thickness = 5
 [node name="Target" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 7)
 script = ExtResource("5_6svr2")
+
+[node name="Camera3D2" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 10, 0)
 
 [connection signal="body_entered" from="Player/Node3D/Interaction Zone" to="Player" method="_on_interaction_zone_body_entered"]
 [connection signal="body_exited" from="Player/Node3D/Interaction Zone" to="Player" method="_on_interaction_zone_body_exited"]

@@ -14,7 +14,10 @@ func _ready():
 
 func nav_setup():
 	# await for 1 frame in process and nav error gone, wizard programming
+	#if needed there is baking_finished() signal on NavigationRegion3D
 	await get_tree().physics_frame
+	
+	
 	nav.target_position = Global.final_target
 	direction = nav.get_next_path_position() - global_position
 	direction = direction.normalized()
@@ -23,3 +26,4 @@ func _physics_process(delta):
 	nav_setup()
 	velocity = velocity.lerp(direction * SPEED, accel * delta)
 	move_and_slide()
+

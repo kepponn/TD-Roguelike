@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://c01s5hyeaaliw"]
+[gd_scene load_steps=27 format=3 uid="uid://c01s5hyeaaliw"]
 
 [ext_resource type="MeshLibrary" uid="uid://bpq8ija5ngli5" path="res://Tiles.tres" id="1_h285d"]
 [ext_resource type="PackedScene" uid="uid://j4h1g8pxc77l" path="res://test_item_1.tscn" id="2_3s8ui"]
@@ -75,8 +75,6 @@ func check_grid(import_pos, export_pos):
 	export_pos.position.z = round(import_pos.global_position.z) # Z-AXIS
 
 func player_movingItems():
-	if player_isHoldingItem == true:
-		print(player_interactedItem.find_children(\"Blocks\"))
 	#Picking Up Items
 	#Not HOLDING item and can move item
 	if player_ableInteract == true and player_isHoldingItem == false and Input.is_action_just_pressed(\"interact\"):
@@ -89,20 +87,6 @@ func player_movingItems():
 		player_interactedItem.set_collision_layer_value(1,false)
 		player_interactedItem.position = Vector3(0.5, 1, 0)
 		
-		
-		#can be used for showing attack range of holded item, just need to find if there is \"Range\" node in holded item's child
-		#if there is \"Range\" node it should return true, otherwise return null
-		#idk why but this didnt work
-		
-		#print(player_interactedItem.find_children('Range'))
-		#if player_interactedItem.find_children('Range') != null:
-			#
-			#$\"Node3D/Holded Item/Item Range\".mesh.top_radius = player_interactedItem.range
-			#$\"Node3D/Holded Item/Item Range\".mesh.bottom_radius = player_interactedItem.range
-			#$\"Node3D/Holded Item/Item Range\".visible = true
-		#else:
-			#pass
-			
 		#Maybe not needed because if item is moved over character's head
 		#then interaction zone body exited will triggered to change player_ableInteract to false
 		player_ableInteract = false
@@ -115,7 +99,6 @@ func player_movingItems():
 		# Should change the name of item placeholder into someting more unique, for now it stand as %Item
 		player_interactedItem.reparent(%Item,true)
 		player_interactedItem.set_collision_layer_value(1,true)
-		 
 		
 		check_grid(%\"Interaction Zone\",player_interactedItem)
 		
@@ -168,16 +151,6 @@ material = SubResource("StandardMaterial3D_ebtej")
 height = 0.5
 radius = 0.25
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gbspm"]
-blend_mode = 1
-albedo_color = Color(0.0588235, 0.764706, 0, 0.239216)
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_i5sef"]
-material = SubResource("StandardMaterial3D_gbspm")
-top_radius = 1.0
-bottom_radius = 1.0
-height = 0.1
-
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_x73qa"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l1a05"]
@@ -217,7 +190,7 @@ height = 1.0
 [sub_resource type="BoxShape3D" id="BoxShape3D_p56l4"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_mubio"]
-radius = 10.0
+radius = 5.0
 
 [node name="Node3D" type="Node3D"]
 
@@ -245,10 +218,6 @@ shape = SubResource("CylinderShape3D_3nlo6")
 
 [node name="Holded Item" type="Node3D" parent="Player/Node3D"]
 unique_name_in_owner = true
-
-[node name="Item Range" type="MeshInstance3D" parent="Player/Node3D/Holded Item"]
-visible = false
-mesh = SubResource("CylinderMesh_i5sef")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
 shape = SubResource("CapsuleShape3D_x73qa")
@@ -330,12 +299,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1, 6)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, 6)
 
 [node name="Test Item 3" parent="NavigationRegion3D/Item" instance=ExtResource("2_3s8ui")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.90035, 1, 7.42647)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, 6)
 
 [node name="Turret" type="StaticBody3D" parent="NavigationRegion3D/Item"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, 0.914779)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, 0)
 script = ExtResource("6_iosrd")
-range = 7.0
 
 [node name="Body" type="Node3D" parent="NavigationRegion3D/Item/Turret"]
 
@@ -366,10 +334,9 @@ shape = SubResource("BoxShape3D_p56l4")
 shape = SubResource("CylinderShape3D_mubio")
 
 [node name="RayCast3D" type="RayCast3D" parent="NavigationRegion3D/Item/Turret"]
-transform = Transform3D(1.00372, 0, 0, 0, 1.00372, 0, 0, 0, 1.00372, 0, 0.862688, 0)
-target_position = Vector3(0, 0, -10)
+transform = Transform3D(1.91069e-15, 2.18557e-07, 1, 1, -2.18557e-07, 0, 4.37114e-08, 5, -4.37114e-08, 0, 0.862688, 0)
 debug_shape_custom_color = Color(1, 0, 0, 1)
-debug_shape_thickness = 5
+debug_shape_thickness = 1
 
 [node name="Target" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 7)

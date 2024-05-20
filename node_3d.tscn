@@ -11,7 +11,6 @@
 [sub_resource type="GDScript" id="GDScript_sae41"]
 script/source = "extends CharacterBody3D
 
-
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 
@@ -24,16 +23,9 @@ var player_interactedItem
 var player_interactedItem_Temp
 
 func _physics_process(delta):
-	# Add the gravity.
-	if not is_on_floor():
-		velocity.y -= gravity * delta
-
-	# Handle jump.
-	if Input.is_action_just_pressed(\"ui_accept\") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
-
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
+	# Why does we have jump?
+	player_jump(delta)
+	
 	var input_dir = Input.get_vector(\"ui_left\", \"ui_right\", \"ui_up\", \"ui_down\")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
@@ -45,13 +37,21 @@ func _physics_process(delta):
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 	
 	move_and_slide()
-	player_movingItems()
 	player_rotation(direction)
+	player_movingItems()
 	exit()
 
 func exit():
 	if Input.is_action_just_pressed(\"exit\"):
 		get_tree().quit()
+
+func player_jump(delta):
+	# Add the gravity.
+	if not is_on_floor():
+		velocity.y -= gravity * delta
+	# Handle jump.
+	if Input.is_action_just_pressed(\"ui_accept\") and is_on_floor():
+		velocity.y = JUMP_VELOCITY
 
 func player_rotation(direction):
 	if direction != Vector3.ZERO:
@@ -71,70 +71,22 @@ func check_grid(import_pos, export_pos):
 	# disable janky item rotation when held by player to align with grid
 	export_pos.rotation.y = 0
 
-func player_movingItems():
-	#Picking Up Items
-	#Not HOLDING item and can move item
-	if player_ableInteract == true and player_isHoldingItem == false and Input.is_action_just_pressed(\"interact\"):
-		player_isHoldingItem = true
-		
-		#Saving interacted ITEM DATA and then remove it
-		player_interactedItem = player_interactedItem_Temp
-		
-		player_interactedItem.reparent(%\"Holded Item\",true)
-		player_interactedItem.set_collision_layer_value(1,false)
-		player_interactedItem.position = Vector3(0.5, 1, 0)
-		
-		player_checkRange(player_interactedItem)
-		
-		#Maybe not needed because if item is moved over character's head
-		#then interaction zone body exited will triggered to change player_ableInteract to false
-		player_ableInteract = false
-		
-		
-	
-	#Dropping Down Items
-	#HOLDING an items and CANNOT or NOT interacting with other items
-	elif player_ableInteract == false and player_isHoldingItem == true and  Input.is_action_just_pressed(\"interact\"):
-		# Should change the name of item placeholder into someting more unique, for now it stand as %Item
-		player_interactedItem.reparent(%Item,true)
-		player_interactedItem.set_collision_layer_value(1,true)
-		 
-		player_checkRange(player_interactedItem, false)
-		check_grid(%\"Interaction Zone\",player_interactedItem)
-		
-		print(%\"Interaction Zone\".global_position)
-		print(player_interactedItem.position)
-		
-		player_isHoldingItem = false
-	
-	#Swapping Items
-	#HOLDING an items and CAN interact with other items
-	elif player_ableInteract == true and player_isHoldingItem == true and Input.is_action_just_pressed(\"interact\"):
-		print(\"swapped item\")
-		
-		player_interactedItem.reparent(%Item,true)
-		player_interactedItem.set_collision_layer_value(1,true)
-		player_interactedItem.position = player_interactedItem_Temp.position
-		player_interactedItem.rotation.y = 0
-		player_checkRange(player_interactedItem, false)
-		
-		player_interactedItem = player_interactedItem_Temp
-		player_interactedItem.reparent(%\"Holded Item\",true)
-		player_interactedItem.set_collision_layer_value(1,false)
-		player_interactedItem.position = Vector3(0.5, 1, 0)
-		player_checkRange(player_interactedItem, true)
+func player_holdItem(item):
+	item.reparent(%\"Holded Item\", true) # Change the item parent into `%\"Holded Item\"` which reside in player node
+	item.set_collision_layer_value(1, false) # Remove the collision layer from the item while being held in-hand
+	item.position = Vector3(0.5, 1, 0) # Set item position to be on top of player
 
-func player_checkRange(item, enable: bool = true):
-	#can be used for showing attack range of holded item, just need to find if there is \"Range\" node in holded item's child
-	#if there is \"Range\" node it should return true, otherwise return null
-	#idk why but this didnt work
-	#var item_child = item.get_childern()
-	#print(item_child)
-	#if item.find_child(\"*\", \"Range\") != null:
-		#$\"Node3D/Holded Item/Item Range\".mesh.top_radius = player_interactedItem.range
-		#$\"Node3D/Holded Item/Item Range\".mesh.bottom_radius = player_interactedItem.range
-		#$\"Node3D/Holded Item/Item Range\".visible = true
-		
+func player_putItem(item):
+	item.reparent(%Item, true) # Change the item parent into `%Item` node
+	item.set_collision_layer_value(1, true) # Enable the collision layer of the item
+
+func player_swapItem(held_item, ground_item):
+	held_item.reparent(%Item, true) 
+	held_item.set_collision_layer_value(1, true)
+	held_item.position = ground_item.position # Swap the position property from held item to ground item
+	held_item.rotation.y = 0 # Repair the Y-AXIS rotation to default
+
+func player_checkItemRange(item, enable: bool = true):
 	# need to add some regex to check for all the name id of turret
 	# for example all turret name start with 'turret_name_affix_suffix_whatever'
 	# check for match regex on 'turret' and be happy
@@ -146,17 +98,54 @@ func player_checkRange(item, enable: bool = true):
 	if item.name == \"Turret\" and !enable:
 		$\"Node3D/Holded Item/Item Range\".visible = false
 
+func player_movingItems():
+	# PICK UP ITEM - NOT HOLDING item and HAVE INTERACTABLE item
+	if player_ableInteract == true and player_isHoldingItem == false and Input.is_action_just_pressed(\"interact\"):
+		player_isHoldingItem = true
+		# When the player decided to interact with the current item `player_interactedItem_Temp` (which always changing depend on the circumstance)
+		# It will save the `player_interactedItem_Temp` into `player_interactedItem` to be used
+		player_interactedItem = player_interactedItem_Temp
+		player_holdItem(player_interactedItem)
+		player_checkItemRange(player_interactedItem)
+		print(\"Pick-up \" + str(player_interactedItem) + \" from \" + str(player_interactedItem.position))
+		# Maybe not needed because if item is moved over character's head
+		# Then interaction zone body exited will triggered to change player_ableInteract to false
+		player_ableInteract = false
+		
+	# DROP DOWN ITEM - HOLDING an item and NOT INTERACTING with other items
+	elif player_ableInteract == false and player_isHoldingItem == true and  Input.is_action_just_pressed(\"interact\"):
+		# Should change the name of item placeholder into someting more unique, for now it stand as %Item
+		player_putItem(player_interactedItem)
+		player_checkItemRange(player_interactedItem, false)
+		# Check the grid of item when putting down to the world
+		check_grid(%\"Interaction Zone\", player_interactedItem)
+		print(\"Dropping \" + str(player_interactedItem) + \" to \" + str(player_interactedItem.position))
+		# print(%\"Interaction Zone\".global_position)
+		# print(player_interactedItem.position)
+		player_isHoldingItem = false
+		
+	# SWAP ITEM - HOLDING an items and HAVE INTERACTABLE item
+	elif player_ableInteract == true and player_isHoldingItem == true and Input.is_action_just_pressed(\"interact\"):
+		print(\"Swapping \" + str(player_interactedItem) + \" with \" + str(player_interactedItem_Temp))
+		# All this line is the basic for item swapping
+		# Swap held item property to on-ground item property
+		player_swapItem(player_interactedItem, player_interactedItem_Temp)
+		player_checkItemRange(player_interactedItem, false)
+		# Take on-ground item
+		player_interactedItem = player_interactedItem_Temp
+		player_holdItem(player_interactedItem)
+		player_checkItemRange(player_interactedItem, true)
+
 func _on_interaction_zone_body_entered(body):
 	if body.get_parent().name == 'Item':
 		player_interactedItem_Temp = body
 		player_ableInteract = true
-		print(\"Item Detected Name : \" + body.name)
-		print(\"player able to interact\")
+		#print(\"player ABLE to interact with \" + body.name)
 
 func _on_interaction_zone_body_exited(body):
 	if body.get_parent().name == 'Item':
 		player_ableInteract = false
-		print(\"player UNABLE to interact\")
+		#print(\"player UNABLE to interact with \" + body.name)
 "
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pgh5w"]

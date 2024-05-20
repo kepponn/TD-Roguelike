@@ -17,7 +17,8 @@ func _ready():
 	# How? just call this_node._ready() and nav_node._ready()
 	$"../NavigationRegion3D".bake_navigation_mesh()
 	Global.final_target = position
-	print(Global.final_target)
+	print("Current target position: " + str(Global.final_target))
 	
 func _process(_delta):
-	Global.final_target = position
+	#Global.final_target = position
+	pass

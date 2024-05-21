@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://c01s5hyeaaliw"]
+[gd_scene load_steps=28 format=3 uid="uid://c01s5hyeaaliw"]
 
 [ext_resource type="MeshLibrary" uid="uid://bpq8ija5ngli5" path="res://Tiles.tres" id="1_h285d"]
 [ext_resource type="PackedScene" uid="uid://j4h1g8pxc77l" path="res://test_item_1.tscn" id="2_3s8ui"]
@@ -7,6 +7,8 @@
 [ext_resource type="Script" path="res://Target.gd" id="5_6svr2"]
 [ext_resource type="NavigationMesh" uid="uid://1kgcqxfwhe74" path="res://Navigation.tres" id="5_xwuqj"]
 [ext_resource type="Script" path="res://Turret.gd" id="6_iosrd"]
+[ext_resource type="PackedScene" uid="uid://dcyk7xu85u5en" path="res://models/turret_head_basic.glb" id="7_g81mv"]
+[ext_resource type="PackedScene" uid="uid://80owkwjy8obt" path="res://models/turret_legs_basic.glb" id="8_kb47m"]
 
 [sub_resource type="GDScript" id="GDScript_sae41"]
 script/source = "extends CharacterBody3D
@@ -198,18 +200,6 @@ albedo_color = Color(0.219608, 0.219608, 0.219608, 1)
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_cfodq"]
 material = SubResource("StandardMaterial3D_4it6a")
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_nuipr"]
-top_radius = 0.3
-bottom_radius = 0.4
-height = 0.8
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_183m1"]
-top_radius = 0.03
-bottom_radius = 0.07
-height = 1.0
-
-[sub_resource type="BoxMesh" id="BoxMesh_38iv5"]
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_p56l4"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_mubio"]
@@ -333,29 +323,19 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, 6)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.90035, 1, 7.42647)
 
 [node name="Turret" type="StaticBody3D" parent="NavigationRegion3D/Item"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, 0.914779)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, 2)
 script = ExtResource("6_iosrd")
 range = 7.0
 
+[node name="Head" type="Node3D" parent="NavigationRegion3D/Item/Turret"]
+
+[node name="turret_head_basic" parent="NavigationRegion3D/Item/Turret/Head" instance=ExtResource("7_g81mv")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 0.805673, 0, -1, 0, -4.37114e-08, -0.0176754, 0.324434, 0.0978582)
+
 [node name="Body" type="Node3D" parent="NavigationRegion3D/Item/Turret"]
 
-[node name="Base" type="MeshInstance3D" parent="NavigationRegion3D/Item/Turret/Body"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.889146, 0)
-mesh = SubResource("CylinderMesh_nuipr")
-skeleton = NodePath("../..")
-
-[node name="Barrel1" type="MeshInstance3D" parent="NavigationRegion3D/Item/Turret/Body"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0.07, 1.08, -0.504762)
-mesh = SubResource("CylinderMesh_183m1")
-skeleton = NodePath("../..")
-
-[node name="Barrel2" type="MeshInstance3D" parent="NavigationRegion3D/Item/Turret/Body"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.07, 1.08, -0.504762)
-mesh = SubResource("CylinderMesh_183m1")
-skeleton = NodePath("../Barrel1")
-
-[node name="Blocks" type="MeshInstance3D" parent="NavigationRegion3D/Item/Turret"]
-mesh = SubResource("BoxMesh_38iv5")
+[node name="turret_legs_basic" parent="NavigationRegion3D/Item/Turret/Body" instance=ExtResource("8_kb47m")]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 0.981032, 0, -0.707107, 0, 0.707107, 0, -0.443629, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Item/Turret"]
 shape = SubResource("BoxShape3D_p56l4")
@@ -366,7 +346,7 @@ shape = SubResource("BoxShape3D_p56l4")
 shape = SubResource("CylinderShape3D_mubio")
 
 [node name="RayCast3D" type="RayCast3D" parent="NavigationRegion3D/Item/Turret"]
-transform = Transform3D(1.00372, 0, 0, 0, 1.00372, 0, 0, 0, 1.00372, 0, 0.862688, 0)
+transform = Transform3D(1.00372, 0, 0, 0, 1.00372, 0, 0, 0, 1.00372, 0, 0.324204, 0)
 target_position = Vector3(0, 0, -10)
 debug_shape_custom_color = Color(1, 0, 0, 1)
 debug_shape_thickness = 5

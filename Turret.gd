@@ -36,7 +36,7 @@ func lockon():
 			#if collided's parent name is Enemies then it mean raycast able to hit enemies successfully and
 			#not blocked by any 3D body, and then make turret's $Body to look at the locked enemy
 			if collided == 'Enemies':
-				$Body.look_at(enemy_locked.position)
+				$Head.look_at(enemy_locked.position)
 				$RayCast3D.debug_shape_custom_color = Color(0,255,0)
 			else:
 				$RayCast3D.debug_shape_custom_color = Color(174,0,0)

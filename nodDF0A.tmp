@@ -91,8 +91,7 @@ func player_putItem(item):
 	# Check the grid of item when putting down to the world
 	var putItem_Tween = get_tree().create_tween()
 	putItem_Tween.tween_property(item, \"position\", check_grid(%\"Interaction Zone\", item), 0.15)
-	await get_tree().create_timer(0.15).timeout
-	item.set_collision_layer_value(1, true)
+	putItem_Tween.tween_property(item, \"collision_layer\", false, 0)
 
 func player_swapItem(held_item, ground_item):
 	held_item.reparent(%Item, true) 

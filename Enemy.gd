@@ -1,9 +1,13 @@
 extends CharacterBody3D
 
 
-const SPEED = 5.0
+@export var SPEED = 2.5
+@export var HP = 3
+
 var accel = 10
 var direction = Vector3()
+
+
 
 @onready var nav: NavigationAgent3D = $NavigationAgent3D
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -26,4 +30,11 @@ func _physics_process(delta):
 	nav_setup()
 	velocity = velocity.lerp(direction * SPEED, accel * delta)
 	move_and_slide()
+	
+func hit(damage):
+	HP = HP - damage
+	if HP <= 0:
+		queue_free()
+
+
 

@@ -1,8 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://cyfymisaldpoc"]
-
-[ext_resource type="PackedScene" uid="uid://g4tnh67b8s1n" path="res://debug-block.glb" id="1_pm8wt"]
-
-[node name="debug-block" instance=ExtResource("1_pm8wt")]
-
-[node name="Cube" parent="." index="0"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)

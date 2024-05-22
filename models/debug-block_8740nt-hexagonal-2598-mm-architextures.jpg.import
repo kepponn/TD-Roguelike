@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c7lc4b4hrtl43"
-path.s3tc="res://.godot/imported/debug-block_calcite-texture.png-526d21618bfaca8c12b9707006a07507.s3tc.ctex"
+uid="uid://br3j1afb22r3y"
+path.s3tc="res://.godot/imported/debug-block_8740nt-hexagonal-2598-mm-architextures.jpg-e5527e5147e06e548045d6424af331a8.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ generator_parameters={}
 
 [deps]
 
-source_file="res://models/debug-block_calcite-texture.png"
-dest_files=["res://.godot/imported/debug-block_calcite-texture.png-526d21618bfaca8c12b9707006a07507.s3tc.ctex"]
+source_file="res://models/debug-block_8740nt-hexagonal-2598-mm-architextures.jpg"
+dest_files=["res://.godot/imported/debug-block_8740nt-hexagonal-2598-mm-architextures.jpg-e5527e5147e06e548045d6424af331a8.s3tc.ctex"]
 
 [params]
 

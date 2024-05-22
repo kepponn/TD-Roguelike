@@ -1,14 +1,14 @@
 [gd_scene load_steps=13 format=3 uid="uid://3gqer4y51pga"]
 
-[ext_resource type="Texture2D" uid="uid://c7lc4b4hrtl43" path="res://models/debug-block_calcite-texture.png" id="1_i8kgh"]
+[ext_resource type="Texture2D" uid="uid://br3j1afb22r3y" path="res://models/debug-block_8740nt-hexagonal-2598-mm-architextures.jpg" id="1_42t48"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_denkw"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f5rsk"]
 resource_name = "Material"
 cull_mode = 2
-albedo_texture = ExtResource("1_i8kgh")
+albedo_texture = ExtResource("1_42t48")
 roughness = 0.5
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_n1vef"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_haqq1"]
 _surfaces = [{
 "aabb": AABB(-0.5, -0.5, -0.5, 1.00001, 1.00001, 1),
 "format": 34896613377,
@@ -22,7 +22,7 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_jkh7i"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_07mgw"]
 resource_name = "debug-block_Cube"
 _surfaces = [{
 "aabb": AABB(-0.5, -0.5, -0.5, 1.00001, 1.00001, 1),
@@ -30,7 +30,7 @@ _surfaces = [{
 "format": 34896613399,
 "index_count": 36,
 "index_data": PackedByteArray(1, 0, 19, 0, 13, 0, 1, 0, 7, 0, 19, 0, 9, 0, 18, 0, 6, 0, 9, 0, 21, 0, 18, 0, 23, 0, 14, 0, 20, 0, 23, 0, 17, 0, 14, 0, 16, 0, 10, 0, 4, 0, 16, 0, 22, 0, 10, 0, 5, 0, 8, 0, 2, 0, 5, 0, 11, 0, 8, 0, 15, 0, 0, 0, 12, 0, 15, 0, 3, 0, 0, 0),
-"material": SubResource("StandardMaterial3D_denkw"),
+"material": SubResource("StandardMaterial3D_f5rsk"),
 "name": "Material",
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
@@ -38,7 +38,7 @@ _surfaces = [{
 "vertex_data": PackedByteArray(254, 255, 254, 255, 0, 0, 0, 0, 254, 255, 254, 255, 0, 0, 255, 191, 254, 255, 254, 255, 0, 0, 255, 191, 254, 255, 0, 0, 0, 0, 0, 0, 254, 255, 0, 0, 0, 0, 255, 63, 254, 255, 0, 0, 0, 0, 255, 191, 254, 255, 254, 255, 255, 255, 255, 127, 254, 255, 254, 255, 255, 255, 255, 191, 254, 255, 254, 255, 255, 255, 255, 191, 254, 255, 0, 0, 255, 255, 255, 127, 254, 255, 0, 0, 255, 255, 255, 63, 254, 255, 0, 0, 255, 255, 255, 191, 0, 0, 254, 255, 0, 0, 0, 0, 0, 0, 254, 255, 0, 0, 255, 191, 0, 0, 254, 255, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 255, 63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 254, 255, 255, 255, 255, 127, 0, 0, 254, 255, 255, 255, 255, 191, 0, 0, 254, 255, 255, 255, 0, 0, 0, 0, 0, 0, 255, 255, 255, 127, 0, 0, 0, 0, 255, 255, 255, 63, 0, 0, 0, 0, 255, 255, 0, 0, 255, 255, 255, 127, 255, 255, 255, 127, 255, 127, 0, 0, 255, 255, 255, 127, 0, 0, 255, 127, 255, 127, 0, 0, 255, 127, 255, 255, 255, 255, 255, 127, 255, 127, 0, 0, 255, 127, 255, 255, 0, 0, 255, 127, 255, 127, 0, 0, 255, 255, 255, 127, 255, 255, 255, 127, 255, 63, 255, 127, 255, 255, 255, 127, 0, 0, 255, 127, 255, 63, 255, 127, 255, 127, 255, 255, 255, 255, 255, 127, 255, 63, 255, 127, 255, 127, 255, 255, 0, 0, 255, 127, 255, 63, 255, 127)
 }]
 blend_shape_mode = 0
-shadow_mesh = SubResource("ArrayMesh_n1vef")
+shadow_mesh = SubResource("ArrayMesh_haqq1")
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_hxgs7"]
 points = PackedVector3Array(0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5)
@@ -66,7 +66,7 @@ material = SubResource("StandardMaterial3D_kpsav")
 [node name="Tiles" type="Node3D"]
 
 [node name="Floor" type="MeshInstance3D" parent="."]
-mesh = SubResource("ArrayMesh_jkh7i")
+mesh = SubResource("ArrayMesh_07mgw")
 skeleton = NodePath("")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Floor"]

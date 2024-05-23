@@ -1,0 +1,48 @@
+[gd_scene load_steps=6 format=3 uid="uid://bwqmcaxxkb1ku"]
+
+[ext_resource type="Script" path="res://scripts/Turret.gd" id="1_3v7lg"]
+[ext_resource type="PackedScene" uid="uid://cjddm7gwddplg" path="res://models/turret_head_basic.glb" id="2_vo5rf"]
+[ext_resource type="PackedScene" uid="uid://80owkwjy8obt" path="res://models/turret_legs_basic.glb" id="3_rk1tc"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_p56l4"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_mubio"]
+radius = 10.0
+
+[node name="Turret" type="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, 0)
+script = ExtResource("1_3v7lg")
+attack_range = 7.0
+
+[node name="Head" type="Node3D" parent="."]
+
+[node name="turret_head_basic" parent="Head" instance=ExtResource("2_vo5rf")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 0.805673, 0, -1, 0, -4.37114e-08, -0.0176754, 0.324434, 0.0978582)
+
+[node name="Spawn Point" type="Marker3D" parent="Head"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.334663, -0.905763)
+
+[node name="Body" type="Node3D" parent="."]
+
+[node name="turret_legs_basic" parent="Body" instance=ExtResource("3_rk1tc")]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 0.981032, 0, -0.707107, 0, 0.707107, 0, -0.443629, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_p56l4")
+
+[node name="Range" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Range"]
+shape = SubResource("CylinderShape3D_mubio")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1.00372, 0, 0, 0, 1.00372, 0, 0, 0, 1.00372, 0, 0.324204, 0)
+target_position = Vector3(0, 0, -10)
+debug_shape_custom_color = Color(1, 0, 0, 1)
+debug_shape_thickness = 5
+
+[node name="Attack Speed" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="body_entered" from="Range" to="." method="_on_range_body_entered"]
+[connection signal="body_exited" from="Range" to="." method="_on_range_body_exited"]

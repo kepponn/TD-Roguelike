@@ -65,12 +65,15 @@ func check_grid(import_pos, export_pos):
 	# Return the value in vector3 for future processing by tweens
 	return Vector3(x, y, z)
 
-func player_holdItem(item):
+func player_holdItem(item) -> void: # need to return something so the last timer didnt stop prematurely
 	item.reparent(%"Holded Item", true) # Change the item parent into `%"Holded Item"` which reside in player node
 	item.set_collision_layer_value(1, false) # Remove the collision layer from the item while being held in-hand
 	#item.position = Vector3(0.5, 1, 0) # Set item position to be on top of player
 	var holdItem_Tween = get_tree().create_tween()
 	holdItem_Tween.tween_property(item, "position", Vector3(0.5, 1, 0), 0.15)
+	# this TIMER is IMPORTANT because it wait for the tween animation to finish
+	# WILL BE REOCCURING BUG - where item glitches from %Item.position to new position
+	await get_tree().create_timer(0.15).timeout 
 
 func player_putItem(item):
 	item.reparent(%Item, true) # Change the item parent into `%Item` node
@@ -78,6 +81,7 @@ func player_putItem(item):
 	# Check the grid of item when putting down to the world
 	var putItem_Tween = get_tree().create_tween()
 	putItem_Tween.tween_property(item, "position", check_grid(%"Interaction Zone", item), 0.15)
+	#item.position = check_grid(%"Interaction Zone", item)
 	await get_tree().create_timer(0.15).timeout
 	item.set_collision_layer_value(1, true)
 
@@ -88,15 +92,16 @@ func player_swapItem(held_item, ground_item):
 	held_item.rotation.y = 0 # Repair the Y-AXIS rotation to default
 
 func player_checkItemRange(item, enable: bool = true):
-	# need to add some regex to check for all the name id of turret
-	# for example all turret name start with 'turret_name_affix_suffix_whatever'
-	# check for match regex on 'turret' and be happy
-	if item.name == "Turret" and enable:
+	var regex = RegEx.new() # need to add some regex to check for all the name id of turret
+	var pattern = r"^(?i)turret.*$" # for example all turret name start with 'turret_name_affix_suffix_whatever'
+	regex.compile(pattern) # check for match regex on 'turret' and be happy
+	# if by any-case you want to check more than just turret, add new pattern to be checked and refactor this code into match maybe
+	if regex.search(item.name) and enable:
 		# modify temp variable to match the item range and show the area
 		$"Node3D/Holded Item/Item Range".mesh.top_radius = player_interactedItem.attack_range
 		$"Node3D/Holded Item/Item Range".mesh.bottom_radius = player_interactedItem.attack_range
 		$"Node3D/Holded Item/Item Range".visible = true
-	if item.name == "Turret" and !enable:
+	elif !enable:
 		$"Node3D/Holded Item/Item Range".visible = false
 
 func player_movingItems():
@@ -118,7 +123,6 @@ func player_movingItems():
 		# Should change the name of item placeholder into someting more unique, for now it stand as %Item
 		player_putItem(player_interactedItem)
 		player_checkItemRange(player_interactedItem, false)
-		
 		print("Dropping " + str(player_interactedItem) + " to " + str(player_interactedItem.position))
 		# print(%"Interaction Zone".global_position)
 		# print(player_interactedItem.position)

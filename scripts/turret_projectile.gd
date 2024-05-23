@@ -12,7 +12,7 @@ func _process(delta):
 	position += set_direction * speed * delta
 
 func _on_body_entered(body):
-	print(body.name)
+	#print(body.name)
 	#Need IF to ignore turret body collision otherwise sometimes it will hit turret
 	if body.has_method("hit"):
 		body.hit(damage)

@@ -69,8 +69,8 @@ func shoot():
 			direction = (enemies_inRange[0].position - position).normalized()
 		var turret_projectile = projectile.instantiate()
 		# if you want to shoot while still holding it maybe make projectile as unique or use absolute path to it
-		$"../../../Projectile".add_child(turret_projectile,true)
-
+		#$"../../../Projectile".add_child(turret_projectile,true)
+		get_node("/root/Node3D/Projectile").add_child(turret_projectile,true)
 		#basically copy all of $"Head/Spawn Point" global transform(rotation, scale, position), to projectile
 		turret_projectile.transform = $"Head/Spawn Point".global_transform
 		

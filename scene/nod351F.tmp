@@ -49,7 +49,7 @@ height = 0.1
 [node name="Node3D" type="Node3D"]
 
 [node name="Camera3D2" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.497701, 0.867349, 0, -0.867349, 0.497701, 0, 14, 8.43347)
+transform = Transform3D(1, 0, 0, 0, 0.173648, 0.984808, 0, -0.984808, 0.173648, 0, 14, 3)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_m6ppc")
@@ -131,7 +131,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 4)
 [node name="Test Item 6" parent="NavigationRegion3D/Item" instance=ExtResource("2_3s8ui")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, 8)
 
-[node name="Turret1" parent="NavigationRegion3D/Item" instance=ExtResource("7_p0tuy")]
+[node name="Turret" parent="NavigationRegion3D/Item" instance=ExtResource("7_p0tuy")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -1)
 
 [node name="Turret2" parent="NavigationRegion3D/Item" instance=ExtResource("7_p0tuy")]

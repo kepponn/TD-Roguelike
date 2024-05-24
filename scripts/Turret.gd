@@ -10,13 +10,15 @@ var able_toShoot: bool = false
 
 @export var attack_range:float
 
+@onready var visible_range: MeshInstance3D = $"Range/Visible Range"
 @onready var range_radius: CollisionShape3D = $Range/CollisionShape3D
-@onready var raycast: RayCast3D = $RayCast3D
+@onready var raycast_lenght: RayCast3D = $RayCast3D
 
 func _ready():
+	visible_range.mesh.top_radius = attack_range
 	range_radius.shape.radius = attack_range
-	raycast.target_position.z = -attack_range
-	$RayCast3D.hide()
+	raycast_lenght.target_position.z = -attack_range
+
 
 func _process(_delta):
 	lock_on_is_easy()

@@ -15,7 +15,8 @@ func _ready():
 	# Would this be dynamic in the future? if so then the process flow is: (just-in-case)
 	# Check for changes and signal it back to here to do bake process and reroute the nav-process into new location target
 	# How? just call this_node._ready() and nav_node._ready()
-	$"../NavigationRegion3D".bake_navigation_mesh()
+	
+	#$"../NavigationRegion3D".bake_navigation_mesh()
 	
 	Global.final_target = position
 	#print("Current target position: " + str(Global.final_target))

@@ -3,6 +3,8 @@ extends CharacterBody3D
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 
+@onready var spawner = $"../Spawn"
+
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
@@ -10,6 +12,8 @@ var player_ableInteract: bool = false
 var player_isHoldingItem: bool = false
 var player_interactedItem
 var player_interactedItem_Temp
+
+var preparation_phase: bool = true
 
 func _physics_process(delta):
 	# Why does we have jump?
@@ -28,7 +32,23 @@ func _physics_process(delta):
 	move_and_slide()
 	player_rotation(direction)
 	player_movingItems()
+	ready()
+	wave_cleared()
 	exit()
+
+func ready():
+	if Input.is_action_just_pressed("ui_accept") and preparation_phase == true:
+		$"../NavigationRegion3D".bake_navigation_mesh()
+		spawner.count_enemies()
+		spawner.spawn_timer.start()
+		preparation_phase = false
+		print("Player Ready, Entering Wave ", spawner.waves, " Defense Phase")
+	
+func wave_cleared():
+	if $"../Enemies".get_child_count() == 0 and spawner.total_enemies == 0 and preparation_phase == false:
+		spawner.waves = spawner.waves + 1
+		preparation_phase = true
+		print("Wave_Cleared, Entering Prep Phase")
 
 func exit():
 	if Input.is_action_just_pressed("exit"):

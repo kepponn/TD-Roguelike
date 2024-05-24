@@ -1,5 +1,7 @@
 extends StaticBody3D
 
+
+
 var projectile: PackedScene = preload("res://scene/turret_projectile.tscn")
 
 var enemies_inRange = []
@@ -38,12 +40,12 @@ func lock_on_is_easy():
 			# put the array[0] data into back of the array itself and delete it (same as push_back())
 			# this will force the array to re-index itself and now we have different data for array[0]
 			if $RayCast3D.get_collider().get_parent().name != 'Enemies' and enemies_inRange.size() > 1:
-				print("Vision obstructed to " + str(enemies_inRange[0].name) + " pushing it to back of array")
+				#print("Vision obstructed to " + str(enemies_inRange[0].name) + " pushing it to back of array")
 				able_toShoot = false
 				$RayCast3D.debug_shape_custom_color = Color(255,0,0)
 				enemies_inRange.append(enemies_inRange[0])
 				enemies_inRange.remove_at(0)
-				print("New array for targeting: " + str(enemies_inRange))
+				#print("New array for targeting: " + str(enemies_inRange))
 			# check if the raycast collide with 'Enemies', then execute turret movement and shoot, etc
 			elif $RayCast3D.get_collider().get_parent().name == 'Enemies':
 				able_toShoot = true
@@ -115,12 +117,12 @@ func lockon():
 
 func _on_range_body_entered(body):
 	if body.get_parent().name == 'Enemies':
-		print("Append " + str(body))
+		#print("Append " + str(body))
 		enemies_inRange.append(body)
-		print("Current array " + str(enemies_inRange))
+		#print("Current array " + str(enemies_inRange))
 
 func _on_range_body_exited(body):
 	if body.get_parent().name == 'Enemies':
-		print("Erase " + str(body))
+		#print("Erase " + str(body))
 		enemies_inRange.erase(body)
-		print("Current array " + str(enemies_inRange))
+		#print("Current array " + str(enemies_inRange))

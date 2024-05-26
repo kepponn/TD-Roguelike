@@ -38,7 +38,7 @@ func _physics_process(delta):
 	exit()
 
 func ready():
-	if Input.is_action_just_pressed("ui_accept") and preparation_phase == true:
+	if Input.is_action_just_pressed("start") and preparation_phase == true:
 		$"../NavigationRegion3D".bake_navigation_mesh()
 		spawner.count_enemies()
 		spawner.spawn_timer.start()

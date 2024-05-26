@@ -1,15 +1,15 @@
 [gd_scene load_steps=20 format=3 uid="uid://c01s5hyeaaliw"]
 
-[ext_resource type="Script" path="res://scripts/Player.gd" id="1_20jvh"]
-[ext_resource type="MeshLibrary" uid="uid://bpq8ija5ngli5" path="res://Tiles.tres" id="1_h285d"]
-[ext_resource type="PackedScene" uid="uid://j4h1g8pxc77l" path="res://scene/test_item_1.tscn" id="2_3s8ui"]
-[ext_resource type="PackedScene" uid="uid://wil6fipqm8m1" path="res://scene/test_item_2.tscn" id="3_xe3a5"]
-[ext_resource type="Script" path="res://scripts/Target.gd" id="5_6svr2"]
-[ext_resource type="NavigationMesh" uid="uid://1kgcqxfwhe74" path="res://Navigation.tres" id="5_xwuqj"]
-[ext_resource type="PackedScene" uid="uid://bwqmcaxxkb1ku" path="res://scene/turret.tscn" id="7_p0tuy"]
-[ext_resource type="PackedScene" uid="uid://cuig6rk28kptx" path="res://models/target.glb" id="10_8uy8d"]
-[ext_resource type="Script" path="res://scripts/Spawn.gd" id="10_h8qdw"]
-[ext_resource type="PackedScene" uid="uid://cxo2xqjctdmut" path="res://models/spawn.glb" id="11_dui4f"]
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_fipto"]
+[ext_resource type="NavigationMesh" uid="uid://1kgcqxfwhe74" path="res://Navigation.tres" id="2_qtpp8"]
+[ext_resource type="MeshLibrary" uid="uid://bpq8ija5ngli5" path="res://Tiles.tres" id="3_hpvrf"]
+[ext_resource type="PackedScene" uid="uid://j4h1g8pxc77l" path="res://scene/test_item_1.tscn" id="4_mfvmb"]
+[ext_resource type="PackedScene" uid="uid://wil6fipqm8m1" path="res://scene/test_item_2.tscn" id="5_ew274"]
+[ext_resource type="Script" path="res://scripts/target.gd" id="7_b3oj4"]
+[ext_resource type="PackedScene" uid="uid://cuig6rk28kptx" path="res://models/target.glb" id="8_7h401"]
+[ext_resource type="Script" path="res://scripts/spawn.gd" id="9_4awx7"]
+[ext_resource type="PackedScene" uid="uid://cxo2xqjctdmut" path="res://models/spawn.glb" id="10_hlbb7"]
+[ext_resource type="PackedScene" uid="uid://r0wfovaac7gq" path="res://scene/turret_basic.tscn" id="11_yfnvx"]
 
 [sub_resource type="Environment" id="Environment_m6ppc"]
 ssr_enabled = true
@@ -60,7 +60,7 @@ shadow_enabled = true
 
 [node name="Player" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.76664, 2)
-script = ExtResource("1_20jvh")
+script = ExtResource("1_fipto")
 
 [node name="Node3D" type="Node3D" parent="Player"]
 
@@ -97,10 +97,10 @@ shape = SubResource("CapsuleShape3D_x73qa")
 [node name="Projectile" type="Node3D" parent="."]
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
-navigation_mesh = ExtResource("5_xwuqj")
+navigation_mesh = ExtResource("2_qtpp8")
 
 [node name="Environtment" type="GridMap" parent="NavigationRegion3D"]
-mesh_library = ExtResource("1_h285d")
+mesh_library = ExtResource("3_hpvrf")
 cell_size = Vector3(1, 1, 1)
 cell_center_x = false
 cell_center_y = false
@@ -113,45 +113,48 @@ metadata/_editor_floor_ = Vector3(0, 4, 0)
 [node name="Item" type="Node3D" parent="NavigationRegion3D"]
 unique_name_in_owner = true
 
-[node name="Test Item 1" parent="NavigationRegion3D/Item" instance=ExtResource("2_3s8ui")]
+[node name="Test Item 1" parent="NavigationRegion3D/Item" instance=ExtResource("4_mfvmb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1, 3)
 
-[node name="Test Item 2" parent="NavigationRegion3D/Item" instance=ExtResource("3_xe3a5")]
+[node name="Test Item 2" parent="NavigationRegion3D/Item" instance=ExtResource("5_ew274")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, 3)
 
-[node name="Test Item 3" parent="NavigationRegion3D/Item" instance=ExtResource("2_3s8ui")]
+[node name="Test Item 3" parent="NavigationRegion3D/Item" instance=ExtResource("4_mfvmb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, 7)
 
-[node name="Test Item 4" parent="NavigationRegion3D/Item" instance=ExtResource("2_3s8ui")]
+[node name="Test Item 4" parent="NavigationRegion3D/Item" instance=ExtResource("4_mfvmb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, 6)
 
-[node name="Test Item 5" parent="NavigationRegion3D/Item" instance=ExtResource("2_3s8ui")]
+[node name="Test Item 5" parent="NavigationRegion3D/Item" instance=ExtResource("4_mfvmb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 4)
 
-[node name="Test Item 6" parent="NavigationRegion3D/Item" instance=ExtResource("2_3s8ui")]
+[node name="Test Item 6" parent="NavigationRegion3D/Item" instance=ExtResource("4_mfvmb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, 8)
 
-[node name="Turret1" parent="NavigationRegion3D/Item" instance=ExtResource("7_p0tuy")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -1)
+[node name="Turret" parent="NavigationRegion3D/Item" instance=ExtResource("11_yfnvx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1, -5)
 
-[node name="Turret2" parent="NavigationRegion3D/Item" instance=ExtResource("7_p0tuy")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, 1)
+[node name="Turret3" parent="NavigationRegion3D/Item" instance=ExtResource("11_yfnvx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, 2)
 
-[node name="Turret3" parent="NavigationRegion3D/Item" instance=ExtResource("7_p0tuy")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, 3)
+[node name="Turret4" parent="NavigationRegion3D/Item" instance=ExtResource("11_yfnvx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Turret2" parent="NavigationRegion3D/Item" instance=ExtResource("11_yfnvx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, 2)
 
 [node name="Target" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1, 7)
-script = ExtResource("5_6svr2")
+script = ExtResource("7_b3oj4")
 
-[node name="target" parent="Target" instance=ExtResource("10_8uy8d")]
+[node name="target" parent="Target" instance=ExtResource("8_7h401")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.402807, 0)
 
 [node name="Spawn" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1, -8)
-script = ExtResource("10_h8qdw")
+script = ExtResource("9_4awx7")
 
-[node name="spawn" parent="Spawn" instance=ExtResource("11_dui4f")]
+[node name="spawn" parent="Spawn" instance=ExtResource("10_hlbb7")]
 
 [node name="Timer" type="Timer" parent="Spawn"]
 wait_time = 2.0

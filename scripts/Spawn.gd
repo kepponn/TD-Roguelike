@@ -1,6 +1,6 @@
 extends Marker3D
 
-@onready var base_enemiesCount: float = 2
+@onready var base_enemiesCount: int = 2
 var total_enemies: int
 var waves: int = 1
 
@@ -13,7 +13,7 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	spawn_enemies()
 	pass
 	
@@ -29,4 +29,5 @@ func spawn_enemies():
 		print("Enemies Left = ", total_enemies)
 
 func count_enemies():
+	#W 0:00:03:0280   Narrowing conversion (float is converted to int and loses precision).
 	total_enemies = base_enemiesCount * waves

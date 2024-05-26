@@ -1,0 +1,55 @@
+[gd_scene load_steps=6 format=3 uid="uid://55ipv7ij7bcg"]
+
+[ext_resource type="Script" path="res://scripts/turret_parent.gd" id="1_weacm"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_p56l4"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_mubio"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gbspm"]
+blend_mode = 1
+albedo_color = Color(0.0588235, 0.764706, 0, 0.239216)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ulm66"]
+material = SubResource("StandardMaterial3D_gbspm")
+top_radius = 1.0
+bottom_radius = 1.0
+height = 0.001
+
+[node name="Turret" type="StaticBody3D"]
+script = ExtResource("1_weacm")
+
+[node name="BlockGridCollision" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_p56l4")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1.00372, 0, 0, 0, 1.00372, 0, 0, 0, 1.00372, 0, 0.324204, 0)
+visible = false
+target_position = Vector3(0, 0, -10)
+debug_shape_custom_color = Color(1, 0, 0, 1)
+debug_shape_thickness = 5
+
+[node name="AttackSpeed" type="Timer" parent="."]
+one_shot = true
+
+[node name="Head" type="Node3D" parent="."]
+
+[node name="ProjectileSpawn" type="Marker3D" parent="Head"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.334663, -0.905763)
+visible = false
+
+[node name="Body" type="Node3D" parent="."]
+
+[node name="Range" type="Area3D" parent="."]
+visible = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Range"]
+visible = false
+shape = SubResource("CylinderShape3D_mubio")
+
+[node name="VisibleRange" type="MeshInstance3D" parent="Range"]
+visible = false
+mesh = SubResource("CylinderMesh_ulm66")
+
+[connection signal="body_entered" from="Range" to="." method="_on_range_body_entered"]
+[connection signal="body_exited" from="Range" to="." method="_on_range_body_exited"]

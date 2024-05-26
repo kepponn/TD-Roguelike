@@ -40,8 +40,9 @@ func ready_up():
 	# Set range and attack speed according to inspector values
 	range_radius.shape.radius = attack_range
 	visible_range.mesh.top_radius = attack_range
-	$RayCast3D.target_position.z = -attack_range
+	visible_range.hide()
 	$AttackSpeed.wait_time = attack_speed
+	$RayCast3D.target_position.z = -attack_range
 	$RayCast3D.hide()
 
 func start_process():

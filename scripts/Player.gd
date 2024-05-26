@@ -10,6 +10,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 var player_ableInteract: bool = false
 var player_isHoldingItem: bool = false
+var player_ableToDrop: bool = true
 var player_inspectedItem
 var player_interactedItem
 var player_interactedItem_Temp
@@ -94,9 +95,7 @@ func player_holdItem(item) -> void: # need to return something so the last timer
 	holdItem_Tween.tween_property(item, "position", Vector3(0.5, 1, 0), 0.15)
 	# this TIMER is IMPORTANT because it wait for the tween animation to finish
 	# WILL BE REOCCURING BUG - where item glitches from %Item.position to new position
-	
-	
-	
+
 func player_putItem(item):
 	item.reparent(%Item, true) # Change the item parent into `%Item` node
 	#item.set_collision_layer_value(1, true) # Enable the collision layer of the item
@@ -106,7 +105,6 @@ func player_putItem(item):
 	#item.position = check_grid(%"Interaction Zone", item)
 	await get_tree().create_timer(0.15).timeout
 	item.set_collision_layer_value(1, true)
-	
 
 func player_swapItem(held_item, ground_item):
 	held_item.reparent(%Item, true) 
@@ -119,7 +117,6 @@ func player_checkItemRange(item, enable: bool = true):
 	var pattern = r"^(?i)turret.*$" # for example all turret name start with 'turret_name_affix_suffix_whatever'
 	regex.compile(pattern) # check for match regex on 'turret' and be happy
 	# if by any-case you want to check more than just turret, add new pattern to be checked and refactor this code into match maybe
-	
 	if regex.search(item.name) and enable:
 		# modify temp variable to match the item range and show the area
 		item.visible_range.show()
@@ -146,7 +143,7 @@ func player_movingItems():
 		player_ableInteract = false
 		
 	# DROP DOWN ITEM - HOLDING an item and NOT INTERACTING with other items
-	elif player_ableInteract == false and player_isHoldingItem == true and  Input.is_action_just_pressed("interact"):
+	elif player_ableInteract == false and player_isHoldingItem == true and player_ableToDrop == true and Input.is_action_just_pressed("interact"):
 		# Should change the name of item placeholder into someting more unique, for now it stand as %Item
 		player_putItem(player_interactedItem)
 		player_checkItemRange(player_interactedItem, false)
@@ -155,9 +152,8 @@ func player_movingItems():
 		# print(player_interactedItem.position)
 		player_isHoldingItem = false
 		
-		
 	# SWAP ITEM - HOLDING an items and HAVE INTERACTABLE item
-	elif player_ableInteract == true and player_isHoldingItem == true and Input.is_action_just_pressed("interact"):
+	elif player_ableInteract == true and player_isHoldingItem == true and player_ableToDrop == true and Input.is_action_just_pressed("interact"):
 		print("Swapping " + str(player_interactedItem) + " with " + str(player_interactedItem_Temp))
 		# All this line is the basic for item swapping
 		# Swap held item property to on-ground item property
@@ -176,12 +172,18 @@ func player_movingItems():
 		player_checkItemRange(player_inspectedItem, false)
 	
 func _on_interaction_zone_body_entered(body):
-	if body.get_parent().name == 'Item':
+	if body.is_class("GridMap") and player_isHoldingItem:
+		# disable drop if the interaction area collide with gridmap
+		player_ableToDrop = false
+	if body.is_class("StaticBody3D") and body.get_parent().name == 'Item':
 		player_interactedItem_Temp = body
 		player_ableInteract = true
-		#print("player ABLE to interact with " + body.name)
+		#print("player ABLE to interact with w" + body.name)
 
 func _on_interaction_zone_body_exited(body):
-	if body.get_parent().name == 'Item':
+	if body.is_class("GridMap") and player_isHoldingItem:
+		# enable drop if the interaction area collide with gridmap
+		player_ableToDrop = true
+	if body.is_class("StaticBody3D") and body.get_parent().name == 'Item':
 		player_ableInteract = false
 		#print("player UNABLE to interact with " + body.name)

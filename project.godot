@@ -10,13 +10,14 @@ config_version=5
 
 [application]
 
-config/name="Td-roguelike"
+config/name="TD-Roguelike"
 run/main_scene="res://scene/scene.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 
 [autoload]
 
 Global="*res://autoload/global.gd"
+Settings="*res://autoload/setting.gd"
 
 [input]
 

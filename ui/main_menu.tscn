@@ -1,0 +1,365 @@
+[gd_scene load_steps=8 format=3 uid="uid://dqcqapws0lmpx"]
+
+[ext_resource type="Script" path="res://ui/main_menu.gd" id="1_ps8s2"]
+[ext_resource type="AudioStream" uid="uid://snf1352d2rhi" path="res://assets/audio/button/start.wav" id="2_4cuy6"]
+[ext_resource type="AudioStream" uid="uid://jn52nbs38g3n" path="res://assets/audio/button/foward.mp3" id="3_esipc"]
+[ext_resource type="AudioStream" uid="uid://rcytmmhftgvu" path="res://assets/audio/button/back.mp3" id="4_arydp"]
+[ext_resource type="AudioStream" uid="uid://b7vakkh6kagho" path="res://assets/audio/button/quit.wav" id="5_c3rfl"]
+[ext_resource type="LabelSettings" uid="uid://dx1m7q6yg45rx" path="res://assets/font/font_title.tres" id="7_avxhl"]
+[ext_resource type="LabelSettings" uid="uid://bkgfirxbljc1d" path="res://assets/font/font_ui.tres" id="10_qfpwc"]
+
+[node name="MainMenu" type="CanvasLayer"]
+process_mode = 2
+script = ExtResource("1_ps8s2")
+
+[node name="Audio" type="Node" parent="."]
+
+[node name="Start" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("2_4cuy6")
+mix_target = 2
+
+[node name="Foward" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("3_esipc")
+
+[node name="Back" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("4_arydp")
+
+[node name="Quit" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("5_c3rfl")
+
+[node name="Menu" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = 28.0
+offset_right = 20.0
+offset_bottom = 68.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Play" type="Button" parent="Menu"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -55.5
+offset_right = 100.0
+offset_bottom = -24.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Menu/Play"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.5
+offset_top = -9.5
+offset_right = 20.5
+offset_bottom = 13.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Start"
+label_settings = ExtResource("10_qfpwc")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Options" type="Button" parent="Menu"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -15.5
+offset_right = 100.0
+offset_bottom = 15.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Menu/Options"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -26.0
+offset_top = -9.5
+offset_right = 26.0
+offset_bottom = 13.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Options
+"
+label_settings = ExtResource("10_qfpwc")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Quit" type="Button" parent="Menu"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = 40.5
+offset_right = 100.0
+offset_bottom = 71.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Menu/Quit"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -36.0
+offset_top = -9.5
+offset_right = 36.0
+offset_bottom = 13.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Quit Game
+"
+label_settings = ExtResource("10_qfpwc")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Options" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_top = 60.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="DisplayGrid" type="GridContainer" parent="Options"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -68.0
+offset_bottom = 68.0
+grow_horizontal = 2
+grow_vertical = 2
+columns = 2
+
+[node name="TextDisplay" type="Label" parent="Options/DisplayGrid"]
+custom_minimum_size = Vector2(120, 30)
+layout_mode = 2
+size_flags_vertical = 1
+text = "Display Mode"
+label_settings = ExtResource("10_qfpwc")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FullscreenButton" type="Button" parent="Options/DisplayGrid"]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(190, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="TextFullscreen" type="Label" parent="Options/DisplayGrid/FullscreenButton"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -49.5
+offset_top = -9.5
+offset_right = 49.5
+offset_bottom = 13.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Boderless Fullscreen"
+label_settings = ExtResource("10_qfpwc")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WindowedButton" type="Button" parent="Options/DisplayGrid"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(190, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="TextWindowed" type="Label" parent="Options/DisplayGrid/WindowedButton"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -73.0
+offset_top = -9.5
+offset_right = 73.0
+offset_bottom = 13.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Windowed"
+label_settings = ExtResource("10_qfpwc")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AudioGrid" type="GridContainer" parent="Options"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -162.0
+offset_top = -25.0
+offset_right = 162.0
+offset_bottom = 73.0
+grow_horizontal = 2
+grow_vertical = 2
+columns = 2
+
+[node name="TextMaster" type="Label" parent="Options/AudioGrid"]
+custom_minimum_size = Vector2(120, 30)
+layout_mode = 2
+size_flags_vertical = 1
+text = "Master"
+label_settings = ExtResource("10_qfpwc")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MasterVolume" type="HSlider" parent="Options/AudioGrid"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+min_value = -30.0
+max_value = 0.0
+rounded = true
+
+[node name="TextMusic" type="Label" parent="Options/AudioGrid"]
+custom_minimum_size = Vector2(120, 30)
+layout_mode = 2
+size_flags_vertical = 1
+text = "Music"
+label_settings = ExtResource("10_qfpwc")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MusicVolume" type="HSlider" parent="Options/AudioGrid"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+min_value = -30.0
+max_value = 0.0
+value = -5.0
+rounded = true
+
+[node name="TextEffect" type="Label" parent="Options/AudioGrid"]
+custom_minimum_size = Vector2(120, 30)
+layout_mode = 2
+size_flags_vertical = 1
+text = "Effect"
+label_settings = ExtResource("10_qfpwc")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EffectVolume" type="HSlider" parent="Options/AudioGrid"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+min_value = -30.0
+max_value = 0.0
+rounded = true
+
+[node name="Back" type="Button" parent="Options"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = 95.5
+offset_right = 100.0
+offset_bottom = 126.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="Options/Back"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.5
+offset_top = -9.5
+offset_right = 20.5
+offset_bottom = 13.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Back"
+label_settings = ExtResource("10_qfpwc")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GameTitle" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -324.5
+offset_top = -105.0
+offset_right = 324.5
+offset_bottom = -35.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+text = "Tower Defense - Rougelike"
+label_settings = ExtResource("7_avxhl")
+horizontal_alignment = 1
+
+[connection signal="finished" from="Audio/Start" to="." method="_on_play_audio_finished"]
+[connection signal="finished" from="Audio/Quit" to="." method="_on_quit_audio_finished"]
+[connection signal="pressed" from="Menu/Play" to="." method="_on_play_pressed"]
+[connection signal="pressed" from="Menu/Options" to="." method="_on_options_pressed"]
+[connection signal="pressed" from="Menu/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="Options/DisplayGrid/FullscreenButton" to="." method="_on_options_fullscreen_pressed"]
+[connection signal="pressed" from="Options/DisplayGrid/WindowedButton" to="." method="_on_options_windowed_pressed"]
+[connection signal="value_changed" from="Options/AudioGrid/MasterVolume" to="." method="_on_options_master_volume"]
+[connection signal="value_changed" from="Options/AudioGrid/MusicVolume" to="." method="_on_options_music_volume"]
+[connection signal="value_changed" from="Options/AudioGrid/EffectVolume" to="." method="_on_options_effect_volume"]
+[connection signal="pressed" from="Options/Back" to="." method="_on_options_back_pressed"]

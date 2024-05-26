@@ -162,3 +162,5 @@ one_shot = true
 
 [connection signal="body_entered" from="Player/Node3D/Interaction Zone" to="Player" method="_on_interaction_zone_body_entered"]
 [connection signal="body_exited" from="Player/Node3D/Interaction Zone" to="Player" method="_on_interaction_zone_body_exited"]
+[connection signal="body_shape_entered" from="Player/Node3D/Interaction Zone" to="Player" method="_on_interaction_zone_body_shape_entered"]
+[connection signal="body_shape_exited" from="Player/Node3D/Interaction Zone" to="Player" method="_on_interaction_zone_body_shape_exited"]

@@ -1,11 +1,7 @@
 extends Node
 
+var displayMode_fullscreen: bool = false
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+var audioMaster_volumeTemp: int = 0
+var audioMusic_volumeTemp: int = -10
+var audioEffect_volumeTemp: int = -15

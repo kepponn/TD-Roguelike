@@ -31,3 +31,15 @@ func _on_quit_pressed():
 
 func _on_quit_audio_finished():
 	get_tree().quit()
+
+
+func _on_remap_pressed():
+	$Audio/Foward.play(0.25)
+	$Options.hide()
+	$InputSettings.show()
+
+
+func _on_back_input_setting_pressed():
+	$Audio/Back.play(0.25)
+	$Options.show()
+	$InputSettings.hide()

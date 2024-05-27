@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://dqcqapws0lmpx"]
+[gd_scene load_steps=9 format=3 uid="uid://dqcqapws0lmpx"]
 
 [ext_resource type="Script" path="res://ui/main_menu.gd" id="1_ps8s2"]
 [ext_resource type="AudioStream" uid="uid://snf1352d2rhi" path="res://assets/audio/button/start.wav" id="2_4cuy6"]
@@ -6,6 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://rcytmmhftgvu" path="res://assets/audio/button/back.mp3" id="4_arydp"]
 [ext_resource type="AudioStream" uid="uid://b7vakkh6kagho" path="res://assets/audio/button/quit.wav" id="5_c3rfl"]
 [ext_resource type="LabelSettings" uid="uid://dx1m7q6yg45rx" path="res://assets/font/font_title.tres" id="7_avxhl"]
+[ext_resource type="PackedScene" uid="uid://dj5h5xlhpj6cn" path="res://ui/input_settings.tscn" id="8_a72wx"]
 [ext_resource type="LabelSettings" uid="uid://bkgfirxbljc1d" path="res://assets/font/font_ui.tres" id="10_qfpwc"]
 
 [node name="MainMenu" type="CanvasLayer"]
@@ -28,6 +29,7 @@ stream = ExtResource("4_arydp")
 stream = ExtResource("5_c3rfl")
 
 [node name="Menu" type="Control" parent="."]
+visible = false
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -181,7 +183,6 @@ vertical_alignment = 1
 
 [node name="FullscreenButton" type="Button" parent="Options/DisplayGrid"]
 unique_name_in_owner = true
-visible = false
 custom_minimum_size = Vector2(190, 30)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -310,14 +311,82 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -100.0
-offset_top = 95.5
+offset_top = 140.0
 offset_right = 100.0
-offset_bottom = 126.5
+offset_bottom = 171.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 
 [node name="Label" type="Label" parent="Options/Back"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.5
+offset_top = -9.5
+offset_right = 20.5
+offset_bottom = 13.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Back"
+label_settings = ExtResource("10_qfpwc")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Remap" type="Button" parent="Options"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = 100.0
+offset_right = 100.0
+offset_bottom = 131.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Options/Remap"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -45.0
+offset_top = -9.5
+offset_right = 45.0
+offset_bottom = 13.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Remap Input"
+label_settings = ExtResource("10_qfpwc")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="InputSettings" parent="." instance=ExtResource("8_a72wx")]
+
+[node name="Back" type="Button" parent="InputSettings"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = 200.0
+offset_right = 100.0
+offset_bottom = 231.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="InputSettings/Back"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -347,10 +416,10 @@ offset_right = 324.5
 offset_bottom = -35.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 4
 text = "Tower Defense - Rougelike"
 label_settings = ExtResource("7_avxhl")
 horizontal_alignment = 1
+uppercase = true
 
 [connection signal="finished" from="Audio/Start" to="." method="_on_play_audio_finished"]
 [connection signal="finished" from="Audio/Quit" to="." method="_on_quit_audio_finished"]
@@ -363,3 +432,5 @@ horizontal_alignment = 1
 [connection signal="value_changed" from="Options/AudioGrid/MusicVolume" to="." method="_on_options_music_volume"]
 [connection signal="value_changed" from="Options/AudioGrid/EffectVolume" to="." method="_on_options_effect_volume"]
 [connection signal="pressed" from="Options/Back" to="." method="_on_options_back_pressed"]
+[connection signal="pressed" from="Options/Remap" to="." method="_on_remap_pressed"]
+[connection signal="pressed" from="InputSettings/Back" to="." method="_on_back_input_setting_pressed"]

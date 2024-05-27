@@ -16,6 +16,7 @@ func ready_up():
 	#$BackgoundMusic.play()
 	$Menu.show()
 	$Options.hide()
+	$InputSettings.hide()
 
 func _displaySettings():
 	if Settings.displayMode_fullscreen:

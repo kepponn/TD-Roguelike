@@ -2,7 +2,7 @@ extends CharacterBody3D
 
 
 @export var SPEED = 5
-@export var HP = 3
+@export var HP: int = 3
 
 var accel = 10
 var direction = Vector3()

@@ -1,14 +1,17 @@
 [gd_scene load_steps=6 format=3 uid="uid://55ipv7ij7bcg"]
 
 [ext_resource type="Script" path="res://scripts/turret_parent.gd" id="1_weacm"]
-[ext_resource type="Material" uid="uid://bak28ouni41ni" path="res://assets/shaders/turret_area_check.tres" id="2_ef7ag"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_p56l4"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_mubio"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gbspm"]
+blend_mode = 1
+albedo_color = Color(0.0588235, 0.764706, 0, 0.239216)
+
 [sub_resource type="CylinderMesh" id="CylinderMesh_ulm66"]
-material = ExtResource("2_ef7ag")
+material = SubResource("StandardMaterial3D_gbspm")
 top_radius = 1.0
 bottom_radius = 1.0
 height = 0.001
@@ -38,6 +41,7 @@ visible = false
 [node name="Body" type="Node3D" parent="."]
 
 [node name="Range" type="Area3D" parent="."]
+visible = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Range"]
 visible = false

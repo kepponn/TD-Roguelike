@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://c01s5hyeaaliw"]
+[gd_scene load_steps=21 format=3 uid="uid://c01s5hyeaaliw"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_fipto"]
 [ext_resource type="NavigationMesh" uid="uid://1kgcqxfwhe74" path="res://Navigation.tres" id="2_qtpp8"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://j4h1g8pxc77l" path="res://scene/test_item_1.tscn" id="4_mfvmb"]
 [ext_resource type="PackedScene" uid="uid://wil6fipqm8m1" path="res://scene/test_item_2.tscn" id="5_ew274"]
 [ext_resource type="Script" path="res://scripts/target.gd" id="7_b3oj4"]
+[ext_resource type="PackedScene" uid="uid://d3ppkxb0nnyav" path="res://scene/turret_pierce.tscn" id="7_p8ft8"]
 [ext_resource type="PackedScene" uid="uid://cuig6rk28kptx" path="res://models/target.glb" id="8_7h401"]
 [ext_resource type="Script" path="res://scripts/spawn.gd" id="9_4awx7"]
 [ext_resource type="PackedScene" uid="uid://cxo2xqjctdmut" path="res://models/spawn.glb" id="10_hlbb7"]
@@ -132,16 +133,19 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 4)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, 8)
 
 [node name="Turret" parent="NavigationRegion3D/Item" instance=ExtResource("11_yfnvx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1, -5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, -7)
 
 [node name="Turret3" parent="NavigationRegion3D/Item" instance=ExtResource("11_yfnvx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, 2)
 
-[node name="Turret4" parent="NavigationRegion3D/Item" instance=ExtResource("11_yfnvx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-
 [node name="Turret2" parent="NavigationRegion3D/Item" instance=ExtResource("11_yfnvx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, 2)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -2, 1, 2)
+
+[node name="Turret5" parent="NavigationRegion3D/Item" instance=ExtResource("7_p8ft8")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -4, 1, -8)
+
+[node name="Turret4" parent="NavigationRegion3D/Item" instance=ExtResource("7_p8ft8")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 1, 0)
 
 [node name="Target" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1, 7)
@@ -155,12 +159,72 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1, -8)
 script = ExtResource("9_4awx7")
 
 [node name="spawn" parent="Spawn" instance=ExtResource("10_hlbb7")]
+visible = false
 
 [node name="Timer" type="Timer" parent="Spawn"]
 wait_time = 2.0
 one_shot = true
 
+[node name="Control" type="Node" parent="."]
+
+[node name="A" type="RichTextLabel" parent="Control"]
+self_modulate = Color(0, 0, 0, 1)
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -178.0
+offset_top = -50.0
+grow_horizontal = 0
+grow_vertical = 0
+bbcode_enabled = true
+text = "[b]Pick up[b]"
+scroll_active = false
+
+[node name="X" type="RichTextLabel" parent="Control"]
+self_modulate = Color(0, 0, 0, 1)
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -271.0
+offset_top = -116.0
+grow_horizontal = 0
+grow_vertical = 0
+bbcode_enabled = true
+text = "[b]Inspect[/b]"
+scroll_active = false
+
+[node name="B" type="RichTextLabel" parent="Control"]
+self_modulate = Color(0, 0, 0, 1)
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -89.0
+offset_top = -115.0
+grow_horizontal = 0
+grow_vertical = 0
+bbcode_enabled = true
+text = "[b]Rotate[b]"
+scroll_active = false
+
+[node name="Button" type="RichTextLabel" parent="Control"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -199.0
+offset_top = -153.0
+grow_horizontal = 0
+grow_vertical = 0
+bbcode_enabled = true
+text = "[img=100]res://assets/image/buttons.png[/img]"
+scroll_active = false
+
 [connection signal="body_entered" from="Player/Node3D/Interaction Zone" to="Player" method="_on_interaction_zone_body_entered"]
 [connection signal="body_exited" from="Player/Node3D/Interaction Zone" to="Player" method="_on_interaction_zone_body_exited"]
-[connection signal="body_shape_entered" from="Player/Node3D/Interaction Zone" to="Player" method="_on_interaction_zone_body_shape_entered"]
-[connection signal="body_shape_exited" from="Player/Node3D/Interaction Zone" to="Player" method="_on_interaction_zone_body_shape_exited"]

@@ -112,6 +112,19 @@ func player_swapItem(held_item, ground_item):
 	held_item.position = ground_item.position # Swap the position property from held item to ground item
 	held_item.rotation.y = 0 # Repair the Y-AXIS rotation to default
 
+func player_rotateItem(item):
+	if player_isHoldingItem:
+		# rotate in-hand item
+		print("item in-hand rotating now")
+		item.rotation_degrees += Vector3(0, 45, 0)
+	elif !player_isHoldingItem and player_ableInteract and player_interactedItem_Temp != null:
+		# rotate ground item
+		player_interactedItem = player_interactedItem_Temp
+		item.rotation_degrees += Vector3(0, 45, 0)
+		print("item on-ground rotating now")
+	# var rotate_Tween = get_tree().create_tween()
+	# rotate_Tween.tween_property(item, "rotation", , 0.15)
+
 func player_checkItemRange(item, enable: bool = true):
 	var regex = RegEx.new() # need to add some regex to check for all the name id of turret
 	var pattern = r"^(?i)turret.*$" # for example all turret name start with 'turret_name_affix_suffix_whatever'
@@ -170,6 +183,19 @@ func player_movingItems():
 		player_checkItemRange(player_inspectedItem)
 	elif player_inspectedItem != null and player_ableInteract == false and player_isHoldingItem == false:
 		player_checkItemRange(player_inspectedItem, false)
+		
+	elif Input.is_action_just_pressed("rotate"):
+		if player_isHoldingItem:
+			# rotate in-hand item
+			# since this item in in hand it will need to pass grid_check() function
+			print("Rotating on-hand " + str(player_interactedItem) + " to " + str(player_interactedItem.rotation_degrees))
+			player_interactedItem.rotation_degrees += Vector3(0, 90, 0)
+		elif !player_isHoldingItem and player_ableInteract and player_interactedItem_Temp != null:
+			# rotate on-ground item
+			player_interactedItem = player_interactedItem_Temp
+			player_interactedItem.rotation_degrees += Vector3(0, 90, 0)
+			print("Rotating on-ground " + str(player_interactedItem) + " to " + str(player_interactedItem.rotation_degrees))
+		#player_rotateItem(player_interactedItem)
 	
 func _on_interaction_zone_body_entered(body):
 	if body.is_class("GridMap") and player_isHoldingItem:

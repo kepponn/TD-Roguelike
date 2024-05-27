@@ -10,6 +10,8 @@ class_name Turret_Parent
 # DONT FORGET TO SET THE TURRET PROPERTY IN THE INHERITED CHILD SCENE
 # Call ready_up() function in _ready() in inherited scene and start_process() in _process()
 # Setup the model manually in inherited scene make sure it fit $BlockGridCollision
+# Setup the $Head/ProjectileSpawn into the barrel of the models (currently only one if in the future the need have 2, need to develop new state check)
+# Setup the $Range/CollisionShape3D and $Range/VisibleRange of the child
 # --------------------------------------------------------------------------
 
 @export_category("Basic Information")
@@ -38,8 +40,17 @@ var shoot_direction: Vector3
 func ready_up():
 	# Call this function once in _ready() func of the child scene
 	# Set range and attack speed according to inspector values
-	range_radius.shape.radius = attack_range
-	visible_range.mesh.top_radius = attack_range
+	# print($Range/CollisionShape3D.get_shape())
+	if $Range/CollisionShape3D.get_shape().is_class("CylinderShape3D"):
+		range_radius.shape.radius = attack_range
+		visible_range.mesh.top_radius = attack_range
+	elif $Range/CollisionShape3D.get_shape().is_class("BoxShape3D"):
+		range_radius.shape.size.z = attack_range
+		range_radius.position.z = -(attack_range * 0.5)
+		visible_range.mesh.size.z = attack_range
+		visible_range.position.z = -(attack_range * 0.5)
+		# Zero idea on how to make a new mesh also for some reason this mesh porperty being applied to others...
+		# visible_range.mesh.top_radius = attack_range
 	visible_range.hide()
 	$AttackSpeed.wait_time = attack_speed
 	$RayCast3D.target_position.z = -attack_range
@@ -59,12 +70,12 @@ func lock_on():
 			# put the array[0] data into back of the array itself and delete it (same as push_back())
 			# this will force the array to re-index itself and now we have different data for array[0]
 			if $RayCast3D.get_collider().get_parent().name != 'Enemies' and enemies_array.size() > 1:
-				print("Vision obstructed to " + str(enemies_array[0].name) + " pushing it to back of array")
+				#print("Vision obstructed to " + str(enemies_array[0].name) + " pushing it to back of array")
 				able_shoot = false
 				$RayCast3D.debug_shape_custom_color = Color(255,0,0)
 				enemies_array.append(enemies_array[0])
 				enemies_array.remove_at(0)
-				print("New array for targeting: " + str(enemies_array))
+				#print("New array for targeting: " + str(enemies_array))
 			# check if the raycast collide with 'Enemies', then execute turret movement and shoot, etc
 			elif $RayCast3D.get_collider().get_parent().name == 'Enemies':
 				able_shoot = true
@@ -85,18 +96,19 @@ func shoot():
 		shoot_direction = (enemies_array[0].position - position).normalized()
 		var turret_projectile = projectile_scene.instantiate()
 		get_node("/root/Node3D/Projectile").add_child(turret_projectile, true) # if you want to shoot while still holding it maybe make projectile as unique or use absolute path to it
+		turret_projectile.damage = attack_damage
 		turret_projectile.transform = $Head/ProjectileSpawn.global_transform #basically copy all of $"Head/Spawn Point" global transform(rotation, scale, position), to projectile
 		turret_projectile.set_direction = shoot_direction #direction used to set projectile movement direction
 		$AttackSpeed.start() #restart timer so it can shoot again
 
 func _on_range_body_entered(body):
 	if body.get_parent().name == 'Enemies':
-		print("Append " + str(body))
+		#print("Append " + str(body))
 		enemies_array.append(body)
-		print("Current array " + str(enemies_array))
+		#print("Current array " + str(enemies_array))
 
 func _on_range_body_exited(body):
 	if body.get_parent().name == 'Enemies':
-		print("Erase " + str(body))
+		#print("Erase " + str(body))
 		enemies_array.erase(body)
-		print("Current array " + str(enemies_array))
+		#print("Current array " + str(enemies_array))

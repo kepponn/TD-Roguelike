@@ -16,7 +16,6 @@ height = 0.3
 
 [node name="Turret_Projectile" type="Area3D"]
 script = ExtResource("1_tsye8")
-speed = 30.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)

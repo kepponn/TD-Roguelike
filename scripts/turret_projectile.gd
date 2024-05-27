@@ -1,7 +1,7 @@
 extends Area3D
 
-@export var damage: int = 1
-@export var speed: float
+var damage: int # the attack damage are inserted from 'turret_parent.gd'
+var speed: float = 5
 
 var set_direction
 

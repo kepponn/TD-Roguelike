@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://j4h1g8pxc77l" path="res://scene/test_item_1.tscn" id="4_mfvmb"]
 [ext_resource type="PackedScene" uid="uid://wil6fipqm8m1" path="res://scene/test_item_2.tscn" id="5_ew274"]
 [ext_resource type="Script" path="res://scripts/target.gd" id="7_b3oj4"]
-[ext_resource type="PackedScene" uid="uid://d3ppkxb0nnyav" path="res://scene/turret_pierce.tscn" id="7_p8ft8"]
+[ext_resource type="PackedScene" uid="uid://c7bny0q7rq2yl" path="res://scene/turret_pierce.tscn" id="7_p8ft8"]
 [ext_resource type="PackedScene" uid="uid://cuig6rk28kptx" path="res://models/target.glb" id="8_7h401"]
 [ext_resource type="Script" path="res://scripts/spawn.gd" id="9_4awx7"]
 [ext_resource type="PackedScene" uid="uid://cxo2xqjctdmut" path="res://models/spawn.glb" id="10_hlbb7"]
@@ -159,7 +159,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1, -8)
 script = ExtResource("9_4awx7")
 
 [node name="spawn" parent="Spawn" instance=ExtResource("10_hlbb7")]
-visible = false
 
 [node name="Timer" type="Timer" parent="Spawn"]
 wait_time = 2.0
@@ -168,6 +167,7 @@ one_shot = true
 [node name="Control" type="Node" parent="."]
 
 [node name="A" type="RichTextLabel" parent="Control"]
+visible = false
 self_modulate = Color(0, 0, 0, 1)
 anchors_preset = 3
 anchor_left = 1.0
@@ -183,6 +183,7 @@ text = "[b]Pick up[b]"
 scroll_active = false
 
 [node name="X" type="RichTextLabel" parent="Control"]
+visible = false
 self_modulate = Color(0, 0, 0, 1)
 anchors_preset = 3
 anchor_left = 1.0
@@ -198,6 +199,7 @@ text = "[b]Inspect[/b]"
 scroll_active = false
 
 [node name="B" type="RichTextLabel" parent="Control"]
+visible = false
 self_modulate = Color(0, 0, 0, 1)
 anchors_preset = 3
 anchor_left = 1.0
@@ -218,12 +220,14 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -199.0
+offset_left = -243.0
 offset_top = -153.0
 grow_horizontal = 0
 grow_vertical = 0
 bbcode_enabled = true
-text = "[img=100]res://assets/image/buttons.png[/img]"
+text = "[center] Y[/center]
+[center]Inspect [img=100]res://assets/image/buttons.png[/img] Rotate[/center]
+[center] Pick Up[/center]"
 scroll_active = false
 
 [connection signal="body_entered" from="Player/Node3D/Interaction Zone" to="Player" method="_on_interaction_zone_body_entered"]

@@ -1,10 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://r0wfovaac7gq"]
+[gd_scene load_steps=9 format=3 uid="uid://r0wfovaac7gq"]
 
 [ext_resource type="PackedScene" uid="uid://55ipv7ij7bcg" path="res://scene/turret_parent.tscn" id="1_nlmpt"]
 [ext_resource type="Script" path="res://scripts/turret_basic.gd" id="2_at03x"]
 [ext_resource type="PackedScene" uid="uid://dcyk7xu85u5en" path="res://models/turret_head_basic.glb" id="3_2bxt4"]
 [ext_resource type="PackedScene" uid="uid://80owkwjy8obt" path="res://models/turret_legs_basic.glb" id="4_5bvr8"]
 [ext_resource type="PackedScene" uid="uid://du7rlk6sqbkic" path="res://scene/turret_projectile.tscn" id="5_mit73"]
+[ext_resource type="Material" uid="uid://bak28ouni41ni" path="res://assets/shaders/turret_area_check.tres" id="6_x1m8p"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_e4yrd"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_qcf33"]
+material = ExtResource("6_x1m8p")
+height = 0.001
 
 [node name="Turret" instance=ExtResource("1_nlmpt")]
 script = ExtResource("2_at03x")
@@ -20,5 +27,9 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 0.806, 0, -1, 0, -4.37114e-08, 0.
 [node name="turret_legs_basic" parent="Body" index="0" instance=ExtResource("4_5bvr8")]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 0.981, 0, -0.707107, 0, 0.707107, 0, -0.444, 0)
 
+[node name="CollisionShape3D" parent="Range" index="0"]
+shape = SubResource("CylinderShape3D_e4yrd")
+
 [node name="VisibleRange" parent="Range" index="1"]
 visible = true
+mesh = SubResource("CylinderMesh_qcf33")

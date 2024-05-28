@@ -45,7 +45,7 @@ func _ready():
 
 func open_shop():
 	if player_interactedItem_Temp != null:
-		if player_interactedItem_Temp.name == "Shop" and Input.is_action_just_pressed("inspect"):
+		if player_interactedItem_Temp.name == "Shop" and Input.is_action_just_pressed("inspect") and preparation_phase == true:
 			%Shop.show()
 
 func ready():
@@ -57,6 +57,7 @@ func ready():
 		print("Player Ready, Entering Wave ", spawner.waves, " Defense Phase")
 		$Audio/Bgm/Preparation.stop()
 		$Audio/Bgm/Defending.play()
+		%Shop.hide()
 	
 func wave_cleared():
 	if $"../Enemies".get_child_count() == 0 and spawner.total_enemies == 0 and preparation_phase == false:
@@ -112,6 +113,9 @@ func check_grid(import_pos, export_pos):
 	# export_pos.rotation.y = 0 # this is being applied instantly
 	# Return the value in vector3 for future processing by tweens
 	return Vector3(x, y, z)
+
+func spawn_boughtItem():
+	pass
 
 func player_holdItem(item) -> void: # need to return something so the last timer didnt stop prematurely
 	$Audio/SelectSfx.play()

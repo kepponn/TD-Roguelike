@@ -17,8 +17,6 @@ var mouse_input
 
 func _ready():
 	update_item()
-	#connect_itemSignal()
-	print(Global.currency)
 
 func _process(_delta):
 	update_uiText()
@@ -26,12 +24,15 @@ func _process(_delta):
 	check_mouseInput()
 
 func update_item():
+	for item in shop_itemList.get_children():
+			item.queue_free()
 	for items in range(8):
 		var item = shop_item.instantiate()
 		
 		var randomizer = randi_range(0,9)
 		if randomizer >= 0 and randomizer < 3:
-			pass
+			item.find_child("Price").text = str(15) + " Gold Basic"
+			item.item_price = 15
 		elif randomizer >= 3 and randomizer < 6:
 			item.find_child("Price").text = str(turret_basic.turret_price) + " Gold Basic"
 			item.item_price = turret_basic.turret_price
@@ -56,11 +57,6 @@ func update_item():
 		#elif randomizer >= 6 and randomizer < 10:
 			#item.find_child("Price").text = str(turret_pierce.turret_price) + " Gold Pierce"
 			#item.item_price = turret_pierce.turret_price
-	
-#func connect_itemSignal():
-	##Connect signal to every item in the shop list
-	#for item in shop_itemList.get_children():
-		#item.pressed.connect(_on_item_button_pressed.bind(item))
 
 func create_empty(nodes ,index):
 	var empty = empty_item.instantiate()
@@ -120,8 +116,6 @@ func _on_close_button_pressed():
 
 func _on_reroll_button_pressed():
 	if Global.currency >= reroll_price:
-		for item in shop_itemList.get_children():
-			item.queue_free()
 		Global.currency = Global.currency - reroll_price
 		reroll_price = reroll_price + 10
 		update_item()

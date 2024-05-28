@@ -1,7 +1,7 @@
 extends Button
 
-var item_price: int
-var item_name: String
+@export var item_price: int
+@export var item_name: String
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

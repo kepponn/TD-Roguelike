@@ -83,7 +83,9 @@ func check_grid(import_pos, export_pos):
 	# export_pos.position.z = round(import_pos.global_position.z) # Z-AXIS
 	var z = round(import_pos.global_position.z)
 	# disable janky item rotation when held by player to align with grid
-	export_pos.rotation.y = 0 # this is being applied instantly
+	# align into nearest 90 degree from current itself rotation_degrees (maybe tween this into animation?)
+	export_pos.rotation_degrees.y = round(export_pos.rotation_degrees.y / 90.0) * 90.0
+	# export_pos.rotation.y = 0 # this is being applied instantly
 	# Return the value in vector3 for future processing by tweens
 	return Vector3(x, y, z)
 

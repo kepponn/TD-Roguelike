@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dp6wtqycl81yw"
-path.s3tc="res://.godot/imported/shop_base-color.png-09c1b2a08ec9bdcb82ff7dedb1340a60.s3tc.ctex"
+path.s3tc="res://.godot/imported/shop_base-color.png-dfd5ef5de85b62ec180d52df27d5a32b.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -12,8 +12,8 @@ generator_parameters={}
 
 [deps]
 
-source_file="res://scene/shop_base-color.png"
-dest_files=["res://.godot/imported/shop_base-color.png-09c1b2a08ec9bdcb82ff7dedb1340a60.s3tc.ctex"]
+source_file="res://models/shop_base-color.png"
+dest_files=["res://.godot/imported/shop_base-color.png-dfd5ef5de85b62ec180d52df27d5a32b.s3tc.ctex"]
 
 [params]
 

@@ -18,7 +18,6 @@ class_name Turret_Parent
 # Do we need this still for the regex? or we using with StaticObject3D node name?
 @export var turret_name: String 
 @export var turret_price: int
-
 @export_category("Model and Scene Assets")
 # How to get the asset into the node area of $Head and $Body?
 # @export var asset_head: PackedScene
@@ -28,8 +27,8 @@ class_name Turret_Parent
 @export var attack_damage: int
 @export var attack_range: int
 @export var attack_speed: float
+@export var bullet_speed: int
 # Other information
-
 @onready var visible_range: MeshInstance3D = $Range/VisibleRange
 @onready var range_radius: CollisionShape3D = $Range/CollisionShape3D
 var enemies_array: Array = []
@@ -101,6 +100,7 @@ func shoot():
 		get_node("/root/Node3D/Projectile").add_child(turret_projectile, true) # if you want to shoot while still holding it maybe make projectile as unique or use absolute path to it
 		shoot_audio()
 		turret_projectile.damage = attack_damage
+		turret_projectile.speed = bullet_speed
 		turret_projectile.transform = $Head/ProjectileSpawn.global_transform #basically copy all of $"Head/Spawn Point" global transform(rotation, scale, position), to projectile
 		turret_projectile.set_direction = shoot_direction #direction used to set projectile movement direction
 		$AttackSpeed.start() #restart timer so it can shoot again

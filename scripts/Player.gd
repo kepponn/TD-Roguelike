@@ -41,7 +41,7 @@ func _physics_process(delta):
 	
 
 func _ready():
-	$Audio/BackgroundMusic.play()
+	$Audio/Bgm/Preparation.play()
 
 func open_shop():
 	if player_interactedItem_Temp != null:
@@ -55,6 +55,8 @@ func ready():
 		spawner.spawn_timer.start()
 		preparation_phase = false
 		print("Player Ready, Entering Wave ", spawner.waves, " Defense Phase")
+		$Audio/Bgm/Preparation.stop()
+		$Audio/Bgm/Defending.play()
 	
 func wave_cleared():
 	if $"../Enemies".get_child_count() == 0 and spawner.total_enemies == 0 and preparation_phase == false:
@@ -62,6 +64,8 @@ func wave_cleared():
 		%Shop.update_item()
 		preparation_phase = true
 		print("Wave_Cleared, Entering Prep Phase")
+		$Audio/Bgm/Preparation.play()
+		$Audio/Bgm/Defending.stop()
 
 func esc():
 	if Input.is_action_just_pressed("exit"):

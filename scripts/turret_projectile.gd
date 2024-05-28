@@ -1,12 +1,13 @@
 extends Area3D
 
 var damage: int # the attack damage are inserted from 'turret_parent.gd'
-var speed: float = 5
+var speed: int # the speed are inserted from 'turret_parent.gd'
+var lifetime: float = 5
 
 var set_direction
 
 func _ready():
-	pass
+	$Lifetime.start(lifetime)
 
 func _process(delta):
 	position += set_direction * speed * delta
@@ -19,4 +20,6 @@ func _on_body_entered(body):
 		queue_free()
 	else:
 		queue_free()
-	
+
+func _on_lifetime_timeout():
+	queue_free()

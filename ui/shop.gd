@@ -23,6 +23,13 @@ func _process(_delta):
 	update_storageItem()
 	check_mouseInput()
 
+func spawn_item(scene):
+	var turret = scene.instantiate()
+	print("Purchased ", turret)
+	%Item.add_child(turret, true)
+	turret.position = get_node('/root/Node3D/NavigationRegion3D/Item/Shop/SpawnArea').global_position
+	get_node('/root/Node3D/NavigationRegion3D/Item/Shop')._on_item_placeholder_body_entered(turret)
+
 func update_item():
 	for item in shop_itemList.get_children():
 			item.queue_free()
@@ -32,14 +39,19 @@ func update_item():
 		var randomizer = randi_range(0,9)
 		if randomizer >= 0 and randomizer < 3:
 			item.find_child("Price").text = str(15) + " Gold Basic"
+			item.item_name = "What?"
 			item.item_price = 15
+			item.item_scene = preload("res://scene/test_item_1.tscn")
 		elif randomizer >= 3 and randomizer < 6:
 			item.find_child("Price").text = str(turret_basic.turret_price) + " Gold Basic"
+			item.item_name = str(turret_basic.turret_price)
 			item.item_price = turret_basic.turret_price
+			item.item_scene = preload("res://scene/turret_basic.tscn")
 		elif randomizer >= 6 and randomizer < 10:
 			item.find_child("Price").text = str(turret_pierce.turret_price) + " Gold Pierce"
+			item.item_name = str(turret_pierce.turret_price)
 			item.item_price = turret_pierce.turret_price
-		
+			item.item_scene = preload("res://scene/turret_pierce.tscn")
 		shop_itemList.add_child(item, true)
 		item.pressed.connect(_on_item_button_pressed.bind(item))
 	
@@ -93,6 +105,7 @@ func _on_item_button_pressed(item):
 	if mouse_input == "LMB" and item.get_parent().name == "ShopItem":
 		if Global.currency >= item.item_price:
 			Global.currency = Global.currency - item.item_price
+			spawn_item(item.item_scene)
 			create_empty(shop_itemList, item.get_index())
 			item.queue_free()
 			self.hide()
@@ -101,11 +114,12 @@ func _on_item_button_pressed(item):
 	elif mouse_input == "LMB" and item.get_parent().name == "BlueprintStorageItem":
 		if Global.currency >= item.item_price:
 			Global.currency = Global.currency - item.item_price
+			spawn_item(item.item_scene)
 			item.queue_free()
 			self.hide()
 	
 	#Move Item to Storage
-	elif mouse_input == "RMB" and storage_itemList.get_child_count() < 4:
+	elif mouse_input == "RMB" and storage_itemList.get_child_count() < 4 and item.get_parent().name == "ShopItem":
 		print(item.name , " Locked")
 		create_empty(shop_itemList, item.get_index())
 		item.reparent(storage_itemList)

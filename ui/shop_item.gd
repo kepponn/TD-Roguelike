@@ -2,6 +2,7 @@ extends Button
 
 @export var item_price: int
 @export var item_name: String
+var item_scene: PackedScene
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

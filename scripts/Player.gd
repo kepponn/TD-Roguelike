@@ -3,7 +3,13 @@ extends CharacterBody3D
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 
-@onready var spawner = $"../Spawn"
+@onready var holded_item = %"Holded Item"
+@onready var parent_item = get_node('/root/Node3D/NavigationRegion3D/Item')
+@onready var navigation = get_node('/root/Node3D/NavigationRegion3D')
+@onready var spawner = get_node('/root/Node3D/Spawn')
+@onready var enemies = get_node('/root/Node3D/Enemies')
+@onready var ingame_menu = get_node('/root/Node3D/Control/IngameMenu')
+@onready var shop = get_node('/root/Node3D/Control/Shop')
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -46,23 +52,23 @@ func _ready():
 func open_shop():
 	if player_interactedItem_Temp != null:
 		if player_interactedItem_Temp.name == "Shop" and Input.is_action_just_pressed("inspect") and preparation_phase == true:
-			%Shop.show()
+			shop.show()
 
 func ready():
 	if Input.is_action_just_pressed("start") and preparation_phase == true:
-		$"../NavigationRegion3D".bake_navigation_mesh()
+		navigation.bake_navigation_mesh()
 		spawner.count_enemies()
 		spawner.spawn_timer.start()
 		preparation_phase = false
 		print("Player Ready, Entering Wave ", spawner.waves, " Defense Phase")
 		$Audio/Bgm/Preparation.stop()
 		$Audio/Bgm/Defending.play()
-		%Shop.hide()
+		shop.hide()
 	
 func wave_cleared():
-	if $"../Enemies".get_child_count() == 0 and spawner.total_enemies == 0 and preparation_phase == false:
+	if enemies.get_child_count() == 0 and spawner.total_enemies == 0 and preparation_phase == false:
 		spawner.waves = spawner.waves + 1
-		%Shop.update_item()
+		shop.update_item()
 		preparation_phase = true
 		print("Wave_Cleared, Entering Prep Phase")
 		$Audio/Bgm/Preparation.play()
@@ -70,8 +76,8 @@ func wave_cleared():
 
 func esc():
 	if Input.is_action_just_pressed("exit"):
-		%IngameMenu.show()
-		%IngameMenu.esc()
+		ingame_menu.show()
+		ingame_menu.esc()
 		get_tree().paused = true
 
 func player_jump(delta):
@@ -119,7 +125,7 @@ func spawn_boughtItem():
 
 func player_holdItem(item) -> void: # need to return something so the last timer didnt stop prematurely
 	$Audio/SelectSfx.play()
-	item.reparent(%"Holded Item", true) # Change the item parent into `%"Holded Item"` which reside in player node
+	item.reparent(holded_item, true) # Change the item parent into `%"Holded Item"` which reside in player node
 	item.set_collision_layer_value(1, false) # Remove the collision layer from the item while being held in-hand
 	#item.position = Vector3(0.5, 1, 0) # Set item position to be on top of player
 	var holdItem_Tween = get_tree().create_tween()
@@ -129,7 +135,7 @@ func player_holdItem(item) -> void: # need to return something so the last timer
 
 func player_putItem(item):
 	$Audio/SelectSfx.play()
-	item.reparent(%Item, true) # Change the item parent into `%Item` node
+	item.reparent(parent_item, true) # Change the item parent into `%Item` node
 	#item.set_collision_layer_value(1, true) # Enable the collision layer of the item
 	# Check the grid of item when putting down to the world
 	var putItem_Tween = get_tree().create_tween()
@@ -139,7 +145,7 @@ func player_putItem(item):
 	item.set_collision_layer_value(1, true)
 
 func player_swapItem(held_item, ground_item):
-	held_item.reparent(%Item, true) 
+	held_item.reparent(parent_item, true) 
 	held_item.set_collision_layer_value(1, true)
 	held_item.position = ground_item.position # Swap the position property from held item to ground item
 	held_item.rotation.y = 0 # Repair the Y-AXIS rotation to default

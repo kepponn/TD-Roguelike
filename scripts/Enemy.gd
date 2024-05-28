@@ -34,6 +34,7 @@ func _physics_process(delta):
 func hit(damage):
 	HP = HP - damage
 	if HP <= 0:
+		Global.currency = Global.currency + 5
 		queue_free()
 
 

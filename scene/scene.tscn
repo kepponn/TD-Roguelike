@@ -1,18 +1,12 @@
-[gd_scene load_steps=29 format=3 uid="uid://dl8dey22x882y"]
+[gd_scene load_steps=15 format=3 uid="uid://dl8dey22x882y"]
 
-[ext_resource type="Script" path="res://scripts/player.gd" id="1_fipto"]
-[ext_resource type="AudioStream" uid="uid://bqjlvqns16fqg" path="res://assets/audio/sfx/select-sound-121244.mp3" id="2_hy4vs"]
+[ext_resource type="PackedScene" uid="uid://dfa3wfjb564fn" path="res://scene/player.tscn" id="1_rl4h5"]
 [ext_resource type="NavigationMesh" uid="uid://1kgcqxfwhe74" path="res://Navigation.tres" id="2_qtpp8"]
-[ext_resource type="AudioStream" uid="uid://dv1fwgav2ido6" path="res://assets/audio/sfx/happy-pop-1-185286.mp3" id="3_f6crh"]
-[ext_resource type="AudioStream" uid="uid://benfdpyeb1uyp" path="res://assets/audio/bgm/game-music-loop-7-145285.mp3" id="3_gtlde"]
 [ext_resource type="MeshLibrary" uid="uid://bpq8ija5ngli5" path="res://Tiles.tres" id="3_hpvrf"]
-[ext_resource type="AudioStream" uid="uid://ou6mtp1fcx2f" path="res://assets/audio/sfx/happy-pop-2-185287.mp3" id="4_eyom8"]
 [ext_resource type="PackedScene" uid="uid://j4h1g8pxc77l" path="res://scene/test_item_1.tscn" id="4_mfvmb"]
 [ext_resource type="PackedScene" uid="uid://wil6fipqm8m1" path="res://scene/shop_object.tscn" id="5_ew274"]
-[ext_resource type="AudioStream" uid="uid://btfe53ybfx073" path="res://assets/audio/sfx/happy-pop-3-185288.mp3" id="5_sty15"]
 [ext_resource type="Script" path="res://scripts/target.gd" id="7_b3oj4"]
 [ext_resource type="PackedScene" uid="uid://c7bny0q7rq2yl" path="res://scene/turret_pierce.tscn" id="7_p8ft8"]
-[ext_resource type="AudioStream" uid="uid://dw3p4b28eq11x" path="res://assets/audio/bgm/game-music-loop-1-143979.mp3" id="7_qpcsh"]
 [ext_resource type="PackedScene" uid="uid://d2yu6msl3mexb" path="res://models/target.glb" id="8_7h401"]
 [ext_resource type="Script" path="res://scripts/spawn.gd" id="9_4awx7"]
 [ext_resource type="PackedScene" uid="uid://cxo2xqjctdmut" path="res://models/spawn.glb" id="10_hlbb7"]
@@ -27,34 +21,6 @@ ssil_enabled = true
 fog_enabled = true
 fog_light_color = Color(0.52549, 0.556863, 0.611765, 1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pgh5w"]
-albedo_color = Color(0.403922, 0.403922, 0.403922, 1)
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_pqfoc"]
-material = SubResource("StandardMaterial3D_pgh5w")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ebtej"]
-albedo_color = Color(0.960784, 0.564706, 0.376471, 1)
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_lthf8"]
-material = SubResource("StandardMaterial3D_ebtej")
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_3nlo6"]
-height = 0.5
-radius = 0.25
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_edi7k"]
-blend_mode = 1
-albedo_color = Color(0.0588235, 0.764706, 0, 0.239216)
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_i5sef"]
-material = SubResource("StandardMaterial3D_edi7k")
-top_radius = 1.0
-bottom_radius = 1.0
-height = 0.1
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_x73qa"]
-
 [node name="Node3D" type="Node3D"]
 
 [node name="Camera3D2" type="Camera3D" parent="."]
@@ -67,71 +33,8 @@ environment = SubResource("Environment_m6ppc")
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 23, 0)
 shadow_enabled = true
 
-[node name="Player" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.76664, 2)
-script = ExtResource("1_fipto")
-
-[node name="Audio" type="Node" parent="Player"]
-
-[node name="SelectSfx" type="AudioStreamPlayer" parent="Player/Audio"]
-stream = ExtResource("2_hy4vs")
-bus = &"Effect"
-
-[node name="Pop" type="Node" parent="Player/Audio"]
-
-[node name="PopSfx1" type="AudioStreamPlayer" parent="Player/Audio/Pop"]
-stream = ExtResource("3_f6crh")
-bus = &"Effect"
-
-[node name="PopSfx2" type="AudioStreamPlayer" parent="Player/Audio/Pop"]
-stream = ExtResource("4_eyom8")
-bus = &"Effect"
-
-[node name="PopSfx3" type="AudioStreamPlayer" parent="Player/Audio/Pop"]
-stream = ExtResource("5_sty15")
-bus = &"Effect"
-
-[node name="Bgm" type="Node" parent="Player/Audio"]
-
-[node name="Preparation" type="AudioStreamPlayer" parent="Player/Audio/Bgm"]
-stream = ExtResource("3_gtlde")
-volume_db = -7.0
-bus = &"Music"
-
-[node name="Defending" type="AudioStreamPlayer" parent="Player/Audio/Bgm"]
-stream = ExtResource("7_qpcsh")
-volume_db = -7.0
-bus = &"Music"
-
-[node name="Node3D" type="Node3D" parent="Player"]
-
-[node name="Body" type="MeshInstance3D" parent="Player/Node3D"]
-mesh = SubResource("CapsuleMesh_pqfoc")
-skeleton = NodePath("../..")
-
-[node name="Face" type="MeshInstance3D" parent="Player/Node3D"]
-transform = Transform3D(0.617571, 0, 0, 0, 0.15997, 0, 0, 0, 0.627695, 0.354745, 0.434902, 0)
-mesh = SubResource("CylinderMesh_lthf8")
-skeleton = NodePath("../../..")
-
-[node name="Interaction Zone" type="Area3D" parent="Player/Node3D"]
-unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -0.161922, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Player/Node3D/Interaction Zone"]
-shape = SubResource("CylinderShape3D_3nlo6")
-
-[node name="Holded Item" type="Node3D" parent="Player/Node3D"]
-unique_name_in_owner = true
-
-[node name="Item Range" type="MeshInstance3D" parent="Player/Node3D/Holded Item"]
-process_mode = 4
-visible = false
-mesh = SubResource("CylinderMesh_i5sef")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
-transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0, 0, 0)
-shape = SubResource("CapsuleShape3D_x73qa")
+[node name="Player" parent="." instance=ExtResource("1_rl4h5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.572391, 2, 1.76821)
 
 [node name="Enemies" type="Node3D" parent="."]
 
@@ -226,6 +129,3 @@ visible = false
 [node name="IngameMenu" parent="Control" instance=ExtResource("16_gndtv")]
 unique_name_in_owner = true
 visible = false
-
-[connection signal="body_entered" from="Player/Node3D/Interaction Zone" to="Player" method="_on_interaction_zone_body_entered"]
-[connection signal="body_exited" from="Player/Node3D/Interaction Zone" to="Player" method="_on_interaction_zone_body_exited"]

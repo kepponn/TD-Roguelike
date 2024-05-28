@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://c01s5hyeaaliw"]
+[gd_scene load_steps=28 format=3 uid="uid://dl8dey22x882y"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_fipto"]
 [ext_resource type="AudioStream" uid="uid://bqjlvqns16fqg" path="res://assets/audio/sfx/select-sound-121244.mp3" id="2_hy4vs"]
@@ -8,15 +8,16 @@
 [ext_resource type="MeshLibrary" uid="uid://bpq8ija5ngli5" path="res://Tiles.tres" id="3_hpvrf"]
 [ext_resource type="AudioStream" uid="uid://ou6mtp1fcx2f" path="res://assets/audio/sfx/happy-pop-2-185287.mp3" id="4_eyom8"]
 [ext_resource type="PackedScene" uid="uid://j4h1g8pxc77l" path="res://scene/test_item_1.tscn" id="4_mfvmb"]
-[ext_resource type="PackedScene" uid="uid://wil6fipqm8m1" path="res://scene/test_item_2.tscn" id="5_ew274"]
+[ext_resource type="PackedScene" uid="uid://wil6fipqm8m1" path="res://scene/shop_object.tscn" id="5_ew274"]
 [ext_resource type="AudioStream" uid="uid://btfe53ybfx073" path="res://assets/audio/sfx/happy-pop-3-185288.mp3" id="5_sty15"]
 [ext_resource type="Script" path="res://scripts/target.gd" id="7_b3oj4"]
 [ext_resource type="PackedScene" uid="uid://c7bny0q7rq2yl" path="res://scene/turret_pierce.tscn" id="7_p8ft8"]
-[ext_resource type="PackedScene" uid="uid://d2yu6msl3mexb" path="res://models/target.glb" id="8_7h401"]
+[ext_resource type="PackedScene" uid="uid://cuig6rk28kptx" path="res://models/target.glb" id="8_7h401"]
 [ext_resource type="Script" path="res://scripts/spawn.gd" id="9_4awx7"]
 [ext_resource type="PackedScene" uid="uid://cxo2xqjctdmut" path="res://models/spawn.glb" id="10_hlbb7"]
 [ext_resource type="PackedScene" uid="uid://r0wfovaac7gq" path="res://scene/turret_basic.tscn" id="11_yfnvx"]
 [ext_resource type="PackedScene" uid="uid://b163wrbe72fm5" path="res://ui/ingame_menu.tscn" id="16_gndtv"]
+[ext_resource type="PackedScene" uid="uid://bu3pm3p7au2pa" path="res://ui/shop.tscn" id="17_vv3g3"]
 
 [sub_resource type="Environment" id="Environment_m6ppc"]
 ssr_enabled = true
@@ -148,10 +149,10 @@ unique_name_in_owner = true
 [node name="Test Item 1" parent="NavigationRegion3D/Item" instance=ExtResource("4_mfvmb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1, 3)
 
-[node name="Test Item 2" parent="NavigationRegion3D/Item" instance=ExtResource("5_ew274")]
+[node name="Shop" parent="NavigationRegion3D/Item" instance=ExtResource("5_ew274")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, 3)
 
-[node name="Test Item 3" parent="NavigationRegion3D/Item" instance=ExtResource("4_mfvmb")]
+[node name="Test Item 2" parent="NavigationRegion3D/Item" instance=ExtResource("4_mfvmb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, 7)
 
 [node name="Test Item 4" parent="NavigationRegion3D/Item" instance=ExtResource("4_mfvmb")]
@@ -213,8 +214,13 @@ text = "[center] Y[/center]
 [center] Pick Up[/center]"
 scroll_active = false
 
-[node name="IngameMenu" parent="." instance=ExtResource("16_gndtv")]
+[node name="Shop" parent="Control" instance=ExtResource("17_vv3g3")]
 unique_name_in_owner = true
+visible = false
+
+[node name="IngameMenu" parent="Control" instance=ExtResource("16_gndtv")]
+unique_name_in_owner = true
+visible = false
 
 [connection signal="body_entered" from="Player/Node3D/Interaction Zone" to="Player" method="_on_interaction_zone_body_entered"]
 [connection signal="body_exited" from="Player/Node3D/Interaction Zone" to="Player" method="_on_interaction_zone_body_exited"]

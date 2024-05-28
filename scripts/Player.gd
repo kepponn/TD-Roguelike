@@ -33,13 +33,20 @@ func _physics_process(delta):
 	
 	move_and_slide()
 	player_rotation(direction)
+	open_shop()
 	player_movingItems()
 	ready()
 	wave_cleared()
 	esc()
+	
 
 func _ready():
 	$Audio/BackgroundMusic.play()
+
+func open_shop():
+	if player_interactedItem_Temp != null:
+		if player_interactedItem_Temp.name == "Shop" and Input.is_action_just_pressed("inspect"):
+			%Shop.show()
 
 func ready():
 	if Input.is_action_just_pressed("start") and preparation_phase == true:
@@ -52,6 +59,7 @@ func ready():
 func wave_cleared():
 	if $"../Enemies".get_child_count() == 0 and spawner.total_enemies == 0 and preparation_phase == false:
 		spawner.waves = spawner.waves + 1
+		%Shop.update_item()
 		preparation_phase = true
 		print("Wave_Cleared, Entering Prep Phase")
 

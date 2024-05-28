@@ -37,4 +37,3 @@ func hit(damage):
 		queue_free()
 
 
-

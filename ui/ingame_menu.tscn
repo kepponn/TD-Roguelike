@@ -1,70 +1,66 @@
-[gd_scene load_steps=11 format=3 uid="uid://dqcqapws0lmpx"]
+[gd_scene load_steps=8 format=3 uid="uid://b163wrbe72fm5"]
 
-[ext_resource type="Script" path="res://ui/main_menu.gd" id="1_ps8s2"]
-[ext_resource type="AudioStream" uid="uid://snf1352d2rhi" path="res://assets/audio/button/start.wav" id="2_4cuy6"]
-[ext_resource type="Material" uid="uid://djjoktwnc65ed" path="res://assets/shaders/VignetteMaterialShader.tres" id="2_bnhxh"]
-[ext_resource type="AudioStream" uid="uid://jn52nbs38g3n" path="res://assets/audio/button/foward.mp3" id="3_esipc"]
-[ext_resource type="AudioStream" uid="uid://rcytmmhftgvu" path="res://assets/audio/button/back.mp3" id="4_arydp"]
-[ext_resource type="AudioStream" uid="uid://b7vakkh6kagho" path="res://assets/audio/button/quit.wav" id="5_c3rfl"]
-[ext_resource type="AudioStream" uid="uid://c1y5d5oex2r2x" path="res://assets/audio/bgm/game-music-loop-6-144641.mp3" id="6_6digd"]
-[ext_resource type="LabelSettings" uid="uid://dx1m7q6yg45rx" path="res://assets/font/font_title.tres" id="7_avxhl"]
-[ext_resource type="PackedScene" uid="uid://dj5h5xlhpj6cn" path="res://ui/input_settings.tscn" id="8_a72wx"]
-[ext_resource type="LabelSettings" uid="uid://bkgfirxbljc1d" path="res://assets/font/font_ui.tres" id="10_qfpwc"]
+[ext_resource type="Script" path="res://ui/ingame_menu.gd" id="1_s8iie"]
+[ext_resource type="AudioStream" uid="uid://jn52nbs38g3n" path="res://assets/audio/button/foward.mp3" id="2_126au"]
+[ext_resource type="AudioStream" uid="uid://rcytmmhftgvu" path="res://assets/audio/button/back.mp3" id="3_bva54"]
+[ext_resource type="AudioStream" uid="uid://b7vakkh6kagho" path="res://assets/audio/button/quit.wav" id="4_kiog1"]
+[ext_resource type="Material" uid="uid://baha5pb8vr2o8" path="res://assets/shaders/BlurMaterialShader.tres" id="5_rkxtu"]
+[ext_resource type="Material" uid="uid://djjoktwnc65ed" path="res://assets/shaders/VignetteMaterialShader.tres" id="6_nc5f1"]
+[ext_resource type="LabelSettings" uid="uid://bkgfirxbljc1d" path="res://assets/font/font_ui.tres" id="7_7gmv8"]
 
-[node name="MainMenu" type="CanvasLayer"]
+[node name="IngameMenu" type="CanvasLayer"]
 process_mode = 2
-script = ExtResource("1_ps8s2")
+script = ExtResource("1_s8iie")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-material = ExtResource("2_bnhxh")
+[node name="Audio" type="Node" parent="."]
+
+[node name="Foward" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("2_126au")
+bus = &"Effect"
+
+[node name="Back" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("3_bva54")
+bus = &"Effect"
+
+[node name="QuitMainMenu" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("4_kiog1")
+bus = &"Effect"
+
+[node name="QuitDesktop" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("4_kiog1")
+bus = &"Effect"
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.05
+one_shot = true
+
+[node name="Blur" type="ColorRect" parent="."]
+material = ExtResource("5_rkxtu")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Audio" type="Node" parent="."]
-
-[node name="Start" type="AudioStreamPlayer" parent="Audio"]
-stream = ExtResource("2_4cuy6")
-mix_target = 2
-bus = &"Effect"
-
-[node name="Foward" type="AudioStreamPlayer" parent="Audio"]
-stream = ExtResource("3_esipc")
-bus = &"Effect"
-
-[node name="Back" type="AudioStreamPlayer" parent="Audio"]
-stream = ExtResource("4_arydp")
-bus = &"Effect"
-
-[node name="Quit" type="AudioStreamPlayer" parent="Audio"]
-stream = ExtResource("5_c3rfl")
-bus = &"Effect"
-
-[node name="BackgroundMusic" type="AudioStreamPlayer" parent="Audio"]
-stream = ExtResource("6_6digd")
-volume_db = -5.0
-bus = &"Music"
+[node name="Vignette" type="ColorRect" parent="."]
+material = ExtResource("6_nc5f1")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Menu" type="Control" parent="."]
-visible = false
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = 28.0
-offset_right = 20.0
-offset_bottom = 68.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 
-[node name="Play" type="Button" parent="Menu"]
+[node name="Resume" type="Button" parent="Menu"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 1
 anchors_preset = 8
@@ -73,27 +69,27 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -100.0
-offset_top = -55.5
+offset_top = -79.5
 offset_right = 100.0
-offset_bottom = -24.5
+offset_bottom = -48.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="Menu/Play"]
+[node name="Label" type="Label" parent="Menu/Resume"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -20.5
+offset_left = -73.0
 offset_top = -9.5
-offset_right = 20.5
+offset_right = 73.0
 offset_bottom = 13.5
 grow_horizontal = 2
 grow_vertical = 2
-text = "Start"
-label_settings = ExtResource("10_qfpwc")
+text = "Resume"
+label_settings = ExtResource("7_7gmv8")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -106,9 +102,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -100.0
-offset_top = -15.5
+offset_top = -39.5
 offset_right = 100.0
-offset_bottom = 15.5
+offset_bottom = -8.5
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -119,19 +115,18 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -26.0
+offset_left = -73.0
 offset_top = -9.5
-offset_right = 26.0
+offset_right = 73.0
 offset_bottom = 13.5
 grow_horizontal = 2
 grow_vertical = 2
-text = "Options
-"
-label_settings = ExtResource("10_qfpwc")
+text = "Options"
+label_settings = ExtResource("7_7gmv8")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Quit" type="Button" parent="Menu"]
+[node name="Quit to Main Menu" type="Button" parent="Menu"]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 1
 anchors_preset = 8
@@ -140,28 +135,60 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -100.0
-offset_top = 40.5
+offset_top = 16.5
 offset_right = 100.0
-offset_bottom = 71.5
+offset_bottom = 47.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="Menu/Quit"]
+[node name="Label" type="Label" parent="Menu/Quit to Main Menu"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -36.0
+offset_left = -73.0
 offset_top = -9.5
-offset_right = 36.0
+offset_right = 73.0
 offset_bottom = 13.5
 grow_horizontal = 2
 grow_vertical = 2
-text = "Quit Game
-"
-label_settings = ExtResource("10_qfpwc")
+text = "Quit to Main Menu"
+label_settings = ExtResource("7_7gmv8")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Quit to Desktop" type="Button" parent="Menu"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = 56.5
+offset_right = 100.0
+offset_bottom = 87.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Menu/Quit to Desktop"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -73.0
+offset_top = -9.5
+offset_right = 73.0
+offset_bottom = 13.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Quit to Desktop"
+label_settings = ExtResource("7_7gmv8")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -172,8 +199,8 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_top = 60.0
-offset_bottom = 60.0
+offset_top = -12.0
+offset_bottom = -12.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -196,17 +223,18 @@ custom_minimum_size = Vector2(120, 30)
 layout_mode = 2
 size_flags_vertical = 1
 text = "Display Mode"
-label_settings = ExtResource("10_qfpwc")
+label_settings = ExtResource("7_7gmv8")
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="FullscreenButton" type="Button" parent="Options/DisplayGrid"]
 unique_name_in_owner = true
+visible = false
 custom_minimum_size = Vector2(190, 30)
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="TextFullscreen" type="Label" parent="Options/DisplayGrid/FullscreenButton"]
+[node name="Label" type="Label" parent="Options/DisplayGrid/FullscreenButton"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -220,7 +248,7 @@ offset_bottom = 13.5
 grow_horizontal = 2
 grow_vertical = 2
 text = "Boderless Fullscreen"
-label_settings = ExtResource("10_qfpwc")
+label_settings = ExtResource("7_7gmv8")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -230,7 +258,7 @@ custom_minimum_size = Vector2(190, 30)
 layout_mode = 2
 size_flags_horizontal = 4
 
-[node name="TextWindowed" type="Label" parent="Options/DisplayGrid/WindowedButton"]
+[node name="Label" type="Label" parent="Options/DisplayGrid/WindowedButton"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -244,7 +272,7 @@ offset_bottom = 13.5
 grow_horizontal = 2
 grow_vertical = 2
 text = "Windowed"
-label_settings = ExtResource("10_qfpwc")
+label_settings = ExtResource("7_7gmv8")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -268,7 +296,7 @@ custom_minimum_size = Vector2(120, 30)
 layout_mode = 2
 size_flags_vertical = 1
 text = "Master"
-label_settings = ExtResource("10_qfpwc")
+label_settings = ExtResource("7_7gmv8")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -287,7 +315,7 @@ custom_minimum_size = Vector2(120, 30)
 layout_mode = 2
 size_flags_vertical = 1
 text = "Music"
-label_settings = ExtResource("10_qfpwc")
+label_settings = ExtResource("7_7gmv8")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -307,7 +335,7 @@ custom_minimum_size = Vector2(120, 30)
 layout_mode = 2
 size_flags_vertical = 1
 text = "Effect"
-label_settings = ExtResource("10_qfpwc")
+label_settings = ExtResource("7_7gmv8")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -330,9 +358,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -100.0
-offset_top = 140.0
+offset_top = 95.5
 offset_right = 100.0
-offset_bottom = 171.0
+offset_bottom = 126.5
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
@@ -351,105 +379,19 @@ offset_bottom = 13.5
 grow_horizontal = 2
 grow_vertical = 2
 text = "Back"
-label_settings = ExtResource("10_qfpwc")
+label_settings = ExtResource("7_7gmv8")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Remap" type="Button" parent="Options"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -100.0
-offset_top = 100.0
-offset_right = 100.0
-offset_bottom = 131.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="Options/Remap"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -45.0
-offset_top = -9.5
-offset_right = 45.0
-offset_bottom = 13.5
-grow_horizontal = 2
-grow_vertical = 2
-text = "Remap Input"
-label_settings = ExtResource("10_qfpwc")
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="InputSettings" parent="." instance=ExtResource("8_a72wx")]
-
-[node name="Back" type="Button" parent="InputSettings"]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -100.0
-offset_top = 200.0
-offset_right = 100.0
-offset_bottom = 231.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-
-[node name="Label" type="Label" parent="InputSettings/Back"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.5
-offset_top = -9.5
-offset_right = 20.5
-offset_bottom = 13.5
-grow_horizontal = 2
-grow_vertical = 2
-text = "Back"
-label_settings = ExtResource("10_qfpwc")
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="GameTitle" type="Label" parent="."]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -324.5
-offset_top = -105.0
-offset_right = 324.5
-offset_bottom = -35.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Tower Defense - Rougelike"
-label_settings = ExtResource("7_avxhl")
-horizontal_alignment = 1
-uppercase = true
-
-[connection signal="finished" from="Audio/Start" to="." method="_on_play_audio_finished"]
-[connection signal="finished" from="Audio/Quit" to="." method="_on_quit_audio_finished"]
-[connection signal="pressed" from="Menu/Play" to="." method="_on_play_pressed"]
+[connection signal="finished" from="Audio/QuitMainMenu" to="." method="_on_quit_to_menu_audio_finished"]
+[connection signal="finished" from="Audio/QuitDesktop" to="." method="_on_quit_to_desktop_audio_finished"]
+[connection signal="pressed" from="Menu/Resume" to="." method="_on_resume_pressed"]
 [connection signal="pressed" from="Menu/Options" to="." method="_on_options_pressed"]
-[connection signal="pressed" from="Menu/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="Menu/Quit to Main Menu" to="." method="_on_quit_to_menu_pressed"]
+[connection signal="pressed" from="Menu/Quit to Desktop" to="." method="_on_quit_to_desktop_pressed"]
 [connection signal="pressed" from="Options/DisplayGrid/FullscreenButton" to="." method="_on_options_fullscreen_pressed"]
 [connection signal="pressed" from="Options/DisplayGrid/WindowedButton" to="." method="_on_options_windowed_pressed"]
 [connection signal="value_changed" from="Options/AudioGrid/MasterVolume" to="." method="_on_options_master_volume"]
 [connection signal="value_changed" from="Options/AudioGrid/MusicVolume" to="." method="_on_options_music_volume"]
 [connection signal="value_changed" from="Options/AudioGrid/EffectVolume" to="." method="_on_options_effect_volume"]
 [connection signal="pressed" from="Options/Back" to="." method="_on_options_back_pressed"]
-[connection signal="pressed" from="Options/Remap" to="." method="_on_remap_pressed"]
-[connection signal="pressed" from="InputSettings/Back" to="." method="_on_back_input_setting_pressed"]

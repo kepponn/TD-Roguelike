@@ -1,0 +1,68 @@
+[gd_scene load_steps=10 format=3 uid="uid://dfa3wfjb564fn"]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_hb11m"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pgh5w"]
+albedo_color = Color(0.403922, 0.403922, 0.403922, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_pqfoc"]
+material = SubResource("StandardMaterial3D_pgh5w")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ebtej"]
+albedo_color = Color(0.960784, 0.564706, 0.376471, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_lthf8"]
+material = SubResource("StandardMaterial3D_ebtej")
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_3nlo6"]
+height = 0.5
+radius = 0.25
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_edi7k"]
+blend_mode = 1
+albedo_color = Color(0.0588235, 0.764706, 0, 0.239216)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_i5sef"]
+material = SubResource("StandardMaterial3D_edi7k")
+top_radius = 1.0
+bottom_radius = 1.0
+height = 0.1
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_x73qa"]
+
+[node name="Player" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.76664, 2)
+script = ExtResource("1_hb11m")
+
+[node name="Node3D" type="Node3D" parent="."]
+
+[node name="Body" type="MeshInstance3D" parent="Node3D"]
+mesh = SubResource("CapsuleMesh_pqfoc")
+skeleton = NodePath("../..")
+
+[node name="Face" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(0.617571, 0, 0, 0, 0.15997, 0, 0, 0, 0.627695, 0.354745, 0.434902, 0)
+mesh = SubResource("CylinderMesh_lthf8")
+skeleton = NodePath("../../..")
+
+[node name="Interaction Zone" type="Area3D" parent="Node3D"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -0.161922, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/Interaction Zone"]
+shape = SubResource("CylinderShape3D_3nlo6")
+
+[node name="Holded Item" type="Node3D" parent="Node3D"]
+unique_name_in_owner = true
+
+[node name="Item Range" type="MeshInstance3D" parent="Node3D/Holded Item"]
+process_mode = 4
+visible = false
+mesh = SubResource("CylinderMesh_i5sef")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_x73qa")
+
+[connection signal="body_entered" from="Node3D/Interaction Zone" to="." method="_on_interaction_zone_body_entered"]
+[connection signal="body_exited" from="Node3D/Interaction Zone" to="." method="_on_interaction_zone_body_exited"]

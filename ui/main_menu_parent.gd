@@ -13,7 +13,7 @@ func ready_up():
 	get_tree().paused = true
 	_displaySettings()
 	_audioSettings()
-	#$BackgoundMusic.play()
+	$Audio/BackgroundMusic.play()
 	$Menu.show()
 	$Options.hide()
 	$InputSettings.hide()

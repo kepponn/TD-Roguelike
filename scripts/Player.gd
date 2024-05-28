@@ -36,7 +36,10 @@ func _physics_process(delta):
 	player_movingItems()
 	ready()
 	wave_cleared()
-	exit()
+	esc()
+
+func _ready():
+	$Audio/BackgroundMusic.play()
 
 func ready():
 	if Input.is_action_just_pressed("start") and preparation_phase == true:
@@ -52,9 +55,11 @@ func wave_cleared():
 		preparation_phase = true
 		print("Wave_Cleared, Entering Prep Phase")
 
-func exit():
+func esc():
 	if Input.is_action_just_pressed("exit"):
-		get_tree().quit()
+		%IngameMenu.show()
+		%IngameMenu.esc()
+		get_tree().paused = true
 
 func player_jump(delta):
 	# Add the gravity.
@@ -71,6 +76,13 @@ func player_rotation(direction):
 		$Node3D.rotation.y = lerp_angle($Node3D.rotation.y, target_rotation, 0.25)
 	# rotation of items are being modified by this code while being held on hand
 	# and repaired back to grid by check_grid()
+
+func audio_randomSelector(path, volume: int = 0):
+	var Sfx = path.get_children() # path to where the audio childern are
+	var SfxPicker = Sfx[randi() % Sfx.size()]
+	SfxPicker.volume_db = volume
+	SfxPicker.pitch_scale = randf_range(0.9, 1.1)
+	SfxPicker.play()
 
 func check_grid(import_pos, export_pos):
 	# read the docs more, round() function is just what we want, it round .5 to up
@@ -90,6 +102,7 @@ func check_grid(import_pos, export_pos):
 	return Vector3(x, y, z)
 
 func player_holdItem(item) -> void: # need to return something so the last timer didnt stop prematurely
+	$Audio/SelectSfx.play()
 	item.reparent(%"Holded Item", true) # Change the item parent into `%"Holded Item"` which reside in player node
 	item.set_collision_layer_value(1, false) # Remove the collision layer from the item while being held in-hand
 	#item.position = Vector3(0.5, 1, 0) # Set item position to be on top of player
@@ -99,6 +112,7 @@ func player_holdItem(item) -> void: # need to return something so the last timer
 	# WILL BE REOCCURING BUG - where item glitches from %Item.position to new position
 
 func player_putItem(item):
+	$Audio/SelectSfx.play()
 	item.reparent(%Item, true) # Change the item parent into `%Item` node
 	#item.set_collision_layer_value(1, true) # Enable the collision layer of the item
 	# Check the grid of item when putting down to the world
@@ -192,11 +206,13 @@ func player_movingItems():
 			# since this item in in hand it will need to pass grid_check() function
 			print("Rotating on-hand " + str(player_interactedItem) + " to " + str(player_interactedItem.rotation_degrees))
 			player_interactedItem.rotation_degrees += Vector3(0, 90, 0)
+			audio_randomSelector($Audio/Pop, -10)
 		elif !player_isHoldingItem and player_ableInteract and player_interactedItem_Temp != null:
 			# rotate on-ground item
 			player_interactedItem = player_interactedItem_Temp
 			player_interactedItem.rotation_degrees += Vector3(0, 90, 0)
 			print("Rotating on-ground " + str(player_interactedItem) + " to " + str(player_interactedItem.rotation_degrees))
+			audio_randomSelector($Audio/Pop, -10)
 		#player_rotateItem(player_interactedItem)
 	
 func _on_interaction_zone_body_entered(body):

@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://djjoktwnc65ed"]
+
+[ext_resource type="Shader" path="res://assets/shaders/VignetteShader.gdshader" id="1_11cga"]
+
+[resource]
+shader = ExtResource("1_11cga")
+shader_parameter/alpha = 0.2
+shader_parameter/inner_radius = 0.0
+shader_parameter/outer_radius = 1.0

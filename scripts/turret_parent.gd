@@ -96,10 +96,17 @@ func shoot():
 		shoot_direction = (enemies_array[0].position - position).normalized()
 		var turret_projectile = projectile_scene.instantiate()
 		get_node("/root/Node3D/Projectile").add_child(turret_projectile, true) # if you want to shoot while still holding it maybe make projectile as unique or use absolute path to it
+		shoot_audio()
 		turret_projectile.damage = attack_damage
 		turret_projectile.transform = $Head/ProjectileSpawn.global_transform #basically copy all of $"Head/Spawn Point" global transform(rotation, scale, position), to projectile
 		turret_projectile.set_direction = shoot_direction #direction used to set projectile movement direction
 		$AttackSpeed.start() #restart timer so it can shoot again
+
+func shoot_audio():
+	var ShootSfx = $BulletSfx.get_children()
+	var ShootSfxPicker = ShootSfx[randi() % ShootSfx.size()]
+	ShootSfxPicker.pitch_scale = randf_range(0.8, 1.2)
+	ShootSfxPicker.play()
 
 func _on_range_body_entered(body):
 	if body.get_parent().name == 'Enemies':

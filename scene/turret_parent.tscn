@@ -1,11 +1,28 @@
-[gd_scene load_steps=3 format=3 uid="uid://55ipv7ij7bcg"]
+[gd_scene load_steps=6 format=3 uid="uid://55ipv7ij7bcg"]
 
 [ext_resource type="Script" path="res://scripts/turret_parent.gd" id="1_weacm"]
+[ext_resource type="AudioStream" uid="uid://b3bmtyrhcg1ql" path="res://assets/audio/sfx/080877_bullet-39803.mp3" id="2_53j1g"]
+[ext_resource type="AudioStream" uid="uid://b6ri0nenfcyy2" path="res://assets/audio/sfx/080880_bullet-39799.mp3" id="4_k8twk"]
+[ext_resource type="AudioStream" uid="uid://cpbktccmqkqhx" path="res://assets/audio/sfx/080977_bullet-39804.mp3" id="5_2vxqf"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_p56l4"]
 
 [node name="Turret" type="StaticBody3D"]
 script = ExtResource("1_weacm")
+
+[node name="BulletSfx" type="Node" parent="."]
+
+[node name="BulletSfx1" type="AudioStreamPlayer" parent="BulletSfx"]
+stream = ExtResource("2_53j1g")
+bus = &"Effect"
+
+[node name="BulletSfx2" type="AudioStreamPlayer" parent="BulletSfx"]
+stream = ExtResource("4_k8twk")
+bus = &"Effect"
+
+[node name="BulletSfx3" type="AudioStreamPlayer" parent="BulletSfx"]
+stream = ExtResource("5_2vxqf")
+bus = &"Effect"
 
 [node name="BlockGridCollision" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_p56l4")

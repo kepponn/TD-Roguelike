@@ -1,16 +1,22 @@
-[gd_scene load_steps=21 format=3 uid="uid://c01s5hyeaaliw"]
+[gd_scene load_steps=27 format=3 uid="uid://c01s5hyeaaliw"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_fipto"]
+[ext_resource type="AudioStream" uid="uid://bqjlvqns16fqg" path="res://assets/audio/sfx/select-sound-121244.mp3" id="2_hy4vs"]
 [ext_resource type="NavigationMesh" uid="uid://1kgcqxfwhe74" path="res://Navigation.tres" id="2_qtpp8"]
+[ext_resource type="AudioStream" uid="uid://dv1fwgav2ido6" path="res://assets/audio/sfx/happy-pop-1-185286.mp3" id="3_f6crh"]
+[ext_resource type="AudioStream" uid="uid://benfdpyeb1uyp" path="res://assets/audio/bgm/game-music-loop-7-145285.mp3" id="3_gtlde"]
 [ext_resource type="MeshLibrary" uid="uid://bpq8ija5ngli5" path="res://Tiles.tres" id="3_hpvrf"]
+[ext_resource type="AudioStream" uid="uid://ou6mtp1fcx2f" path="res://assets/audio/sfx/happy-pop-2-185287.mp3" id="4_eyom8"]
 [ext_resource type="PackedScene" uid="uid://j4h1g8pxc77l" path="res://scene/test_item_1.tscn" id="4_mfvmb"]
 [ext_resource type="PackedScene" uid="uid://wil6fipqm8m1" path="res://scene/test_item_2.tscn" id="5_ew274"]
+[ext_resource type="AudioStream" uid="uid://btfe53ybfx073" path="res://assets/audio/sfx/happy-pop-3-185288.mp3" id="5_sty15"]
 [ext_resource type="Script" path="res://scripts/target.gd" id="7_b3oj4"]
 [ext_resource type="PackedScene" uid="uid://c7bny0q7rq2yl" path="res://scene/turret_pierce.tscn" id="7_p8ft8"]
 [ext_resource type="PackedScene" uid="uid://d2yu6msl3mexb" path="res://models/target.glb" id="8_7h401"]
 [ext_resource type="Script" path="res://scripts/spawn.gd" id="9_4awx7"]
 [ext_resource type="PackedScene" uid="uid://cxo2xqjctdmut" path="res://models/spawn.glb" id="10_hlbb7"]
 [ext_resource type="PackedScene" uid="uid://r0wfovaac7gq" path="res://scene/turret_basic.tscn" id="11_yfnvx"]
+[ext_resource type="PackedScene" uid="uid://b163wrbe72fm5" path="res://ui/ingame_menu.tscn" id="16_gndtv"]
 
 [sub_resource type="Environment" id="Environment_m6ppc"]
 ssr_enabled = true
@@ -62,6 +68,31 @@ shadow_enabled = true
 [node name="Player" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.76664, 2)
 script = ExtResource("1_fipto")
+
+[node name="Audio" type="Node" parent="Player"]
+
+[node name="SelectSfx" type="AudioStreamPlayer" parent="Player/Audio"]
+stream = ExtResource("2_hy4vs")
+bus = &"Effect"
+
+[node name="BackgroundMusic" type="AudioStreamPlayer" parent="Player/Audio"]
+stream = ExtResource("3_gtlde")
+volume_db = -5.0
+bus = &"Music"
+
+[node name="Pop" type="Node" parent="Player/Audio"]
+
+[node name="PopSfx1" type="AudioStreamPlayer" parent="Player/Audio/Pop"]
+stream = ExtResource("3_f6crh")
+bus = &"Effect"
+
+[node name="PopSfx2" type="AudioStreamPlayer" parent="Player/Audio/Pop"]
+stream = ExtResource("4_eyom8")
+bus = &"Effect"
+
+[node name="PopSfx3" type="AudioStreamPlayer" parent="Player/Audio/Pop"]
+stream = ExtResource("5_sty15")
+bus = &"Effect"
 
 [node name="Node3D" type="Node3D" parent="Player"]
 
@@ -166,54 +197,6 @@ one_shot = true
 
 [node name="Control" type="Node" parent="."]
 
-[node name="A" type="RichTextLabel" parent="Control"]
-visible = false
-self_modulate = Color(0, 0, 0, 1)
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -178.0
-offset_top = -50.0
-grow_horizontal = 0
-grow_vertical = 0
-bbcode_enabled = true
-text = "[b]Pick up[b]"
-scroll_active = false
-
-[node name="X" type="RichTextLabel" parent="Control"]
-visible = false
-self_modulate = Color(0, 0, 0, 1)
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -271.0
-offset_top = -116.0
-grow_horizontal = 0
-grow_vertical = 0
-bbcode_enabled = true
-text = "[b]Inspect[/b]"
-scroll_active = false
-
-[node name="B" type="RichTextLabel" parent="Control"]
-visible = false
-self_modulate = Color(0, 0, 0, 1)
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -89.0
-offset_top = -115.0
-grow_horizontal = 0
-grow_vertical = 0
-bbcode_enabled = true
-text = "[b]Rotate[b]"
-scroll_active = false
-
 [node name="Button" type="RichTextLabel" parent="Control"]
 anchors_preset = 3
 anchor_left = 1.0
@@ -229,6 +212,9 @@ text = "[center] Y[/center]
 [center]Inspect [img=100]res://assets/image/buttons.png[/img] Rotate[/center]
 [center] Pick Up[/center]"
 scroll_active = false
+
+[node name="IngameMenu" parent="." instance=ExtResource("16_gndtv")]
+unique_name_in_owner = true
 
 [connection signal="body_entered" from="Player/Node3D/Interaction Zone" to="Player" method="_on_interaction_zone_body_entered"]
 [connection signal="body_exited" from="Player/Node3D/Interaction Zone" to="Player" method="_on_interaction_zone_body_exited"]

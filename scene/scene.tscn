@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dl8dey22x882y"]
+[gd_scene load_steps=20 format=3 uid="uid://dl8dey22x882y"]
 
 [ext_resource type="PackedScene" uid="uid://dfa3wfjb564fn" path="res://scene/player.tscn" id="1_rl4h5"]
 [ext_resource type="NavigationMesh" uid="uid://1kgcqxfwhe74" path="res://Navigation.tres" id="2_qtpp8"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" path="res://scripts/spawn.gd" id="9_4awx7"]
 [ext_resource type="PackedScene" uid="uid://cxo2xqjctdmut" path="res://models/spawn.glb" id="10_hlbb7"]
 [ext_resource type="PackedScene" uid="uid://r0wfovaac7gq" path="res://scene/turret_basic.tscn" id="11_yfnvx"]
+[ext_resource type="PackedScene" uid="uid://xbhbdy3st7vx" path="res://scene/wall_mountable.tscn" id="12_lqyh6"]
 [ext_resource type="PackedScene" uid="uid://dxveo10rv12xy" path="res://scene/turret_gatling.tscn" id="15_epdbe"]
 [ext_resource type="PackedScene" uid="uid://b163wrbe72fm5" path="res://ui/ingame_menu.tscn" id="16_gndtv"]
 [ext_resource type="PackedScene" uid="uid://g2dvesmiy3l4" path="res://scene/wall_basic.tscn" id="16_nmw41"]
@@ -108,6 +109,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, -6)
 
 [node name="Wall4" parent="NavigationRegion3D/Item" instance=ExtResource("17_oflby")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, -4)
+
+[node name="Wall5" parent="NavigationRegion3D/Item" instance=ExtResource("12_lqyh6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, 2)
+
+[node name="Wall6" parent="NavigationRegion3D/Item" instance=ExtResource("12_lqyh6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, -1)
 
 [node name="Target" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1, 7)

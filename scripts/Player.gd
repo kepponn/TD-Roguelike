@@ -16,7 +16,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 var player_ableInteract: bool = false
 var player_isHoldingItem: bool = false
-var player_ableToDrop: bool = true
+var player_ableToDrop: bool = true # Check interaction area of player is it able to drop something there?
 var player_inspectedItem
 var player_interactedItem
 var player_interactedItem_Temp
@@ -40,6 +40,7 @@ func _physics_process(delta):
 	move_and_slide()
 	player_rotation(direction)
 	open_shop()
+	mountable_wall()
 	player_movingItems()
 	ready()
 	wave_cleared()
@@ -53,6 +54,16 @@ func open_shop():
 	if player_interactedItem_Temp != null:
 		if player_interactedItem_Temp.name == "Shop" and Input.is_action_just_pressed("inspect") and preparation_phase == true:
 			shop.show()
+
+func mountable_wall():
+	if player_interactedItem_Temp != null: # Check wall_mountable
+		if player_interactedItem_Temp.has_method("mount") and Input.is_action_just_pressed("inspect"): # check for wall_mountable function
+			if player_isHoldingItem and player_interactedItem_Temp.currently_mountable_item == null:
+				player_checkItemRange(player_interactedItem, false)
+				player_interactedItem_Temp.mount(true)
+			elif !player_isHoldingItem and player_interactedItem_Temp.currently_mountable_item != null:
+				player_interactedItem_Temp.mount(false)
+				player_checkItemRange(player_interactedItem, true)
 
 func ready():
 	if Input.is_action_just_pressed("start") and preparation_phase == true:
@@ -120,9 +131,6 @@ func check_grid(import_pos, export_pos):
 	# Return the value in vector3 for future processing by tweens
 	return Vector3(x, y, z)
 
-func spawn_boughtItem():
-	pass
-
 func player_holdItem(item) -> void: # need to return something so the last timer didnt stop prematurely
 	$Audio/SelectSfx.play()
 	item.reparent(holded_item, true) # Change the item parent into `%"Holded Item"` which reside in player node
@@ -156,18 +164,9 @@ func player_swapItem(held_item, ground_item):
 	held_item.position = ground_item.position # Swap the position property from held item to ground item
 	held_item.rotation.y = 0 # Repair the Y-AXIS rotation to default
 
-func player_rotateItem(item):
-	if player_isHoldingItem:
-		# rotate in-hand item
-		print("item in-hand rotating now")
-		item.rotation_degrees += Vector3(0, 45, 0)
-	elif !player_isHoldingItem and player_ableInteract and player_interactedItem_Temp != null:
-		# rotate ground item
-		player_interactedItem = player_interactedItem_Temp
-		item.rotation_degrees += Vector3(0, 45, 0)
-		print("item on-ground rotating now")
-	# var rotate_Tween = get_tree().create_tween()
-	# rotate_Tween.tween_property(item, "rotation", , 0.15)
+func player_rotateItem(_item):
+	# refactor rotate here if possible
+	pass
 
 func player_checkItemRange(item, enable: bool = true):
 	var regex = RegEx.new() # need to add some regex to check for all the name id of turret

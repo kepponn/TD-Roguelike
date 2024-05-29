@@ -13,7 +13,7 @@ func _ready():
 	$Lifetime.start(lifetime)
 
 func _process(delta):
-	global_transform.origin += set_direction * speed * delta
+	position += set_direction * speed * delta
 
 func _on_body_entered(body):
 	#Need IF to ignore turret body collision otherwise sometimes it will hit turret

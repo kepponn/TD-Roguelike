@@ -1,12 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://xbhbdy3st7vx"]
+[gd_scene load_steps=5 format=3 uid="uid://xbhbdy3st7vx"]
 
 [ext_resource type="PackedScene" uid="uid://d3uo4ylqy172v" path="res://scene/wall_parent.tscn" id="1_whp0e"]
 [ext_resource type="Script" path="res://scripts/wall_mountable.gd" id="2_ky7tt"]
 [ext_resource type="PackedScene" uid="uid://brtgcn4swj8s5" path="res://models/wall_mountable.glb" id="3_6jwu8"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ent10"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_vk7lb"]
 
 [node name="Wall" instance=ExtResource("1_whp0e")]
 script = ExtResource("2_ky7tt")
@@ -18,10 +16,3 @@ mountable = true
 shape = SubResource("BoxShape3D_ent10")
 
 [node name="wall_mountable" parent="Models" index="0" instance=ExtResource("3_6jwu8")]
-
-[node name="MountArea" type="Area3D" parent="." index="2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MountArea" index="0"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
-shape = SubResource("BoxShape3D_vk7lb")

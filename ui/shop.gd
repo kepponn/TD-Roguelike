@@ -1,16 +1,18 @@
 extends Control
 
-@onready var testItem1 = preload("res://scene/test_item_1.tscn").instantiate()
+@onready var wall_basic = preload("res://scene/wall_basic.tscn").instantiate()
+@onready var wall_mountable = preload("res://scene/wall_mountable.tscn").instantiate()
+@onready var wall_spiked = preload("res://scene/wall_spiked.tscn").instantiate()
 @onready var turret_basic = preload("res://scene/turret_basic.tscn").instantiate()
 @onready var turret_pierce = preload("res://scene/turret_pierce.tscn").instantiate()
 @onready var turret_gatling = preload("res://scene/turret_gatling.tscn").instantiate()
 @onready var turret_plasma = preload("res://scene/turret_plasma.tscn").instantiate()
+
 @onready var shop_item = preload("res://ui/shop_item.tscn")
 @onready var empty_item = preload("res://ui/shop_empty.tscn")
 
 @onready var shop_itemList = $PanelContainer/MarginContainer/HBoxContainer/ShopBackground/MarginContainer/Shop/ScrollContainer/ShopItem
 @onready var storage_itemList = $PanelContainer/MarginContainer/HBoxContainer/StorageBackground/MarginContainer/BlueprintStorage/BlueprintStorageItem
-
 
 # Called when the node enters the scene tree for the first time
 var reroll_price: int = 10
@@ -36,52 +38,34 @@ func spawn_item(scene):
 	get_node('/root/Node3D/NavigationRegion3D/Item/Shop/ItemPlaceholder').set_collision_mask_value(1, true)
 	#get_node('/root/Node3D/NavigationRegion3D/Item/Shop/ItemPlaceholder').set_collision_mask_value(1, false)
 
+func seed_item(seeder, property):
+	# Need to seed image placeholder and name property into shop_item.gd
+	seeder.find_child("Price").text = str(property.price)
+	seeder.item_name = str(property.id)
+	seeder.item_price = property.price
+	var path_temp: String = "res://scene/"+str(property.id)+".tscn"
+	seeder.item_scene = load(path_temp)
+
 func update_item():
 	for item in shop_itemList.get_children():
 			item.queue_free()
 	for items in range(8):
 		var item = shop_item.instantiate()
-		
 		var randomizer = randi_range(0,9)
 		if randomizer >= 0 and randomizer < 3:
-			item.find_child("Price").text = str(turret_gatling.turret_price) + " Gold Gatling"
-			item.item_name = str(turret_gatling.turret_price)
-			item.item_price = turret_gatling.turret_price
-			item.item_scene = preload("res://scene/turret_gatling.tscn")
+			seed_item(item, wall_basic)
 		elif randomizer >= 3 and randomizer < 6:
-			item.find_child("Price").text = str(turret_basic.turret_price) + " Gold Basic"
-			item.item_name = str(turret_basic.turret_price)
-			item.item_price = turret_basic.turret_price
-			item.item_scene = preload("res://scene/turret_basic.tscn")
+			seed_item(item, wall_spiked)
 		elif randomizer >= 6 and randomizer < 10:
-			item.find_child("Price").text = str(turret_plasma.turret_price) + " Gold Plasma"
-			item.item_name = str(turret_plasma.turret_price)
-			item.item_price = turret_plasma.turret_price
-			item.item_scene = preload("res://scene/turret_plasma.tscn")
+			seed_item(item ,turret_gatling)
 		shop_itemList.add_child(item, true)
 		item.pressed.connect(_on_item_button_pressed.bind(item))
-	
-	#for item in shop_itemList.get_children():
-		##to make button enabled and able to be interacted
-		##used after reroll, and will not do anything on first time
-		#item.disabled = false
-		#
-		#var randomizer = randi_range(0,9)
-		#if randomizer >= 0 and randomizer < 3:
-			#pass
-		#elif randomizer >= 3 and randomizer < 6:
-			#item.find_child("Price").text = str(turret_basic.turret_price) + " Gold Basic"
-			#item.item_price = turret_basic.turret_price
-		#elif randomizer >= 6 and randomizer < 10:
-			#item.find_child("Price").text = str(turret_pierce.turret_price) + " Gold Pierce"
-			#item.item_price = turret_pierce.turret_price
 
 func create_empty(nodes ,index):
 	var empty = empty_item.instantiate()
 	nodes.add_child(empty, true)
 	nodes.move_child(empty, index)
 	
-
 func check_mouseInput():
 	#check what is the last button pressed for 1 frame maybe? atleast its enough time to be used by _on_item_button_pressed(item) signal
 	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
@@ -139,5 +123,3 @@ func _on_reroll_button_pressed():
 		Global.currency = Global.currency - reroll_price
 		reroll_price = reroll_price + 10
 		update_item()
-		
-		

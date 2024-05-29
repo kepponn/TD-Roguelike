@@ -16,8 +16,8 @@ class_name Turret_Parent
 
 @export_category("Basic Information")
 # Do we need this still for the regex? or we using with StaticObject3D node name?
-@export var turret_name: String 
-@export var turret_price: int
+@export var id: String 
+@export var price: int
 @export_category("Model and Scene Assets")
 # How to get the asset into the node area of $Head and $Body?
 # @export var asset_head: PackedScene

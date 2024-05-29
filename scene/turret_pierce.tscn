@@ -16,8 +16,8 @@ height = 0.001
 
 [node name="Turret" instance=ExtResource("1_w708e")]
 script = ExtResource("2_4xj1j")
-turret_name = "turret_pierce"
-turret_price = 60
+id = "turret_pierce"
+price = 80
 projectile_scene = ExtResource("3_a8s0y")
 attack_damage = 1
 attack_range = 6

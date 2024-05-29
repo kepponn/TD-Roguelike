@@ -1,0 +1,41 @@
+[gd_scene load_steps=8 format=3 uid="uid://ddvggjxvp527d"]
+
+[ext_resource type="PackedScene" uid="uid://y5apmikcb7nr" path="res://scene/wall_parent.tscn" id="1_dsjnv"]
+[ext_resource type="Script" path="res://scripts/wall_spiked.gd" id="2_dibqg"]
+[ext_resource type="PackedScene" uid="uid://dv46t3u1gfyil" path="res://models/wall_basic.glb" id="2_xqmx0"]
+[ext_resource type="PackedScene" uid="uid://bn43yv6g611xg" path="res://models/wall_spike_only.glb" id="3_46jr6"]
+[ext_resource type="AudioStream" uid="uid://c8phswvldi7mu" path="res://assets/audio/sfx/080879_hit-39801.mp3" id="5_cyy0i"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dnwvq"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_aoj6y"]
+height = 1.0
+radius = 1.0
+
+[node name="Wall" instance=ExtResource("1_dsjnv")]
+script = ExtResource("2_dibqg")
+id = "wall_spiked"
+price = 180
+spiked = true
+
+[node name="CollisionShape3D" parent="." index="0"]
+shape = SubResource("BoxShape3D_dnwvq")
+
+[node name="wall_basic" parent="Models" index="0" instance=ExtResource("2_xqmx0")]
+
+[node name="wall_spike_only" parent="Models" index="1" instance=ExtResource("3_46jr6")]
+
+[node name="Area3D" type="Area3D" parent="." index="2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" index="0"]
+shape = SubResource("CylinderShape3D_aoj6y")
+
+[node name="AttackSpeed" type="Timer" parent="." index="3"]
+one_shot = true
+
+[node name="SpikeSfx" type="AudioStreamPlayer" parent="." index="4"]
+stream = ExtResource("5_cyy0i")
+bus = &"Effect"
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]

@@ -14,8 +14,8 @@ material = ExtResource("6_qsc1o")
 
 [node name="Turret" instance=ExtResource("1_g84pl")]
 script = ExtResource("2_wuwv4")
-turret_name = "turret_plasma"
-turret_price = 120
+id = "turret_plasma"
+price = 220
 projectile_scene = ExtResource("3_i0kup")
 attack_damage = 3
 attack_range = 7

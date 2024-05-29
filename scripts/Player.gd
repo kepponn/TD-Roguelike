@@ -126,6 +126,8 @@ func spawn_boughtItem():
 func player_holdItem(item) -> void: # need to return something so the last timer didnt stop prematurely
 	$Audio/SelectSfx.play()
 	item.reparent(holded_item, true) # Change the item parent into `%"Holded Item"` which reside in player node
+	if item.name == "Shop":
+		item.set_collision_layer_value(2, false)
 	item.set_collision_layer_value(1, false) # Remove the collision layer from the item while being held in-hand
 	#item.position = Vector3(0.5, 1, 0) # Set item position to be on top of player
 	var holdItem_Tween = get_tree().create_tween()
@@ -142,9 +144,13 @@ func player_putItem(item):
 	putItem_Tween.tween_property(item, "position", check_grid(%"Interaction Zone", item), 0.15)
 	#item.position = check_grid(%"Interaction Zone", item)
 	await get_tree().create_timer(0.15).timeout
+	if item.name == "Shop":
+		item.set_collision_layer_value(2, true)
 	item.set_collision_layer_value(1, true)
 
 func player_swapItem(held_item, ground_item):
+	if held_item.name == "Shop":
+		held_item.set_collision_layer_value(2, true)
 	held_item.reparent(parent_item, true) 
 	held_item.set_collision_layer_value(1, true)
 	held_item.position = ground_item.position # Swap the position property from held item to ground item

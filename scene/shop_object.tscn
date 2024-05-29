@@ -48,6 +48,8 @@ shadow_mesh = SubResource("ArrayMesh_4qed8")
 size = Vector3(0.5, 0.5, 0.5)
 
 [node name="ShopObject" type="StaticBody3D"]
+collision_layer = 3
+collision_mask = 3
 script = ExtResource("1_th7ri")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -63,6 +65,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
 
 [node name="ItemPlaceholder" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
+collision_layer = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ItemPlaceholder"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0027287, 0, 0)

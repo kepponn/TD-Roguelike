@@ -30,7 +30,11 @@ func spawn_item(scene):
 	print("Purchased ", turret)
 	%Item.add_child(turret, true)
 	turret.position = get_node('/root/Node3D/NavigationRegion3D/Item/Shop/SpawnArea').global_position
-	get_node('/root/Node3D/NavigationRegion3D/Item/Shop')._on_item_placeholder_body_entered(turret)
+	#get_node('/root/Node3D/NavigationRegion3D/Item/Shop')._on_item_placeholder_body_entered(turret)
+	get_node('/root/Node3D/NavigationRegion3D/Item/Shop/ItemPlaceholder').set_collision_mask_value(1, false)
+	#get_node('/root/Node3D/NavigationRegion3D/Item/Shop/ItemPlaceholder').set_collision_layer_value(1, false)
+	get_node('/root/Node3D/NavigationRegion3D/Item/Shop/ItemPlaceholder').set_collision_mask_value(1, true)
+	#get_node('/root/Node3D/NavigationRegion3D/Item/Shop/ItemPlaceholder').set_collision_mask_value(1, false)
 
 func update_item():
 	for item in shop_itemList.get_children():

@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dl8dey22x882y"]
+[gd_scene load_steps=19 format=3 uid="uid://dl8dey22x882y"]
 
 [ext_resource type="PackedScene" uid="uid://dfa3wfjb564fn" path="res://scene/player.tscn" id="1_rl4h5"]
 [ext_resource type="NavigationMesh" uid="uid://1kgcqxfwhe74" path="res://Navigation.tres" id="2_qtpp8"]
@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://wil6fipqm8m1" path="res://scene/shop_object.tscn" id="5_ew274"]
 [ext_resource type="Script" path="res://scripts/target.gd" id="7_b3oj4"]
 [ext_resource type="PackedScene" uid="uid://c7bny0q7rq2yl" path="res://scene/turret_plasma.tscn" id="7_p8ft8"]
-[ext_resource type="PackedScene" uid="uid://d2yu6msl3mexb" path="res://models/target.glb" id="8_7h401"]
+[ext_resource type="PackedScene" uid="uid://cuig6rk28kptx" path="res://models/target.glb" id="8_7h401"]
 [ext_resource type="PackedScene" uid="uid://b8keu180bnh1a" path="res://scene/turret_pierce.tscn" id="8_h6j8t"]
 [ext_resource type="Script" path="res://scripts/spawn.gd" id="9_4awx7"]
 [ext_resource type="PackedScene" uid="uid://cxo2xqjctdmut" path="res://models/spawn.glb" id="10_hlbb7"]
@@ -22,6 +22,10 @@ ssao_enabled = true
 ssil_enabled = true
 fog_enabled = true
 fog_light_color = Color(0.52549, 0.556863, 0.611765, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_t07wd"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_u7awl"]
 
 [node name="Node3D" type="Node3D"]
 
@@ -94,6 +98,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 1, 0)
 
 [node name="Turret6" parent="NavigationRegion3D/Item" instance=ExtResource("15_epdbe")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -3, 1, -5)
+
+[node name="RigidBody3D" type="RigidBody3D" parent="NavigationRegion3D/Item"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 6, 3)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/Item/RigidBody3D"]
+mesh = SubResource("CapsuleMesh_t07wd")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Item/RigidBody3D"]
+shape = SubResource("CapsuleShape3D_u7awl")
 
 [node name="Target" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1, 7)

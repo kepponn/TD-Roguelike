@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://d3uo4ylqy172v" path="res://scene/wall_parent.tscn" id="1_whp0e"]
 [ext_resource type="Script" path="res://scripts/wall_mountable.gd" id="2_ky7tt"]
-[ext_resource type="PackedScene" path="res://models/wall_mountable.glb" id="3_6jwu8"]
+[ext_resource type="PackedScene" uid="uid://brtgcn4swj8s5" path="res://models/wall_mountable.glb" id="3_6jwu8"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ent10"]
 

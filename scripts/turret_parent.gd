@@ -97,7 +97,7 @@ func lock_on():
 
 func shoot():
 	if !enemies_array.is_empty() and $AttackSpeed.time_left <= 0.0 and able_shoot:
-		shoot_direction = (enemies_array[0].position - position).normalized()
+		shoot_direction = (enemies_array[0].global_position - global_position).normalized()
 		var turret_projectile = projectile_scene.instantiate()
 		get_node("/root/Node3D/Projectile").add_child(turret_projectile, true) # if you want to shoot while still holding it maybe make projectile as unique or use absolute path to it
 		shoot_audio()

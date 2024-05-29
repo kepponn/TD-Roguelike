@@ -33,5 +33,4 @@ transform = Transform3D(0.707107, 0, 0.707107, 0, 0.981, 0, -0.707107, 0, 0.7071
 shape = SubResource("CylinderShape3D_e4yrd")
 
 [node name="VisibleRange" parent="Range" index="1"]
-visible = true
 mesh = SubResource("CylinderMesh_qcf33")

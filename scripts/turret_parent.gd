@@ -28,6 +28,8 @@ class_name Turret_Parent
 @export var attack_range: int
 @export var attack_speed: float
 @export var bullet_speed: int
+@export var bullet_pierce: int
+@export var bullet_ricochet: int
 # Other information
 @onready var visible_range: MeshInstance3D = $Range/VisibleRange
 @onready var range_radius: CollisionShape3D = $Range/CollisionShape3D
@@ -99,6 +101,10 @@ func shoot():
 		var turret_projectile = projectile_scene.instantiate()
 		get_node("/root/Node3D/Projectile").add_child(turret_projectile, true) # if you want to shoot while still holding it maybe make projectile as unique or use absolute path to it
 		shoot_audio()
+		if bullet_pierce > 0:
+			turret_projectile.pierce_counter = bullet_pierce
+		if bullet_ricochet > 0:
+			turret_projectile.ricochet_counter = bullet_ricochet
 		turret_projectile.damage = attack_damage
 		turret_projectile.speed = bullet_speed
 		turret_projectile.transform = $Head/ProjectileSpawn.global_transform #basically copy all of $"Head/Spawn Point" global transform(rotation, scale, position), to projectile

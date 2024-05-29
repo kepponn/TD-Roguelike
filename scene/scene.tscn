@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dl8dey22x882y"]
+[gd_scene load_steps=17 format=3 uid="uid://dl8dey22x882y"]
 
 [ext_resource type="PackedScene" uid="uid://dfa3wfjb564fn" path="res://scene/player.tscn" id="1_rl4h5"]
 [ext_resource type="NavigationMesh" uid="uid://1kgcqxfwhe74" path="res://Navigation.tres" id="2_qtpp8"]
@@ -6,11 +6,13 @@
 [ext_resource type="PackedScene" uid="uid://j4h1g8pxc77l" path="res://scene/test_item_1.tscn" id="4_mfvmb"]
 [ext_resource type="PackedScene" uid="uid://wil6fipqm8m1" path="res://scene/shop_object.tscn" id="5_ew274"]
 [ext_resource type="Script" path="res://scripts/target.gd" id="7_b3oj4"]
-[ext_resource type="PackedScene" uid="uid://c7bny0q7rq2yl" path="res://scene/turret_pierce.tscn" id="7_p8ft8"]
+[ext_resource type="PackedScene" uid="uid://c7bny0q7rq2yl" path="res://scene/turret_plasma.tscn" id="7_p8ft8"]
 [ext_resource type="PackedScene" uid="uid://d2yu6msl3mexb" path="res://models/target.glb" id="8_7h401"]
+[ext_resource type="PackedScene" uid="uid://b8keu180bnh1a" path="res://scene/turret_pierce.tscn" id="8_h6j8t"]
 [ext_resource type="Script" path="res://scripts/spawn.gd" id="9_4awx7"]
 [ext_resource type="PackedScene" uid="uid://cxo2xqjctdmut" path="res://models/spawn.glb" id="10_hlbb7"]
 [ext_resource type="PackedScene" uid="uid://r0wfovaac7gq" path="res://scene/turret_basic.tscn" id="11_yfnvx"]
+[ext_resource type="PackedScene" uid="uid://dxveo10rv12xy" path="res://scene/turret_gatling.tscn" id="15_epdbe"]
 [ext_resource type="PackedScene" uid="uid://b163wrbe72fm5" path="res://ui/ingame_menu.tscn" id="16_gndtv"]
 [ext_resource type="PackedScene" uid="uid://bu3pm3p7au2pa" path="res://ui/shop.tscn" id="17_vv3g3"]
 
@@ -86,6 +88,12 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2, 1, 
 
 [node name="Turret4" parent="NavigationRegion3D/Item" instance=ExtResource("7_p8ft8")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 1, 0)
+
+[node name="Turret3" parent="NavigationRegion3D/Item" instance=ExtResource("8_h6j8t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 1, 0)
+
+[node name="Turret6" parent="NavigationRegion3D/Item" instance=ExtResource("15_epdbe")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -3, 1, -5)
 
 [node name="Target" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1, 7)

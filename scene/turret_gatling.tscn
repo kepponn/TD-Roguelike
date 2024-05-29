@@ -1,0 +1,41 @@
+[gd_scene load_steps=9 format=3 uid="uid://dxveo10rv12xy"]
+
+[ext_resource type="PackedScene" uid="uid://55ipv7ij7bcg" path="res://scene/turret_parent.tscn" id="1_tne4o"]
+[ext_resource type="Script" path="res://scripts/turret_gatling.gd" id="2_vxct8"]
+[ext_resource type="PackedScene" uid="uid://du7rlk6sqbkic" path="res://scene/turret_projectile.tscn" id="3_q84xx"]
+[ext_resource type="PackedScene" uid="uid://b5o3jb7064n3f" path="res://models/turret_head_gatling.glb" id="4_qblgd"]
+[ext_resource type="PackedScene" uid="uid://80owkwjy8obt" path="res://models/turret_legs_basic.glb" id="5_vqjav"]
+[ext_resource type="Material" uid="uid://bak28ouni41ni" path="res://assets/shaders/turret_area_check.tres" id="6_qw0wk"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_mbfh7"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_gydlj"]
+material = ExtResource("6_qw0wk")
+bottom_radius = 0.0
+height = 0.001
+
+[node name="Turret" instance=ExtResource("1_tne4o")]
+script = ExtResource("2_vxct8")
+turret_name = "turret_gatling"
+turret_price = 80
+projectile_scene = ExtResource("3_q84xx")
+attack_damage = 1
+attack_range = 4
+attack_speed = 0.3
+bullet_speed = 10
+
+[node name="ProjectileSpawn" parent="Head" index="0"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.334663, -0.876866)
+visible = true
+
+[node name="turret_head_gatling" parent="Head" index="1" instance=ExtResource("4_qblgd")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 0.875, 0, -1, 0, -4.37114e-08, 0.00147305, 0.303858, 0.0899283)
+
+[node name="turret_legs_basic" parent="Body" index="0" instance=ExtResource("5_vqjav")]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 0.981, 0, -0.707107, 0, 0.707107, 0, -0.444, 0)
+
+[node name="CollisionShape3D" parent="Range" index="0"]
+shape = SubResource("CylinderShape3D_mbfh7")
+
+[node name="VisibleRange" parent="Range" index="1"]
+mesh = SubResource("CylinderMesh_gydlj")

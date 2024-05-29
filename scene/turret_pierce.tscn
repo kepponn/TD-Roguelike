@@ -1,39 +1,38 @@
-[gd_scene load_steps=9 format=3 uid="uid://c7bny0q7rq2yl"]
+[gd_scene load_steps=9 format=3 uid="uid://b8keu180bnh1a"]
 
 [ext_resource type="PackedScene" uid="uid://55ipv7ij7bcg" path="res://scene/turret_parent.tscn" id="1_w708e"]
 [ext_resource type="Script" path="res://scripts/turret_pierce.gd" id="2_4xj1j"]
+[ext_resource type="PackedScene" uid="uid://dcyk7xu85u5en" path="res://models/turret_head_basic.glb" id="2_nd2ob"]
 [ext_resource type="PackedScene" uid="uid://80owkwjy8obt" path="res://models/turret_legs_basic.glb" id="2_q1yh7"]
-[ext_resource type="PackedScene" uid="uid://d1h2n0upb1f11" path="res://models/turret_head_pierce.glb" id="2_vdyy8"]
 [ext_resource type="PackedScene" uid="uid://du7rlk6sqbkic" path="res://scene/turret_projectile.tscn" id="3_a8s0y"]
 [ext_resource type="Material" uid="uid://bak28ouni41ni" path="res://assets/shaders/turret_area_check.tres" id="6_h6gha"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_7wa50"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_a3dya"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_7gsf3"]
+[sub_resource type="CylinderMesh" id="CylinderMesh_mcrrn"]
 material = ExtResource("6_h6gha")
+bottom_radius = 0.0
+height = 0.001
 
 [node name="Turret" instance=ExtResource("1_w708e")]
 script = ExtResource("2_4xj1j")
 turret_name = "turret_pierce"
 turret_price = 60
 projectile_scene = ExtResource("3_a8s0y")
-attack_damage = 3
-attack_range = 7
-attack_speed = 1.2
-bullet_speed = 5
+attack_damage = 1
+attack_range = 6
+attack_speed = 0.9
+bullet_speed = 12
+bullet_pierce = 3
 
-[node name="ProjectileSpawn" parent="Head" index="0"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.297555, -0.757329)
-visible = true
-
-[node name="turret_head_pierce" parent="Head" index="1" instance=ExtResource("2_vdyy8")]
-transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0.000494599, 0.292233, 0.113867)
+[node name="turret_head_basic" parent="Head" index="1" instance=ExtResource("2_nd2ob")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 0.806, 0, -1, 0, -4.37114e-08, 0.00719428, 0.318604, 0.098)
 
 [node name="turret_legs_basic" parent="Body" index="0" instance=ExtResource("2_q1yh7")]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 0.981, 0, -0.707107, 0, 0.707107, 0, -0.444, 0)
 
 [node name="CollisionShape3D" parent="Range" index="0"]
-shape = SubResource("BoxShape3D_7wa50")
+shape = SubResource("CylinderShape3D_a3dya")
 
 [node name="VisibleRange" parent="Range" index="1"]
-mesh = SubResource("BoxMesh_7gsf3")
+mesh = SubResource("CylinderMesh_mcrrn")

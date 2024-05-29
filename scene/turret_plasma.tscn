@@ -1,0 +1,39 @@
+[gd_scene load_steps=9 format=3 uid="uid://c7bny0q7rq2yl"]
+
+[ext_resource type="PackedScene" uid="uid://55ipv7ij7bcg" path="res://scene/turret_parent.tscn" id="1_g84pl"]
+[ext_resource type="Script" path="res://scripts/turret_plasma.gd" id="2_wuwv4"]
+[ext_resource type="PackedScene" uid="uid://du7rlk6sqbkic" path="res://scene/turret_projectile.tscn" id="3_i0kup"]
+[ext_resource type="PackedScene" uid="uid://d1h2n0upb1f11" path="res://models/turret_head_pierce.glb" id="4_fxosn"]
+[ext_resource type="PackedScene" uid="uid://80owkwjy8obt" path="res://models/turret_legs_basic.glb" id="5_5ey04"]
+[ext_resource type="Material" uid="uid://bak28ouni41ni" path="res://assets/shaders/turret_area_check.tres" id="6_qsc1o"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7wa50"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_7gsf3"]
+material = ExtResource("6_qsc1o")
+
+[node name="Turret" instance=ExtResource("1_g84pl")]
+script = ExtResource("2_wuwv4")
+turret_name = "turret_plasma"
+turret_price = 120
+projectile_scene = ExtResource("3_i0kup")
+attack_damage = 3
+attack_range = 7
+attack_speed = 1.2
+bullet_speed = 5
+
+[node name="ProjectileSpawn" parent="Head" index="0"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.297555, -0.757329)
+visible = true
+
+[node name="turret_head_pierce" parent="Head" index="1" instance=ExtResource("4_fxosn")]
+transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0.000494599, 0.292233, 0.113867)
+
+[node name="turret_legs_basic" parent="Body" index="0" instance=ExtResource("5_5ey04")]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 0.981, 0, -0.707107, 0, 0.707107, 0, -0.444, 0)
+
+[node name="CollisionShape3D" parent="Range" index="0"]
+shape = SubResource("BoxShape3D_7wa50")
+
+[node name="VisibleRange" parent="Range" index="1"]
+mesh = SubResource("BoxMesh_7gsf3")

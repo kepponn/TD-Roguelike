@@ -1,8 +1,10 @@
 extends Control
 
 @onready var testItem1 = preload("res://scene/test_item_1.tscn").instantiate()
-@onready var turret_pierce = preload("res://scene/turret_pierce.tscn").instantiate()
 @onready var turret_basic = preload("res://scene/turret_basic.tscn").instantiate()
+@onready var turret_pierce = preload("res://scene/turret_pierce.tscn").instantiate()
+@onready var turret_gatling = preload("res://scene/turret_gatling.tscn").instantiate()
+@onready var turret_plasma = preload("res://scene/turret_plasma.tscn").instantiate()
 @onready var shop_item = preload("res://ui/shop_item.tscn")
 @onready var empty_item = preload("res://ui/shop_empty.tscn")
 
@@ -38,20 +40,20 @@ func update_item():
 		
 		var randomizer = randi_range(0,9)
 		if randomizer >= 0 and randomizer < 3:
-			item.find_child("Price").text = str(15) + " Gold Basic"
-			item.item_name = "What?"
-			item.item_price = 15
-			item.item_scene = preload("res://scene/test_item_1.tscn")
+			item.find_child("Price").text = str(turret_gatling.turret_price) + " Gold Gatling"
+			item.item_name = str(turret_gatling.turret_price)
+			item.item_price = turret_gatling.turret_price
+			item.item_scene = preload("res://scene/turret_gatling.tscn")
 		elif randomizer >= 3 and randomizer < 6:
 			item.find_child("Price").text = str(turret_basic.turret_price) + " Gold Basic"
 			item.item_name = str(turret_basic.turret_price)
 			item.item_price = turret_basic.turret_price
 			item.item_scene = preload("res://scene/turret_basic.tscn")
 		elif randomizer >= 6 and randomizer < 10:
-			item.find_child("Price").text = str(turret_pierce.turret_price) + " Gold Pierce"
-			item.item_name = str(turret_pierce.turret_price)
-			item.item_price = turret_pierce.turret_price
-			item.item_scene = preload("res://scene/turret_pierce.tscn")
+			item.find_child("Price").text = str(turret_plasma.turret_price) + " Gold Plasma"
+			item.item_name = str(turret_plasma.turret_price)
+			item.item_price = turret_plasma.turret_price
+			item.item_scene = preload("res://scene/turret_plasma.tscn")
 		shop_itemList.add_child(item, true)
 		item.pressed.connect(_on_item_button_pressed.bind(item))
 	

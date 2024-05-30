@@ -10,6 +10,7 @@ extends Wall_Parent
 func mount(enable: bool):
 	if enable and is_mountable:
 		 # need better filter than this to list un-mounted item, or maybe add property to all item?
+		 # consider to use scene path, "res://scene/turret/"
 		if player.player_interactedItem.id == "wall_basic" or player.player_interactedItem.id == "wall_mountable" or player.player_interactedItem.id == "wall_spiked" or player.player_interactedItem.id == "shop":
 			return null
 		currently_mountable_item = player.player_interactedItem

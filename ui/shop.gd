@@ -71,15 +71,15 @@ func randomize_shopItem():
 		weight_sum = weight_sum + item_rate[n]
 		
 	#choose a random number between 0 to total weight
-	var random_number = rng.randi_range(0,weight_sum)
-	#print("your random generated number is : ", random_number)
+	var random_number = rng.randi_range(1,weight_sum)
+	print("your random generated number is : ", random_number)
 	
 	for n in item_rate:
 		first_num = second_num
 		second_num = second_num  + item_rate[n]
 		if random_number > first_num and random_number <= second_num:
-			#print("your number are between: ", first_num, " and ", second_num)
-			#print("therefore spawned item will be: ", n)
+			print("your number are between: ", first_num, " and ", second_num)
+			print("therefore spawned item will be: ", n)
 			return n
 
 func update_item():

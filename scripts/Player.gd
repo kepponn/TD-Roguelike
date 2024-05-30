@@ -10,9 +10,14 @@ const JUMP_VELOCITY = 4.5
 @onready var enemies = get_node('/root/Node3D/Enemies')
 @onready var ingame_menu = get_node('/root/Node3D/Control/IngameMenu')
 @onready var shop = get_node('/root/Node3D/Control/Shop')
+@onready var ingame_ui = get_node('/root/Node3D/Control/IngameUI')
+
+@onready var prep_timer = $PreparationTimer
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+
+
 
 var player_ableInteract: bool = false
 var player_isHoldingItem: bool = false
@@ -21,7 +26,8 @@ var player_inspectedItem
 var player_interactedItem
 var player_interactedItem_Temp
 
-var preparation_phase: bool = true
+#preparation time given to player after every wave cleared
+var preparation_time: int = 5
 
 func _physics_process(_delta):
 	var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
@@ -46,10 +52,13 @@ func _physics_process(_delta):
 
 func _ready():
 	$Audio/Bgm/Preparation.play()
+	
+	#preparation time given to player at the beginning of the run
+	$PreparationTimer.start(30)
 
 func open_shop():
 	if player_interactedItem_Temp != null:
-		if player_interactedItem_Temp.name == "Shop" and Input.is_action_just_pressed("inspect") and preparation_phase == true:
+		if player_interactedItem_Temp.name == "Shop" and Input.is_action_just_pressed("inspect") and Global.preparation_phase == true:
 			shop.show()
 
 func mountable_wall():
@@ -63,24 +72,27 @@ func mountable_wall():
 				player_checkItemRange(player_interactedItem, true)
 
 func ready():
-	if Input.is_action_just_pressed("start") and preparation_phase == true:
+	if (Input.is_action_just_pressed("start") or prep_timer.time_left == 0 )and Global.preparation_phase == true:
 		navigation.bake_navigation_mesh()
 		spawner.count_enemies()
 		spawner.spawn_timer.start()
-		preparation_phase = false
-		print("Player Ready, Entering Wave ", spawner.waves, " Defense Phase")
+		ingame_ui.update()
+		Global.preparation_phase = false
+		print("Player Ready, Entering Wave ", Global.waves, " Defense Phase")
 		$Audio/Bgm/Preparation.stop()
 		$Audio/Bgm/Defending.play()
 		shop.hide()
+		$PreparationTimer.stop()
 	
 func wave_cleared():
-	if enemies.get_child_count() == 0 and spawner.total_enemies == 0 and preparation_phase == false:
-		spawner.waves = spawner.waves + 1
+	if enemies.get_child_count() == 0 and Global.enemy_left == 0 and Global.preparation_phase == false:
+		Global.waves = Global.waves + 1
 		shop.update_item()
-		preparation_phase = true
+		Global.preparation_phase = true
 		print("Wave_Cleared, Entering Prep Phase")
 		$Audio/Bgm/Preparation.play()
 		$Audio/Bgm/Defending.stop()
+		prep_timer.start(preparation_time)
 
 func esc():
 	if Input.is_action_just_pressed("exit"):

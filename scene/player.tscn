@@ -103,5 +103,8 @@ mesh = SubResource("CylinderMesh_i5sef")
 transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_x73qa")
 
+[node name="PreparationTimer" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="body_entered" from="Node3D/Interaction Zone" to="." method="_on_interaction_zone_body_entered"]
 [connection signal="body_exited" from="Node3D/Interaction Zone" to="." method="_on_interaction_zone_body_exited"]

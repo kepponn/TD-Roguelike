@@ -1,8 +1,6 @@
 extends Marker3D
 
-@onready var base_enemiesCount: int = 2
-var total_enemies: int
-var waves: int = 1
+
 
 var enemies: PackedScene = preload("res://scene/enemy.tscn")
 
@@ -19,15 +17,16 @@ func _process(_delta):
 	
 
 func spawn_enemies():
-	if $Timer.time_left <= 0 and total_enemies > 0 and $"../Player".preparation_phase == false:
-		total_enemies = total_enemies - 1
+	if $Timer.time_left <= 0 and Global.enemy_left > 0 and Global.preparation_phase == false:
+		Global.enemy_left = Global.enemy_left - 1
 		var enemy = enemies.instantiate()
 		get_node("/root/Node3D/Enemies").add_child(enemy,true)
 		enemy.transform = global_transform
 		$Timer.start(randf_range(1.5,3.0))
 		
-		print("Enemies Left = ", total_enemies)
+		print("Enemies Left = ", Global.enemy_left)
 
 func count_enemies():
 	#W 0:00:03:0280   Narrowing conversion (float is converted to int and loses precision).
-	total_enemies = base_enemiesCount * waves
+	Global.total_enemies = Global.base_enemiesCount * Global.waves
+	Global.enemy_left = Global.total_enemies

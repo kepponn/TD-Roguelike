@@ -24,9 +24,6 @@ var player_interactedItem_Temp
 var preparation_phase: bool = true
 
 func _physics_process(delta):
-	# Why does we have jump?
-	player_jump(delta)
-	
 	var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
@@ -90,14 +87,6 @@ func esc():
 		ingame_menu.show()
 		ingame_menu.esc()
 		get_tree().paused = true
-
-func player_jump(delta):
-	# Add the gravity.
-	if not is_on_floor():
-		velocity.y -= gravity * delta
-	# Handle jump.
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
 
 func player_rotation(direction):
 	if direction != Vector3.ZERO:

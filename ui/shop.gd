@@ -18,14 +18,34 @@ extends Control
 var reroll_price: int = 10
 var mouse_input
 
+var item_rate = {
+	#current sum = 250
+	"wall_basic" = 120,
+	"wall_mountable" = 20,
+	"wall_spiked" = 20,
+	"turret_basic" = 60,
+	"turret_pierce" = 10,
+	"turret_gatling" = 10,
+	"turret_plasma" = 10,
+}
+
+var choosen
+
+func randomizer():
+	pass
 
 func _ready():
 	update_item()
+	#print(item_rate.keys()[1])
 
 func _process(_delta):
 	update_uiText()
 	update_storageItem()
 	check_mouseInput()
+	
+	if Input.is_action_just_pressed("RandomShopItemTEST"):
+		choosen=randomize_shopItem()
+		print(choosen)
 
 func spawn_item(scene):
 	var turret = scene.instantiate()
@@ -40,11 +60,36 @@ func spawn_item(scene):
 
 func seed_item(seeder, property):
 	# Need to seed image placeholder and name property into shop_item.gd
+	#need to instantiate once to get property
 	seeder.find_child("Price").text = str(property.price)
 	seeder.item_name = str(property.id)
 	seeder.item_price = property.price
 	var path_temp: String = "res://scene/"+str(property.id)+".tscn"
 	seeder.item_scene = load(path_temp)
+
+func randomize_shopItem():
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	
+	var weight_sum = 0
+	var first_num = 0
+	var second_num = 0
+	
+	#sum all of the weight
+	for n in item_rate:
+		weight_sum = weight_sum + item_rate[n]
+		
+	#choose a random number between 0 to total weight
+	var random_number = rng.randi_range(0,weight_sum)
+	print("your random generated number is : ", random_number)
+	
+	for n in item_rate:
+		first_num = second_num
+		second_num = second_num  + item_rate[n]
+		if random_number > first_num and random_number <= second_num:
+			print("your number are between: ", first_num, " and ", second_num)
+			print("therefore spawned item will be: ", n)
+			return n
 
 func update_item():
 	for item in shop_itemList.get_children():

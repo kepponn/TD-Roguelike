@@ -26,6 +26,7 @@ var input_actions = {
 func _ready():
 	_createActionList()
 	
+	
 func _createActionList():
 	
 	InputMap.load_from_project_settings()
@@ -38,6 +39,7 @@ func _createActionList():
 		var action_label = button.find_child("LabelAction")
 		var input_label = button.find_child("LabelInput")
 		#Set Action text to selected action (ex. UI_left,UI_right, interact, exit)
+		
 		action_label.text = input_actions[action]
 		
 		#check if the selected action is binded with any key or not

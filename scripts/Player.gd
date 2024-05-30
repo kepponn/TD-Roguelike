@@ -23,7 +23,7 @@ var player_interactedItem_Temp
 
 var preparation_phase: bool = true
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
@@ -153,9 +153,19 @@ func player_swapItem(held_item, ground_item):
 	held_item.position = ground_item.position # Swap the position property from held item to ground item
 	held_item.rotation.y = 0 # Repair the Y-AXIS rotation to default
 
-func player_rotateItem(_item):
-	# refactor rotate here if possible
-	pass
+func player_rotateItem():
+	if player_isHoldingItem:
+		# rotate in-hand item
+		# since this item in in hand it will need to pass grid_check() function
+		print("Rotating on-hand " + str(player_interactedItem) + " to " + str(player_interactedItem.rotation_degrees))
+		player_interactedItem.rotation_degrees += Vector3(0, 90, 0)
+		audio_randomSelector($Audio/Pop, -10)
+	elif !player_isHoldingItem and player_ableInteract and player_interactedItem_Temp != null:
+		# rotate on-ground item
+		player_interactedItem = player_interactedItem_Temp
+		player_interactedItem.rotation_degrees += Vector3(0, 90, 0)
+		print("Rotating on-ground " + str(player_interactedItem) + " to " + str(player_interactedItem.rotation_degrees))
+		audio_randomSelector($Audio/Pop, -10)
 
 func player_checkItemRange(item, enable: bool = true):
 	var regex = RegEx.new() # need to add some regex to check for all the name id of turret
@@ -217,19 +227,7 @@ func player_movingItems():
 		player_checkItemRange(player_inspectedItem, false)
 		
 	elif Input.is_action_just_pressed("rotate"):
-		if player_isHoldingItem:
-			# rotate in-hand item
-			# since this item in in hand it will need to pass grid_check() function
-			print("Rotating on-hand " + str(player_interactedItem) + " to " + str(player_interactedItem.rotation_degrees))
-			player_interactedItem.rotation_degrees += Vector3(0, 90, 0)
-			audio_randomSelector($Audio/Pop, -10)
-		elif !player_isHoldingItem and player_ableInteract and player_interactedItem_Temp != null:
-			# rotate on-ground item
-			player_interactedItem = player_interactedItem_Temp
-			player_interactedItem.rotation_degrees += Vector3(0, 90, 0)
-			print("Rotating on-ground " + str(player_interactedItem) + " to " + str(player_interactedItem.rotation_degrees))
-			audio_randomSelector($Audio/Pop, -10)
-		#player_rotateItem(player_interactedItem)
+		player_rotateItem()
 	
 func _on_interaction_zone_body_entered(body):
 	if body.is_class("GridMap") and player_isHoldingItem:

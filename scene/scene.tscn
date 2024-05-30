@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://wil6fipqm8m1" path="res://scene/shop_object.tscn" id="5_ew274"]
 [ext_resource type="Script" path="res://scripts/target.gd" id="7_b3oj4"]
 [ext_resource type="PackedScene" uid="uid://c7bny0q7rq2yl" path="res://scene/turret_plasma.tscn" id="7_p8ft8"]
-[ext_resource type="PackedScene" uid="uid://cuig6rk28kptx" path="res://models/target.glb" id="8_7h401"]
+[ext_resource type="PackedScene" uid="uid://d2yu6msl3mexb" path="res://models/target.glb" id="8_7h401"]
 [ext_resource type="PackedScene" uid="uid://b8keu180bnh1a" path="res://scene/turret_pierce.tscn" id="8_h6j8t"]
 [ext_resource type="Script" path="res://scripts/spawn.gd" id="9_4awx7"]
 [ext_resource type="PackedScene" uid="uid://cxo2xqjctdmut" path="res://models/spawn.glb" id="10_hlbb7"]
@@ -38,7 +38,7 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 23,
 shadow_enabled = true
 
 [node name="Player" parent="." instance=ExtResource("1_rl4h5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.572391, 2, 1.76821)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.572391, 1.40085, 1.76821)
 
 [node name="Enemies" type="Node3D" parent="."]
 

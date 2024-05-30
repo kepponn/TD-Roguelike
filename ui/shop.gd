@@ -1,12 +1,12 @@
 extends Control
 
-@onready var wall_basic = preload("res://scene/wall_basic.tscn").instantiate()
-@onready var wall_mountable = preload("res://scene/wall_mountable.tscn").instantiate()
-@onready var wall_spiked = preload("res://scene/wall_spiked.tscn").instantiate()
-@onready var turret_basic = preload("res://scene/turret_basic.tscn").instantiate()
-@onready var turret_pierce = preload("res://scene/turret_pierce.tscn").instantiate()
-@onready var turret_gatling = preload("res://scene/turret_gatling.tscn").instantiate()
-@onready var turret_plasma = preload("res://scene/turret_plasma.tscn").instantiate()
+#@onready var wall_basic = preload("res://scene/wall_basic.tscn").instantiate()
+#@onready var wall_mountable = preload("res://scene/wall_mountable.tscn").instantiate()
+#@onready var wall_spiked = preload("res://scene/wall_spiked.tscn").instantiate()
+#@onready var turret_basic = preload("res://scene/turret_basic.tscn").instantiate()
+#@onready var turret_pierce = preload("res://scene/turret_pierce.tscn").instantiate()
+#@onready var turret_gatling = preload("res://scene/turret_gatling.tscn").instantiate()
+#@onready var turret_plasma = preload("res://scene/turret_plasma.tscn").instantiate()
 
 @onready var shop_item = preload("res://ui/shop_item.tscn")
 @onready var empty_item = preload("res://ui/shop_empty.tscn")
@@ -29,23 +29,13 @@ var item_rate = {
 	"turret_plasma" = 10,
 }
 
-var choosen
-
-func randomizer():
-	pass
-
 func _ready():
 	update_item()
-	#print(item_rate.keys()[1])
 
 func _process(_delta):
 	update_uiText()
 	update_storageItem()
 	check_mouseInput()
-	
-	if Input.is_action_just_pressed("RandomShopItemTEST"):
-		choosen=randomize_shopItem()
-		print(choosen)
 
 func spawn_item(scene):
 	var turret = scene.instantiate()
@@ -58,14 +48,15 @@ func spawn_item(scene):
 	get_node('/root/Node3D/NavigationRegion3D/Item/Shop/ItemPlaceholder').set_collision_mask_value(1, true)
 	#get_node('/root/Node3D/NavigationRegion3D/Item/Shop/ItemPlaceholder').set_collision_mask_value(1, false)
 
-func seed_item(seeder, property):
+func seed_item(seeder, property): # property are taken from item_rate where it MUST match an item.id
 	# Need to seed image placeholder and name property into shop_item.gd
-	#need to instantiate once to get property
-	seeder.find_child("Price").text = str(property.price)
-	seeder.item_name = str(property.id)
-	seeder.item_price = property.price
-	var path_temp: String = "res://scene/"+str(property.id)+".tscn"
+	var path_temp: String = "res://scene/"+str(property)+".tscn"
 	seeder.item_scene = load(path_temp)
+	var property_temp = load(path_temp).instantiate()
+	# need to instantiate once to get property
+	seeder.find_child("Price").text = str(property_temp.price)
+	seeder.item_name = str(property_temp.id)
+	seeder.item_price = property_temp.price
 
 func randomize_shopItem():
 	var rng = RandomNumberGenerator.new()
@@ -81,14 +72,14 @@ func randomize_shopItem():
 		
 	#choose a random number between 0 to total weight
 	var random_number = rng.randi_range(0,weight_sum)
-	print("your random generated number is : ", random_number)
+	#print("your random generated number is : ", random_number)
 	
 	for n in item_rate:
 		first_num = second_num
 		second_num = second_num  + item_rate[n]
 		if random_number > first_num and random_number <= second_num:
-			print("your number are between: ", first_num, " and ", second_num)
-			print("therefore spawned item will be: ", n)
+			#print("your number are between: ", first_num, " and ", second_num)
+			#print("therefore spawned item will be: ", n)
 			return n
 
 func update_item():
@@ -96,13 +87,7 @@ func update_item():
 			item.queue_free()
 	for items in range(8):
 		var item = shop_item.instantiate()
-		var randomizer = randi_range(0,9)
-		if randomizer >= 0 and randomizer < 3:
-			seed_item(item, wall_basic)
-		elif randomizer >= 3 and randomizer < 6:
-			seed_item(item, wall_spiked)
-		elif randomizer >= 6 and randomizer < 10:
-			seed_item(item ,turret_gatling)
+		seed_item(item, randomize_shopItem())
 		shop_itemList.add_child(item, true)
 		item.pressed.connect(_on_item_button_pressed.bind(item))
 

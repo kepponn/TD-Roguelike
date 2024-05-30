@@ -60,6 +60,18 @@ func ready_up():
 	$RayCast3D.target_position.z = -attack_range
 	$RayCast3D.hide()
 
+func update_range(add_or_remove_range: int):
+	# Add range with positive number and remove range with negative number
+	attack_range += add_or_remove_range
+	if $Range/CollisionShape3D.get_shape().is_class("CylinderShape3D"):
+		range_radius.shape.radius = attack_range
+		visible_range.mesh.top_radius = attack_range
+	elif $Range/CollisionShape3D.get_shape().is_class("BoxShape3D"):
+		range_radius.shape.size.z = attack_range
+		range_radius.position.z = -(attack_range * 0.5)
+		visible_range.mesh.size.z = attack_range
+		visible_range.position.z = -(attack_range * 0.5)
+
 func start_process():
 	lock_on()
 	shoot()

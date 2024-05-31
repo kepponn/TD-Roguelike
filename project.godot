@@ -19,6 +19,10 @@ config/features=PackedStringArray("4.2", "Forward Plus")
 Global="*res://autoload/global.gd"
 Settings="*res://autoload/setting.gd"
 
+[display]
+
+window/stretch/mode="canvas_items"
+
 [input]
 
 ui_left={

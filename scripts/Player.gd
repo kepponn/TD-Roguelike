@@ -26,8 +26,7 @@ var player_interactedItem
 var player_interactedItem_Temp
 
 func _physics_process(_delta):
-	
-		
+	print(Global.life_array)
 	#navigation.bake_navigation_mesh()
 	var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
@@ -82,6 +81,8 @@ func ready():
 		$Audio/Bgm/Defending.play()
 		shop.hide()
 		prep_timer.stop()
+		player_ableInteract = false
+		
 	if Input.is_action_just_pressed("start") and Global.is_pathReachable == false:
 		print("Unable to ready, Enemy Path is Blocked, Please Move some Blocks!!!")
 
@@ -94,6 +95,7 @@ func wave_cleared():
 		$Audio/Bgm/Preparation.play()
 		$Audio/Bgm/Defending.stop()
 		prep_timer.start(Global.preparation_time)
+		player_ableInteract = true
 
 func esc():
 	if Input.is_action_just_pressed("exit"):
@@ -151,6 +153,9 @@ func player_placementPreview(enable: bool):
 		# Set albedo material here...
 	if !enable:
 		#print("Deleteing preview belong to "+ str(player_interactedItem.id))
+		match %"Placement Item".get_child(0).id:
+			"extra_health":
+				%"Placement Item".get_child(0).destroy()
 		%"Placement Item".get_child(0).queue_free()
 
 func player_holdItem(item) -> void: # need to return something so the last timer didnt stop prematurely

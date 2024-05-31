@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://dl8dey22x882y"]
+[gd_scene load_steps=21 format=3 uid="uid://dl8dey22x882y"]
 
 [ext_resource type="PackedScene" uid="uid://dfa3wfjb564fn" path="res://scene/player.tscn" id="1_rl4h5"]
 [ext_resource type="NavigationMesh" uid="uid://1kgcqxfwhe74" path="res://Navigation.tres" id="2_qtpp8"]
@@ -6,12 +6,13 @@
 [ext_resource type="PackedScene" uid="uid://wil6fipqm8m1" path="res://scene/shop.tscn" id="5_ew274"]
 [ext_resource type="Script" path="res://scripts/target.gd" id="7_b3oj4"]
 [ext_resource type="PackedScene" uid="uid://c7bny0q7rq2yl" path="res://scene/turret_plasma.tscn" id="7_p8ft8"]
-[ext_resource type="PackedScene" uid="uid://d2yu6msl3mexb" path="res://models/target.glb" id="8_7h401"]
+[ext_resource type="PackedScene" uid="uid://cuig6rk28kptx" path="res://models/target.glb" id="8_7h401"]
 [ext_resource type="PackedScene" uid="uid://b8keu180bnh1a" path="res://scene/turret_pierce.tscn" id="8_h6j8t"]
 [ext_resource type="Script" path="res://scripts/spawn.gd" id="9_4awx7"]
 [ext_resource type="PackedScene" uid="uid://cxo2xqjctdmut" path="res://models/spawn.glb" id="10_hlbb7"]
 [ext_resource type="PackedScene" uid="uid://r0wfovaac7gq" path="res://scene/turret_basic.tscn" id="11_yfnvx"]
 [ext_resource type="PackedScene" uid="uid://xbhbdy3st7vx" path="res://scene/wall_mountable.tscn" id="12_lqyh6"]
+[ext_resource type="PackedScene" uid="uid://c8otvd8emjkql" path="res://scene/extra_health.tscn" id="12_lrh8u"]
 [ext_resource type="PackedScene" uid="uid://dxveo10rv12xy" path="res://scene/turret_gatling.tscn" id="15_epdbe"]
 [ext_resource type="PackedScene" uid="uid://b163wrbe72fm5" path="res://ui/ingame_menu.tscn" id="16_gndtv"]
 [ext_resource type="PackedScene" uid="uid://g2dvesmiy3l4" path="res://scene/wall_basic.tscn" id="16_nmw41"]
@@ -113,6 +114,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, 8)
 [node name="Wall10" parent="NavigationRegion3D/Item" instance=ExtResource("16_nmw41")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1, 2)
 
+[node name="ExtraHealth" parent="NavigationRegion3D/Item" instance=ExtResource("12_lrh8u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, 0)
+
+[node name="ExtraHealth2" parent="NavigationRegion3D/Item" instance=ExtResource("12_lrh8u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, 1)
+
+[node name="ExtraHealth3" parent="NavigationRegion3D/Item" instance=ExtResource("12_lrh8u")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, 2)
+
 [node name="PreparationTimer" type="Timer" parent="."]
 one_shot = true
 
@@ -137,9 +147,17 @@ one_shot = true
 debug_enabled = true
 debug_path_custom_color = Color(1, 0, 1, 1)
 
-[node name="Control" type="Node" parent="."]
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
 
 [node name="Button" type="RichTextLabel" parent="Control"]
+layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -156,10 +174,13 @@ text = "[center] Y[/center]
 scroll_active = false
 
 [node name="IngameUI" parent="Control" instance=ExtResource("17_d5b3e")]
+layout_mode = 1
 
 [node name="Shop" parent="Control" instance=ExtResource("17_vv3g3")]
 unique_name_in_owner = true
 visible = false
+layout_mode = 1
+metadata/_edit_use_anchors_ = true
 
 [node name="IngameMenu" parent="Control" instance=ExtResource("16_gndtv")]
 unique_name_in_owner = true

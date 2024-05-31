@@ -38,4 +38,11 @@ func hit(damage):
 		Global.enemy_left = Global.enemy_left - 1
 		queue_free()
 
-
+func _on_navigation_agent_3d_target_reached():
+	if Global.life_array.is_empty():
+		get_tree().change_scene_to_file("res://ui/main_menu.tscn")
+	if Global.life_array.size() > 0:
+		Global.life_array[0].destroy()
+	Global.enemy_left = Global.enemy_left - 1
+	queue_free()
+	

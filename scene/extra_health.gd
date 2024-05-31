@@ -1,16 +1,15 @@
 extends StaticBody3D
-class_name Wall_Parent
 
-@export_category("Basic Information")
-# Do we need this still for the regex? or we using with StaticObject3D node name?
-@export var id: String
-var price: int
+var id = "extra_health"
+var price
 
-var mountable: bool
-var spiked: bool
+func _ready():
+	seed_property()
+	Global.life_array.append(self)
 
-var attack_damage = null
-var attack_speed = null
+func destroy():
+	Global.life_array.erase(self)
+	queue_free()
 
 func seed_property():
 	var file = FileAccess.open("res://autoload/item_db.json", FileAccess.READ)
@@ -23,6 +22,3 @@ func seed_property():
 		var item_data = data[id]
 		for property in item_data:
 			self.set(property, item_data[property])
-
-func ready_up():
-	seed_property()

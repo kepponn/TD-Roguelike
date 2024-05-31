@@ -1,6 +1,6 @@
 {
   "turret_basic": {
-	"price": 20,
+	"price": 35,
 	"attack_damage": 1,
 	"attack_range": 5,
 	"attack_speed": 0.5,
@@ -48,6 +48,11 @@
    "wall_spiked": {
 	"price": 180,
 	"mountable": false,
-	"spiked": true
+	"spiked": true,
+	"attack_damage": 1,
+	"attack_speed": 3
+  },
+   "extra_health": {
+	"price": 500
   }
 }

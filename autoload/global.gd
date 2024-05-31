@@ -8,6 +8,9 @@ var preparation_phase: bool = true
 var preparation_time: int = 60 #preparation time given to player after every wave cleared
 var is_pathReachable: bool
 
+var life_array : Array = []
+
+
 #Enemy
 var spawn_position
 var base_enemiesCount: int = 2 #base number of enemy

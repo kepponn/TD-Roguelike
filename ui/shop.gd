@@ -8,6 +8,7 @@ extends Control
 #@onready var turret_gatling = preload("res://scene/turret_gatling.tscn").instantiate()
 #@onready var turret_plasma = preload("res://scene/turret_plasma.tscn").instantiate()
 
+
 @onready var shop_item = preload("res://ui/shop_item.tscn")
 @onready var empty_item = preload("res://ui/shop_empty.tscn")
 
@@ -20,13 +21,14 @@ var mouse_input
 
 var item_rate = {
 	#current sum = 250
-	"wall_basic" = 120,
+	"wall_basic" = 100,
 	"wall_mountable" = 20,
 	"wall_spiked" = 20,
 	"turret_basic" = 60,
 	"turret_pierce" = 10,
 	"turret_gatling" = 10,
 	"turret_plasma" = 10,
+	"extra_health" = 5,
 }
 
 func _ready():
@@ -58,6 +60,26 @@ func seed_item(seeder, property): # property are taken from item_rate where it M
 	seeder.find_child("Price").text = str(property_temp.price)
 	seeder.item_name = str(property_temp.id)
 	seeder.item_price = property_temp.price
+	
+	var regex1 = RegEx.new()
+	var regex2 = RegEx.new()
+	var turret = r"^(?i)turret.*$"
+	var wall = r"^(?i)wall.*$"
+	
+	regex1.compile(turret)
+	regex2.compile(wall)
+	
+	if regex1.search(property_temp.id):
+		print(property_temp.attack_damage)
+		print(property_temp.attack_range)
+		print(property_temp.attack_speed)
+		seeder.text1 = property_temp.attack_damage
+		seeder.text2 = property_temp.attack_range
+		seeder.text3 = property_temp.attack_speed
+
+	if property_temp.id == "wall_spiked" :
+		seeder.text1 = property_temp.attack_damage
+		seeder.text3 = property_temp.attack_speed
 
 func randomize_shopItem():
 	var rng = RandomNumberGenerator.new()

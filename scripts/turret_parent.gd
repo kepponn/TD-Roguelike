@@ -27,7 +27,9 @@ var price: int
 var attack_damage: int
 var attack_range: int
 var attack_speed: float
+
 var bullet_speed: int
+#unique status depend on item
 var bullet_pierce: int
 var bullet_ricochet: int
 # Other information

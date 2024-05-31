@@ -7,6 +7,9 @@ extends Wall_Parent
 
 @onready var player = get_node('/root/Node3D/Player')
 
+func _ready():
+	ready_up()
+
 func mount(enable: bool):
 	if enable and is_mountable:
 		 # need better filter than this to list un-mounted item, or maybe add property to all item?

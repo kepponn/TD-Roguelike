@@ -15,8 +15,6 @@ radius = 1.0
 [node name="Wall" instance=ExtResource("1_dsjnv")]
 script = ExtResource("2_dibqg")
 id = "wall_spiked"
-price = 180
-spiked = true
 
 [node name="CollisionShape3D" parent="." index="0"]
 shape = SubResource("BoxShape3D_dnwvq")

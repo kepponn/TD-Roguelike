@@ -1,15 +1,14 @@
 [gd_scene load_steps=5 format=3 uid="uid://g2dvesmiy3l4"]
 
 [ext_resource type="PackedScene" uid="uid://d3uo4ylqy172v" path="res://scene/wall_parent.tscn" id="1_rmy5t"]
-[ext_resource type="Script" path="res://wall_basic.gd" id="2_1kiuj"]
+[ext_resource type="Script" path="res://scripts/wall_basic.gd" id="2_i76cn"]
 [ext_resource type="PackedScene" uid="uid://dv46t3u1gfyil" path="res://models/wall_basic.glb" id="3_dapxq"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_q1j2m"]
 
 [node name="Wall" instance=ExtResource("1_rmy5t")]
-script = ExtResource("2_1kiuj")
+script = ExtResource("2_i76cn")
 id = "wall_basic"
-price = 20
 
 [node name="CollisionShape3D" parent="." index="0"]
 shape = SubResource("BoxShape3D_q1j2m")

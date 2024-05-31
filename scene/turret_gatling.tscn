@@ -17,12 +17,7 @@ height = 0.001
 [node name="Turret" instance=ExtResource("1_tne4o")]
 script = ExtResource("2_vxct8")
 id = "turret_gatling"
-price = 120
 projectile_scene = ExtResource("3_q84xx")
-attack_damage = 1
-attack_range = 4
-attack_speed = 0.3
-bullet_speed = 10
 
 [node name="ProjectileSpawn" parent="Head" index="0"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.334663, -0.876866)

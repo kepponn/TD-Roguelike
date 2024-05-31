@@ -17,19 +17,19 @@ class_name Turret_Parent
 @export_category("Basic Information")
 # Do we need this still for the regex? or we using with StaticObject3D node name?
 @export var id: String 
-@export var price: int
+var price: int
 @export_category("Model and Scene Assets")
 # How to get the asset into the node area of $Head and $Body?
 # @export var asset_head: PackedScene
 # @export var asset_legs: PackedScene
 @export var projectile_scene: PackedScene
-@export_category("Attack Information")
-@export var attack_damage: int
-@export var attack_range: int
-@export var attack_speed: float
-@export var bullet_speed: int
-@export var bullet_pierce: int
-@export var bullet_ricochet: int
+# @export_category("Attack Information")
+var attack_damage: int
+var attack_range: int
+var attack_speed: float
+var bullet_speed: int
+var bullet_pierce: int
+var bullet_ricochet: int
 # Other information
 @onready var visible_range: MeshInstance3D = $Range/VisibleRange
 @onready var range_radius: CollisionShape3D = $Range/CollisionShape3D
@@ -41,7 +41,20 @@ var shoot_direction: Vector3
 # $Head/ProjectileSpawn will need to be manually sets to fit the models
 # Therefore this node need to be erased from this code
 
+func seed_property():
+	var file = FileAccess.open("res://autoload/item_db.json", FileAccess.READ)
+	var file_text = file.get_as_text()
+	file.close()
+	# Parse JSON data to be easily modified by for loops
+	var data = JSON.parse_string(file_text)
+	# Check if the id exist in JSON data
+	if data.has(id):
+		var item_data = data[id]
+		for property in item_data:
+			self.set(property, item_data[property])
+
 func ready_up():
+	seed_property()
 	# Call this function once in _ready() func of the child scene
 	# Set range and attack speed according to inspector values
 	# print($Range/CollisionShape3D.get_shape())

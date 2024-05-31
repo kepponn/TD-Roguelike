@@ -1,1 +1,0 @@
-extends Wall_Parent

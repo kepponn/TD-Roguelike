@@ -53,6 +53,7 @@ func seed_item(seeder, property): # property are taken from item_rate where it M
 	var path_temp: String = "res://scene/"+str(property)+".tscn"
 	seeder.item_scene = load(path_temp)
 	var property_temp = load(path_temp).instantiate()
+	property_temp.seed_property()
 	# need to instantiate once to get property
 	seeder.find_child("Price").text = str(property_temp.price)
 	seeder.item_name = str(property_temp.id)
@@ -72,14 +73,14 @@ func randomize_shopItem():
 		
 	#choose a random number between 0 to total weight
 	var random_number = rng.randi_range(1,weight_sum)
-	print("your random generated number is : ", random_number)
+	#print("your random generated number is : ", random_number)
 	
 	for n in item_rate:
 		first_num = second_num
 		second_num = second_num  + item_rate[n]
 		if random_number > first_num and random_number <= second_num:
-			print("your number are between: ", first_num, " and ", second_num)
-			print("therefore spawned item will be: ", n)
+			#print("your number are between: ", first_num, " and ", second_num)
+			#print("therefore spawned item will be: ", n)
 			return n
 
 func update_item():

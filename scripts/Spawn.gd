@@ -15,7 +15,7 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	spawn_enemies()
 	check_path()
 
@@ -26,10 +26,10 @@ func check_path():
 	
 	if nav.is_target_reachable() == true :
 		Global.is_pathReachable = true
-		print("path is ok")
+		#print("path is ok")
 	elif nav.is_target_reachable() == false :
 		Global.is_pathReachable = false
-		print("path is blocked")
+		#print("path is blocked")
 	
 func spawn_enemies():
 	if $Timer.time_left <= 0 and Global.enemy_spawned != Global.total_enemies and Global.preparation_phase == false:

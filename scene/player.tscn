@@ -99,6 +99,15 @@ process_mode = 4
 visible = false
 mesh = SubResource("CylinderMesh_i5sef")
 
+[node name="ColorRect" type="ColorRect" parent="Node3D"]
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.25098, 0.188235, 1, 0.796078)
+
+[node name="Placement Item" type="Node3D" parent="Node3D/ColorRect"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
+
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_x73qa")

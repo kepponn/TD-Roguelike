@@ -20,6 +20,7 @@ func mount(enable: bool):
 		print("Mounting "+str(currently_mountable_item)+" to "+str(self))
 		# Basically player_putItem() + check_grid() function
 		player.player_isHoldingItem = false
+		player.player_placementPreview(false)
 		currently_mountable_item.global_position = self.position + mountable_pos
 		currently_mountable_item.global_rotation_degrees.y = round(currently_mountable_item.global_rotation_degrees.y / 90.0) * 90.0
 		currently_mountable_item.reparent(self, true)

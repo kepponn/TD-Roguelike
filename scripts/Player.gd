@@ -26,6 +26,8 @@ var player_interactedItem
 var player_interactedItem_Temp
 
 func _physics_process(_delta):
+	
+		
 	#navigation.bake_navigation_mesh()
 	var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
@@ -41,6 +43,7 @@ func _physics_process(_delta):
 	player_rotation(direction)
 	open_shop()
 	mountable_wall()
+	player_placementPreviewProcess()
 	player_movingItems()
 	ready()
 	wave_cleared()
@@ -81,6 +84,7 @@ func ready():
 		prep_timer.stop()
 	if Input.is_action_just_pressed("start") and Global.is_pathReachable == false:
 		print("Unable to ready, Enemy Path is Blocked, Please Move some Blocks!!!")
+
 func wave_cleared():
 	if enemies.get_child_count() == 0 and Global.enemy_left == 0 and Global.preparation_phase == false:
 		Global.waves = Global.waves + 1
@@ -129,8 +133,29 @@ func check_grid(import_pos, export_pos):
 	# Return the value in vector3 for future processing by tweens
 	return Vector3(x, y, z)
 
+func player_placementPreviewProcess():
+	# This is the essential process function for player_placementPreview()
+	if %"Placement Item".get_child_count() > 0:
+		%"Placement Item".get_child(0).process_mode = PROCESS_MODE_DISABLED # Need to be executed here, the player_placementPreview function cannot handle the request
+		%"Placement Item".get_child(0).global_position = check_grid(%"Interaction Zone", %"Placement Item".get_child(0))
+		%"Placement Item".get_child(0).global_rotation_degrees.y = round(%"Placement Item".get_child(0).global_rotation_degrees.y / 90.0) * 90.0
+
+func player_placementPreview(enable: bool):
+	# This function show the player placement preview blueprint (still need to add albedo to material color)
+	# This function is embbeded in: player_heldItem(), player_putItem(), player_swapItem(), and mountable_wall chenanigans
+	if enable:
+		#print("Creating preview for "+ str(player_interactedItem.id))
+		var path_temp: String = "res://scene/"+str(player_interactedItem.id)+".tscn"
+		var item_temp = load(path_temp).instantiate()
+		%"Placement Item".add_child(item_temp, true)
+		# Set albedo material here...
+	if !enable:
+		#print("Deleteing preview belong to "+ str(player_interactedItem.id))
+		%"Placement Item".get_child(0).queue_free()
+
 func player_holdItem(item) -> void: # need to return something so the last timer didnt stop prematurely
 	$Audio/SelectSfx.play()
+	player_placementPreview(true)
 	item.reparent(holded_item, true) # Change the item parent into `%"Holded Item"` which reside in player node
 	if item.name == "Shop":
 		item.set_collision_layer_value(2, false)
@@ -143,6 +168,7 @@ func player_holdItem(item) -> void: # need to return something so the last timer
 
 func player_putItem(item):
 	$Audio/SelectSfx.play()
+	player_placementPreview(false)
 	item.reparent(parent_item, true) # Change the item parent into `%Item` node
 	#item.set_collision_layer_value(1, true) # Enable the collision layer of the item
 	# Check the grid of item when putting down to the world
@@ -153,9 +179,9 @@ func player_putItem(item):
 	if item.name == "Shop":
 		item.set_collision_layer_value(2, true)
 	item.set_collision_layer_value(1, true)
-	
 
 func player_swapItem(held_item, ground_item):
+	player_placementPreview(false)
 	if held_item.name == "Shop":
 		held_item.set_collision_layer_value(2, true)
 	held_item.reparent(parent_item, true) 
@@ -227,6 +253,7 @@ func player_movingItems():
 		player_checkItemRange(player_interactedItem, false)
 		# Take on-ground item
 		player_interactedItem = player_interactedItem_Temp
+		print("Now holding " + str(player_interactedItem) + " as result from swapping item")
 		player_holdItem(player_interactedItem)
 		await get_tree().create_timer(0.15).timeout
 		player_checkItemRange(player_interactedItem, true)

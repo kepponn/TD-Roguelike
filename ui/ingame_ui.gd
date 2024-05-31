@@ -1,5 +1,6 @@
 extends Control
 @onready var player = get_node('/root/Node3D/Player')
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -14,21 +15,28 @@ func _process(delta):
 		$MarginContainer/Control/PreparationTimeLeftBar.hide()
 		$MarginContainer/Control/EnemyLeftBar.show()
 	
-	
+	$MarginContainer/Control/Waves.text = "Waves " + str(Global.waves)
 	#Enemey Bar and Label
+	$MarginContainer/Control/EnemyLeftBar.max_value = Global.total_enemies
 	$MarginContainer/Control/EnemyLeftBar.value = Global.enemy_left
 	$MarginContainer/Control/EnemyLeftBar/Label.text = str(Global.enemy_left)
 	#Preparation Bar and Label
-	$MarginContainer/Control/PreparationTimeLeftBar.value = player.prep_timer.time_left
-	$MarginContainer/Control/PreparationTimeLeftBar/Label.text = str(int(player.prep_timer.time_left))
+	if Global.waves == 1:
+		$MarginContainer/Control/PreparationTimeLeftBar.max_value = Global.preparation_time
+		$MarginContainer/Control/PreparationTimeLeftBar.value = $MarginContainer/Control/PreparationTimeLeftBar.max_value
+		$MarginContainer/Control/PreparationTimeLeftBar/Label.text = "Press ''Space'' to Start"
+	else:
+		$MarginContainer/Control/PreparationTimeLeftBar.max_value = Global.preparation_time
+		$MarginContainer/Control/PreparationTimeLeftBar.value = player.prep_timer.time_left
+		$MarginContainer/Control/PreparationTimeLeftBar/Label.text = str(int(player.prep_timer.time_left))
 	#Currency
 	$MarginContainer/Control/TextureRect/PlayerCurrencyCount.text = str(Global.currency)
 
-func update():
-	#Called only on Player -> func ready()
-	$MarginContainer/Control/Waves.text = "Waves " + str(Global.waves)
-	$MarginContainer/Control/EnemyLeftBar.max_value = Global.total_enemies
-	$MarginContainer/Control/PreparationTimeLeftBar.max_value = player.preparation_time
+#func update():
+	##Called only on Player -> func ready()
+	#$MarginContainer/Control/Waves.text = "Waves " + str(Global.waves)
+	#$MarginContainer/Control/EnemyLeftBar.max_value = Global.total_enemies
+	#$MarginContainer/Control/PreparationTimeLeftBar.max_value = player.preparation_time
 	
 
 	

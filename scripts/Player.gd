@@ -11,8 +11,7 @@ const JUMP_VELOCITY = 4.5
 @onready var ingame_menu = get_node('/root/Node3D/Control/IngameMenu')
 @onready var shop = get_node('/root/Node3D/Control/Shop')
 @onready var ingame_ui = get_node('/root/Node3D/Control/IngameUI')
-
-@onready var prep_timer = $PreparationTimer
+@onready var prep_timer = get_node('/root/Node3D/PreparationTimer')
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -26,10 +25,8 @@ var player_inspectedItem
 var player_interactedItem
 var player_interactedItem_Temp
 
-#preparation time given to player after every wave cleared
-var preparation_time: int = 5
-
 func _physics_process(_delta):
+	#navigation.bake_navigation_mesh()
 	var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
@@ -51,10 +48,10 @@ func _physics_process(_delta):
 	
 
 func _ready():
+	navigation.bake_navigation_mesh()
 	$Audio/Bgm/Preparation.play()
-	
 	#preparation time given to player at the beginning of the run
-	$PreparationTimer.start(30)
+	#$PreparationTimer.start(preparation_time)
 
 func open_shop():
 	if player_interactedItem_Temp != null:
@@ -72,18 +69,18 @@ func mountable_wall():
 				player_checkItemRange(player_interactedItem, true)
 
 func ready():
-	if (Input.is_action_just_pressed("start") or prep_timer.time_left == 0 )and Global.preparation_phase == true:
-		navigation.bake_navigation_mesh()
+	if (Input.is_action_just_pressed("start") or (prep_timer.time_left == 0 and Global.waves != 1)) and Global.preparation_phase == true and Global.is_pathReachable == true:
 		spawner.count_enemies()
 		spawner.spawn_timer.start()
-		ingame_ui.update()
+		#ingame_ui.update()
 		Global.preparation_phase = false
 		print("Player Ready, Entering Wave ", Global.waves, " Defense Phase")
 		$Audio/Bgm/Preparation.stop()
 		$Audio/Bgm/Defending.play()
 		shop.hide()
-		$PreparationTimer.stop()
-	
+		prep_timer.stop()
+	if Input.is_action_just_pressed("start") and Global.is_pathReachable == false:
+		print("Unable to ready, Enemy Path is Blocked, Please Move some Blocks!!!")
 func wave_cleared():
 	if enemies.get_child_count() == 0 and Global.enemy_left == 0 and Global.preparation_phase == false:
 		Global.waves = Global.waves + 1
@@ -92,7 +89,7 @@ func wave_cleared():
 		print("Wave_Cleared, Entering Prep Phase")
 		$Audio/Bgm/Preparation.play()
 		$Audio/Bgm/Defending.stop()
-		prep_timer.start(preparation_time)
+		prep_timer.start(Global.preparation_time)
 
 func esc():
 	if Input.is_action_just_pressed("exit"):
@@ -156,6 +153,7 @@ func player_putItem(item):
 	if item.name == "Shop":
 		item.set_collision_layer_value(2, true)
 	item.set_collision_layer_value(1, true)
+	
 
 func player_swapItem(held_item, ground_item):
 	if held_item.name == "Shop":
@@ -219,6 +217,7 @@ func player_movingItems():
 		# print(player_interactedItem.position)
 		player_isHoldingItem = false
 		
+		
 	# SWAP ITEM - HOLDING an items and HAVE INTERACTABLE item
 	elif player_ableInteract == true and player_isHoldingItem == true and player_ableToDrop == true and Input.is_action_just_pressed("interact"):
 		print("Swapping " + str(player_interactedItem) + " with " + str(player_interactedItem_Temp))
@@ -257,3 +256,6 @@ func _on_interaction_zone_body_exited(body):
 	if body.is_class("StaticBody3D") and body.get_parent().name == 'Item':
 		player_ableInteract = false
 		#print("player UNABLE to interact with " + body.name)
+
+func _on_navigation_region_3d_bake_finished():
+	navigation.bake_navigation_mesh()

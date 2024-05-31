@@ -35,6 +35,7 @@ func hit(damage):
 	HP = HP - damage
 	if HP <= 0:
 		Global.currency = Global.currency + 5
+		Global.enemy_left = Global.enemy_left - 1
 		queue_free()
 
 

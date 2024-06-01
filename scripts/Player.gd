@@ -26,7 +26,6 @@ var player_interactedItem
 var player_interactedItem_Temp
 
 func _physics_process(_delta):
-	print(Global.life_array)
 	#navigation.bake_navigation_mesh()
 	var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
@@ -47,7 +46,6 @@ func _physics_process(_delta):
 	ready()
 	wave_cleared()
 	esc()
-	
 
 func _ready():
 	navigation.bake_navigation_mesh()
@@ -133,8 +131,11 @@ func check_grid(import_pos, export_pos):
 	# export_pos.position.z = round(import_pos.global_position.z) # Z-AXIS
 	var z = round(import_pos.global_position.z)
 	# disable janky item rotation when held by player to align with grid
-	# align into nearest 90 degree from current itself rotation_degrees (maybe tween this into animation?)
-	export_pos.rotation_degrees.y = round(export_pos.rotation_degrees.y / 90.0) * 90.0
+	if Function.search_regex("wall", export_pos.id):
+		export_pos.rotation_degrees.y = 0 # Dont move my walls!
+	else:
+		# align into nearest 90 degree from current itself rotation_degrees (maybe tween this into animation?)
+		export_pos.rotation_degrees.y = round(export_pos.rotation_degrees.y / 90.0) * 90.0
 	# export_pos.rotation.y = 0 # this is being applied instantly
 	# Return the value in vector3 for future processing by tweens
 	return Vector3(x, y, z)
@@ -203,27 +204,31 @@ func player_rotateItem():
 		# rotate in-hand item
 		# since this item in in hand it will need to pass grid_check() function
 		print("Rotating on-hand " + str(player_interactedItem) + " to " + str(player_interactedItem.rotation_degrees))
-		player_interactedItem.rotation_degrees += Vector3(0, 90, 0)
 		audio_randomSelector($Audio/Pop, -10)
 	elif !player_isHoldingItem and player_ableInteract and player_interactedItem_Temp != null:
 		# rotate on-ground item
 		player_interactedItem = player_interactedItem_Temp
-		player_interactedItem.rotation_degrees += Vector3(0, 90, 0)
-		print("Rotating on-ground " + str(player_interactedItem) + " to " + str(player_interactedItem.rotation_degrees))
+		if player_interactedItem.id == "wall_mountable":
+			player_interactedItem.get_child(-1).rotation_degrees += Vector3(0, 90, 0)
+		if Function.search_regex("wall", player_interactedItem.id):
+			pass # Dont move my wall!
+		else:
+			player_interactedItem.rotation_degrees += Vector3(0, 90, 0)
+			print("Rotating on-ground " + str(player_interactedItem) + " to " + str(player_interactedItem.rotation_degrees))
 		audio_randomSelector($Audio/Pop, -10)
 
 func player_checkItemRange(item, enable: bool = true):
-	var regex = RegEx.new() # need to add some regex to check for all the name id of turret
-	var pattern = r"^(?i)turret.*$" # for example all turret name start with 'turret_name_affix_suffix_whatever'
-	regex.compile(pattern) # check for match regex on 'turret' and be happy
+	#var regex = RegEx.new() # need to add some regex to check for all the name id of turret
+	#var pattern = r"^(?i)turret.*$" # for example all turret name start with 'turret_name_affix_suffix_whatever'
+	#regex.compile(pattern) d# check for match regex on 'turret' and be happy
 	# if by any-case you want to check more than just turret, add new pattern to be checked and refactor this code into match maybe
-	if regex.search(item.name) and enable:
+	if Function.search_regex("turret", item.id) and enable:
 		# modify temp variable to match the item range and show the area
 		item.visible_range.show()
 		#$"Node3D/Holded Item/Item Range".mesh.top_radius = player_interactedItem.attack_range
 		#$"Node3D/Holded Item/Item Range".mesh.bottom_radius = player_interactedItem.attack_range
 		#$"Node3D/Holded Item/Item Range".visible = true
-	elif regex.search(item.name) and !enable:
+	elif Function.search_regex("turret", item.id) and !enable:
 		item.visible_range.hide()
 		#$"Node3D/Holded Item/Item Range".visible = false
 

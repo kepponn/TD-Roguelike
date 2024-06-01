@@ -61,23 +61,12 @@ func seed_item(seeder, property): # property are taken from item_rate where it M
 	seeder.item_name = str(property_temp.id)
 	seeder.item_price = property_temp.price
 	
-	var regex1 = RegEx.new()
-	var regex2 = RegEx.new()
-	var turret = r"^(?i)turret.*$"
-	var wall = r"^(?i)wall.*$"
-	
-	regex1.compile(turret)
-	regex2.compile(wall)
-	
-	if regex1.search(property_temp.id):
-		print(property_temp.attack_damage)
-		print(property_temp.attack_range)
-		print(property_temp.attack_speed)
+	if Function.search_regex("turret", property_temp.id):
 		seeder.text1 = property_temp.attack_damage
 		seeder.text2 = property_temp.attack_range
 		seeder.text3 = property_temp.attack_speed
 
-	if property_temp.id == "wall_spiked" :
+	if property_temp.id == "wall_spiked":
 		seeder.text1 = property_temp.attack_damage
 		seeder.text3 = property_temp.attack_speed
 

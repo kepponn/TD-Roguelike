@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://d3uo4ylqy172v"]
+[gd_scene load_steps=4 format=3 uid="uid://d3uo4ylqy172v"]
 
 [ext_resource type="Script" path="res://scripts/wall_parent.gd" id="1_0djw8"]
+[ext_resource type="PackedScene" uid="uid://dv46t3u1gfyil" path="res://models/wall_basic.glb" id="2_futde"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ax1rj"]
 
 [node name="Wall" type="StaticBody3D"]
 script = ExtResource("1_0djw8")
@@ -8,3 +11,68 @@ script = ExtResource("1_0djw8")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 
 [node name="Models" type="Node3D" parent="."]
+
+[node name="NeighbourWalls" type="Node3D" parent="."]
+
+[node name="N" parent="NeighbourWalls" instance=ExtResource("2_futde")]
+unique_name_in_owner = true
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 1.4, 0, -0.2, -0.5)
+
+[node name="W" parent="NeighbourWalls" instance=ExtResource("2_futde")]
+unique_name_in_owner = true
+transform = Transform3D(-2.62268e-08, 0, 1.4, 0, 0.6, 0, -0.6, 0, -6.11959e-08, -0.5, -0.2, 0)
+
+[node name="E" parent="NeighbourWalls" instance=ExtResource("2_futde")]
+unique_name_in_owner = true
+transform = Transform3D(-2.62268e-08, 0, 1.4, 0, 0.6, 0, -0.6, 0, -6.11959e-08, 0.5, -0.2, 0)
+
+[node name="S" parent="NeighbourWalls" instance=ExtResource("2_futde")]
+unique_name_in_owner = true
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 1.4, 0, -0.2, 0.5)
+
+[node name="NeighbourCheck" type="Node3D" parent="."]
+
+[node name="N" type="Area3D" parent="NeighbourCheck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NeighbourCheck/N"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+shape = SubResource("BoxShape3D_ax1rj")
+
+[node name="W" type="Area3D" parent="NeighbourCheck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NeighbourCheck/W"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+shape = SubResource("BoxShape3D_ax1rj")
+
+[node name="E" type="Area3D" parent="NeighbourCheck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NeighbourCheck/E"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+shape = SubResource("BoxShape3D_ax1rj")
+
+[node name="S" type="Area3D" parent="NeighbourCheck"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NeighbourCheck/S"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+shape = SubResource("BoxShape3D_ax1rj")
+
+[connection signal="body_entered" from="NeighbourCheck/N" to="." method="_on_neighbour_entered"]
+[connection signal="body_entered" from="NeighbourCheck/N" to="." method="_on_n_body_entered"]
+[connection signal="body_exited" from="NeighbourCheck/N" to="." method="_on_neighbour_exited"]
+[connection signal="body_exited" from="NeighbourCheck/N" to="." method="_on_n_body_exited"]
+[connection signal="body_entered" from="NeighbourCheck/W" to="." method="_on_neighbour_entered"]
+[connection signal="body_entered" from="NeighbourCheck/W" to="." method="_on_w_body_entered"]
+[connection signal="body_exited" from="NeighbourCheck/W" to="." method="_on_neighbour_exited"]
+[connection signal="body_exited" from="NeighbourCheck/W" to="." method="_on_w_body_exited"]
+[connection signal="body_entered" from="NeighbourCheck/E" to="." method="_on_neighbour_entered"]
+[connection signal="body_entered" from="NeighbourCheck/E" to="." method="_on_e_body_entered"]
+[connection signal="body_exited" from="NeighbourCheck/E" to="." method="_on_neighbour_exited"]
+[connection signal="body_exited" from="NeighbourCheck/E" to="." method="_on_e_body_exited"]
+[connection signal="body_entered" from="NeighbourCheck/S" to="." method="_on_neighbour_entered"]
+[connection signal="body_entered" from="NeighbourCheck/S" to="." method="_on_s_body_entered"]
+[connection signal="body_exited" from="NeighbourCheck/S" to="." method="_on_neighbour_exited"]
+[connection signal="body_exited" from="NeighbourCheck/S" to="." method="_on_s_body_exited"]

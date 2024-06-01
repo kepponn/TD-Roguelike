@@ -120,6 +120,10 @@ func lock_on():
 				able_shoot = false
 				$RayCast3D.hide()
 	else:
+		# Reset turret head direction to default
+		$Head.rotation.y = lerp_angle($Head.rotation.y, 0.0, 0.1)
+		$Head.rotation.x = lerp_angle($Head.rotation.x, 0.0, 0.1)
+		$Head.rotation.z = lerp_angle($Head.rotation.z, 0.0, 0.1)
 		$RayCast3D.hide()
 
 func shoot():

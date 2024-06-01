@@ -204,6 +204,7 @@ func player_rotateItem():
 		# rotate in-hand item
 		# since this item in in hand it will need to pass grid_check() function
 		print("Rotating on-hand " + str(player_interactedItem) + " to " + str(player_interactedItem.rotation_degrees))
+		player_interactedItem.rotation_degrees += Vector3(0, 90, 0)
 		audio_randomSelector($Audio/Pop, -10)
 	elif !player_isHoldingItem and player_ableInteract and player_interactedItem_Temp != null:
 		# rotate on-ground item

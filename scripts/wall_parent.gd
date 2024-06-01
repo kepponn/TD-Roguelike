@@ -79,11 +79,11 @@ func _on_s_body_entered(body):
 		if self.get_parent().name == 'Item':
 			#print("S show")
 			%S.show()
-func _on_n_body_exited(body):
+func _on_n_body_exited(_body):
 	%N.hide()
-func _on_w_body_exited(body):
+func _on_w_body_exited(_body):
 	%W.hide()
-func _on_e_body_exited(body):
+func _on_e_body_exited(_body):
 	%E.hide()
-func _on_s_body_exited(body):
+func _on_s_body_exited(_body):
 	%S.hide()

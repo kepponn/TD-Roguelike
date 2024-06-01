@@ -1,5 +1,6 @@
 extends Control
 @onready var player = get_node('/root/Node3D/Player')
+@onready var UI_animator = $IngameUiAnimator
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

@@ -83,6 +83,8 @@ func ready():
 		prep_timer.stop()
 		player_ableInteract = false
 		
+		ingame_ui.UI_animator.play("Transition_toDefensePhase")
+		
 	if Input.is_action_just_pressed("start") and Global.is_pathReachable == false:
 		print("Unable to ready, Enemy Path is Blocked, Please Move some Blocks!!!")
 
@@ -96,6 +98,8 @@ func wave_cleared():
 		$Audio/Bgm/Defending.stop()
 		prep_timer.start(Global.preparation_time)
 		player_ableInteract = true
+		
+		ingame_ui.UI_animator.play("Transition_toPreparationPhase")
 
 func esc():
 	if Input.is_action_just_pressed("exit"):

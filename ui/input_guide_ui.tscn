@@ -1,0 +1,198 @@
+[gd_scene load_steps=11 format=3 uid="uid://boj1ov7anx6qx"]
+
+[ext_resource type="Texture2D" uid="uid://265plxmvr8j7" path="res://assets/image/Buttons/e_light.png" id="1_k3f4h"]
+[ext_resource type="Script" path="res://ui/input_guide_ui.gd" id="1_xpl4o"]
+[ext_resource type="FontFile" uid="uid://cxvusk35yis3l" path="res://assets/font/Dadlygood.otf" id="2_7olpv"]
+[ext_resource type="Texture2D" uid="uid://11j63foqnt2r" path="res://assets/image/Buttons/w_light.png" id="2_yuaem"]
+[ext_resource type="Texture2D" uid="uid://c77776ix5bmuk" path="res://assets/image/Buttons/a_key_light.png" id="4_j3fe4"]
+[ext_resource type="Texture2D" uid="uid://c85k1r1l4ch41" path="res://assets/image/Buttons/s_light.png" id="5_llpqx"]
+[ext_resource type="Texture2D" uid="uid://57qt6xibg2ss" path="res://assets/image/Buttons/d_light.png" id="6_asvfw"]
+[ext_resource type="Texture2D" uid="uid://bexkp6q3xgr6a" path="res://assets/image/Buttons/c_light.png" id="8_5oo4h"]
+[ext_resource type="Texture2D" uid="uid://c5ftbxcwbk0h5" path="res://assets/image/Buttons/v_light.png" id="9_m6bs5"]
+[ext_resource type="Texture2D" uid="uid://dxgjtfmnen1wa" path="res://assets/image/Buttons/space_light.png" id="10_gfuy4"]
+
+[node name="Input_guide_UI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xpl4o")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="HBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="E" type="BoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="EIcon" type="TextureRect" parent="MarginContainer/HBoxContainer/E"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("1_k3f4h")
+expand_mode = 1
+
+[node name="EEventLabel" type="Label" parent="MarginContainer/HBoxContainer/E"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0.262745, 0.290196, 0.372549, 1)
+theme_override_colors/font_outline_color = Color(0.262745, 0.290196, 0.372549, 1)
+theme_override_constants/outline_size = 3
+theme_override_constants/shadow_outline_size = 2
+theme_override_fonts/font = ExtResource("2_7olpv")
+text = "E Event"
+
+[node name="C" type="BoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="CIcon" type="TextureRect" parent="MarginContainer/HBoxContainer/C"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("8_5oo4h")
+expand_mode = 1
+
+[node name="CEventLabel" type="Label" parent="MarginContainer/HBoxContainer/C"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0.262745, 0.290196, 0.372549, 1)
+theme_override_colors/font_outline_color = Color(0.262745, 0.290196, 0.372549, 1)
+theme_override_constants/outline_size = 3
+theme_override_constants/shadow_outline_size = 2
+theme_override_fonts/font = ExtResource("2_7olpv")
+text = "C Event"
+
+[node name="V" type="BoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="VIcon" type="TextureRect" parent="MarginContainer/HBoxContainer/V"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("9_m6bs5")
+expand_mode = 1
+
+[node name="VEventLabel" type="Label" parent="MarginContainer/HBoxContainer/V"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0.262745, 0.290196, 0.372549, 1)
+theme_override_colors/font_outline_color = Color(0.262745, 0.290196, 0.372549, 1)
+theme_override_constants/outline_size = 3
+theme_override_constants/shadow_outline_size = 2
+theme_override_fonts/font = ExtResource("2_7olpv")
+text = "V Event"
+
+[node name="Space" type="BoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="SpaceIcon" type="TextureRect" parent="MarginContainer/HBoxContainer/Space"]
+custom_minimum_size = Vector2(50, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("10_gfuy4")
+expand_mode = 1
+
+[node name="SpaceEventLabel" type="Label" parent="MarginContainer/HBoxContainer/Space"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0.262745, 0.290196, 0.372549, 1)
+theme_override_colors/font_outline_color = Color(0.262745, 0.290196, 0.372549, 1)
+theme_override_constants/outline_size = 3
+theme_override_constants/shadow_outline_size = 2
+theme_override_fonts/font = ExtResource("2_7olpv")
+text = "Space Event"
+
+[node name="WASD" type="BoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="BoxContainer" type="BoxContainer" parent="MarginContainer/HBoxContainer/WASD"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="W" type="TextureRect" parent="MarginContainer/HBoxContainer/WASD/BoxContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_yuaem")
+expand_mode = 1
+
+[node name="Spacer1" type="Label" parent="MarginContainer/HBoxContainer/WASD/BoxContainer"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0.262745, 0.290196, 0.372549, 1)
+theme_override_colors/font_outline_color = Color(0.262745, 0.290196, 0.372549, 1)
+theme_override_constants/outline_size = 3
+theme_override_constants/shadow_outline_size = 2
+theme_override_fonts/font = ExtResource("2_7olpv")
+text = "/"
+
+[node name="A" type="TextureRect" parent="MarginContainer/HBoxContainer/WASD/BoxContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("4_j3fe4")
+expand_mode = 1
+
+[node name="Spacer2" type="Label" parent="MarginContainer/HBoxContainer/WASD/BoxContainer"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0.262745, 0.290196, 0.372549, 1)
+theme_override_colors/font_outline_color = Color(0.262745, 0.290196, 0.372549, 1)
+theme_override_constants/outline_size = 3
+theme_override_constants/shadow_outline_size = 2
+theme_override_fonts/font = ExtResource("2_7olpv")
+text = "/"
+
+[node name="S" type="TextureRect" parent="MarginContainer/HBoxContainer/WASD/BoxContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("5_llpqx")
+expand_mode = 1
+
+[node name="Spacer3" type="Label" parent="MarginContainer/HBoxContainer/WASD/BoxContainer"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0.262745, 0.290196, 0.372549, 1)
+theme_override_colors/font_outline_color = Color(0.262745, 0.290196, 0.372549, 1)
+theme_override_constants/outline_size = 3
+theme_override_constants/shadow_outline_size = 2
+theme_override_fonts/font = ExtResource("2_7olpv")
+text = "/"
+
+[node name="D" type="TextureRect" parent="MarginContainer/HBoxContainer/WASD/BoxContainer"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("6_asvfw")
+expand_mode = 1
+
+[node name="WASDEventLabel" type="Label" parent="MarginContainer/HBoxContainer/WASD"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0.262745, 0.290196, 0.372549, 1)
+theme_override_colors/font_outline_color = Color(0.262745, 0.290196, 0.372549, 1)
+theme_override_constants/outline_size = 3
+theme_override_constants/shadow_outline_size = 2
+theme_override_fonts/font = ExtResource("2_7olpv")
+text = "Move"

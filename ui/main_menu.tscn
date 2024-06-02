@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://dqcqapws0lmpx"]
+[gd_scene load_steps=12 format=3 uid="uid://dqcqapws0lmpx"]
 
 [ext_resource type="Script" path="res://ui/main_menu.gd" id="1_ps8s2"]
 [ext_resource type="AudioStream" uid="uid://snf1352d2rhi" path="res://assets/audio/button/start.wav" id="2_4cuy6"]
 [ext_resource type="Material" uid="uid://djjoktwnc65ed" path="res://assets/shaders/VignetteMaterialShader.tres" id="2_bnhxh"]
+[ext_resource type="PackedScene" uid="uid://boj1ov7anx6qx" path="res://ui/input_guide_ui.tscn" id="3_8s1tw"]
 [ext_resource type="AudioStream" uid="uid://jn52nbs38g3n" path="res://assets/audio/button/foward.mp3" id="3_esipc"]
 [ext_resource type="AudioStream" uid="uid://rcytmmhftgvu" path="res://assets/audio/button/back.mp3" id="4_arydp"]
 [ext_resource type="AudioStream" uid="uid://b7vakkh6kagho" path="res://assets/audio/button/quit.wav" id="5_c3rfl"]
@@ -22,6 +23,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Input_guide_UI" parent="." instance=ExtResource("3_8s1tw")]
 
 [node name="Audio" type="Node" parent="."]
 

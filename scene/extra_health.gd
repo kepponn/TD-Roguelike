@@ -7,7 +7,7 @@ func _ready():
 	seed_property()
 	Global.life_array.append(self)
 	
-func _process(delta):
+func _process(_delta):
 	$Model/extra_health.rotation_degrees.y += 1
 
 func destroy():

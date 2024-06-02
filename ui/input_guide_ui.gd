@@ -15,7 +15,7 @@ extends Control
 @onready var text_Space = $MarginContainer/HBoxContainer/Space/SpaceEventLabel
 
 
-func _process(delta):
+func _process(_delta):
 	if get_parent().name == "MainMenu":
 		E.hide()
 		C.hide()

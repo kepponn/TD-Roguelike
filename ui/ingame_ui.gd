@@ -43,6 +43,6 @@ func _process(_delta):
 	
 
 
-func _on_ingame_ui_animator_animation_finished(anim_name):
+func _on_ingame_ui_animator_animation_finished(_anim_name):
 	get_tree().paused = false
 	

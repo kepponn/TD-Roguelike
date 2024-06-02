@@ -222,14 +222,14 @@ func player_rotateItem():
 	elif !player_isHoldingItem and player_ableInteract and player_interactedItem_Temp != null:
 		# rotate on-ground item
 		player_interactedItem = player_interactedItem_Temp
-		if player_interactedItem.id == "wall_mountable":
-			player_interactedItem.get_child(-1).rotation_degrees += Vector3(0, 90, 0)
 		if Function.search_regex("wall", player_interactedItem.id):
+			if player_interactedItem.id == "wall_mountable" and player_interactedItem.get_child(-1).is_class("StaticBody3D"):
+				player_interactedItem.get_child(-1).rotation_degrees += Vector3(0, 90, 0)
 			pass # Dont move my wall!
 		else:
 			player_interactedItem.rotation_degrees += Vector3(0, 90, 0)
 			print("Rotating on-ground " + str(player_interactedItem) + " to " + str(player_interactedItem.rotation_degrees))
-		audio_randomSelector($Audio/Pop, -10)
+			audio_randomSelector($Audio/Pop, -10)
 
 func player_checkItemRange(item, enable: bool = true):
 	#var regex = RegEx.new() # need to add some regex to check for all the name id of turret

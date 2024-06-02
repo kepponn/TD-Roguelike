@@ -26,21 +26,17 @@ debug_path_custom_color = Color(0, 0, 0, 1)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0859979, 0)
 
 [node name="Body" type="Node3D" parent="Models"]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
 [node name="enemy_body" parent="Models/Body" instance=ExtResource("2_ubogj")]
 transform = Transform3D(1.2, 0, 0, 0, 1.32, 0, 0, 0, 1.2, 0, 0.0462737, 0)
 
-[node name="LegL" type="Node3D" parent="Models"]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.170459, 0)
+[node name="Legs" type="Node3D" parent="Models"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.503118, 0)
 
-[node name="enemy_leg_l" parent="Models/LegL" instance=ExtResource("3_x3i1x")]
-transform = Transform3D(1, 0, 0, 0, 1.79, 0, 0, 0, 1, 0, -0.180868, 0)
+[node name="enemy_leg_l" parent="Models/Legs" instance=ExtResource("3_x3i1x")]
+transform = Transform3D(1, 0, 0, 0, 1.79, 0, 0, 0, 1, 0, 0.476, 0)
 
-[node name="LegR" type="Node3D" parent="Models"]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.170459, 0)
-
-[node name="enemy_leg_r" parent="Models/LegR" instance=ExtResource("4_dk4m5")]
-transform = Transform3D(1, 0, 0, 0, 1.79, 0, 0, 0, 1, 0, -0.180868, 0)
+[node name="enemy_leg_r" parent="Models/Legs" instance=ExtResource("4_dk4m5")]
+transform = Transform3D(1, 0, 0, 0, 1.79, 0, 0, 0, 1, 0, 0.476, 0)
 
 [connection signal="target_reached" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_target_reached"]

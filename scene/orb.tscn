@@ -1,14 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://dp8r55jb1n7mk"]
+[gd_scene load_steps=3 format=3 uid="uid://dp8r55jb1n7mk"]
 
 [ext_resource type="PackedScene" uid="uid://dc06uit7s2tta" path="res://models/orb.glb" id="1_3e2m5"]
 [ext_resource type="PackedScene" uid="uid://knepxv8n20b" path="res://models/universal_base.glb" id="2_77086"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_240a4"]
-
 [node name="Orb" type="StaticBody3D"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("BoxShape3D_240a4")
 
 [node name="Models" type="Node3D" parent="."]
 

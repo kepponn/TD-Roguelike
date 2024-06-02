@@ -1,21 +1,30 @@
 [gd_scene load_steps=5 format=3 uid="uid://c8otvd8emjkql"]
 
 [ext_resource type="Script" path="res://scene/extra_health.gd" id="1_0crpl"]
+[ext_resource type="PackedScene" uid="uid://y7wm7s721x4a" path="res://models/extra_health.glb" id="2_h24wu"]
+[ext_resource type="PackedScene" uid="uid://knepxv8n20b" path="res://models/universal_base.glb" id="3_yd0lj"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_obrsb"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_iu444"]
-albedo_color = Color(0.878431, 0.392157, 0.431373, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_7ovur"]
-material = SubResource("StandardMaterial3D_iu444")
-size = Vector3(0.75, 0.75, 0.75)
+[sub_resource type="BoxShape3D" id="BoxShape3D_a3nlv"]
 
 [node name="ExtraHealth" type="StaticBody3D"]
 script = ExtResource("1_0crpl")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("BoxShape3D_obrsb")
+shape = SubResource("BoxShape3D_a3nlv")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("BoxMesh_7ovur")
+[node name="Model" type="Node3D" parent="."]
+
+[node name="extra_health" parent="Model" instance=ExtResource("2_h24wu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.417972, 0)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Model/extra_health"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.647237, 0)
+light_color = Color(0.878431, 0, 0.34902, 1)
+shadow_enabled = true
+shadow_opacity = 0.6
+distance_fade_enabled = true
+omni_range = 1.7
+omni_attenuation = 0.535887
+
+[node name="heart_base" parent="Model" instance=ExtResource("3_yd0lj")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)

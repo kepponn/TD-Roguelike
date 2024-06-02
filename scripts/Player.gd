@@ -39,6 +39,7 @@ func _physics_process(_delta):
 	
 	move_and_slide()
 	player_rotation(direction)
+	player_model()
 	open_shop()
 	mountable_wall()
 	player_placementPreviewProcess()
@@ -112,6 +113,18 @@ func player_rotation(direction):
 		$Node3D.rotation.y = lerp_angle($Node3D.rotation.y, target_rotation, 0.25)
 	# rotation of items are being modified by this code while being held on hand
 	# and repaired back to grid by check_grid()
+
+func player_model():
+	var modelHand_Tween = get_tree().create_tween()
+	if Input.is_action_just_pressed("inspect") or Input.is_action_just_pressed("rotate"):
+		# This tween is being replaced by if-statement below, therefore only show a little hand movement
+		modelHand_Tween.tween_property($Node3D/Models/Hand, "rotation_degrees", Vector3(-53.4, 0, 0), 0.1)
+	if player_isHoldingItem:
+		modelHand_Tween.tween_property($Node3D/Models/Hand, "rotation_degrees", Vector3(0, 0, 0), 0.1)
+		#$Node3D/Models/Hand.rotation.x = lerp_angle($Node3D/Models/Hand.rotation.x, 0.0, 0.1)
+	else:
+		modelHand_Tween.tween_property($Node3D/Models/Hand, "rotation_degrees", Vector3(53.4, 0, 0), 0.1)
+		#$Node3D/Models/Hand.rotation_degrees.x = 53.4
 
 func audio_randomSelector(path, volume: int = 0):
 	var Sfx = path.get_children() # path to where the audio childern are

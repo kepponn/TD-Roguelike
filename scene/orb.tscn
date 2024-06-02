@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://dp8r55jb1n7mk"]
+
+[ext_resource type="PackedScene" uid="uid://dc06uit7s2tta" path="res://models/orb.glb" id="1_3e2m5"]
+[ext_resource type="PackedScene" uid="uid://knepxv8n20b" path="res://models/universal_base.glb" id="2_77086"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_240a4"]
+
+[node name="Orb" type="StaticBody3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_240a4")
+
+[node name="Models" type="Node3D" parent="."]
+
+[node name="orb" parent="Models" instance=ExtResource("1_3e2m5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Models/orb"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.639984, 0)
+light_color = Color(0, 0.764706, 0.764706, 1)
+shadow_enabled = true
+shadow_opacity = 0.6
+distance_fade_enabled = true
+omni_range = 2.5
+omni_attenuation = 0.535887
+
+[node name="universal_base" parent="Models" instance=ExtResource("2_77086")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)

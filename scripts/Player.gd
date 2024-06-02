@@ -39,6 +39,7 @@ func _physics_process(_delta):
 	
 	move_and_slide()
 	player_rotation(direction)
+	player_interactionZoneProcess()
 	player_model()
 	open_shop()
 	mountable_wall()
@@ -68,6 +69,9 @@ func mountable_wall():
 			elif !player_isHoldingItem and player_interactedItem_Temp.currently_mountable_item != null:
 				player_interactedItem_Temp.mount(false)
 				player_checkItemRange(player_interactedItem, true)
+
+func player_interactionZoneProcess():
+	$"Node3D/Interaction Zone/CollisionShape3D".global_position = check_grid(%"Interaction Zone", $"Node3D/Interaction Zone/CollisionShape3D")
 
 func ready():
 	if (Input.is_action_just_pressed("start") or (prep_timer.time_left == 0 and Global.waves != 1)) and Global.preparation_phase == true and Global.is_pathReachable == true:
@@ -146,8 +150,11 @@ func check_grid(import_pos, export_pos):
 	# export_pos.position.z = round(import_pos.global_position.z) # Z-AXIS
 	var z = round(import_pos.global_position.z)
 	# disable janky item rotation when held by player to align with grid
-	if Function.search_regex("wall", export_pos.id):
-		export_pos.rotation_degrees.y = 0 # Dont move my walls!
+	if export_pos.is_class("StaticBody3D"): # Bad design of code, check wall property somewhere else?
+			if Function.search_regex("wall", export_pos.id):
+				export_pos.rotation_degrees.y = 0 # Dont move my walls!
+			else:
+				export_pos.rotation_degrees.y = round(export_pos.rotation_degrees.y / 90.0) * 90.0
 	else:
 		# align into nearest 90 degree from current itself rotation_degrees (maybe tween this into animation?)
 		export_pos.rotation_degrees.y = round(export_pos.rotation_degrees.y / 90.0) * 90.0

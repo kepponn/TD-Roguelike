@@ -11,7 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://r0wfovaac7gq" path="res://scene/turret_basic.tscn" id="11_yfnvx"]
 [ext_resource type="PackedScene" uid="uid://xbhbdy3st7vx" path="res://scene/wall_mountable.tscn" id="12_lqyh6"]
 [ext_resource type="PackedScene" uid="uid://c8otvd8emjkql" path="res://scene/extra_health.tscn" id="12_lrh8u"]
-[ext_resource type="PackedScene" path="res://scene/orb.tscn" id="14_4e0gt"]
+[ext_resource type="PackedScene" uid="uid://dp8r55jb1n7mk" path="res://scene/orb.tscn" id="14_4e0gt"]
 [ext_resource type="PackedScene" uid="uid://dxveo10rv12xy" path="res://scene/turret_gatling.tscn" id="15_epdbe"]
 [ext_resource type="PackedScene" uid="uid://b163wrbe72fm5" path="res://ui/ingame_menu.tscn" id="16_gndtv"]
 [ext_resource type="PackedScene" uid="uid://g2dvesmiy3l4" path="res://scene/wall_basic.tscn" id="16_nmw41"]

@@ -12,7 +12,7 @@ height = 1.95
 [node name="Enemy" type="CharacterBody3D"]
 script = ExtResource("1_o3c7s")
 SPEED = 10
-HP = 3000
+HP = 30
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_p574q")

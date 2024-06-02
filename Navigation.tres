@@ -9,4 +9,3 @@ agent_height = 2.5
 agent_radius = 0.25
 agent_max_climb = 0.0
 agent_max_slope = 0.02
-edge_max_error = 0.1

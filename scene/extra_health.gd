@@ -3,7 +3,9 @@ extends StaticBody3D
 var id = "extra_health"
 var price
 
+
 func _ready():
+	
 	seed_property()
 	Global.life_array.append(self)
 	

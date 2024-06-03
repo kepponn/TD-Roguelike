@@ -1,20 +1,15 @@
 extends Marker3D
 
-
-
 var enemies: PackedScene = preload("res://scene/enemy.tscn")
 
 @onready var spawn_timer: Timer = $Timer
-
 @onready var nav: NavigationAgent3D = $NavigationAgent3D
 var direction
 var velocity
-# Called when the node enters the scene tree for the first time.
+
 func _ready():
 	pass
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	spawn_enemies()
 	check_path()
@@ -38,8 +33,13 @@ func spawn_enemies():
 		get_node("/root/Node3D/Enemies").add_child(enemy,true)
 		enemy.transform = global_transform
 		$Timer.start(randf_range(1.5,3.0))
-		
 		print("Enemies Spawned = ", Global.enemy_spawned)
+		
+func enemy_spawn():
+	$Audio/SpawnSfx.play()
+	
+func enemy_died():
+	$Audio/DeathSfx.play()
 
 func count_enemies():
 	#W 0:00:03:0280   Narrowing conversion (float is converted to int and loses precision).

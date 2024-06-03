@@ -52,6 +52,7 @@ func _physics_process(_delta):
 func _ready():
 	navigation.bake_navigation_mesh()
 	$Audio/Bgm/Preparation.play()
+	$Audio/MoveSfx.stream_paused = true
 	#preparation time given to player at the beginning of the run
 	#$PreparationTimer.start(preparation_time)
 
@@ -102,7 +103,7 @@ func wave_cleared():
 		$Audio/Bgm/Defending.stop()
 		prep_timer.start(Global.preparation_time)
 		#player_ableInteract = true
-		
+		await get_tree().create_timer(0.5).timeout
 		ingame_ui.UI_animator.play("Transition_toPreparationPhase")
 		get_tree().paused = true
 
@@ -117,6 +118,9 @@ func player_rotation(direction):
 		var target_rotation = atan2(direction.x, direction.z) - PI / 2
 		# more of math wizardry, last param in lerp_angle() determine how fast the character rotate
 		$Node3D.rotation.y = lerp_angle($Node3D.rotation.y, target_rotation, 0.25)
+		$Audio/MoveSfx.stream_paused = false
+	else:
+		$Audio/MoveSfx.stream_paused = true
 	# rotation of items are being modified by this code while being held on hand
 	# and repaired back to grid by check_grid()
 

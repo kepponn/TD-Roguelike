@@ -1,7 +1,8 @@
-[gd_scene load_steps=18 format=3 uid="uid://dfa3wfjb564fn"]
+[gd_scene load_steps=19 format=3 uid="uid://dfa3wfjb564fn"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_5f771"]
 [ext_resource type="AudioStream" uid="uid://bqjlvqns16fqg" path="res://assets/audio/sfx/select-sound-121244.mp3" id="2_37d4i"]
+[ext_resource type="AudioStream" uid="uid://5es2tmm3c3qc" path="res://assets/audio/sfx/engine-47745.mp3" id="3_10coj"]
 [ext_resource type="AudioStream" uid="uid://dv1fwgav2ido6" path="res://assets/audio/sfx/happy-pop-1-185286.mp3" id="3_q3rnf"]
 [ext_resource type="AudioStream" uid="uid://ou6mtp1fcx2f" path="res://assets/audio/sfx/happy-pop-2-185287.mp3" id="4_trxeb"]
 [ext_resource type="AudioStream" uid="uid://btfe53ybfx073" path="res://assets/audio/sfx/happy-pop-3-185288.mp3" id="5_lvbuv"]
@@ -47,6 +48,12 @@ script = ExtResource("1_5f771")
 
 [node name="SelectSfx" type="AudioStreamPlayer" parent="Audio"]
 stream = ExtResource("2_37d4i")
+bus = &"Effect"
+
+[node name="MoveSfx" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("3_10coj")
+volume_db = -5.0
+autoplay = true
 bus = &"Effect"
 
 [node name="Pop" type="Node" parent="Audio"]

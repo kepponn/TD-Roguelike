@@ -8,9 +8,11 @@ var step_change: bool = true
 var direction = Vector3()
 
 @onready var nav: NavigationAgent3D = $NavigationAgent3D
+@onready var spawn = get_node('/root/Node3D/Spawn')
 
 func _ready():
 	call_deferred("nav_setup")
+	spawn.enemy_spawn()
 
 func nav_setup():
 	# await for 1 frame in process and nav error gone, wizard programming
@@ -48,6 +50,7 @@ func hit(damage):
 	if HP <= 0:
 		Global.currency = Global.currency + 5
 		Global.enemy_left = Global.enemy_left - 1
+		spawn.enemy_died()
 		queue_free()
 
 func _on_navigation_agent_3d_target_reached():

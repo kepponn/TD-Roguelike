@@ -238,6 +238,7 @@ func player_rotateItem():
 		if Function.search_regex("wall", player_interactedItem.id):
 			if player_interactedItem.id == "wall_mountable" and player_interactedItem.get_child(-1).is_class("StaticBody3D"):
 				player_interactedItem.get_child(-1).rotation_degrees += Vector3(0, 90, 0)
+				audio_randomSelector($Audio/Pop, -10)
 			pass # Dont move my wall!
 		else:
 			player_interactedItem.rotation_degrees += Vector3(0, 90, 0)

@@ -1,15 +1,15 @@
 [gd_scene load_steps=11 format=3 uid="uid://boj1ov7anx6qx"]
 
-[ext_resource type="Texture2D" uid="uid://265plxmvr8j7" path="res://assets/image/Buttons/e_light.png" id="1_k3f4h"]
 [ext_resource type="Script" path="res://ui/input_guide_ui.gd" id="1_xpl4o"]
 [ext_resource type="FontFile" uid="uid://cxvusk35yis3l" path="res://assets/font/Dadlygood.otf" id="2_7olpv"]
-[ext_resource type="Texture2D" uid="uid://11j63foqnt2r" path="res://assets/image/Buttons/w_light.png" id="2_yuaem"]
-[ext_resource type="Texture2D" uid="uid://c77776ix5bmuk" path="res://assets/image/Buttons/a_key_light.png" id="4_j3fe4"]
-[ext_resource type="Texture2D" uid="uid://c85k1r1l4ch41" path="res://assets/image/Buttons/s_light.png" id="5_llpqx"]
-[ext_resource type="Texture2D" uid="uid://57qt6xibg2ss" path="res://assets/image/Buttons/d_light.png" id="6_asvfw"]
-[ext_resource type="Texture2D" uid="uid://bexkp6q3xgr6a" path="res://assets/image/Buttons/c_light.png" id="8_5oo4h"]
-[ext_resource type="Texture2D" uid="uid://c5ftbxcwbk0h5" path="res://assets/image/Buttons/v_light.png" id="9_m6bs5"]
-[ext_resource type="Texture2D" uid="uid://dxgjtfmnen1wa" path="res://assets/image/Buttons/space_light.png" id="10_gfuy4"]
+[ext_resource type="Texture2D" uid="uid://6tsrvvarp17u" path="res://assets/icon/KeyboardButton/E_light.png" id="2_f54xm"]
+[ext_resource type="Texture2D" uid="uid://cqacqbdv0nu0o" path="res://assets/icon/KeyboardButton/W_light.png" id="3_dqtcd"]
+[ext_resource type="Texture2D" uid="uid://c77776ix5bmuk" path="res://assets/icon/KeyboardButton/A_light.png" id="4_j3fe4"]
+[ext_resource type="Texture2D" uid="uid://bx4fh74dfdvmj" path="res://assets/icon/KeyboardButton/C_light.png" id="4_qh8op"]
+[ext_resource type="Texture2D" uid="uid://cs2g6i4bp8ao7" path="res://assets/icon/KeyboardButton/S_light.png" id="5_bc5fa"]
+[ext_resource type="Texture2D" uid="uid://h42ewu31c88q" path="res://assets/icon/KeyboardButton/V_light.png" id="5_dtylm"]
+[ext_resource type="Texture2D" uid="uid://xay0sg4kxqko" path="res://assets/icon/KeyboardButton/Space_light.png" id="6_1dn71"]
+[ext_resource type="Texture2D" uid="uid://ba0ofxyvqq0y2" path="res://assets/icon/KeyboardButton/D_light.png" id="6_jcj8p"]
 
 [node name="Input_guide_UI" type="Control"]
 layout_mode = 3
@@ -46,7 +46,7 @@ custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("1_k3f4h")
+texture = ExtResource("2_f54xm")
 expand_mode = 1
 
 [node name="EEventLabel" type="Label" parent="MarginContainer/HBoxContainer/E"]
@@ -67,7 +67,7 @@ custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("8_5oo4h")
+texture = ExtResource("4_qh8op")
 expand_mode = 1
 
 [node name="CEventLabel" type="Label" parent="MarginContainer/HBoxContainer/C"]
@@ -88,7 +88,7 @@ custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("9_m6bs5")
+texture = ExtResource("5_dtylm")
 expand_mode = 1
 
 [node name="VEventLabel" type="Label" parent="MarginContainer/HBoxContainer/V"]
@@ -107,9 +107,8 @@ size_flags_horizontal = 0
 [node name="SpaceIcon" type="TextureRect" parent="MarginContainer/HBoxContainer/Space"]
 custom_minimum_size = Vector2(50, 20)
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-texture = ExtResource("10_gfuy4")
+size_flags_horizontal = 3
+texture = ExtResource("6_1dn71")
 expand_mode = 1
 
 [node name="SpaceEventLabel" type="Label" parent="MarginContainer/HBoxContainer/Space"]
@@ -134,7 +133,7 @@ custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("2_yuaem")
+texture = ExtResource("3_dqtcd")
 expand_mode = 1
 
 [node name="Spacer1" type="Label" parent="MarginContainer/HBoxContainer/WASD/BoxContainer"]
@@ -168,7 +167,7 @@ custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("5_llpqx")
+texture = ExtResource("5_bc5fa")
 expand_mode = 1
 
 [node name="Spacer3" type="Label" parent="MarginContainer/HBoxContainer/WASD/BoxContainer"]
@@ -185,7 +184,7 @@ custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("6_asvfw")
+texture = ExtResource("6_jcj8p")
 expand_mode = 1
 
 [node name="WASDEventLabel" type="Label" parent="MarginContainer/HBoxContainer/WASD"]

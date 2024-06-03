@@ -14,8 +14,16 @@ extends Control
 @onready var text_V = $MarginContainer/HBoxContainer/V/VEventLabel
 @onready var text_Space = $MarginContainer/HBoxContainer/Space/SpaceEventLabel
 
+@onready var icon_E = $MarginContainer/HBoxContainer/E/EIcon
+@onready var icon_C = $MarginContainer/HBoxContainer/C/CIcon
+@onready var icon_V = $MarginContainer/HBoxContainer/V/VIcon
+@onready var icon_Space = $MarginContainer/HBoxContainer/Space/SpaceIcon
+
+func _ready():
+	update_Icon()
 
 func _process(_delta):
+	update_Icon()
 	if get_parent().name == "MainMenu":
 		E.hide()
 		C.hide()
@@ -101,4 +109,19 @@ func _process(_delta):
 			V.hide()
 			#------------ SPACE INPUT / READY ------------
 			Space.hide()
-
+	
+	
+func update_Icon():
+	#Update E Icon
+	
+	var key_E = InputMap.action_get_events("interact")[0].as_text().trim_suffix(" (Physical)")
+	icon_E.texture = load("res://assets/icon/KeyboardButton/"+ str(key_E) +"_light.png")
+	#Update C Icon
+	var key_C = InputMap.action_get_events("inspect")[0].as_text().trim_suffix(" (Physical)")
+	icon_C.texture = load("res://assets/icon/KeyboardButton/"+ str(key_C) +"_light.png")
+	#Update V Icon
+	var key_V = InputMap.action_get_events("rotate")[0].as_text().trim_suffix(" (Physical)")
+	icon_V.texture = load("res://assets/icon/KeyboardButton/"+ str(key_V) +"_light.png")
+	#Update Space Icon
+	var key_Space = InputMap.action_get_events("start")[0].as_text().trim_suffix(" (Physical)")
+	icon_Space.texture = load("res://assets/icon/KeyboardButton/"+ str(key_Space) +"_light.png")

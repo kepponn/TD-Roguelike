@@ -10,6 +10,12 @@ var remapping_button = null
 #Input dictionary, it is a list of action that able to be rebinded
 #left side should be the same as in the project settings,
 #right side is the action name that will be printed 
+var input_available = [
+					"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",
+					"1","2","3","4","5","6","7","8","9","0",
+					"Space"
+					]
+
 var input_actions = {
 	#up, left, right, down might be changed later because we dont want to use default action
 	#so dont forget to change this
@@ -44,6 +50,8 @@ func _createActionList():
 		
 		#check if the selected action is binded with any key or not
 		var events = InputMap.action_get_events(action)
+
+		#print(input_actions[action]," : Action Name - Event Name : ", events[0].as_text())
 		#if it is binded, then change Input text to binded key
 		if events.size() > 0:
 			input_label.text = events[0].as_text().trim_suffix(" (Physical)")
@@ -66,7 +74,7 @@ func _input(event):
 	if is_remapping == true:
 		#this will check if input is from mouse or keyboard only,
 		#for other input such as controller, touch, etc just type InputEvent and scroll down
-		if (event is InputEventKey or (event is InputEventMouseButton and event.pressed)):
+		if ((event is InputEventKey and input_available.has(event.as_text()))or (event is InputEventMouseButton and event.pressed)):
 			
 			#used to not record double click
 			if event is InputEventMouseButton and event.double_click:
@@ -92,6 +100,7 @@ func _input(event):
 			
 func _updateActionList(button, event):
 	button.find_child("LabelInput").text = event.as_text().trim_suffix(" (Physical)")
+	
 
 func _on_button_pressed():
 	_createActionList()

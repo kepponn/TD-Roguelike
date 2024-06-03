@@ -33,16 +33,7 @@ func _process(_delta):
 	#Currency
 	$MarginContainer/Control/TextureRect/PlayerCurrencyCount.text = str(Global.currency)
 
-#func update():
-	##Called only on Player -> func ready()
-	#$MarginContainer/Control/Waves.text = "Waves " + str(Global.waves)
-	#$MarginContainer/Control/EnemyLeftBar.max_value = Global.total_enemies
-	#$MarginContainer/Control/PreparationTimeLeftBar.max_value = player.preparation_time
-	
-
-	
-
-
 func _on_ingame_ui_animator_animation_finished(_anim_name):
 	get_tree().paused = false
 	
+

@@ -16,8 +16,6 @@ const JUMP_VELOCITY = 4.5
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
-
-
 var player_ableInteract: bool = false
 var player_isHoldingItem: bool = false
 var player_ableToDrop: bool = true # Check interaction area of player is it able to drop something there?
@@ -89,6 +87,10 @@ func default_state():
 	player_isHoldingItem = false
 	player_interactedItem_Temp = null
 	player_holdedMats = ""
+	for i in parent_item.get_child_count(): # Reset the value in crafter to default state
+		if Function.search_regex("crafter", parent_item.get_child(i).id):
+			parent_item.get_child(i).reset()
+			print("Flushing ", parent_item.get_child(i))
 	$Item.hide()
 
 func ready():
@@ -328,7 +330,7 @@ func player_InteractItems():
 		# RELOAD TURRET - HOLDING an AMMO and HAVE INTERACTABLE TURRET
 		if player_ableInteract == true and player_isHoldingItem == true and Input.is_action_just_pressed("interact") and player_interactedItem_Temp.has_method("reload") and player_holdedMats == "ammo_box":
 			if player_interactedItem_Temp.bullet_ammo != player_interactedItem_Temp.bullet_maxammo:
-				print("reloading turret")
+				print("Reloading ", player_interactedItem_Temp)
 				player_interactedItem_Temp.reload()
 				player_isHoldingItem = false
 				player_holdedMats = ""
@@ -337,46 +339,42 @@ func player_InteractItems():
 		if player_ableInteract == true and player_isHoldingItem == true and Input.is_action_just_pressed("interact") and player_interactedItem_Temp.has_method("mount") and player_holdedMats == "ammo_box":
 			if player_interactedItem_Temp.get_child(-1).has_method("reload"):
 				if player_interactedItem_Temp.get_child(-1).bullet_ammo != player_interactedItem_Temp.get_child(-1).bullet_maxammo:
-					print("reloading mounted turret")
+					print("Reloading mounted ", player_interactedItem_Temp.get_child(-1), " on ", player_interactedItem_Temp)
 					player_interactedItem_Temp.get_child(-1).reload()
 					player_isHoldingItem = false
 					player_holdedMats = ""
 					$Item.hide()
 		# PICK UP INGREDIENT
 		elif player_ableInteract == true and player_isHoldingItem == false and Input.is_action_just_pressed("interact") and !Function.search_regex("turret", player_interactedItem_Temp.id):
-			var modelHand_Tween = get_tree().create_tween()
 			if player_interactedItem_Temp.id == "gunpowder_box":
 				player_holdedMats = "gunpowder_box"
 				player_isHoldingItem = true
-				modelHand_Tween.tween_property($Node3D/Models/Hand, "rotation_degrees", Vector3(0, 0, 0), 0.1)
 				$Item.show()
-				player_ableInteract == false
-				print("picked up gunpowder_box")
+				player_ableInteract = false
+				print("Picked up ", player_holdedMats)
 			elif player_interactedItem_Temp.id == "bullet_box":
 				player_holdedMats = "bullet_box"
 				player_isHoldingItem = true
-				modelHand_Tween.tween_property($Node3D/Models/Hand, "rotation_degrees", Vector3(0, 0, 0), 0.1)
 				$Item.show()
-				player_ableInteract == false
-				print("picked up bullet_box")
+				player_ableInteract = false
+				print("Picked up ", player_holdedMats)
 			elif player_interactedItem_Temp.id == "crafter":
 				player_interactedItem_Temp.get_product()
 				if player_holdedMats != "":
 					player_isHoldingItem = true
-					modelHand_Tween.tween_property($Node3D/Models/Hand, "rotation_degrees", Vector3(0, 0, 0), 0.1)
 					$Item.show()
-					player_ableInteract == false
-					print("picked up ammo_box")
+					player_ableInteract = false
+					print("Picked up ", player_holdedMats)
 		
 		# DROP INGREDIENT
 		elif player_ableInteract == true and player_isHoldingItem == true and player_ableToDrop == true and Input.is_action_just_pressed("interact"):
 			if player_holdedMats == player_interactedItem_Temp.id:
-				print("dropped back ", player_holdedMats)
+				print("Dropped back ", player_holdedMats)
 				player_isHoldingItem = false
-				player_holdedMats == null
+				player_holdedMats = ""
 				$Item.hide()
 			elif player_interactedItem_Temp.id == "crafter":
-				print("put ", player_holdedMats, " to Crafter")
+				print("Put ", player_holdedMats, " to Crafter")
 				player_interactedItem_Temp.get_ingredient(player_holdedMats)
 				#CHANGE CRAFTER VARIABLE
 	

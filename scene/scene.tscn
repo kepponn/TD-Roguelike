@@ -154,6 +154,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1, -8)
 
 [node name="PreviewPath" type="Marker3D" parent="Spawn"]
 
+[node name="PreviewTimer" type="Timer" parent="Spawn/PreviewPath"]
+wait_time = 3.0
+one_shot = true
+autostart = true
+
 [node name="Timer" type="Timer" parent="Spawn"]
 wait_time = 2.0
 one_shot = true
@@ -197,3 +202,4 @@ visible = false
 
 [connection signal="bake_finished" from="NavigationRegion3D" to="Player" method="_on_navigation_region_3d_bake_finished"]
 [connection signal="path_changed" from="Spawn/SpawnLocation/NavigationAgent3D" to="Spawn" method="_on_navigation_agent_3d_path_changed"]
+[connection signal="timeout" from="Spawn/PreviewPath/PreviewTimer" to="Spawn" method="_on_preview_timer_timeout"]

@@ -7,6 +7,9 @@ var enemies: PackedScene = preload("res://scene/enemy.tscn")
 var direction
 var velocity
 
+var path_runner_green = preload("res://scene/path_runner_green.tscn")
+var path_runner_red = preload("res://scene/path_runner_red.tscn")
+
 var path_points = []
 var path_points_red = preload("res://scene/path_direction_red.tscn")
 var path_lines_red = preload("res://scene/path_lines_red.tscn")
@@ -36,11 +39,27 @@ func check_path():
 	elif nav.is_target_reachable() == false :
 		Global.is_pathReachable = false
 		#print("path is blocked")
-		
+
+func _on_preview_timer_timeout():
+	await run_preview_path(Global.is_pathReachable)
+	$PreviewPath/PreviewTimer.start(5)
+
+func run_preview_path(is_reachable):
+	if Global.preparation_phase == true:
+		var path_instance_arrow
+		for i in range(5):
+			if is_reachable:
+				path_instance_arrow = path_runner_green.instantiate() 
+			else:
+				path_instance_arrow = path_runner_red.instantiate() 
+			path_instance_arrow.transform.origin = $SpawnLocation.position
+			$PreviewPath.add_child(path_instance_arrow, true)
+			await get_tree().create_timer(0.15).timeout
+
 func _on_navigation_agent_3d_path_changed():
-	print("path is changed")
-	preview_path(Global.is_pathReachable)
-	
+	# preview_path(Global.is_pathReachable)
+	pass
+
 func preview_path(is_reachable): # Being called manually by player with tab
 	# Need to call this dynamically when paths is changed (dont put this in process)
 	for child in $PreviewPath.get_children(): # Flush points

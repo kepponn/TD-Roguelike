@@ -3,6 +3,7 @@ extends CharacterBody3D
 
 @export var SPEED = 200
 @export var HP: int = 3
+var max_HP: int
 var step_change: bool = true
 
 var direction = Vector3()
@@ -11,6 +12,7 @@ var direction = Vector3()
 @onready var spawn = get_node('/root/Node3D/Spawn')
 
 func _ready():
+	max_HP = HP
 	call_deferred("nav_setup")
 	spawn.enemy_spawn()
 
@@ -31,6 +33,7 @@ func _physics_process(delta):
 	velocity = velocity.lerp(direction * SPEED * (0.2 + delta), 0.15)
 	move_and_slide()
 	enemy_model()
+	update_HP()
 	
 func enemy_model():
 	var rotate_look = nav.get_next_path_position()
@@ -55,6 +58,13 @@ func hit(damage):
 		Global.enemy_left = Global.enemy_left - 1
 		spawn.enemy_died()
 		queue_free()
+
+func update_HP():
+	if HP != max_HP:
+		$HealthBar3D.show()
+		
+	$HealthBar3D/SubViewport/HealthBar2D.max_value = max_HP
+	$HealthBar3D/SubViewport/HealthBar2D.value = HP
 
 func _on_navigation_agent_3d_target_reached():
 	if Global.life_array.is_empty():

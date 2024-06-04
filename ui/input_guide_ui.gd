@@ -142,8 +142,17 @@ func _process(_delta):
 		#--------------------------------------DEFENSE PHASE------------------------------------------------
 		elif !Global.preparation_phase :
 			#------------ E INPUT / INSPECT ------------
-			E.hide()
-			controller_A.hide()
+			#DEFAULT STATE -> HIDE
+			if !player.player_ableInteract and !player.player_isHoldingItem:
+				E.hide()
+				controller_A.hide()
+			#RELOAD TURRET
+			elif player.player_ableInteract and !player.player_isHoldingItem and player.player_interactedItem_Temp.has_method("reload"):
+				if player.player_interactedItem_Temp.bullet_ammo != player.player_interactedItem_Temp.bullet_maxammo:
+					text_E.text = "Reload Turret"
+					E.show()
+					text_controller_A.text = "Reload Turret"
+					controller_A.show()
 			#------------ C INPUT / INSPECT ------------
 			#DEFAULT STATE -> HIDE
 			if !player.player_ableInteract:

@@ -38,7 +38,7 @@ func check_path():
 		#print("path is blocked")
 		
 func _on_navigation_agent_3d_path_changed():
-	print("path is changed")
+	#print("path is changed")
 	preview_path(Global.is_pathReachable)
 	
 func preview_path(is_reachable): # Being called manually by player with tab

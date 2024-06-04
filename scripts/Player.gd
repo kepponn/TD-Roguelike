@@ -48,10 +48,14 @@ func _physics_process(delta):
 	open_shop()
 	mountable_wall()
 	player_placementPreviewProcess()
-	player_movingItems()
+	player_InteractItems()
+	player_InspectItems()
+	player_RotateItems()
 	ready()
 	wave_cleared()
 	esc()
+	
+	#player_ReloadItem()
 
 func _ready():
 	navigation.bake_navigation_mesh()
@@ -79,7 +83,7 @@ func player_interactionZoneProcess():
 	$"Node3D/Interaction Zone/CollisionShape3D".global_position = check_grid(%"Interaction Zone", $"Node3D/Interaction Zone/CollisionShape3D")
 
 func ready():
-	if (Input.is_action_just_pressed("start") or (prep_timer.time_left == 0 and Global.waves != 1)) and Global.preparation_phase == true and Global.is_pathReachable == true:
+	if (Input.is_action_just_pressed("start") or (prep_timer.time_left == 0 and Global.waves != 1)) and Global.preparation_phase == true and Global.is_pathReachable == true and player_isHoldingItem == false:
 		spawner.count_enemies()
 		spawner.spawn_timer.start()
 		#ingame_ui.update()
@@ -89,13 +93,15 @@ func ready():
 		$Audio/Bgm/Defending.play()
 		shop.hide()
 		prep_timer.stop()
-		player_ableInteract = false
+		#player_ableInteract = false
 		
 		ingame_ui.UI_animator.play("Transition_toDefensePhase")
 		get_tree().paused = true
 		
 	if Input.is_action_just_pressed("start") and Global.is_pathReachable == false:
 		print("Unable to ready, Enemy Path is Blocked, Please Move some Blocks!!!")
+	if Input.is_action_just_pressed("start") and player_isHoldingItem:
+		print("Unable to ready, Player still Holding Item, Drop Holded Item!!!")
 
 func wave_cleared():
 	if enemies.get_child_count() == 0 and Global.enemy_left == 0 and Global.preparation_phase == false:
@@ -229,7 +235,7 @@ func player_swapItem(held_item, ground_item):
 	held_item.position = ground_item.position # Swap the position property from held item to ground item
 	held_item.rotation.y = 0 # Repair the Y-AXIS rotation to default
 
-func player_rotateItem():
+func player_rotateItemProcess():
 	if player_isHoldingItem:
 		# rotate in-hand item
 		# since this item in in hand it will need to pass grid_check() function
@@ -264,54 +270,65 @@ func player_checkItemRange(item, enable: bool = true):
 		item.visible_range.hide()
 		#$"Node3D/Holded Item/Item Range".visible = false
 
-func player_movingItems():
+func player_InteractItems():
+	if Global.preparation_phase:
 	# PICK UP ITEM - NOT HOLDING item and HAVE INTERACTABLE item
-	if player_ableInteract == true and player_isHoldingItem == false and Input.is_action_just_pressed("interact"):
-		player_isHoldingItem = true
-		# When the player decided to interact with the current item `player_interactedItem_Temp` (which always changing depend on the circumstance)
-		# It will save the `player_interactedItem_Temp` into `player_interactedItem` to be used
-		player_interactedItem = player_interactedItem_Temp
-		player_holdItem(player_interactedItem)
-		await get_tree().create_timer(0.15).timeout
-		player_checkItemRange(player_interactedItem)
-		print("Pick-up " + str(player_interactedItem) + " from " + str(player_interactedItem.position))
-		# Maybe not needed because if item is moved over character's head
-		# Then interaction zone body exited will triggered to change player_ableInteract to false
-		player_ableInteract = false
-		
-	# DROP DOWN ITEM - HOLDING an item and NOT INTERACTING with other items
-	elif player_ableInteract == false and player_isHoldingItem == true and player_ableToDrop == true and Input.is_action_just_pressed("interact"):
-		# Should change the name of item placeholder into someting more unique, for now it stand as %Item
-		player_putItem(player_interactedItem)
-		player_checkItemRange(player_interactedItem, false)
-		print("Dropping " + str(player_interactedItem) + " to " + str(player_interactedItem.position))
-		# print(%"Interaction Zone".global_position)
-		# print(player_interactedItem.position)
-		player_isHoldingItem = false
-		
-		
-	# SWAP ITEM - HOLDING an items and HAVE INTERACTABLE item
-	elif player_ableInteract == true and player_isHoldingItem == true and player_ableToDrop == true and Input.is_action_just_pressed("interact"):
-		print("Swapping " + str(player_interactedItem) + " with " + str(player_interactedItem_Temp))
-		# All this line is the basic for item swapping
-		# Swap held item property to on-ground item property
-		player_swapItem(player_interactedItem, player_interactedItem_Temp)
-		player_checkItemRange(player_interactedItem, false)
-		# Take on-ground item
-		player_interactedItem = player_interactedItem_Temp
-		print("Now holding " + str(player_interactedItem) + " as result from swapping item")
-		player_holdItem(player_interactedItem)
-		await get_tree().create_timer(0.15).timeout
-		player_checkItemRange(player_interactedItem, true)
+		if player_ableInteract == true and player_isHoldingItem == false and Input.is_action_just_pressed("interact"):
+			player_isHoldingItem = true
+			# When the player decided to interact with the current item `player_interactedItem_Temp` (which always changing depend on the circumstance)
+			# It will save the `player_interactedItem_Temp` into `player_interactedItem` to be used
+			player_interactedItem = player_interactedItem_Temp
+			player_holdItem(player_interactedItem)
+			await get_tree().create_timer(0.15).timeout
+			player_checkItemRange(player_interactedItem)
+			print("Pick-up " + str(player_interactedItem) + " from " + str(player_interactedItem.position))
+			# Maybe not needed because if item is moved over character's head
+			# Then interaction zone body exited will triggered to change player_ableInteract to false
+			player_ableInteract = false
+			
+		# DROP DOWN ITEM - HOLDING an item and NOT INTERACTING with other items
+		elif player_ableInteract == false and player_isHoldingItem == true and player_ableToDrop == true and Input.is_action_just_pressed("interact"):
+			# Should change the name of item placeholder into someting more unique, for now it stand as %Item
+			player_putItem(player_interactedItem)
+			player_checkItemRange(player_interactedItem, false)
+			print("Dropping " + str(player_interactedItem) + " to " + str(player_interactedItem.position))
+			# print(%"Interaction Zone".global_position)
+			# print(player_interactedItem.position)
+			player_isHoldingItem = false
+			
+		# SWAP ITEM - HOLDING an items and HAVE INTERACTABLE item
+		elif player_ableInteract == true and player_isHoldingItem == true and player_ableToDrop == true and Input.is_action_just_pressed("interact"):
+			print("Swapping " + str(player_interactedItem) + " with " + str(player_interactedItem_Temp))
+			# All this line is the basic for item swapping
+			# Swap held item property to on-ground item property
+			player_swapItem(player_interactedItem, player_interactedItem_Temp)
+			player_checkItemRange(player_interactedItem, false)
+			# Take on-ground item
+			player_interactedItem = player_interactedItem_Temp
+			print("Now holding " + str(player_interactedItem) + " as result from swapping item")
+			player_holdItem(player_interactedItem)
+			await get_tree().create_timer(0.15).timeout
+			player_checkItemRange(player_interactedItem, true)
+	elif !Global.preparation_phase:
+		# RELOAD TURRET - HOLDING an AMMO and HAVE INTERACTABLE TURRET
+		if player_ableInteract == true and player_isHoldingItem == false and Input.is_action_just_pressed("interact") and player_interactedItem_Temp.has_method("reload"):
+			if player_interactedItem_Temp.bullet_ammo != player_interactedItem_Temp.bullet_maxammo:
+				print("reloading turret")
+				player_interactedItem_Temp.reload()
+				#queuefree holded item
+		# RELOAD MOUNTED TURRET - HOLDING an AMMO and HAVE INTERACTABLE MOUNTABLE WALL that MOUNTED
+			
 	
-	elif Input.is_action_just_pressed("inspect") and player_ableInteract == true:
+func player_InspectItems():
+	if Input.is_action_just_pressed("inspect") and player_ableInteract == true:
 		player_inspectedItem = player_interactedItem_Temp
 		player_checkItemRange(player_inspectedItem)
 	elif player_inspectedItem != null and player_ableInteract == false and player_isHoldingItem == false:
 		player_checkItemRange(player_inspectedItem, false)
-		
-	elif Input.is_action_just_pressed("rotate"):
-		player_rotateItem()
+
+func player_RotateItems():
+	if Input.is_action_just_pressed("rotate"):
+		player_rotateItemProcess()
 	
 func _on_interaction_zone_body_entered(body):
 	if body.is_class("GridMap") and player_isHoldingItem:

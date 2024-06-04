@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://r0wfovaac7gq"]
+[gd_scene load_steps=10 format=3 uid="uid://r0wfovaac7gq"]
 
 [ext_resource type="PackedScene" uid="uid://55ipv7ij7bcg" path="res://scene/turret_parent.tscn" id="1_nlmpt"]
 [ext_resource type="Script" path="res://scripts/turret_basic.gd" id="2_at03x"]
@@ -12,6 +12,9 @@
 [sub_resource type="CylinderMesh" id="CylinderMesh_qcf33"]
 material = ExtResource("6_x1m8p")
 height = 0.001
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_n03iv"]
+viewport_path = NodePath("AmmoBar3D/SubViewport")
 
 [node name="Turret" instance=ExtResource("1_nlmpt")]
 script = ExtResource("2_at03x")
@@ -29,3 +32,6 @@ shape = SubResource("CylinderShape3D_e4yrd")
 
 [node name="VisibleRange" parent="Range" index="1"]
 mesh = SubResource("CylinderMesh_qcf33")
+
+[node name="AmmoBar3D" parent="." index="7"]
+texture = SubResource("ViewportTexture_n03iv")

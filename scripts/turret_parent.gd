@@ -28,6 +28,8 @@ var attack_damage: int
 var attack_range: int
 var attack_speed: float
 
+var bullet_maxammo: int
+
 var bullet_speed: int
 #unique status depend on item
 var bullet_pierce: int
@@ -39,6 +41,7 @@ var enemies_array: Array = []
 var able_shoot: bool = false
 var shoot_direction: Vector3
 
+var bullet_ammo: int
 # Soon to be problems
 # $Head/ProjectileSpawn will need to be manually sets to fit the models
 # Therefore this node need to be erased from this code
@@ -57,6 +60,7 @@ func seed_property():
 
 func ready_up():
 	seed_property()
+	bullet_ammo = bullet_maxammo
 	# Call this function once in _ready() func of the child scene
 	# Set range and attack speed according to inspector values
 	# print($Range/CollisionShape3D.get_shape())
@@ -88,8 +92,11 @@ func update_range(add_or_remove_range: int):
 		visible_range.position.z = -(attack_range * 0.5)
 
 func start_process():
+	update_UI()
+	wave_Reload()
 	lock_on()
 	shoot()
+	
 
 func lock_on():
 	if !enemies_array.is_empty(): # check array empty state
@@ -127,7 +134,8 @@ func lock_on():
 		$RayCast3D.hide()
 
 func shoot():
-	if !enemies_array.is_empty() and $AttackSpeed.time_left <= 0.0 and able_shoot:
+	if !enemies_array.is_empty() and $AttackSpeed.time_left <= 0.0 and able_shoot and bullet_ammo != 0:
+		bullet_ammo -= 1
 		shoot_direction = (enemies_array[0].global_position - global_position).normalized()
 		var turret_projectile = projectile_scene.instantiate()
 		get_node("/root/Node3D/Projectile").add_child(turret_projectile, true) # if you want to shoot while still holding it maybe make projectile as unique or use absolute path to it
@@ -141,6 +149,23 @@ func shoot():
 		turret_projectile.transform = $Head/ProjectileSpawn.global_transform #basically copy all of $"Head/Spawn Point" global transform(rotation, scale, position), to projectile
 		turret_projectile.set_direction = shoot_direction #direction used to set projectile movement direction
 		$AttackSpeed.start() #restart timer so it can shoot again
+
+func reload():
+	print("before reload : ", bullet_ammo, " / ", bullet_maxammo)
+	bullet_ammo = bullet_maxammo
+	print("after reload : ", bullet_ammo, " / ", bullet_maxammo)
+	
+func wave_Reload():
+	if Global.preparation_phase:
+		bullet_ammo = bullet_maxammo
+
+func update_UI():
+	if bullet_ammo != bullet_maxammo:
+		$AmmoBar3D.show()
+	else:
+		$AmmoBar3D.hide()
+	$AmmoBar3D/SubViewport/AmmoBar2D.max_value = bullet_maxammo
+	$AmmoBar3D/SubViewport/AmmoBar2D.value = bullet_ammo
 
 func shoot_audio():
 	var ShootSfx = $BulletSfx.get_children()

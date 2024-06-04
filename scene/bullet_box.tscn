@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://ir8hjuag51vg"]
+
+[ext_resource type="PackedScene" uid="uid://bohqep4mjkkia" path="res://models/bullet_box.glb" id="1_4os3d"]
+[ext_resource type="Script" path="res://scripts/bullet_box.gd" id="1_16qui"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_im4sx"]
+
+[node name="Bullet_Box" type="StaticBody3D"]
+script = ExtResource("1_16qui")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_im4sx")
+
+[node name="bullet_box" parent="." instance=ExtResource("1_4os3d")]

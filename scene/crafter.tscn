@@ -1,0 +1,67 @@
+[gd_scene load_steps=7 format=3 uid="uid://bsgn413mi8pns"]
+
+[ext_resource type="PackedScene" uid="uid://wkkunyir352s" path="res://models/crafter.glb" id="1_8yvh6"]
+[ext_resource type="Script" path="res://scripts/crafter.gd" id="1_hggdn"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_p0dsn"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_xmhvd"]
+viewport_path = NodePath("CraftingProgress3D/SubViewport")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kj4wb"]
+bg_color = Color(0.215686, 0.215686, 0.215686, 0.72549)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uvhc7"]
+bg_color = Color(0.898039, 0.952941, 0.184314, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="Crafter" type="StaticBody3D"]
+script = ExtResource("1_hggdn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_p0dsn")
+
+[node name="crafter" parent="." instance=ExtResource("1_8yvh6")]
+
+[node name="CraftingTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="CraftingProgress3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+billboard = 1
+texture = SubResource("ViewportTexture_xmhvd")
+
+[node name="SubViewport" type="SubViewport" parent="CraftingProgress3D"]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(102, 17)
+
+[node name="CraftingProgress2D" type="ProgressBar" parent="CraftingProgress3D/SubViewport"]
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 101.0
+offset_bottom = 16.0
+theme_override_styles/background = SubResource("StyleBoxFlat_kj4wb")
+theme_override_styles/fill = SubResource("StyleBoxFlat_uvhc7")
+value = 100.0
+show_percentage = false
+
+[connection signal="timeout" from="CraftingTimer" to="." method="_on_crafting_timer_timeout"]

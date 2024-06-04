@@ -25,6 +25,8 @@ var player_inspectedItem
 var player_interactedItem
 var player_interactedItem_Temp
 
+var player_holdedMats: String
+
 func _physics_process(delta):
 	# navigation.bake_navigation_mesh()
 	# for the player to be on ground via gravity
@@ -82,10 +84,18 @@ func mountable_wall():
 func player_interactionZoneProcess():
 	$"Node3D/Interaction Zone/CollisionShape3D".global_position = check_grid(%"Interaction Zone", $"Node3D/Interaction Zone/CollisionShape3D")
 
+func default_state():
+	player_ableInteract = false
+	player_isHoldingItem = false
+	player_interactedItem_Temp = null
+	player_holdedMats = ""
+	$Item.hide()
+
 func ready():
 	if (Input.is_action_just_pressed("start") or (prep_timer.time_left == 0 and Global.waves != 1)) and Global.preparation_phase == true and Global.is_pathReachable == true and player_isHoldingItem == false:
 		spawner.count_enemies()
 		spawner.spawn_timer.start()
+		default_state()
 		#ingame_ui.update()
 		Global.preparation_phase = false
 		print("Player Ready, Entering Wave ", Global.waves, " Defense Phase")
@@ -107,6 +117,7 @@ func wave_cleared():
 	if enemies.get_child_count() == 0 and Global.enemy_left == 0 and Global.preparation_phase == false:
 		Global.waves = Global.waves + 1
 		shop.update_item()
+		default_state()
 		Global.preparation_phase = true
 		print("Wave_Cleared, Entering Prep Phase")
 		$Audio/Bgm/Preparation.play()
@@ -116,6 +127,7 @@ func wave_cleared():
 		await get_tree().create_timer(0.5).timeout
 		ingame_ui.UI_animator.play("Transition_toPreparationPhase")
 		get_tree().paused = true
+		
 
 func esc():
 	if Input.is_action_just_pressed("exit"):
@@ -271,6 +283,7 @@ func player_checkItemRange(item, enable: bool = true):
 		#$"Node3D/Holded Item/Item Range".visible = false
 
 func player_InteractItems():
+	#================================================ PREPARATION PHASE ==================================================================================================
 	if Global.preparation_phase:
 	# PICK UP ITEM - NOT HOLDING item and HAVE INTERACTABLE item
 		if player_ableInteract == true and player_isHoldingItem == false and Input.is_action_just_pressed("interact"):
@@ -309,15 +322,63 @@ func player_InteractItems():
 			player_holdItem(player_interactedItem)
 			await get_tree().create_timer(0.15).timeout
 			player_checkItemRange(player_interactedItem, true)
+			
+	#================================================ DEFENSE PHASE ==================================================================================================
 	elif !Global.preparation_phase:
 		# RELOAD TURRET - HOLDING an AMMO and HAVE INTERACTABLE TURRET
-		if player_ableInteract == true and player_isHoldingItem == false and Input.is_action_just_pressed("interact") and player_interactedItem_Temp.has_method("reload"):
+		if player_ableInteract == true and player_isHoldingItem == true and Input.is_action_just_pressed("interact") and player_interactedItem_Temp.has_method("reload") and player_holdedMats == "ammo_box":
 			if player_interactedItem_Temp.bullet_ammo != player_interactedItem_Temp.bullet_maxammo:
 				print("reloading turret")
 				player_interactedItem_Temp.reload()
-				#queuefree holded item
-		# RELOAD MOUNTED TURRET - HOLDING an AMMO and HAVE INTERACTABLE MOUNTABLE WALL that MOUNTED
-			
+				player_isHoldingItem = false
+				player_holdedMats = ""
+				$Item.hide()
+		# RELOAD MOUNTED TURRET - HOLDING an AMMO and HAVE MOUNTED WALL that have turret in it
+		if player_ableInteract == true and player_isHoldingItem == true and Input.is_action_just_pressed("interact") and player_interactedItem_Temp.has_method("mount") and player_holdedMats == "ammo_box":
+			if player_interactedItem_Temp.get_child(-1).has_method("reload"):
+				if player_interactedItem_Temp.get_child(-1).bullet_ammo != player_interactedItem_Temp.get_child(-1).bullet_maxammo:
+					print("reloading mounted turret")
+					player_interactedItem_Temp.get_child(-1).reload()
+					player_isHoldingItem = false
+					player_holdedMats = ""
+					$Item.hide()
+		# PICK UP INGREDIENT
+		elif player_ableInteract == true and player_isHoldingItem == false and Input.is_action_just_pressed("interact") and !Function.search_regex("turret", player_interactedItem_Temp.id):
+			var modelHand_Tween = get_tree().create_tween()
+			if player_interactedItem_Temp.id == "gunpowder_box":
+				player_holdedMats = "gunpowder_box"
+				player_isHoldingItem = true
+				modelHand_Tween.tween_property($Node3D/Models/Hand, "rotation_degrees", Vector3(0, 0, 0), 0.1)
+				$Item.show()
+				player_ableInteract == false
+				print("picked up gunpowder_box")
+			elif player_interactedItem_Temp.id == "bullet_box":
+				player_holdedMats = "bullet_box"
+				player_isHoldingItem = true
+				modelHand_Tween.tween_property($Node3D/Models/Hand, "rotation_degrees", Vector3(0, 0, 0), 0.1)
+				$Item.show()
+				player_ableInteract == false
+				print("picked up bullet_box")
+			elif player_interactedItem_Temp.id == "crafter":
+				player_interactedItem_Temp.get_product()
+				if player_holdedMats != "":
+					player_isHoldingItem = true
+					modelHand_Tween.tween_property($Node3D/Models/Hand, "rotation_degrees", Vector3(0, 0, 0), 0.1)
+					$Item.show()
+					player_ableInteract == false
+					print("picked up ammo_box")
+		
+		# DROP INGREDIENT
+		elif player_ableInteract == true and player_isHoldingItem == true and player_ableToDrop == true and Input.is_action_just_pressed("interact"):
+			if player_holdedMats == player_interactedItem_Temp.id:
+				print("dropped back ", player_holdedMats)
+				player_isHoldingItem = false
+				player_holdedMats == null
+				$Item.hide()
+			elif player_interactedItem_Temp.id == "crafter":
+				print("put ", player_holdedMats, " to Crafter")
+				player_interactedItem_Temp.get_ingredient(player_holdedMats)
+				#CHANGE CRAFTER VARIABLE
 	
 func player_InspectItems():
 	if Input.is_action_just_pressed("inspect") and player_ableInteract == true:

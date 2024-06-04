@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://boj1ov7anx6qx"]
+[gd_scene load_steps=18 format=3 uid="uid://boj1ov7anx6qx"]
 
 [ext_resource type="Script" path="res://ui/input_guide_ui.gd" id="1_xpl4o"]
 [ext_resource type="FontFile" uid="uid://cxvusk35yis3l" path="res://assets/font/Dadlygood.otf" id="2_7olpv"]
@@ -15,8 +15,10 @@
 [ext_resource type="Texture2D" uid="uid://cy5qd26jedjm5" path="res://assets/icon/ControllerButton/xbox_x_color_light.png" id="13_a8aq6"]
 [ext_resource type="Texture2D" uid="uid://ccsn2emgeq13f" path="res://assets/icon/ControllerButton/xbox_menu_light.png" id="14_vflja"]
 [ext_resource type="Texture2D" uid="uid://dkjp8ii3hx24h" path="res://assets/icon/ControllerButton/leftstick_light.png" id="15_at7jt"]
+[ext_resource type="Texture2D" uid="uid://bkck1nq4y8ax4" path="res://assets/icon/ControllerButton/leftstick_left_light.png" id="15_kyuq8"]
+[ext_resource type="Texture2D" uid="uid://5eaoee4nrxvk" path="res://assets/icon/ControllerButton/leftstick_right_light.png" id="17_org3e"]
 
-[node name="Input_guide_UI" type="Control"]
+[node name="Input_Guide_UI" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -280,7 +282,7 @@ theme_override_colors/font_outline_color = Color(0.262745, 0.290196, 0.372549, 1
 theme_override_constants/outline_size = 3
 theme_override_constants/shadow_outline_size = 2
 theme_override_fonts/font = ExtResource("2_7olpv")
-text = "Start Wave"
+text = "Start Event"
 
 [node name="StartIcon" type="TextureRect" parent="MarginContainer/HBoxContainerController/Start"]
 custom_minimum_size = Vector2(20, 20)
@@ -303,10 +305,26 @@ theme_override_constants/shadow_outline_size = 2
 theme_override_fonts/font = ExtResource("2_7olpv")
 text = "Move"
 
-[node name="EIcon" type="TextureRect" parent="MarginContainer/HBoxContainerController/Move"]
+[node name="EIconLeft" type="TextureRect" parent="MarginContainer/HBoxContainerController/Move"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("15_kyuq8")
+expand_mode = 1
+
+[node name="EIconMiddle" type="TextureRect" parent="MarginContainer/HBoxContainerController/Move"]
 custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = ExtResource("15_at7jt")
+expand_mode = 1
+
+[node name="EIconRight" type="TextureRect" parent="MarginContainer/HBoxContainerController/Move"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("17_org3e")
 expand_mode = 1

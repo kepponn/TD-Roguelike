@@ -22,10 +22,13 @@ func nav_setup():
 	direction = nav.get_next_path_position() - global_position
 	direction = direction.normalized()
 
-func _process(delta):
+func _physics_process(delta):
 	nav_setup()
 	# This is still a wrong implementation of delta time but at lease it works
-	velocity = direction * SPEED * (0.2 + delta)
+	# velocity = direction * SPEED * (0.2 + delta)
+	# The use of lerp in here make that the enemy navigation dont stuck like a fucking retard
+	# Please check and tweak the $NavigationRegion3D
+	velocity = velocity.lerp(direction * SPEED * (0.2 + delta), 0.15)
 	move_and_slide()
 	enemy_model()
 	

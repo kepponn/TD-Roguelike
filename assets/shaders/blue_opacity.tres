@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://dkc41hm5k14nh"]
+
+[ext_resource type="Texture2D" uid="uid://dye2tkittjusd" path="res://models/path_direction_base_color.png" id="1_pf46p"]
+
+[resource]
+resource_name = "Material.001"
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+albedo_texture = ExtResource("1_pf46p")
+roughness = 0.5

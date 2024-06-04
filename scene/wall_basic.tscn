@@ -4,13 +4,13 @@
 [ext_resource type="Script" path="res://scripts/wall_basic.gd" id="2_i76cn"]
 [ext_resource type="PackedScene" uid="uid://dv46t3u1gfyil" path="res://models/wall_basic.glb" id="3_dapxq"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_q1j2m"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_rehx7"]
 
 [node name="Wall" instance=ExtResource("1_rmy5t")]
 script = ExtResource("2_i76cn")
 id = "wall_basic"
 
 [node name="CollisionShape3D" parent="." index="0"]
-shape = SubResource("BoxShape3D_q1j2m")
+shape = SubResource("BoxShape3D_rehx7")
 
 [node name="wall_basic" parent="Models" index="0" instance=ExtResource("3_dapxq")]

@@ -24,7 +24,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Input_guide_UI" parent="." instance=ExtResource("3_8s1tw")]
+[node name="Input_Guide_UI" parent="." instance=ExtResource("3_8s1tw")]
 
 [node name="Audio" type="Node" parent="."]
 

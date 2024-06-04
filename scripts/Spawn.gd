@@ -23,6 +23,7 @@ func _ready():
 	pass
 
 func _process(_delta):
+	$SpawnLocation/Models/Orb.rotation_degrees.y += 1
 	spawn_enemies()
 	check_path()
 

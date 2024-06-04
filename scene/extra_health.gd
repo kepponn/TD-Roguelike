@@ -10,7 +10,7 @@ func _ready():
 	Global.life_array.append(self)
 	
 func _process(_delta):
-	$Model/extra_health.rotation_degrees.y += 1
+	$Model/heart.rotation_degrees.y += 1
 
 func destroy():
 	Global.life_array.erase(self)

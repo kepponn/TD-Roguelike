@@ -12,6 +12,14 @@ var prod_ammo_box: int = 0
 var is_crafting: bool = false
 
 func _process(_delta):
+	if is_crafting:
+		$Models/Torus.rotation_degrees.y += 2
+		$Models/Torus2.rotation_degrees.y -= 2
+		$Models/Torus3.rotation_degrees.y += 2
+	else:
+		$Models/Torus.rotation_degrees.y += 0.25
+		$Models/Torus2.rotation_degrees.y -= 0.25
+		$Models/Torus3.rotation_degrees.y += 0.25
 	update_UI()
 	craft_ammo()
 	

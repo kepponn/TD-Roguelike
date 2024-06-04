@@ -22,5 +22,4 @@ func _ready():
 	#print("Current target position: " + str(Global.final_target))
 	
 func _process(_delta):
-	#Global.final_target = position
-	pass
+	$Models/Orb.rotation_degrees.y += 1

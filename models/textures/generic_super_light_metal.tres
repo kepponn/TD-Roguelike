@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dtv68sjnoe1ov"]
+
+[resource]
+metallic = 0.35
+emission = Color(0.121569, 0.121569, 0.121569, 1)
+normal_scale = 16.0
+rim_tint = 0.0
+clearcoat = 0.44
+clearcoat_roughness = 1.0

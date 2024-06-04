@@ -481,6 +481,8 @@ theme_override_constants/margin_bottom = 10
 
 [node name="Control" type="Control" parent="MarginContainer"]
 layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 
 [node name="EnemyLeftBar" type="ProgressBar" parent="MarginContainer/Control"]
 self_modulate = Color(0.984314, 0.207843, 0.454902, 1)
@@ -488,8 +490,8 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -150.0
-offset_right = 150.0
+offset_left = 416.0
+offset_right = 716.0
 offset_bottom = 20.0
 grow_horizontal = 2
 size_flags_horizontal = 4
@@ -537,14 +539,13 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="PreparationTimeLeftBar" type="ProgressBar" parent="MarginContainer/Control"]
-visible = false
 self_modulate = Color(0.278431, 0.929412, 0.996078, 1)
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -150.0
-offset_right = 150.0
+offset_left = 416.0
+offset_right = 716.0
 offset_bottom = 20.0
 grow_horizontal = 2
 size_flags_horizontal = 4
@@ -574,10 +575,10 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -150.0
+offset_left = -2.0
 offset_top = 20.5
-offset_right = 150.0
-offset_bottom = 40.5
+offset_right = 337.0
+offset_bottom = 68.5
 grow_horizontal = 2
 theme_override_colors/font_color = Color(0.278431, 0.929412, 0.996078, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
@@ -593,14 +594,9 @@ vertical_alignment = 1
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/Control"]
 self_modulate = Color(0.937255, 0.956863, 0, 1)
 layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -86.0
-offset_top = -4.5
-offset_right = -56.0
-offset_bottom = 25.5
-grow_horizontal = 0
+offset_left = 1050.0
+offset_right = 1080.0
+offset_bottom = 30.0
 size_flags_horizontal = 8
 size_flags_vertical = 0
 texture = ExtResource("3_b0umq")

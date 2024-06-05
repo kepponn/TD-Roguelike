@@ -98,7 +98,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_snt1p")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_8c162"]
-viewport_path = NodePath("InspectedItemUI3D/SubViewport")
+viewport_path = NodePath("Sprite3D/SubViewport")
 
 [node name="Node3D" type="Node3D"]
 
@@ -287,17 +287,17 @@ stream = ExtResource("17_qr8qr")
 volume_db = 2.0
 bus = &"Effect"
 
-[node name="InspectedItemUI3D" type="Sprite3D" parent="."]
-visible = false
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 3, -1)
 modulate = Color(1, 1, 1, 0.827451)
 billboard = 1
 texture = SubResource("ViewportTexture_8c162")
 
-[node name="SubViewport" type="SubViewport" parent="InspectedItemUI3D"]
+[node name="SubViewport" type="SubViewport" parent="Sprite3D"]
 disable_3d = true
 size = Vector2i(200, 300)
 
-[node name="InspectedItemUI" parent="InspectedItemUI3D/SubViewport" instance=ExtResource("24_6725n")]
+[node name="InspectedItemUI" parent="Sprite3D/SubViewport" instance=ExtResource("24_6725n")]
 custom_minimum_size = Vector2(200, 300)
 
 [node name="Control" type="Control" parent="."]

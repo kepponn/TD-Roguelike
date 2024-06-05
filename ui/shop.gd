@@ -32,6 +32,7 @@ var item_rate = {
 }
 
 func _ready():
+	self.hide()
 	update_item()
 
 func _process(_delta):

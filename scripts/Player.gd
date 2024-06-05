@@ -12,7 +12,8 @@ const JUMP_VELOCITY = 4.5
 @onready var shop = get_node('/root/Node3D/Control/Shop')
 @onready var ingame_ui = get_node('/root/Node3D/Control/IngameUI')
 @onready var prep_timer = get_node('/root/Node3D/PreparationTimer')
-@onready var inspectedItem_UI = get_node('/root/Node3D/Control/InspectedItemUI')
+@onready var inspectedItem_UI_Sprite = get_node('/root/Node3D/InspectedItemUI3D')
+@onready var inspectedItem_UI = get_node('/root/Node3D/InspectedItemUI3D/SubViewport/InspectedItemUI')
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -103,13 +104,12 @@ func ready():
 		Global.preparation_phase = false
 		print("Player Ready, Entering Wave ", Global.waves, " Defense Phase")
 		$Audio/Bgm/Preparation.stop()
-		$Audio/Bgm/Defending.play()
 		shop.hide()
 		prep_timer.stop()
 		#player_ableInteract = false
-		
 		ingame_ui.UI_animator.play("Transition_toDefensePhase")
 		get_tree().paused = true
+		$Audio/Bgm/Defending.play()
 		
 	if Input.is_action_just_pressed("start") and Global.is_pathReachable == false:
 		print("Unable to ready, Enemy Path is Blocked, Please Move some Blocks!!!")
@@ -123,13 +123,13 @@ func wave_cleared():
 		default_state()
 		Global.preparation_phase = true
 		print("Wave_Cleared, Entering Prep Phase")
-		$Audio/Bgm/Preparation.play()
 		$Audio/Bgm/Defending.stop()
 		prep_timer.start(Global.preparation_time)
 		#player_ableInteract = true
 		await get_tree().create_timer(0.5).timeout
 		ingame_ui.UI_animator.play("Transition_toPreparationPhase")
 		get_tree().paused = true
+		$Audio/Bgm/Preparation.play()
 		
 
 func esc():
@@ -195,7 +195,7 @@ func player_placementPreviewProcess():
 	# This is the essential process function for player_placementPreview()
 	if %"Placement Item".get_child_count() > 0:
 		%"Placement Item".get_child(0).process_mode = PROCESS_MODE_DISABLED # Need to be executed here, the player_placementPreview function cannot handle the request
-		if player_interactedItem_Temp.has_method("mount"): # Unique cases for turret mounting preview
+		if player_interactedItem_Temp.has_method("mount") and Function.search_regex("turret", %"Placement Item".get_child(0).id): # Unique cases for turret mounting preview
 			%"Placement Item".get_child(0).global_position = check_grid(%"Interaction Zone", %"Placement Item".get_child(0)) + Vector3(0, 1, 0)
 		else: # Every cases will follow this normal check grid
 			%"Placement Item".get_child(0).global_position = check_grid(%"Interaction Zone", %"Placement Item".get_child(0))
@@ -405,31 +405,29 @@ func player_InspectItems():
 	if Input.is_action_just_pressed("inspect") and player_ableInteract == true:
 		player_inspectedItem = player_interactedItem_Temp
 		player_checkItemRange(player_inspectedItem)
-		
+		var sprite_adjustment = Vector3(0, 2, -1.5)
+		inspectedItem_UI_Sprite.global_position = player_inspectedItem.global_position + sprite_adjustment
 		if Function.search_regex("turret", player_inspectedItem.id):
 			print("INSPECTED TURRET")
 			inspectedItem_UI.AttackDamageText = player_inspectedItem.attack_damage
 			inspectedItem_UI.AttackRangeText = player_inspectedItem.attack_range
 			inspectedItem_UI.AttackSpeedText = player_inspectedItem.attack_speed
 			inspectedItem_UI.AmmoText = player_inspectedItem.bullet_maxammo
-			inspectedItem_UI.show()
-
+			inspectedItem_UI_Sprite.show()
 		elif player_inspectedItem.id == "wall_spiked":
 			print("INSPECTED WALL SPIKED")
 			inspectedItem_UI.AttackDamageText = player_inspectedItem.attack_damage
 			inspectedItem_UI.AttackSpeedText = player_inspectedItem.attack_speed
-			inspectedItem_UI.show()
-		
+			inspectedItem_UI_Sprite.show()
 		else:
 			pass
 	elif player_inspectedItem != null and player_ableInteract == false and player_isHoldingItem == false:
 		player_checkItemRange(player_inspectedItem, false)
-		
 		inspectedItem_UI.AttackDamageText = null
 		inspectedItem_UI.AttackRangeText = null
 		inspectedItem_UI.AttackSpeedText = null
 		inspectedItem_UI.AmmoText = null
-		inspectedItem_UI.hide()
+		inspectedItem_UI_Sprite.hide()
 
 func player_RotateItems():
 	if Input.is_action_just_pressed("rotate"):

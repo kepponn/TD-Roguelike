@@ -64,13 +64,17 @@ debug_shape_thickness = 5
 [node name="AttackSpeed" type="Timer" parent="."]
 one_shot = true
 
-[node name="Head" type="Node3D" parent="."]
+[node name="Models" type="Node3D" parent="."]
 
-[node name="ProjectileSpawn" type="Marker3D" parent="Head"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.334663, -0.905763)
-visible = false
+[node name="Head" type="Node3D" parent="Models"]
 
-[node name="Body" type="Node3D" parent="."]
+[node name="HeadModels" type="Node3D" parent="Models/Head"]
+
+[node name="ProjectileSpawn" type="Marker3D" parent="Models/Head"]
+unique_name_in_owner = true
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
+
+[node name="Body" type="Node3D" parent="Models"]
 
 [node name="Range" type="Area3D" parent="."]
 

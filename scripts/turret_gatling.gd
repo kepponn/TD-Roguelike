@@ -6,4 +6,6 @@ func _ready():
 func _process(_delta):
 	start_process()
 	if able_shoot and !enemies_array.is_empty():
-		$Head/turret_head_gatling.rotation_degrees.x += 5
+		$Models/Head/HeadModels/Barrel.rotation_degrees.x += 5
+		$Models/Head/HeadModels/Barrel2.rotation_degrees.x += 5
+		$Models/Head/HeadModels/Barrel3.rotation_degrees.x += 5

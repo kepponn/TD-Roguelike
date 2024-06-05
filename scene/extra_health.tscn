@@ -90,14 +90,14 @@ distance_fade_enabled = true
 omni_range = 1.4
 omni_attenuation = 0.535887
 
-[node name="Model" type="Node3D" parent="."]
+[node name="Models" type="Node3D" parent="."]
 
-[node name="heart" type="MeshInstance3D" parent="Model"]
+[node name="heart" type="MeshInstance3D" parent="Models"]
 transform = Transform3D(0.36066, 0, 0, 0, 0.74005, 0, 0, 0, 0.74005, 0, 0.245428, 0)
 mesh = SubResource("ArrayMesh_kyfk7")
 skeleton = NodePath("")
 
-[node name="base" type="MeshInstance3D" parent="Model"]
+[node name="base" type="MeshInstance3D" parent="Models"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
 mesh = SubResource("ArrayMesh_gjvdf")
 skeleton = NodePath("")

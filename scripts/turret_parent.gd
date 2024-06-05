@@ -118,7 +118,7 @@ func lock_on():
 			elif $RayCast3D.get_collider().get_parent().name == 'Enemies':
 				able_shoot = true
 				$RayCast3D.show()
-				$Head.look_at(enemies_array[0].position)
+				$Models/Head.look_at(enemies_array[0].position)
 				#print("Shooting at " + str(enemies_array[0].name))
 				#print("Detecting " + str(enemies_array.size()) + " enemies")
 				$RayCast3D.debug_shape_custom_color = Color(0,255,0)
@@ -128,9 +128,9 @@ func lock_on():
 				$RayCast3D.hide()
 	else:
 		# Reset turret head direction to default
-		$Head.rotation.y = lerp_angle($Head.rotation.y, 0.0, 0.1)
-		$Head.rotation.x = lerp_angle($Head.rotation.x, 0.0, 0.1)
-		$Head.rotation.z = lerp_angle($Head.rotation.z, 0.0, 0.1)
+		$Models/Head.rotation.y = lerp_angle($Models/Head.rotation.y, 0.0, 0.1)
+		$Models/Head.rotation.x = lerp_angle($Models/Head.rotation.x, 0.0, 0.1)
+		$Models/Head.rotation.z = lerp_angle($Models/Head.rotation.z, 0.0, 0.1)
 		$RayCast3D.hide()
 
 func shoot():
@@ -146,7 +146,7 @@ func shoot():
 			turret_projectile.ricochet_counter = bullet_ricochet
 		turret_projectile.damage = attack_damage
 		turret_projectile.speed = bullet_speed
-		turret_projectile.transform = $Head/ProjectileSpawn.global_transform #basically copy all of $"Head/Spawn Point" global transform(rotation, scale, position), to projectile
+		turret_projectile.transform = %ProjectileSpawn.global_transform #basically copy all of $"Head/Spawn Point" global transform(rotation, scale, position), to projectile
 		turret_projectile.set_direction = shoot_direction #direction used to set projectile movement direction
 		$AttackSpeed.start() #restart timer so it can shoot again
 

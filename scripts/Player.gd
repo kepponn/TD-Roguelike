@@ -117,7 +117,7 @@ func ready():
 		print("Unable to ready, Player still Holding Item, Drop Holded Item!!!")
 
 func wave_cleared():
-	if enemies.get_child_count() == 0 and Global.enemy_left == 0 and Global.preparation_phase == false:
+	if enemies.get_child_count() == 0 and Global.enemy_left <= 0 and Global.preparation_phase == false:
 		Global.waves = Global.waves + 1
 		shop.update_item()
 		default_state()

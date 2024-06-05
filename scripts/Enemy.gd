@@ -11,6 +11,14 @@ var direction = Vector3()
 @onready var nav: NavigationAgent3D = $NavigationAgent3D
 @onready var spawn = get_node('/root/Node3D/Spawn')
 
+func _process(_delta):
+	if HP <= 0:
+		Global.currency = Global.currency + 5
+		Global.enemy_left = Global.enemy_left - 1
+		spawn.enemy_died()
+		print("Enemy Left = ",Global.enemy_left)
+		queue_free()
+
 func _ready():
 	max_HP = HP
 	call_deferred("nav_setup")
@@ -53,11 +61,12 @@ func enemy_model():
 	
 func hit(damage):
 	HP = HP - damage
-	if HP <= 0:
-		Global.currency = Global.currency + 5
-		Global.enemy_left = Global.enemy_left - 1
-		spawn.enemy_died()
-		queue_free()
+	#if HP <= 0:
+		#Global.currency = Global.currency + 5
+		#Global.enemy_left = Global.enemy_left - 1
+		#spawn.enemy_died()
+		#print("Enemy Left = ",Global.enemy_left)
+		#queue_free()
 
 func update_HP():
 	if HP != max_HP:

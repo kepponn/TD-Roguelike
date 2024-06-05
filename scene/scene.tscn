@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://dl8dey22x882y"]
+[gd_scene load_steps=32 format=3 uid="uid://dl8dey22x882y"]
 
 [ext_resource type="PackedScene" uid="uid://dfa3wfjb564fn" path="res://scene/player.tscn" id="1_rl4h5"]
 [ext_resource type="NavigationMesh" uid="uid://1kgcqxfwhe74" path="res://Navigation.tres" id="2_qtpp8"]
@@ -25,6 +25,7 @@
 [ext_resource type="AudioStream" uid="uid://b3om5s62o78ha" path="res://assets/audio/sfx/mixkit-mechanical-crate-pick-up-3154.mp3" id="17_qr8qr"]
 [ext_resource type="PackedScene" uid="uid://bu3pm3p7au2pa" path="res://ui/shop.tscn" id="17_vv3g3"]
 [ext_resource type="Material" uid="uid://ddxjg3gxomrtf" path="res://assets/shaders/yellow_opacity.tres" id="18_efhn5"]
+[ext_resource type="PackedScene" uid="uid://c3va70n1nwul8" path="res://ui/inspected_item.tscn" id="24_6725n"]
 
 [sub_resource type="Environment" id="Environment_m6ppc"]
 ssr_enabled = true
@@ -297,6 +298,20 @@ layout_mode = 1
 
 [node name="Input_Guide_UI" parent="Control" instance=ExtResource("17_lshwk")]
 layout_mode = 1
+
+[node name="InspectedItemUI" parent="Control" instance=ExtResource("24_6725n")]
+visible = false
+custom_minimum_size = Vector2(200, 300)
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -210.0
+offset_top = -150.0
+offset_right = -10.0
+offset_bottom = 150.0
+grow_horizontal = 0
 
 [node name="Shop" parent="Control" instance=ExtResource("17_vv3g3")]
 unique_name_in_owner = true

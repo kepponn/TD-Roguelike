@@ -62,13 +62,14 @@ func seed_item(seeder, property): # property are taken from item_rate where it M
 	seeder.item_price = property_temp.price
 	
 	if Function.search_regex("turret", property_temp.id):
-		seeder.text1 = property_temp.attack_damage
-		seeder.text2 = property_temp.attack_range
-		seeder.text3 = property_temp.attack_speed
+		seeder.AttackDamageText = property_temp.attack_damage
+		seeder.AttackRangeText = property_temp.attack_range
+		seeder.AttackSpeedText = property_temp.attack_speed
+		seeder.AmmoText = property_temp.bullet_maxammo
 
 	if property_temp.id == "wall_spiked":
-		seeder.text1 = property_temp.attack_damage
-		seeder.text3 = property_temp.attack_speed
+		seeder.AttackDamageText = property_temp.attack_damage
+		seeder.AttackSpeedText = property_temp.attack_speed
 
 func randomize_shopItem():
 	var rng = RandomNumberGenerator.new()

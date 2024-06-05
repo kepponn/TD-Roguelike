@@ -12,6 +12,7 @@ const JUMP_VELOCITY = 4.5
 @onready var shop = get_node('/root/Node3D/Control/Shop')
 @onready var ingame_ui = get_node('/root/Node3D/Control/IngameUI')
 @onready var prep_timer = get_node('/root/Node3D/PreparationTimer')
+@onready var inspectedItem_UI = get_node('/root/Node3D/Control/InspectedItemUI')
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -382,8 +383,31 @@ func player_InspectItems():
 	if Input.is_action_just_pressed("inspect") and player_ableInteract == true:
 		player_inspectedItem = player_interactedItem_Temp
 		player_checkItemRange(player_inspectedItem)
+		
+		if Function.search_regex("turret", player_inspectedItem.id):
+			print("INSPECTED TURRET")
+			inspectedItem_UI.AttackDamageText = player_inspectedItem.attack_damage
+			inspectedItem_UI.AttackRangeText = player_inspectedItem.attack_range
+			inspectedItem_UI.AttackSpeedText = player_inspectedItem.attack_speed
+			inspectedItem_UI.AmmoText = player_inspectedItem.bullet_maxammo
+			inspectedItem_UI.show()
+
+		elif player_inspectedItem.id == "wall_spiked":
+			print("INSPECTED WALL SPIKED")
+			inspectedItem_UI.AttackDamageText = player_inspectedItem.attack_damage
+			inspectedItem_UI.AttackSpeedText = player_inspectedItem.attack_speed
+			inspectedItem_UI.show()
+		
+		else:
+			pass
 	elif player_inspectedItem != null and player_ableInteract == false and player_isHoldingItem == false:
 		player_checkItemRange(player_inspectedItem, false)
+		
+		inspectedItem_UI.AttackDamageText = null
+		inspectedItem_UI.AttackRangeText = null
+		inspectedItem_UI.AttackSpeedText = null
+		inspectedItem_UI.AmmoText = null
+		inspectedItem_UI.hide()
 
 func player_RotateItems():
 	if Input.is_action_just_pressed("rotate"):

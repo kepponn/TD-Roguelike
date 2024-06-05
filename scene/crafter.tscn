@@ -1,8 +1,11 @@
-[gd_scene load_steps=16 format=3 uid="uid://bsgn413mi8pns"]
+[gd_scene load_steps=20 format=3 uid="uid://bsgn413mi8pns"]
 
 [ext_resource type="Script" path="res://scripts/crafter.gd" id="1_hggdn"]
 [ext_resource type="Material" uid="uid://b8xph3vsgn38u" path="res://models/textures/crafter_torus.tres" id="2_f2pd2"]
 [ext_resource type="Material" uid="uid://dtv68sjnoe1ov" path="res://models/textures/generic_super_light_metal.tres" id="3_g2nt1"]
+[ext_resource type="Texture2D" uid="uid://rfgubxt8c3v7" path="res://assets/icon/Dark/Keyboard/arrow_left_dark.png" id="4_rjc3l"]
+[ext_resource type="Texture2D" uid="uid://c264vqwhurrgw" path="res://assets/icon/Dark/Keyboard/arrow_right_dark.png" id="5_exl3s"]
+[ext_resource type="Texture2D" uid="uid://c0fsq48t7rpik" path="res://assets/icon/Dark/Keyboard/!_dark.png" id="6_ymr7e"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_p0dsn"]
 
@@ -161,6 +164,9 @@ corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_gk2b8"]
+viewport_path = NodePath("IngredientInfo3D/SubViewport")
+
 [node name="Crafter" type="StaticBody3D"]
 script = ExtResource("1_hggdn")
 
@@ -217,5 +223,37 @@ theme_override_styles/background = SubResource("StyleBoxFlat_kj4wb")
 theme_override_styles/fill = SubResource("StyleBoxFlat_uvhc7")
 value = 100.0
 show_percentage = false
+
+[node name="IngredientInfo3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.46556, 0)
+billboard = 1
+texture = SubResource("ViewportTexture_gk2b8")
+
+[node name="SubViewport" type="SubViewport" parent="IngredientInfo3D"]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(179, 60)
+
+[node name="Ingredient List" type="HBoxContainer" parent="IngredientInfo3D/SubViewport"]
+offset_right = 178.5
+offset_bottom = 60.0
+size_flags_horizontal = 4
+size_flags_vertical = 0
+alignment = 1
+
+[node name="GunpowderIcon" type="TextureRect" parent="IngredientInfo3D/SubViewport/Ingredient List"]
+layout_mode = 2
+texture = ExtResource("4_rjc3l")
+expand_mode = 3
+
+[node name="BulletIcon" type="TextureRect" parent="IngredientInfo3D/SubViewport/Ingredient List"]
+layout_mode = 2
+texture = ExtResource("5_exl3s")
+expand_mode = 3
+
+[node name="AmmoIcon" type="TextureRect" parent="IngredientInfo3D/SubViewport/Ingredient List"]
+layout_mode = 2
+texture = ExtResource("6_ymr7e")
+expand_mode = 3
 
 [connection signal="timeout" from="CraftingTimer" to="." method="_on_crafting_timer_timeout"]

@@ -1,17 +1,22 @@
 extends StaticBody3D
 
 @onready var id = "shop"
+var step_change: bool = true
 
 func _process(_delta):
-	pass
+	if step_change:
+		$Models/ScanLight.position.y -= 0.01
+		$Models/ScanLine.position.y -= 0.01
+		$Models/ScanLine_001.position.y += 0.01
+		$Models/ScanLight_001.position.y += 0.01
+		if $Models/ScanLight.position.y <= -0.98:
+			step_change = false
+	if !step_change:
+		$Models/ScanLight.position.y += 0.01
+		$Models/ScanLine.position.y += 0.01
+		$Models/ScanLine_001.position.y -= 0.01
+		$Models/ScanLight_001.position.y -= 0.01
+		if $Models/ScanLight.position.y >= 0:
+			step_change = true
 
-func _on_item_placeholder_body_entered(body):
-	if body.name != "Shop" and !body.is_class("GridMap") and body.name != "Player":
-		#print(body.name, " Entered")
-		set_collision_layer_value(1,false)
-
-func _on_item_placeholder_body_exited(body):
-	if body.name != "Shop" and !body.is_class("GridMap") and body.name != "Player":
-		set_collision_layer_value(1,true)
-		#print(body.name, " Exited")
 

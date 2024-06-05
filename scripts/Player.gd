@@ -131,7 +131,6 @@ func wave_cleared():
 		get_tree().paused = true
 		$Audio/Bgm/Preparation.play()
 		
-
 func esc():
 	if Input.is_action_just_pressed("exit"):
 		ingame_menu.show()
@@ -239,9 +238,8 @@ func player_placementPreview(enable: bool):
 func player_holdItem(item) -> void: # need to return something so the last timer didnt stop prematurely
 	$Audio/SelectSfx.play()
 	player_placementPreview(true)
+	inspectedItem_UI_Sprite.hide()
 	item.reparent(holded_item, true) # Change the item parent into `%"Holded Item"` which reside in player node
-	if item.name == "Shop":
-		item.set_collision_layer_value(2, false)
 	item.set_collision_layer_value(1, false) # Remove the collision layer from the item while being held in-hand
 	#item.position = Vector3(0.5, 1, 0) # Set item position to be on top of player
 	var holdItem_Tween = get_tree().create_tween()
@@ -252,6 +250,7 @@ func player_holdItem(item) -> void: # need to return something so the last timer
 func player_putItem(item):
 	$Audio/SelectSfx.play()
 	player_placementPreview(false)
+	inspectedItem_UI_Sprite.hide()
 	item.reparent(parent_item, true) # Change the item parent into `%Item` node
 	#item.set_collision_layer_value(1, true) # Enable the collision layer of the item
 	# Check the grid of item when putting down to the world
@@ -259,14 +258,11 @@ func player_putItem(item):
 	putItem_Tween.tween_property(item, "position", check_grid(%"Interaction Zone", item), 0.15)
 	#item.position = check_grid(%"Interaction Zone", item)
 	await get_tree().create_timer(0.15).timeout
-	if item.name == "Shop":
-		item.set_collision_layer_value(2, true)
 	item.set_collision_layer_value(1, true)
 
 func player_swapItem(held_item, ground_item):
 	player_placementPreview(false)
-	if held_item.name == "Shop":
-		held_item.set_collision_layer_value(2, true)
+	inspectedItem_UI_Sprite.hide()
 	held_item.reparent(parent_item, true) 
 	held_item.set_collision_layer_value(1, true)
 	held_item.position = ground_item.position # Swap the position property from held item to ground item
@@ -402,6 +398,8 @@ func player_InteractItems():
 				#CHANGE CRAFTER VARIABLE
 	
 func player_InspectItems():
+	# This show the player card-like information about item, will be immediately turn off if player do any action
+	# Add more information but in text-type to some items? maybe make a new UI3D for that?
 	if Input.is_action_just_pressed("inspect") and player_ableInteract == true:
 		player_inspectedItem = player_interactedItem_Temp
 		player_checkItemRange(player_inspectedItem)
@@ -414,13 +412,17 @@ func player_InspectItems():
 			inspectedItem_UI.AttackSpeedText = player_inspectedItem.attack_speed
 			inspectedItem_UI.AmmoText = player_inspectedItem.bullet_maxammo
 			inspectedItem_UI_Sprite.show()
-		elif player_inspectedItem.id == "wall_spiked":
-			print("INSPECTED WALL SPIKED")
-			inspectedItem_UI.AttackDamageText = player_inspectedItem.attack_damage
-			inspectedItem_UI.AttackSpeedText = player_inspectedItem.attack_speed
-			inspectedItem_UI_Sprite.show()
-		else:
-			pass
+		match player_inspectedItem.id:
+			"wall_spiked":
+				print("INSPECTED WALL SPIKED")
+				inspectedItem_UI.AttackDamageText = player_inspectedItem.attack_damage
+				inspectedItem_UI.AttackRangeText = "1"
+				inspectedItem_UI.AttackSpeedText = player_inspectedItem.attack_speed
+				inspectedItem_UI_Sprite.show()
+			# Will mess with player interaction when mounting a turret (showing card of the wall itself and mounting at the same time)
+			#"wall_mountable":
+				#inspectedItem_UI.AttackRangeText = "+1"
+				#inspectedItem_UI_Sprite.show()
 	elif player_inspectedItem != null and player_ableInteract == false and player_isHoldingItem == false:
 		player_checkItemRange(player_inspectedItem, false)
 		inspectedItem_UI.AttackDamageText = null

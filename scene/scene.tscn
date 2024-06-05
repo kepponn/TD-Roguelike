@@ -121,6 +121,8 @@ shadow_blur = 2.0
 
 [node name="Player" parent="." instance=ExtResource("1_rl4h5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.572391, 1.40085, 1.76821)
+collision_layer = 1
+collision_mask = 1
 
 [node name="Enemies" type="Node3D" parent="."]
 
@@ -145,19 +147,19 @@ metadata/_editor_floor_ = Vector3(0, 1, 0)
 unique_name_in_owner = true
 
 [node name="Shop" parent="NavigationRegion3D/Item" instance=ExtResource("5_ew274")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 5, 1, 3)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 6, 1, 3)
 
 [node name="Turret" parent="NavigationRegion3D/Item" instance=ExtResource("11_yfnvx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, -7)
 
 [node name="Turret2" parent="NavigationRegion3D/Item" instance=ExtResource("11_yfnvx")]
-transform = Transform3D(1, 0, -1.06581e-14, 0, 1, 0, 1.06581e-14, 0, 1, 2, 1, 1)
+transform = Transform3D(1, 0, -1.06581e-14, 0, 1, 0, 1.06581e-14, 0, 1, -1, 1, 3)
 
 [node name="Turret5" parent="NavigationRegion3D/Item" instance=ExtResource("7_p8ft8")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2, 1, -4)
 
 [node name="Turret4" parent="NavigationRegion3D/Item" instance=ExtResource("7_p8ft8")]
-transform = Transform3D(1, 0, -1.06581e-14, 0, 1, 0, 1.06581e-14, 0, 1, 1, 1, 4)
+transform = Transform3D(1, 0, -1.06581e-14, 0, 1, 0, 1.06581e-14, 0, 1, 1, 1, 5)
 
 [node name="Turret3" parent="NavigationRegion3D/Item" instance=ExtResource("8_h6j8t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 1, 0)
@@ -196,13 +198,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, 8)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1, 2)
 
 [node name="ExtraHealth" parent="NavigationRegion3D/Item" instance=ExtResource("12_lrh8u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, -1)
 
 [node name="ExtraHealth2" parent="NavigationRegion3D/Item" instance=ExtResource("12_lrh8u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, -1)
 
 [node name="ExtraHealth3" parent="NavigationRegion3D/Item" instance=ExtResource("12_lrh8u")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, 2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 1, -1)
 
 [node name="Gunpowder_Box" parent="NavigationRegion3D/Item" instance=ExtResource("13_5t8o0")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -2, 1, 0)

@@ -1,21 +1,12 @@
 extends Control
 
-#@onready var wall_basic = preload("res://scene/wall_basic.tscn").instantiate()
-#@onready var wall_mountable = preload("res://scene/wall_mountable.tscn").instantiate()
-#@onready var wall_spiked = preload("res://scene/wall_spiked.tscn").instantiate()
-#@onready var turret_basic = preload("res://scene/turret_basic.tscn").instantiate()
-#@onready var turret_pierce = preload("res://scene/turret_pierce.tscn").instantiate()
-#@onready var turret_gatling = preload("res://scene/turret_gatling.tscn").instantiate()
-#@onready var turret_plasma = preload("res://scene/turret_plasma.tscn").instantiate()
-
-
+@onready var shop = get_node('/root/Node3D/NavigationRegion3D/Item/Shop')
 @onready var shop_item = preload("res://ui/shop_item.tscn")
 @onready var empty_item = preload("res://ui/shop_empty.tscn")
 
 @onready var shop_itemList = $PanelContainer/MarginContainer/HBoxContainer/ShopBackground/MarginContainer/Shop/ScrollContainer/ShopItem
 @onready var storage_itemList = $PanelContainer/MarginContainer/HBoxContainer/StorageBackground/MarginContainer/BlueprintStorage/BlueprintStorageItem
 
-# Called when the node enters the scene tree for the first time
 var reroll_price: int = 10
 var mouse_input
 
@@ -41,15 +32,15 @@ func _process(_delta):
 	check_mouseInput()
 
 func spawn_item(scene):
-	var turret = scene.instantiate()
-	print("Purchased ", turret)
-	%Item.add_child(turret, true)
-	turret.position = get_node('/root/Node3D/NavigationRegion3D/Item/Shop/SpawnArea').global_position
-	#get_node('/root/Node3D/NavigationRegion3D/Item/Shop')._on_item_placeholder_body_entered(turret)
-	get_node('/root/Node3D/NavigationRegion3D/Item/Shop/ItemPlaceholder').set_collision_mask_value(1, false)
-	#get_node('/root/Node3D/NavigationRegion3D/Item/Shop/ItemPlaceholder').set_collision_layer_value(1, false)
-	get_node('/root/Node3D/NavigationRegion3D/Item/Shop/ItemPlaceholder').set_collision_mask_value(1, true)
-	#get_node('/root/Node3D/NavigationRegion3D/Item/Shop/ItemPlaceholder').set_collision_mask_value(1, false)
+	var item = scene.instantiate()
+	print("Purchased ", item)
+	# Since only 1 shop right now this is not an issues, if there going to be more shop then need to check for shop in node and check for parameter
+	item.position = get_node('/root/Node3D/NavigationRegion3D/Item/Shop/SpawnArea').global_position
+	%Item.add_child(item, true)
+	# Set data for player to pickup the purchased item
+	get_node('/root/Node3D/Player').player_interactedItem = item
+	get_node('/root/Node3D/Player').player_interactedItem_Temp = item
+	get_node('/root/Node3D/Player').player_ableInteract = true
 
 func seed_item(seeder, property): # property are taken from item_rate where it MUST match an item.id
 	# Need to seed image placeholder and name property into shop_item.gd
@@ -61,16 +52,18 @@ func seed_item(seeder, property): # property are taken from item_rate where it M
 	seeder.find_child("Price").text = str(property_temp.price)
 	seeder.item_name = str(property_temp.id)
 	seeder.item_price = property_temp.price
-	
 	if Function.search_regex("turret", property_temp.id):
 		seeder.AttackDamageText = property_temp.attack_damage
 		seeder.AttackRangeText = property_temp.attack_range
 		seeder.AttackSpeedText = property_temp.attack_speed
 		seeder.AmmoText = property_temp.bullet_maxammo
-
-	if property_temp.id == "wall_spiked":
-		seeder.AttackDamageText = property_temp.attack_damage
-		seeder.AttackSpeedText = property_temp.attack_speed
+	match property_temp.id:
+		"wall_spiked":
+			seeder.AttackDamageText = property_temp.attack_damage
+			seeder.AttackRangeText = "1"
+			seeder.AttackSpeedText = property_temp.attack_speed
+		"wall_mountable":
+			seeder.AttackRangeText = "+1"
 
 func randomize_shopItem():
 	var rng = RandomNumberGenerator.new()

@@ -3,21 +3,15 @@ extends Button
 @export var item_price: int
 @export var item_name: String
 
-#@onready var label1 = $MarginContainer/HBoxContainer/ItemImage/StatusContainer/InfoBg1/InfoLabel1
-#@onready var label2 = $MarginContainer/HBoxContainer/ItemImage/StatusContainer/InfoBg2/InfoLabel2
-#@onready var label3 = $MarginContainer/HBoxContainer/ItemImage/StatusContainer/InfoBg3/InfoLabel3
-#@onready var label4 = $MarginContainer/HBoxContainer/ItemImage/StatusContainer/InfoBg4/InfoLabel4
-
 var AttackDamageText
 var AttackRangeText
 var AttackSpeedText
 var AmmoText
+
 @onready var AttackDamageLabel = %AttackDamageLabel
 @onready var AttackRangeLabel = %AttackRangeLabel
 @onready var AttackSpeedLabel = %AttackSpeedLabel
 @onready var AmmoLabel = %AmmoLabel
-
-#@onready var icon4 = %InfoIcon4
 
 var item_scene: PackedScene
 

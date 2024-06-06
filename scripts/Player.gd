@@ -194,12 +194,43 @@ func player_placementPreviewProcess():
 	# This is the essential process function for player_placementPreview()
 	if %"Placement Item".get_child_count() > 0:
 		%"Placement Item".get_child(0).process_mode = PROCESS_MODE_DISABLED # Need to be executed here, the player_placementPreview function cannot handle the request
+		# Blue material when able to drop items or (unique) place item on top of mounted wall 
+		if player_ableToDrop and !player_ableInteract or (player_ableInteract and player_interactedItem_Temp.has_method("mount") and Function.search_regex("turret", %"Placement Item".get_child(0).id)):
+			player_placementPreviewMaterial(%"Placement Item".get_child(0), "blue")
+		# Red material when cannot drop item or going to swap
+		elif !player_ableToDrop or player_ableInteract:
+			player_placementPreviewMaterial(%"Placement Item".get_child(0), "red")
+		# Check grid location for preview item
 		if player_interactedItem_Temp.has_method("mount") and Function.search_regex("turret", %"Placement Item".get_child(0).id): # Unique cases for turret mounting preview
 			%"Placement Item".get_child(0).global_position = check_grid(%"Interaction Zone", %"Placement Item".get_child(0)) + Vector3(0, 1, 0)
 		else: # Every cases will follow this normal check grid
 			%"Placement Item".get_child(0).global_position = check_grid(%"Interaction Zone", %"Placement Item".get_child(0))
 		# Take on-hand item rotation and applied it to preview-item (there will always be on-hand item when we run the preview process!)
 		%"Placement Item".get_child(0).global_rotation_degrees.y = round(%"Holded Item".get_child(-1).global_rotation_degrees.y / 90.0) * 90.0
+
+func player_placementPreviewMaterial(node, color):
+	if node.has_node("Models"):
+		# Loop for each item in models to change the materials
+		var item_temp_models = node.get_node("Models")
+		var item_preview_material
+		match color:
+			"blue":
+				item_preview_material = load("res://assets/shaders/blue_opacity.tres")
+			"red":
+				item_preview_material = load("res://assets/shaders/red_opacity.tres")
+		for models in item_temp_models.get_children():
+			if models is MeshInstance3D: # Savekeeping just in case, but anything in models node should be mesh!
+				models.material_override = item_preview_material
+				# Unique cases for nested "Head", "Body", "Spike"
+			elif models is Node3D and (models.name == "Head" or models.name == "Body" or models.name == "Spike"):
+				for child_models in models.get_children():
+					if child_models is MeshInstance3D:
+						child_models.material_override = item_preview_material
+					# Really fucking nested "HeadModels" that only seen in Turrets
+					elif child_models is Node3D and child_models.name == "HeadModels":
+						for grandchild_models in child_models.get_children():
+							if grandchild_models is MeshInstance3D:
+								grandchild_models.material_override = item_preview_material
 
 func player_placementPreview(enable: bool):
 	# To be able to return the preview blueprint, the items scene need to be setup properly with meshes with parent node name "Models"
@@ -210,23 +241,6 @@ func player_placementPreview(enable: bool):
 		var path_temp: String = "res://scene/"+str(player_interactedItem.id)+".tscn"
 		var item_temp = load(path_temp).instantiate()
 		# Check if the scene have "Models" node inside
-		if item_temp.has_node("Models"):
-			# Loop for each item in models to change the materials
-			var item_temp_models = item_temp.get_node("Models")
-			var item_preview_material = load("res://assets/shaders/blue_opacity.tres")
-			for models in item_temp_models.get_children():
-				if models is MeshInstance3D: # Savekeeping just in case, but anything in models node should be mesh!
-					models.material_override = item_preview_material
-				# Unique cases for nested "Head", "Body", "Spike"
-				elif models is Node3D and (models.name == "Head" or models.name == "Body" or models.name == "Spike"):
-					for child_models in models.get_children():
-						if child_models is MeshInstance3D:
-							child_models.material_override = item_preview_material
-						# Really fucking nested "HeadModels" that only seen in Turrets
-						elif child_models is Node3D and child_models.name == "HeadModels":
-							for grandchild_models in child_models.get_children():
-								if grandchild_models is MeshInstance3D:
-									grandchild_models.material_override = item_preview_material
 		%"Placement Item".add_child(item_temp, true)
 	if !enable:
 		#print("Deleteing preview belong to "+ str(player_interactedItem.id))

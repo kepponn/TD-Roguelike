@@ -19,4 +19,5 @@ func _process(_delta):
 		if $Models/ScanLight.position.y >= 0:
 			step_change = true
 
-
+func purchase():
+	$PurchaseSfx.play(0.05)

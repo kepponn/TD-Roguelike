@@ -96,20 +96,24 @@ func default_state():
 	$Item.hide()
 
 func ready():
+	# Check for more parameters
 	if (Input.is_action_just_pressed("start") or (prep_timer.time_left == 0 and Global.waves != 1)) and Global.preparation_phase == true and Global.is_pathReachable == true and player_isHoldingItem == false:
-		spawner.count_enemies()
-		spawner.spawn_timer.start()
-		default_state()
-		#ingame_ui.update()
-		Global.preparation_phase = false
-		print("Player Ready, Entering Wave ", Global.waves, " Defense Phase")
-		$Audio/Bgm/Preparation.stop()
-		shop.hide()
-		prep_timer.stop()
-		#player_ableInteract = false
-		ingame_ui.UI_animator.play("Transition_toDefensePhase")
-		get_tree().paused = true
-		$Audio/Bgm/Defending.play()
+		# Await for player to drop the item just in case the player drop it in the same place therefore bypassing the parameters
+		await get_tree().create_timer(0.5).timeout
+		if Global.is_pathReachable == true and player_isHoldingItem == false:
+			spawner.count_enemies()
+			spawner.spawn_timer.start()
+			default_state()
+			#ingame_ui.update()
+			Global.preparation_phase = false
+			print("Player Ready, Entering Wave ", Global.waves, " Defense Phase")
+			$Audio/Bgm/Preparation.stop()
+			shop.hide()
+			prep_timer.stop()
+			#player_ableInteract = false
+			ingame_ui.UI_animator.play("Transition_toDefensePhase")
+			get_tree().paused = true
+			$Audio/Bgm/Defending.play()
 		
 	if Input.is_action_just_pressed("start") and Global.is_pathReachable == false:
 		print("Unable to ready, Enemy Path is Blocked, Please Move some Blocks!!!")
@@ -201,9 +205,12 @@ func player_placementPreviewProcess():
 		elif !player_ableToDrop or player_ableInteract:
 			player_placementPreviewMaterial(%"Placement Item".get_child(0), "red")
 		# Check grid location for preview item
-		if player_interactedItem_Temp.has_method("mount") and Function.search_regex("turret", %"Placement Item".get_child(0).id): # Unique cases for turret mounting preview
-			%"Placement Item".get_child(0).global_position = check_grid(%"Interaction Zone", %"Placement Item".get_child(0)) + Vector3(0, 1, 0)
-		else: # Every cases will follow this normal check grid
+		if player_interactedItem_Temp != null:
+			if player_interactedItem_Temp.has_method("mount") and Function.search_regex("turret", %"Placement Item".get_child(0).id): # Unique cases for turret mounting preview
+				%"Placement Item".get_child(0).global_position = check_grid(%"Interaction Zone", %"Placement Item".get_child(0)) + Vector3(0, 1, 0)
+			else: # Every cases will follow this normal check grid
+				%"Placement Item".get_child(0).global_position = check_grid(%"Interaction Zone", %"Placement Item".get_child(0))
+		else:
 			%"Placement Item".get_child(0).global_position = check_grid(%"Interaction Zone", %"Placement Item".get_child(0))
 		# Take on-hand item rotation and applied it to preview-item (there will always be on-hand item when we run the preview process!)
 		%"Placement Item".get_child(0).global_rotation_degrees.y = round(%"Holded Item".get_child(-1).global_rotation_degrees.y / 90.0) * 90.0

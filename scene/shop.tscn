@@ -1,8 +1,9 @@
-[gd_scene load_steps=21 format=3 uid="uid://wil6fipqm8m1"]
+[gd_scene load_steps=22 format=3 uid="uid://wil6fipqm8m1"]
 
 [ext_resource type="Script" path="res://scene/shop_terminal.gd" id="1_th7ri"]
 [ext_resource type="Material" uid="uid://b8xph3vsgn38u" path="res://models/textures/crafter_torus.tres" id="2_r72ti"]
 [ext_resource type="Material" uid="uid://dtv68sjnoe1ov" path="res://models/textures/generic_super_light_metal.tres" id="4_fwdu1"]
+[ext_resource type="AudioStream" uid="uid://ge1i0vqaif6u" path="res://assets/audio/sfx/082499_thermal-receipt-print-amp-cut-48054.mp3" id="4_lq6vq"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_uvoiq"]
 size = Vector3(1, 2, 1)
@@ -248,3 +249,8 @@ mesh = SubResource("PlaneMesh_lkxfs")
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="Models"]
 transform = Transform3D(0.407378, 0, 0, 0, 1, 0, 0, 0, 0.4437, 0, -0.412072, 0)
 mesh = SubResource("PlaneMesh_nmg3o")
+
+[node name="PurchaseSfx" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_lq6vq")
+volume_db = 20.0
+bus = &"Effect"

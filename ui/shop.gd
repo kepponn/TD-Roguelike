@@ -37,6 +37,7 @@ func spawn_item(scene):
 	# Since only 1 shop right now this is not an issues, if there going to be more shop then need to check for shop in node and check for parameter
 	item.position = get_node('/root/Node3D/NavigationRegion3D/Item/Shop/SpawnArea').global_position
 	%Item.add_child(item, true)
+	get_node('/root/Node3D/NavigationRegion3D/Item/Shop').purchase()
 	# Set data for player to pickup the purchased item
 	get_node('/root/Node3D/Player').player_interactedItem = item
 	get_node('/root/Node3D/Player').player_interactedItem_Temp = item

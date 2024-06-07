@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://ui/ingame_ui.gd" id="1_3pd4a"]
 [ext_resource type="FontFile" uid="uid://cxvusk35yis3l" path="res://assets/font/Dadlygood.otf" id="3_8wy8u"]
-[ext_resource type="Texture2D" uid="uid://b8adjrxb6ldh0" path="res://assets/icon/microchip.png" id="3_6843q"]
+[ext_resource type="Texture2D" uid="uid://bcb0sgisn3oxr" path="res://assets/icon/microchip.png" id="3_sfd77"]
 
 [sub_resource type="Animation" id="Animation_cbrhv"]
 length = 0.001
@@ -597,7 +597,7 @@ offset_right = 1080.0
 offset_bottom = 30.0
 size_flags_horizontal = 8
 size_flags_vertical = 0
-texture = ExtResource("3_6843q")
+texture = ExtResource("3_sfd77")
 expand_mode = 1
 
 [node name="PlayerCurrencyCount" type="Label" parent="MarginContainer/Control/TextureRect"]

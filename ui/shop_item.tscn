@@ -55,6 +55,7 @@ offset_bottom = 177.0
 grow_horizontal = 0
 
 [node name="AttackDamageBg" type="TextureRect" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer"]
+visible = false
 layout_mode = 2
 texture = ExtResource("3_fft30")
 expand_mode = 4
@@ -90,6 +91,7 @@ texture = ExtResource("5_dugyq")
 expand_mode = 4
 
 [node name="AttackRangeBg" type="TextureRect" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer"]
+visible = false
 layout_mode = 2
 texture = ExtResource("3_fft30")
 expand_mode = 4
@@ -125,6 +127,7 @@ texture = ExtResource("6_7sr40")
 expand_mode = 4
 
 [node name="AttackSpeedBg" type="TextureRect" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer"]
+visible = false
 layout_mode = 2
 texture = ExtResource("3_fft30")
 expand_mode = 4
@@ -160,6 +163,7 @@ texture = ExtResource("7_2mav1")
 expand_mode = 4
 
 [node name="AmmoBg" type="TextureRect" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer"]
+visible = false
 layout_mode = 2
 texture = ExtResource("3_fft30")
 expand_mode = 4

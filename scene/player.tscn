@@ -579,16 +579,19 @@ unique_name_in_owner = true
 
 [node name="bullet_box" type="Sprite3D" parent="Node3D/Ingredient Item"]
 transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0.7, 1.2, 0)
+visible = false
 billboard = 1
 texture = ExtResource("12_7etuw")
 
 [node name="gunpowder_box" type="Sprite3D" parent="Node3D/Ingredient Item"]
 transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0.7, 1.2, 0)
+visible = false
 billboard = 1
 texture = ExtResource("13_isfvm")
 
 [node name="ammo_box" type="Sprite3D" parent="Node3D/Ingredient Item"]
 transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0.7, 1.2, 0)
+visible = false
 billboard = 1
 texture = ExtResource("12_boy5b")
 

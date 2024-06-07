@@ -63,7 +63,9 @@ func _ready():
 	navigation.bake_navigation_mesh()
 	$Audio/Bgm/Preparation.play()
 	$Audio/MoveSfx.stream_paused = true
-	%"Ingredient Item".hide()
+	$"Node3D/Ingredient Item/bullet_box".hide()
+	$"Node3D/Ingredient Item/gunpowder_box".hide()
+	$"Node3D/Ingredient Item/ammo_box".hide()
 	#preparation time given to player at the beginning of the run
 	#$PreparationTimer.start(preparation_time)
 
@@ -94,7 +96,9 @@ func default_state():
 		if Function.search_regex("crafter", parent_item.get_child(i).id):
 			parent_item.get_child(i).reset()
 			print("Flushing ", parent_item.get_child(i))
-	%"Ingredient Item".hide()
+	$"Node3D/Ingredient Item/bullet_box".hide()
+	$"Node3D/Ingredient Item/gunpowder_box".hide()
+	$"Node3D/Ingredient Item/ammo_box".hide()
 
 func ready():
 	# Check for more parameters
@@ -230,7 +234,7 @@ func player_placementPreviewMaterial(node, color):
 			if models is MeshInstance3D: # Savekeeping just in case, but anything in models node should be mesh!
 				models.material_override = item_preview_material
 				# Unique cases for nested "Head", "Body", "Spike"
-			elif models is Node3D and (models.name == "Head" or models.name == "Body" or models.name == "Spike"):
+			elif models is Node3D and (models.name == "Head" or models.name == "Body" or models.name == "Spike" or models.name == "Drone"):
 				for child_models in models.get_children():
 					if child_models is MeshInstance3D:
 						child_models.material_override = item_preview_material
@@ -328,6 +332,10 @@ func player_checkItemRange(item, enable: bool = true):
 func player_checkIngredientItem():
 	# Future rework to cast the texture icon directly to Sprite3D
 	match player_holdedMats:
+		"":
+			$"Node3D/Ingredient Item/ammo_box".hide()
+			$"Node3D/Ingredient Item/gunpowder_box".hide()
+			$"Node3D/Ingredient Item/bullet_box".hide()
 		"ammo_box":
 			$"Node3D/Ingredient Item/ammo_box".show()
 			$"Node3D/Ingredient Item/gunpowder_box".hide()
@@ -391,7 +399,7 @@ func player_InteractItems():
 				player_interactedItem_Temp.reload()
 				player_isHoldingItem = false
 				player_holdedMats = ""
-				%"Ingredient Item".hide()
+				player_checkIngredientItem()
 		# RELOAD MOUNTED TURRET - HOLDING an AMMO and HAVE MOUNTED WALL that have turret in it
 		if player_ableInteract == true and player_isHoldingItem == true and Input.is_action_just_pressed("interact") and player_interactedItem_Temp.has_method("mount") and player_holdedMats == "ammo_box":
 			if player_interactedItem_Temp.get_child(-1).has_method("reload"):
@@ -400,21 +408,19 @@ func player_InteractItems():
 					player_interactedItem_Temp.get_child(-1).reload()
 					player_isHoldingItem = false
 					player_holdedMats = ""
-					%"Ingredient Item".hide()
+					player_checkIngredientItem()
 		# PICK UP INGREDIENT
 		elif player_ableInteract == true and player_isHoldingItem == false and Input.is_action_just_pressed("interact") and !Function.search_regex("turret", player_interactedItem_Temp.id):
 			if player_interactedItem_Temp.id == "gunpowder_box":
 				player_holdedMats = "gunpowder_box"
 				player_isHoldingItem = true
 				player_checkIngredientItem()
-				%"Ingredient Item".show()
 				player_ableInteract = false
 				print("Picked up ", player_holdedMats)
 			elif player_interactedItem_Temp.id == "bullet_box":
 				player_holdedMats = "bullet_box"
 				player_isHoldingItem = true
 				player_checkIngredientItem()
-				%"Ingredient Item".show()
 				player_ableInteract = false
 				print("Picked up ", player_holdedMats)
 			elif player_interactedItem_Temp.id == "crafter":
@@ -422,7 +428,6 @@ func player_InteractItems():
 				if player_holdedMats != "":
 					player_isHoldingItem = true
 					player_checkIngredientItem()
-					%"Ingredient Item".show()
 					player_ableInteract = false
 					print("Picked up ", player_holdedMats)
 		
@@ -432,11 +437,18 @@ func player_InteractItems():
 				print("Dropped back ", player_holdedMats)
 				player_isHoldingItem = false
 				player_holdedMats = ""
-				%"Ingredient Item".hide()
+				player_checkIngredientItem()
 			elif player_interactedItem_Temp.id == "crafter":
 				print("Put ", player_holdedMats, " to Crafter")
 				player_interactedItem_Temp.get_ingredient(player_holdedMats)
+				player_checkIngredientItem()
 				#CHANGE CRAFTER VARIABLE
+			elif player_interactedItem_Temp.id == "drone_base" and player_holdedMats == "ammo_box":
+				print("Put ", player_holdedMats, " to Drone base")
+				player_interactedItem_Temp.add_ammoToBase()
+				player_isHoldingItem = false
+				player_holdedMats = ""
+				player_checkIngredientItem()
 	
 func player_InspectItems():
 	# This show the player card-like information about item, will be immediately turn off if player do any action

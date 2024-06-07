@@ -4,8 +4,6 @@ var id = "crafter"
 var price
 
 @onready var player = get_node('/root/Node3D/Player')
-@onready var player_item = get_node('/root/Node3D/Player/Node3D/Ingredient Item')
-
 
 @onready var icon_Gunpowder = $"IngredientInfo3D/SubViewport/Ingredient List/GunpowderIcon"
 @onready var icon_Bullet = $"IngredientInfo3D/SubViewport/Ingredient List/BulletIcon"
@@ -89,14 +87,12 @@ func get_ingredient(mats_id):
 		mats_gunpowder_box = 1
 		player.player_holdedMats = ""
 		player.player_isHoldingItem = false
-		player_item.hide()
 		#hide player ingredient mesh
 	#IF Succesfully added bullet
 	elif mats_id == "bullet_box" and mats_bullet_box == 0:
 		mats_bullet_box = 1
 		player.player_holdedMats = ""
 		player.player_isHoldingItem = false
-		player_item.hide()
 		#hide player ingredient mesh
 	#IF failed to add any ingredient because crafter is full
 	else:

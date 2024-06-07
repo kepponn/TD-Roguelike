@@ -2,12 +2,12 @@
 
 [ext_resource type="Texture2D" uid="uid://br3j1afb22r3y" path="res://models/debug-block_8740nt-hexagonal-2598-mm-architextures.jpg" id="1_q5ml5"]
 [ext_resource type="Script" path="res://ui/shop_item.gd" id="1_wlhph"]
-[ext_resource type="Texture2D" uid="uid://cfddydiaej816" path="res://assets/icon/attack_damage.png" id="3_agy1k"]
 [ext_resource type="Texture2D" uid="uid://dkvwlf708ayk0" path="res://assets/icon/background.png" id="3_fft30"]
 [ext_resource type="FontFile" uid="uid://cxvusk35yis3l" path="res://assets/font/Dadlygood.otf" id="4_132ss"]
-[ext_resource type="Texture2D" uid="uid://ctk4vtraxb7yw" path="res://assets/icon/attack_range.png" id="5_68k0u"]
-[ext_resource type="Texture2D" uid="uid://cq454tapcifda" path="res://assets/icon/attack_speed.png" id="6_h1y22"]
-[ext_resource type="Texture2D" uid="uid://htbckxokkue1" path="res://assets/icon/not_enough_gold.png" id="7_hypnw"]
+[ext_resource type="Texture2D" uid="uid://c6a6ynnhxytfa" path="res://assets/icon/silver-bullet.png" id="5_dugyq"]
+[ext_resource type="Texture2D" uid="uid://qas8sp4bfv5w" path="res://assets/icon/reticule.png" id="6_7sr40"]
+[ext_resource type="Texture2D" uid="uid://boys78erqcnk2" path="res://assets/icon/empty-hourglass.png" id="7_2mav1"]
+[ext_resource type="Texture2D" uid="uid://dcbblqklxu5tg" path="res://assets/icon/bullets.png" id="8_jgx1s"]
 
 [node name="Item" type="Button"]
 anchors_preset = 15
@@ -55,7 +55,6 @@ offset_bottom = 177.0
 grow_horizontal = 0
 
 [node name="AttackDamageBg" type="TextureRect" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer"]
-visible = false
 layout_mode = 2
 texture = ExtResource("3_fft30")
 expand_mode = 4
@@ -87,11 +86,10 @@ self_modulate = Color(0.847059, 0, 0.211765, 1)
 layout_mode = 2
 offset_right = 20.0
 offset_bottom = 20.0
-texture = ExtResource("3_agy1k")
+texture = ExtResource("5_dugyq")
 expand_mode = 4
 
 [node name="AttackRangeBg" type="TextureRect" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer"]
-visible = false
 layout_mode = 2
 texture = ExtResource("3_fft30")
 expand_mode = 4
@@ -123,11 +121,10 @@ self_modulate = Color(0.25098, 1, 0.247059, 1)
 layout_mode = 2
 offset_right = 20.0
 offset_bottom = 20.0
-texture = ExtResource("5_68k0u")
+texture = ExtResource("6_7sr40")
 expand_mode = 4
 
 [node name="AttackSpeedBg" type="TextureRect" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer"]
-visible = false
 layout_mode = 2
 texture = ExtResource("3_fft30")
 expand_mode = 4
@@ -159,11 +156,10 @@ self_modulate = Color(0.32549, 1, 1, 1)
 layout_mode = 2
 offset_right = 20.0
 offset_bottom = 20.0
-texture = ExtResource("6_h1y22")
+texture = ExtResource("7_2mav1")
 expand_mode = 4
 
 [node name="AmmoBg" type="TextureRect" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer"]
-visible = false
 layout_mode = 2
 texture = ExtResource("3_fft30")
 expand_mode = 4
@@ -195,7 +191,7 @@ self_modulate = Color(0.505882, 0.505882, 0.505882, 1)
 layout_mode = 2
 offset_right = 20.0
 offset_bottom = 20.0
-texture = ExtResource("7_hypnw")
+texture = ExtResource("8_jgx1s")
 expand_mode = 4
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer"]

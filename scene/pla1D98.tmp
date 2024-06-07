@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://dfa3wfjb564fn"]
+[gd_scene load_steps=44 format=3 uid="uid://dfa3wfjb564fn"]
 
 [ext_resource type="Script" path="res://scripts/player.gd" id="1_5f771"]
 [ext_resource type="AudioStream" uid="uid://bqjlvqns16fqg" path="res://assets/audio/sfx/select-sound-121244.mp3" id="2_37d4i"]
@@ -11,9 +11,7 @@
 [ext_resource type="Material" uid="uid://dtv68sjnoe1ov" path="res://models/textures/generic_super_light_metal.tres" id="9_f74qi"]
 [ext_resource type="Material" uid="uid://dfm22fstkwt3s" path="res://models/textures/friendly_aqua.tres" id="9_kaf67"]
 [ext_resource type="Material" uid="uid://b21bl8ylev0j8" path="res://models/textures/generic_light_metal.tres" id="10_da22t"]
-[ext_resource type="Texture2D" uid="uid://dg03wj8x3itha" path="res://assets/icon/shotgun-rounds.png" id="12_7etuw"]
-[ext_resource type="Texture2D" uid="uid://rmmcfqjsvhws" path="res://assets/icon/ammo-box.png" id="12_boy5b"]
-[ext_resource type="Texture2D" uid="uid://cbtohhybio73x" path="res://assets/icon/powder.png" id="13_isfvm"]
+[ext_resource type="Texture2D" uid="uid://qas8sp4bfv5w" path="res://assets/icon/reticule.png" id="12_1myg6"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_5ouot"]
 _surfaces = [{
@@ -431,6 +429,8 @@ top_radius = 1.0
 bottom_radius = 1.0
 height = 0.1
 
+[sub_resource type="BoxMesh" id="BoxMesh_flvde"]
+
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_fojnu"]
 
 [node name="Player" type="CharacterBody3D"]
@@ -577,20 +577,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
 [node name="Ingredient Item" type="Node3D" parent="Node3D"]
 unique_name_in_owner = true
 
-[node name="bullet_box" type="Sprite3D" parent="Node3D/Ingredient Item"]
-transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0.7, 1.2, 0)
-billboard = 1
-texture = ExtResource("12_7etuw")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D/Ingredient Item"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0)
+visible = false
+mesh = SubResource("BoxMesh_flvde")
+skeleton = NodePath("../../../Item")
 
-[node name="gunpowder_box" type="Sprite3D" parent="Node3D/Ingredient Item"]
-transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0.7, 1.2, 0)
-billboard = 1
-texture = ExtResource("13_isfvm")
-
-[node name="ammo_box" type="Sprite3D" parent="Node3D/Ingredient Item"]
-transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0.7, 1.2, 0)
-billboard = 1
-texture = ExtResource("12_boy5b")
+[node name="Sprite3D" type="Sprite3D" parent="Node3D/Ingredient Item"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0)
+billboard = 2
+texture = ExtResource("12_1myg6")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0, 0, 0)

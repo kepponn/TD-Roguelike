@@ -63,6 +63,7 @@ func _ready():
 	navigation.bake_navigation_mesh()
 	$Audio/Bgm/Preparation.play()
 	$Audio/MoveSfx.stream_paused = true
+	%"Ingredient Item".hide()
 	#preparation time given to player at the beginning of the run
 	#$PreparationTimer.start(preparation_time)
 
@@ -93,7 +94,7 @@ func default_state():
 		if Function.search_regex("crafter", parent_item.get_child(i).id):
 			parent_item.get_child(i).reset()
 			print("Flushing ", parent_item.get_child(i))
-	$Item.hide()
+	%"Ingredient Item".hide()
 
 func ready():
 	# Check for more parameters
@@ -324,6 +325,22 @@ func player_checkItemRange(item, enable: bool = true):
 		item.visible_range.hide()
 		#$"Node3D/Holded Item/Item Range".visible = false
 
+func player_checkIngredientItem():
+	# Future rework to cast the texture icon directly to Sprite3D
+	match player_holdedMats:
+		"ammo_box":
+			$"Node3D/Ingredient Item/ammo_box".show()
+			$"Node3D/Ingredient Item/gunpowder_box".hide()
+			$"Node3D/Ingredient Item/bullet_box".hide()
+		"gunpowder_box":
+			$"Node3D/Ingredient Item/ammo_box".hide()
+			$"Node3D/Ingredient Item/gunpowder_box".show()
+			$"Node3D/Ingredient Item/bullet_box".hide()
+		"bullet_box":
+			$"Node3D/Ingredient Item/ammo_box".hide()
+			$"Node3D/Ingredient Item/gunpowder_box".hide()
+			$"Node3D/Ingredient Item/bullet_box".show()
+
 func player_InteractItems():
 	#================================================ PREPARATION PHASE ==================================================================================================
 	if Global.preparation_phase:
@@ -374,7 +391,7 @@ func player_InteractItems():
 				player_interactedItem_Temp.reload()
 				player_isHoldingItem = false
 				player_holdedMats = ""
-				$Item.hide()
+				%"Ingredient Item".hide()
 		# RELOAD MOUNTED TURRET - HOLDING an AMMO and HAVE MOUNTED WALL that have turret in it
 		if player_ableInteract == true and player_isHoldingItem == true and Input.is_action_just_pressed("interact") and player_interactedItem_Temp.has_method("mount") and player_holdedMats == "ammo_box":
 			if player_interactedItem_Temp.get_child(-1).has_method("reload"):
@@ -383,26 +400,29 @@ func player_InteractItems():
 					player_interactedItem_Temp.get_child(-1).reload()
 					player_isHoldingItem = false
 					player_holdedMats = ""
-					$Item.hide()
+					%"Ingredient Item".hide()
 		# PICK UP INGREDIENT
 		elif player_ableInteract == true and player_isHoldingItem == false and Input.is_action_just_pressed("interact") and !Function.search_regex("turret", player_interactedItem_Temp.id):
 			if player_interactedItem_Temp.id == "gunpowder_box":
 				player_holdedMats = "gunpowder_box"
 				player_isHoldingItem = true
-				$Item.show()
+				player_checkIngredientItem()
+				%"Ingredient Item".show()
 				player_ableInteract = false
 				print("Picked up ", player_holdedMats)
 			elif player_interactedItem_Temp.id == "bullet_box":
 				player_holdedMats = "bullet_box"
 				player_isHoldingItem = true
-				$Item.show()
+				player_checkIngredientItem()
+				%"Ingredient Item".show()
 				player_ableInteract = false
 				print("Picked up ", player_holdedMats)
 			elif player_interactedItem_Temp.id == "crafter":
 				player_interactedItem_Temp.get_product()
 				if player_holdedMats != "":
 					player_isHoldingItem = true
-					$Item.show()
+					player_checkIngredientItem()
+					%"Ingredient Item".show()
 					player_ableInteract = false
 					print("Picked up ", player_holdedMats)
 		
@@ -412,7 +432,7 @@ func player_InteractItems():
 				print("Dropped back ", player_holdedMats)
 				player_isHoldingItem = false
 				player_holdedMats = ""
-				$Item.hide()
+				%"Ingredient Item".hide()
 			elif player_interactedItem_Temp.id == "crafter":
 				print("Put ", player_holdedMats, " to Crafter")
 				player_interactedItem_Temp.get_ingredient(player_holdedMats)

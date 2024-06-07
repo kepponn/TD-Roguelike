@@ -4,7 +4,7 @@ var id = "crafter"
 var price
 
 @onready var player = get_node('/root/Node3D/Player')
-@onready var player_item = get_node('/root/Node3D/Player/Item')
+@onready var player_item = get_node('/root/Node3D/Player/Node3D/Ingredient Item')
 
 
 @onready var icon_Gunpowder = $"IngredientInfo3D/SubViewport/Ingredient List/GunpowderIcon"

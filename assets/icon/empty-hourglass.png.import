@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cfddydiaej816"
-path="res://.godot/imported/attack_damage.png-5b59d96c76e7054c5f5ce17232686c88.ctex"
+uid="uid://boys78erqcnk2"
+path="res://.godot/imported/empty-hourglass.png-a687e23d40e910c861fb8d1f6c49ae76.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/icon/attack_damage.png"
-dest_files=["res://.godot/imported/attack_damage.png-5b59d96c76e7054c5f5ce17232686c88.ctex"]
+source_file="res://assets/icon/empty-hourglass.png"
+dest_files=["res://.godot/imported/empty-hourglass.png-a687e23d40e910c861fb8d1f6c49ae76.ctex"]
 
 [params]
 

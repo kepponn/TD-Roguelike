@@ -3,9 +3,9 @@
 [ext_resource type="Script" path="res://scripts/crafter.gd" id="1_hggdn"]
 [ext_resource type="Material" uid="uid://b8xph3vsgn38u" path="res://models/textures/crafter_torus.tres" id="2_f2pd2"]
 [ext_resource type="Material" uid="uid://dtv68sjnoe1ov" path="res://models/textures/generic_super_light_metal.tres" id="3_g2nt1"]
-[ext_resource type="Texture2D" uid="uid://rfgubxt8c3v7" path="res://assets/icon/Dark/Keyboard/arrow_left_dark.png" id="4_rjc3l"]
-[ext_resource type="Texture2D" uid="uid://c264vqwhurrgw" path="res://assets/icon/Dark/Keyboard/arrow_right_dark.png" id="5_exl3s"]
-[ext_resource type="Texture2D" uid="uid://c0fsq48t7rpik" path="res://assets/icon/Dark/Keyboard/!_dark.png" id="6_ymr7e"]
+[ext_resource type="Texture2D" uid="uid://cbtohhybio73x" path="res://assets/icon/powder.png" id="4_qvdiv"]
+[ext_resource type="Texture2D" uid="uid://dg03wj8x3itha" path="res://assets/icon/shotgun-rounds.png" id="5_3ljqf"]
+[ext_resource type="Texture2D" uid="uid://rmmcfqjsvhws" path="res://assets/icon/ammo-box.png" id="6_gyrs8"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_p0dsn"]
 
@@ -243,17 +243,17 @@ alignment = 1
 
 [node name="GunpowderIcon" type="TextureRect" parent="IngredientInfo3D/SubViewport/Ingredient List"]
 layout_mode = 2
-texture = ExtResource("4_rjc3l")
+texture = ExtResource("4_qvdiv")
 expand_mode = 3
 
 [node name="BulletIcon" type="TextureRect" parent="IngredientInfo3D/SubViewport/Ingredient List"]
 layout_mode = 2
-texture = ExtResource("5_exl3s")
+texture = ExtResource("5_3ljqf")
 expand_mode = 3
 
 [node name="AmmoIcon" type="TextureRect" parent="IngredientInfo3D/SubViewport/Ingredient List"]
 layout_mode = 2
-texture = ExtResource("6_ymr7e")
+texture = ExtResource("6_gyrs8")
 expand_mode = 3
 
 [connection signal="timeout" from="CraftingTimer" to="." method="_on_crafting_timer_timeout"]

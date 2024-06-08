@@ -37,14 +37,15 @@ var bullet_ricochet: int
 # Other information
 @onready var visible_range: MeshInstance3D = $Range/VisibleRange
 @onready var range_radius: CollisionShape3D = $Range/CollisionShape3D
+
 var enemies_array: Array = []
 var able_shoot: bool = false
 var shoot_direction: Vector3
 
 var bullet_ammo: int
-# Soon to be problems
-# $Head/ProjectileSpawn will need to be manually sets to fit the models
-# Therefore this node need to be erased from this code
+var requesting_droneReload: bool = false
+@onready var drone_base = get_node('/root/Node3D/NavigationRegion3D/Item/DroneBase2')
+
 
 func seed_property():
 	var file = FileAccess.open("res://autoload/item_db.json", FileAccess.READ)
@@ -134,6 +135,13 @@ func lock_on():
 		$RayCast3D.hide()
 
 func shoot():
+	if bullet_ammo != 0 and drone_base.turret_toReload.has(self):
+		drone_base.turret_toReload.erase(self)
+	elif bullet_ammo == 0 and !drone_base.turret_toReload.has(self):
+		drone_base.turret_toReload.append(self)
+		print(drone_base.turret_toReload)
+		
+	
 	if !enemies_array.is_empty() and $AttackSpeed.time_left <= 0.0 and able_shoot and bullet_ammo != 0:
 		bullet_ammo -= 1
 		shoot_direction = (enemies_array[0].global_position - global_position).normalized()
@@ -149,11 +157,16 @@ func shoot():
 		turret_projectile.transform = %ProjectileSpawn.global_transform #basically copy all of $"Head/Spawn Point" global transform(rotation, scale, position), to projectile
 		turret_projectile.set_direction = shoot_direction #direction used to set projectile movement direction
 		$AttackSpeed.start() #restart timer so it can shoot again
+	
+		
+
+func drone_reload():
+	bullet_ammo = bullet_maxammo
 
 func reload():
-	print("before reload : ", bullet_ammo, " / ", bullet_maxammo)
-	bullet_ammo = bullet_maxammo
-	print("after reload : ", bullet_ammo, " / ", bullet_maxammo)
+	if requesting_droneReload == false:
+		bullet_ammo = bullet_maxammo
+
 	
 func wave_Reload():
 	if Global.preparation_phase:

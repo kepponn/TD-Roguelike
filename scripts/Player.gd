@@ -394,7 +394,7 @@ func player_InteractItems():
 	elif !Global.preparation_phase:
 		# RELOAD TURRET - HOLDING an AMMO and HAVE INTERACTABLE TURRET
 		if player_ableInteract == true and player_isHoldingItem == true and Input.is_action_just_pressed("interact") and player_interactedItem_Temp.has_method("reload") and player_holdedMats == "ammo_box":
-			if player_interactedItem_Temp.bullet_ammo != player_interactedItem_Temp.bullet_maxammo:
+			if player_interactedItem_Temp.bullet_ammo != player_interactedItem_Temp.bullet_maxammo and !player_interactedItem_Temp.requesting_droneReload:
 				print("Reloading ", player_interactedItem_Temp)
 				player_interactedItem_Temp.reload()
 				player_isHoldingItem = false
@@ -403,7 +403,7 @@ func player_InteractItems():
 		# RELOAD MOUNTED TURRET - HOLDING an AMMO and HAVE MOUNTED WALL that have turret in it
 		if player_ableInteract == true and player_isHoldingItem == true and Input.is_action_just_pressed("interact") and player_interactedItem_Temp.has_method("mount") and player_holdedMats == "ammo_box":
 			if player_interactedItem_Temp.get_child(-1).has_method("reload"):
-				if player_interactedItem_Temp.get_child(-1).bullet_ammo != player_interactedItem_Temp.get_child(-1).bullet_maxammo:
+				if player_interactedItem_Temp.get_child(-1).bullet_ammo != player_interactedItem_Temp.get_child(-1).bullet_maxammo and !player_interactedItem_Temp.requesting_droneReload:
 					print("Reloading mounted ", player_interactedItem_Temp.get_child(-1), " on ", player_interactedItem_Temp)
 					player_interactedItem_Temp.get_child(-1).reload()
 					player_isHoldingItem = false

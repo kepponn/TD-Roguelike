@@ -6,6 +6,7 @@ var id = "drone_base"
 @onready var drone = $Models/Drone
 @onready var drone_ammo = $Models/Drone/ammo_box
 @onready var drone_light =  $Models/Drone/OmniLight3D
+@onready var drone_ammoIcon = $AmmoCountIcon
 var base_ammo = 3 #This is the max standby and (+1 from drone carrying)
 var SPEED = 5.0
 
@@ -40,6 +41,8 @@ func reset():
 func drone_tweenToTarget():
 	drone_isMoving = true
 	turret_toReload[0].requesting_droneReload = true
+	turret_toReload[0].drone_reloadIcon.show()
+	turret_toReload[0].empty_ammoIcon.hide()
 	drone_Tween = get_tree().create_tween()
 	drone_Tween.tween_property(drone, "global_position:y", 2, float(5/SPEED)).as_relative()
 	drone_Tween.tween_property(drone, "global_position", Vector3(turret_toReload[0].global_position.x - drone.global_position.x, 0, turret_toReload[0].global_position.z - drone.global_position.z), drone.global_position.distance_to(turret_toReload[0].global_position)/SPEED).as_relative()
@@ -50,6 +53,7 @@ func on_tween_to_target_finished():
 	drone_isCarryingAmmo = false
 	turret_toReload[0].drone_reload()
 	turret_toReload[0].requesting_droneReload = false
+	turret_toReload[0].drone_reloadIcon.hide()
 	#turret_toReload.pop_front()
 	drone_tweenToBase()
 	
@@ -80,18 +84,26 @@ func drone_model_and_ammo_calc():
 	# Visual for base for how many ammo box is left
 	match base_ammo:
 		0:
+			$AmmoCountIcon.texture = load("res://assets/icon/ammo-box_0.png")
+			$AmmoCountIcon.modulate = Color("#f70825")
 			$Models/ammo_box1.hide()
 			$Models/ammo_box2.hide()
 			$Models/ammo_box3.hide()
 		1:
+			$AmmoCountIcon.texture = load("res://assets/icon/ammo-box_1.png")
+			$AmmoCountIcon.modulate = Color("#ffffff")
 			$Models/ammo_box1.show()
 			$Models/ammo_box2.hide()
 			$Models/ammo_box3.hide()
 		2:
+			$AmmoCountIcon.texture = load("res://assets/icon/ammo-box_2.png")
+			$AmmoCountIcon.modulate = Color("#ffffff")
 			$Models/ammo_box1.show()
 			$Models/ammo_box2.show()
 			$Models/ammo_box3.hide()
 		3:
+			$AmmoCountIcon.texture = load("res://assets/icon/ammo-box_3.png")
+			$AmmoCountIcon.modulate = Color("#ffffff")
 			$Models/ammo_box1.show()
 			$Models/ammo_box2.show()
 			$Models/ammo_box3.show()

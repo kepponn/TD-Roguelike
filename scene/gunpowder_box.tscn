@@ -1,8 +1,9 @@
-[gd_scene load_steps=15 format=3 uid="uid://edivjlbtfdg8"]
+[gd_scene load_steps=16 format=3 uid="uid://edivjlbtfdg8"]
 
 [ext_resource type="Script" path="res://scripts/gunpowder_box.gd" id="1_7b850"]
 [ext_resource type="Material" uid="uid://7rgxvgj11wtp" path="res://models/textures/gunpowder_box_temp.tres" id="2_ldvqj"]
 [ext_resource type="Material" uid="uid://dfidn5p7o17fr" path="res://models/textures/wooden_pallate.tres" id="3_itqyp"]
+[ext_resource type="Texture2D" uid="uid://cbtohhybio73x" path="res://assets/icon/powder.png" id="4_8cq3s"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_54kf7"]
 
@@ -189,3 +190,8 @@ skeleton = NodePath("")
 [node name="pallate" type="MeshInstance3D" parent="Models"]
 mesh = SubResource("ArrayMesh_6xuce")
 skeleton = NodePath("")
+
+[node name="Icon3D" type="Sprite3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1, 0)
+billboard = 1
+texture = ExtResource("4_8cq3s")

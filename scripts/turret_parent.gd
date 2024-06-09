@@ -44,6 +44,8 @@ var shoot_direction: Vector3
 
 var bullet_ammo: int
 var requesting_droneReload: bool = false
+@onready var empty_ammoIcon = $EmptyAmmoIcon
+@onready var drone_reloadIcon = $DroneReloadIcon
 @onready var drone_base = get_node('/root/Node3D/NavigationRegion3D/Item/DroneBase2')
 
 
@@ -137,9 +139,11 @@ func lock_on():
 func shoot():
 	if bullet_ammo != 0 and drone_base.turret_toReload.has(self):
 		drone_base.turret_toReload.erase(self)
+		empty_ammoIcon.hide()
 	elif bullet_ammo == 0 and !drone_base.turret_toReload.has(self):
 		drone_base.turret_toReload.append(self)
-		print(drone_base.turret_toReload)
+		empty_ammoIcon.show()
+		
 		
 	
 	if !enemies_array.is_empty() and $AttackSpeed.time_left <= 0.0 and able_shoot and bullet_ammo != 0:

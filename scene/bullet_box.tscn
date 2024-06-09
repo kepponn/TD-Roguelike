@@ -1,8 +1,9 @@
-[gd_scene load_steps=23 format=3 uid="uid://ir8hjuag51vg"]
+[gd_scene load_steps=24 format=3 uid="uid://ir8hjuag51vg"]
 
 [ext_resource type="Script" path="res://scripts/bullet_box.gd" id="1_16qui"]
 [ext_resource type="Material" uid="uid://d2bltc2dtjck3" path="res://models/textures/bullet_case.tres" id="2_hdss6"]
 [ext_resource type="Material" uid="uid://dfidn5p7o17fr" path="res://models/textures/wooden_pallate.tres" id="3_cg4bu"]
+[ext_resource type="Texture2D" uid="uid://dg03wj8x3itha" path="res://assets/icon/shotgun-rounds.png" id="4_n2m07"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_im4sx"]
 
@@ -344,3 +345,8 @@ skeleton = NodePath("")
 [node name="pallate" type="MeshInstance3D" parent="Models"]
 mesh = SubResource("ArrayMesh_0wlaw")
 skeleton = NodePath("")
+
+[node name="Icon3D" type="Sprite3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1, 0)
+billboard = 1
+texture = ExtResource("4_n2m07")

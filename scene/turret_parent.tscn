@@ -1,9 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://55ipv7ij7bcg"]
+[gd_scene load_steps=11 format=3 uid="uid://55ipv7ij7bcg"]
 
 [ext_resource type="Script" path="res://scripts/turret_parent.gd" id="1_weacm"]
 [ext_resource type="AudioStream" uid="uid://b3bmtyrhcg1ql" path="res://assets/audio/sfx/080877_bullet-39803.mp3" id="2_53j1g"]
 [ext_resource type="AudioStream" uid="uid://b6ri0nenfcyy2" path="res://assets/audio/sfx/080880_bullet-39799.mp3" id="4_k8twk"]
 [ext_resource type="AudioStream" uid="uid://cpbktccmqkqhx" path="res://assets/audio/sfx/080977_bullet-39804.mp3" id="5_2vxqf"]
+[ext_resource type="Texture2D" uid="uid://0x4ppc4cgbr2" path="res://assets/icon/delivery-drone.png" id="5_tns0p"]
+[ext_resource type="Texture2D" uid="uid://ckncytl0xfdgn" path="res://assets/icon/reload-gun-barrel.png" id="6_i7neg"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_p56l4"]
 
@@ -86,8 +88,8 @@ visible = false
 
 [node name="AmmoBar3D" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.711106, 0)
-visible = false
 billboard = 1
+no_depth_test = true
 texture = SubResource("ViewportTexture_7sulh")
 
 [node name="SubViewport" type="SubViewport" parent="AmmoBar3D"]
@@ -104,6 +106,20 @@ theme_override_styles/background = SubResource("StyleBoxFlat_0e8ey")
 theme_override_styles/fill = SubResource("StyleBoxFlat_pxk45")
 value = 100.0
 show_percentage = false
+
+[node name="DroneReloadIcon" type="Sprite3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1.5, 0)
+visible = false
+modulate = Color(0.298039, 0.784314, 0, 1)
+billboard = 1
+texture = ExtResource("5_tns0p")
+
+[node name="EmptyAmmoIcon" type="Sprite3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1.5, 0)
+visible = false
+modulate = Color(0.968627, 0.0313726, 0.145098, 1)
+billboard = 1
+texture = ExtResource("6_i7neg")
 
 [connection signal="body_entered" from="Range" to="." method="_on_range_body_entered"]
 [connection signal="body_exited" from="Range" to="." method="_on_range_body_exited"]

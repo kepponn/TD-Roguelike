@@ -43,138 +43,146 @@ func _process(_delta):
 		C.hide()
 		V.hide()
 		Space.hide()
-		WASD.hide()
+		WASD.hide() # When does this change visibility to true?
 		# Controller
 		controller_A.hide() # E keyboard
 		controller_B.hide() # V keyboard
 		controller_X.hide() # C keyboard
 		controller_Start.hide()
-		controller_StickL.hide()
+		controller_StickL.hide() # When does this change visibility to true?
 	
 	elif get_parent().name == "Control":
 		# Maybe check this after done loading the main menu scene?
 		var player = get_node('/root/Node3D/Player')
 		#--------------------------------------PREPARATION PHASE------------------------------------------------
 		if Global.preparation_phase:
+			
 			#------------ E INPUT / INTERACT------------
 			#DEFAULT STATE -> HIDE
 			if !player.player_ableInteract and !player.player_isHoldingItem:
-				E.hide()
-				controller_A.hide()
+				update_visibility_and_text(E, controller_A, false)
 			#PICK ITEM
 			elif player.player_ableInteract and !player.player_isHoldingItem:
-				text_E.text = "Pick up"
-				E.show()
-				text_controller_A.text = "Pick up"
-				controller_A.show()
+				update_visibility_and_text(E, controller_A, true, "Pick up")
 			#DROP ITEM
 			elif !player.player_ableInteract and player.player_isHoldingItem:
-				text_E.text = "Drop"
-				E.show()
-				text_controller_A.text = "Drop"
-				controller_A.show()
+				update_visibility_and_text(E, controller_A, true, "Drop")
 			#SWAP ITEM
 			elif player.player_ableInteract and player.player_isHoldingItem:
-				text_E.text = "Swap"
-				E.show()
-				text_controller_A.text = "Swap"
-				controller_A.show()
-			
+				update_visibility_and_text(E, controller_A, true, "Swap")
+				
 			#------------ C INPUT / INSPECT ------------
 			#DEFAULT STATE -> HIDE
 			if !player.player_ableInteract:
-				C.hide()
-				controller_X.hide()
+				update_visibility_and_text(C, controller_X, false)
 			#INSPECT
 			elif player.player_ableInteract and !player.player_isHoldingItem and !player.player_interactedItem_Temp.has_method("mount"):
 				if player.player_interactedItem_Temp.id != "shop":
-					text_C.text = "Inspect"
-					C.show()
-					text_controller_X.text = "Inspect"
-					controller_X.show()
+					update_visibility_and_text(C, controller_X, true, "Inspect")
 			#OPEN SHOP
 				else:
-					text_C.text = "Open Shop"
-					C.show()
-					text_controller_X.text = "Open Shop"
-					controller_X.show()
-					
+					update_visibility_and_text(C, controller_X, true, "Open Shop")
 			#MOUNT
 			elif player.player_interactedItem_Temp != null:
 				if player.player_interactedItem_Temp.has_method("mount"):
 					if player.player_isHoldingItem and player.player_interactedItem_Temp.currently_mountable_item == null:
-						text_C.text = "Mount"
-						C.show()
-						text_controller_X.text = "Mount"
-						controller_X.show()
+						update_visibility_and_text(C, controller_X, true, "Mount")
 			#DISMOUNT
 					elif !player.player_isHoldingItem and player.player_interactedItem_Temp.currently_mountable_item != null:
-						text_C.text = "Dismount"
-						C.show()
-						text_controller_X.text = "Dismount"
-						controller_X.show()
+						update_visibility_and_text(C, controller_X, true, "Dismount")
 			
 			#------------ V INPUT / ROTATE ------------
 			#DEFAULT STATE -> HIDE
 			if !player.player_ableInteract and !player.player_isHoldingItem:
-				V.hide()
-				controller_B.hide()
+				update_visibility_and_text(V, controller_B, false)
 			#ROTATE HOLDED ITEM OR INTERACTABLE ITEM / TARGETED ITEM
 			elif (player.player_isHoldingItem or player.player_ableInteract) and !Function.search_regex("wall", player.player_interactedItem_Temp.id):
-				text_V.text = "Rotate"
-				V.show()
-				text_controller_B.text = "Rotate"
-				controller_B.show()
+				update_visibility_and_text(V, controller_B, true, "Rotate")
 			#ROTATE MOUNTED ITEM
 			elif player.player_interactedItem_Temp.id == "wall_mountable" and player.player_interactedItem_Temp.get_child(-1).is_class("StaticBody3D"):
-				text_V.text = "Rotate"
-				V.show()
-				text_controller_B.text = "Rotate"
-				controller_B.show()
+				update_visibility_and_text(V, controller_B, true, "Rotate")
 			
 			#------------ SPACE INPUT / READY ------------
-			text_Space.text = "Ready"
-			Space.show()
-			text_controller_Start.text = "Ready"
-			controller_Start.show()
+			update_visibility_and_text(Space, controller_Start, true, "Ready")
 				
 		#--------------------------------------DEFENSE PHASE------------------------------------------------
 		elif !Global.preparation_phase :
 			#------------ E INPUT / INSPECT ------------
 			#DEFAULT STATE -> HIDE
-			if !player.player_ableInteract and !player.player_isHoldingItem:
-				E.hide()
-				controller_A.hide()
+			if !player.player_ableInteract:
+				update_visibility_and_text(E, controller_A, false)
 			#RELOAD TURRET
-			elif player.player_ableInteract and !player.player_isHoldingItem and player.player_interactedItem_Temp.has_method("reload"):
+			elif player.player_ableInteract and player.player_isHoldingItem and player.player_interactedItem_Temp.has_method("reload") and player.player_holdedMats == "ammo_box":
 				if player.player_interactedItem_Temp.bullet_ammo != player.player_interactedItem_Temp.bullet_maxammo:
-					text_E.text = "Reload Turret"
-					E.show()
-					text_controller_A.text = "Reload Turret"
-					controller_A.show()
+					update_visibility_and_text(E, controller_A, true, "Reload Turret")
+			# Player not holding any item
+			elif player.player_ableInteract and !player.player_isHoldingItem:
+				match player.player_interactedItem_Temp.id:
+					"gunpowder_box":
+						update_visibility_and_text(E, controller_A, true, "Pick up Gunpowder")
+					"bullet_box":
+						update_visibility_and_text(E, controller_A, true, "Pick up Bullet")
+					"crafter":
+						if player.player_interactedItem_Temp.prod_ammo_box > 0:
+							update_visibility_and_text(E, controller_A, true, "Pick up Ammo")
+			# Player is holding item
+			elif player.player_ableInteract and player.player_isHoldingItem:
+				match player.player_interactedItem_Temp.id:
+					"gunpowder_box":
+						if player.player_holdedMats == "gunpowder_box":
+							update_visibility_and_text(E, controller_A, true, "Drop Gunpowder")
+					"bullet_box":
+						if player.player_holdedMats == "bullet_box":
+							update_visibility_and_text(E, controller_A, true, "Drop Bullet")
+					"crafter":
+						if player.player_holdedMats == "gunpowder_box":
+							update_visibility_and_text(E, controller_A, true, "Add Gunpowder")
+						elif player.player_holdedMats == "bullet_box":
+							update_visibility_and_text(E, controller_A, true, "Add Bullet")
+					"drone_base":
+						if player.player_holdedMats == "ammo_box":
+							update_visibility_and_text(E, controller_A, true, "Add Ammo")
 			#------------ C INPUT / INSPECT ------------
 			#DEFAULT STATE -> HIDE
 			if !player.player_ableInteract:
-				C.hide()
-				controller_X.hide()
+				update_visibility_and_text(C, controller_X, false)
 			#INSPECT
 			elif player.player_ableInteract and !player.player_isHoldingItem and !player.player_interactedItem_Temp.has_method("mount"):
 				if player.player_interactedItem_Temp.id != "shop":
-					text_C.text = "Inspect"
-					C.show()
-					text_controller_X.text = "Inspect"
-					controller_X.show()
+					update_visibility_and_text(C, controller_X, true, "Inspect")
 			#------------ V INPUT / INSPECT ------------
-			V.hide()
-			controller_B.hide()
+			update_visibility_and_text(V, controller_B, false)
 			#------------ SPACE INPUT / READY ------------
-			Space.hide()
-			controller_Start.hide()
+			update_visibility_and_text(Space, controller_Start, false)
 	
+func update_visibility_and_text(keyboard_keys, controller_button, visibility: bool, text: String = ""):
+	if visibility:
+		keyboard_keys.show()
+		match keyboard_keys:
+			E:
+				text_E.text = text
+			C:
+				text_C.text = text
+			V:
+				text_V.text = text
+			Space:
+				text_Space.text = text
+		controller_button.show()
+		match controller_button:
+			controller_A:
+				text_controller_A.text = text
+			controller_B:
+				text_controller_B.text = text
+			controller_X:
+				text_controller_X.text = text
+			controller_Start:
+				text_controller_Start.text = text
+	else:
+		keyboard_keys.hide()
+		controller_button.hide()
 	
 func update_Icon():
 	#Update E Icon
-	
 	var key_E = InputMap.action_get_events("interact")[0].as_text().trim_suffix(" (Physical)")
 	icon_E.texture = load("res://assets/icon/KeyboardButton/"+ str(key_E) +"_light.png")
 	#Update C Icon

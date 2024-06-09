@@ -1,8 +1,5 @@
 extends Control
 
-# Maybe check this after done loading the main menu scene?
-@onready var player = get_node('/root/Node3D/Player')
-
 # Keyboard start here
 @onready var WASD = $MarginContainer/HBoxContainer/WASD
 @onready var E = $MarginContainer/HBoxContainer/E
@@ -55,6 +52,8 @@ func _process(_delta):
 		controller_StickL.hide()
 	
 	elif get_parent().name == "Control":
+		# Maybe check this after done loading the main menu scene?
+		var player = get_node('/root/Node3D/Player')
 		#--------------------------------------PREPARATION PHASE------------------------------------------------
 		if Global.preparation_phase:
 			#------------ E INPUT / INTERACT------------

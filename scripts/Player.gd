@@ -92,9 +92,12 @@ func default_state():
 	player_isHoldingItem = false
 	player_interactedItem_Temp = null
 	player_holdedMats = ""
-	for i in parent_item.get_child_count(): # Reset the value in crafter to default state
+	for i in parent_item.get_child_count(): # Search for item to be reseted
 		if Function.search_regex("crafter", parent_item.get_child(i).id):
-			parent_item.get_child(i).reset()
+			parent_item.get_child(i).reset() # Reset the value in crafter to default state
+			print("Flushing ", parent_item.get_child(i))
+		if Function.search_regex("drone", parent_item.get_child(i).id):
+			parent_item.get_child(i).reset() # Reset the drone state
 			print("Flushing ", parent_item.get_child(i))
 	$"Node3D/Ingredient Item/bullet_box".hide()
 	$"Node3D/Ingredient Item/gunpowder_box".hide()
@@ -425,11 +428,7 @@ func player_InteractItems():
 				print("Picked up ", player_holdedMats)
 			elif player_interactedItem_Temp.id == "crafter":
 				player_interactedItem_Temp.get_product()
-				if player_holdedMats != "":
-					player_isHoldingItem = true
-					player_checkIngredientItem()
-					player_ableInteract = false
-					print("Picked up ", player_holdedMats)
+				player_checkIngredientItem()
 		
 		# DROP INGREDIENT
 		elif player_ableInteract == true and player_isHoldingItem == true and player_ableToDrop == true and Input.is_action_just_pressed("interact"):
@@ -439,15 +438,11 @@ func player_InteractItems():
 				player_holdedMats = ""
 				player_checkIngredientItem()
 			elif player_interactedItem_Temp.id == "crafter":
-				print("Put ", player_holdedMats, " to Crafter")
 				player_interactedItem_Temp.get_ingredient(player_holdedMats)
 				player_checkIngredientItem()
 				#CHANGE CRAFTER VARIABLE
 			elif player_interactedItem_Temp.id == "drone_base" and player_holdedMats == "ammo_box":
-				print("Put ", player_holdedMats, " to Drone base")
 				player_interactedItem_Temp.add_ammoToBase()
-				player_isHoldingItem = false
-				player_holdedMats = ""
 				player_checkIngredientItem()
 	
 func player_InspectItems():

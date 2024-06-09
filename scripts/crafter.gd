@@ -14,15 +14,17 @@ var mats_bullet_box: int = 0
 var prod_ammo_box: int = 0
 var is_crafting: bool = false
 
-func _process(_delta):
+func _process(delta):
+	var idle_speed = 20 * delta
+	var process_speed = 80 * delta
 	if is_crafting:
-		$Models/Torus.rotation_degrees.y += 2
-		$Models/Torus2.rotation_degrees.y -= 2
-		$Models/Torus3.rotation_degrees.y += 2
+		$Models/Torus.rotation_degrees.y += process_speed
+		$Models/Torus2.rotation_degrees.y -= process_speed
+		$Models/Torus3.rotation_degrees.y += process_speed
 	else:
-		$Models/Torus.rotation_degrees.y += 0.25
-		$Models/Torus2.rotation_degrees.y -= 0.25
-		$Models/Torus3.rotation_degrees.y += 0.25
+		$Models/Torus.rotation_degrees.y += idle_speed
+		$Models/Torus2.rotation_degrees.y -= idle_speed
+		$Models/Torus3.rotation_degrees.y += idle_speed
 	update_UI()
 	craft_ammo()
 	
@@ -70,7 +72,8 @@ func update_UI():
 		icon_Ammo.hide()
 		
 func craft_ammo():
-	if mats_bullet_box == 1 and mats_gunpowder_box == 1 and is_crafting == false:
+	# Currently locks any crafting if there is prod items
+	if mats_bullet_box == 1 and mats_gunpowder_box == 1 and is_crafting == false and prod_ammo_box == 0:
 		is_crafting = true
 		$CraftingTimer.start()
 
@@ -78,29 +81,36 @@ func get_product():
 	if prod_ammo_box == 1:
 		prod_ammo_box = 0
 		player.player_holdedMats = "ammo_box"
+		player.player_isHoldingItem = true
+		player.player_ableInteract = false
+		print("Picked up ", player.player_holdedMats, " from crafter")
 	else:
 		player.player_holdedMats = ""
+		player.player_isHoldingItem = false
+		player.player_ableInteract = true
 
 func get_ingredient(mats_id):
 	#IF Succesfully added gunpowder
 	if mats_id == "gunpowder_box" and mats_gunpowder_box == 0:
+		print("Put ingredient ", player.player_holdedMats, " to crafter")
 		mats_gunpowder_box = 1
 		player.player_holdedMats = ""
 		player.player_isHoldingItem = false
 		#hide player ingredient mesh
 	#IF Succesfully added bullet
 	elif mats_id == "bullet_box" and mats_bullet_box == 0:
+		print("Put ingredient ", player.player_holdedMats, " to crafter")
 		mats_bullet_box = 1
 		player.player_holdedMats = ""
 		player.player_isHoldingItem = false
 		#hide player ingredient mesh
 	#IF failed to add any ingredient because crafter is full
 	else:
+		print("Cannot put ingredient ", player.player_holdedMats, " because crafter is full")
 		player.player_isHoldingItem = true
 		pass
 		
 func _on_crafting_timer_timeout():
-	print("Crafting Complete")
 	mats_bullet_box = 0
 	mats_gunpowder_box = 0
 	prod_ammo_box = 1

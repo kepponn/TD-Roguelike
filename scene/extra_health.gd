@@ -3,14 +3,12 @@ extends StaticBody3D
 var id = "extra_health"
 var price
 
-
 func _ready():
-	
 	seed_property()
 	Global.life_array.append(self)
 	
-func _process(_delta):
-	$Models/heart.rotation_degrees.y += 1
+func _process(delta):
+	$Models/heart.rotation_degrees.y += 60 * delta
 
 func destroy():
 	Global.life_array.erase(self)

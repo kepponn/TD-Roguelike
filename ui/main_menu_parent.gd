@@ -18,13 +18,22 @@ func ready_up():
 	$Options.hide()
 	$InputSettings.hide()
 
+func _unhandled_input(event):
+	if event is InputEventJoypadButton and event.is_pressed():
+		if event.button_index == 0: # Currently to A or X
+			var focused_button = get_viewport().gui_get_focus_owner()
+			if focused_button:
+				focused_button.emit_signal("pressed")
+
 func _displaySettings():
 	if Settings.displayMode_fullscreen:
 		%FullscreenButton.show()
 		%WindowedButton.hide()
+		%FullscreenButton.grab_focus()
 	else:
 		%FullscreenButton.hide()
 		%WindowedButton.show()
+		%WindowedButton.grab_focus()
 
 func _audioSettings():
 	%MasterVolume.value = Settings.audioMaster_volumeTemp

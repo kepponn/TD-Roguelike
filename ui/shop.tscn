@@ -193,6 +193,7 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 0
+focus_neighbor_right = NodePath("../CloseButton")
 
 [node name="Label" type="Label" parent="PanelContainer2/MarginContainer/HBoxContainer/RerollButton"]
 layout_mode = 1
@@ -221,6 +222,7 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 8
+focus_neighbor_left = NodePath("../RerollButton")
 
 [node name="Label" type="Label" parent="PanelContainer2/MarginContainer/HBoxContainer/CloseButton"]
 layout_mode = 1

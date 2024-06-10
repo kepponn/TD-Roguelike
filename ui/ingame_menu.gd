@@ -19,6 +19,7 @@ func _process(_delta):
 func esc():
 	$Audio/Foward.play(0.2)
 	$Timer.start()
+	$Menu/Resume.grab_focus()
 
 # --------------------------------------------------------------------------
 # BaseButton function via pressed() signals
@@ -33,11 +34,13 @@ func _on_options_pressed():
 	$Audio/Foward.play(0.25)
 	$Menu.hide()
 	$Options.show()
+	$Options/Back.grab_focus()
 	
 func _on_options_back_pressed():
 	$Audio/Back.play(0.25)
 	$Options.hide()
 	$Menu.show()
+	$Menu/Options.grab_focus()
 	
 func _on_quit_to_menu_pressed():
 	$Audio/QuitMainMenu.play()

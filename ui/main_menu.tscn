@@ -81,6 +81,7 @@ offset_right = 100.0
 offset_bottom = -24.5
 grow_horizontal = 2
 grow_vertical = 2
+focus_neighbor_bottom = NodePath("../Options")
 
 [node name="Label" type="Label" parent="Menu/Play"]
 layout_mode = 1
@@ -114,6 +115,8 @@ offset_right = 100.0
 offset_bottom = 15.5
 grow_horizontal = 2
 grow_vertical = 2
+focus_neighbor_top = NodePath("../Play")
+focus_neighbor_bottom = NodePath("../Quit")
 
 [node name="Label" type="Label" parent="Menu/Options"]
 layout_mode = 1
@@ -208,6 +211,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(190, 30)
 layout_mode = 2
 size_flags_horizontal = 4
+focus_neighbor_bottom = NodePath("../../AudioGrid/MasterVolume")
 
 [node name="TextFullscreen" type="Label" parent="Options/DisplayGrid/FullscreenButton"]
 layout_mode = 1
@@ -232,6 +236,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(190, 30)
 layout_mode = 2
 size_flags_horizontal = 4
+focus_neighbor_bottom = NodePath("../../AudioGrid/MasterVolume")
 
 [node name="TextWindowed" type="Label" parent="Options/DisplayGrid/WindowedButton"]
 layout_mode = 1
@@ -281,6 +286,7 @@ custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+focus_neighbor_bottom = NodePath("../MusicVolume")
 min_value = -30.0
 max_value = 0.0
 rounded = true
@@ -300,6 +306,8 @@ custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+focus_neighbor_top = NodePath("../MasterVolume")
+focus_neighbor_bottom = NodePath("../EffectVolume")
 min_value = -30.0
 max_value = 0.0
 value = -5.0
@@ -320,43 +328,11 @@ custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+focus_neighbor_top = NodePath("../MusicVolume")
+focus_neighbor_bottom = NodePath("../../Remap")
 min_value = -30.0
 max_value = 0.0
 rounded = true
-
-[node name="Back" type="Button" parent="Options"]
-custom_minimum_size = Vector2(200, 0)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -100.0
-offset_top = 140.0
-offset_right = 100.0
-offset_bottom = 171.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-
-[node name="Label" type="Label" parent="Options/Back"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.5
-offset_top = -9.5
-offset_right = 20.5
-offset_bottom = 13.5
-grow_horizontal = 2
-grow_vertical = 2
-text = "Back"
-label_settings = ExtResource("10_qfpwc")
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="Remap" type="Button" parent="Options"]
 layout_mode = 1
@@ -371,6 +347,8 @@ offset_right = 100.0
 offset_bottom = 131.0
 grow_horizontal = 2
 grow_vertical = 2
+focus_neighbor_top = NodePath("../AudioGrid/EffectVolume")
+focus_neighbor_bottom = NodePath("../Back")
 
 [node name="Label" type="Label" parent="Options/Remap"]
 layout_mode = 1
@@ -390,7 +368,43 @@ label_settings = ExtResource("10_qfpwc")
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Back" type="Button" parent="Options"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = 140.0
+offset_right = 100.0
+offset_bottom = 171.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+focus_neighbor_top = NodePath("../Remap")
+
+[node name="Label" type="Label" parent="Options/Back"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.5
+offset_top = -9.5
+offset_right = 20.5
+offset_bottom = 13.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Back"
+label_settings = ExtResource("10_qfpwc")
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="InputSettings" parent="." instance=ExtResource("8_a72wx")]
+visible = false
 
 [node name="Back" type="Button" parent="InputSettings"]
 custom_minimum_size = Vector2(200, 0)
@@ -453,6 +467,6 @@ uppercase = true
 [connection signal="value_changed" from="Options/AudioGrid/MasterVolume" to="." method="_on_options_master_volume"]
 [connection signal="value_changed" from="Options/AudioGrid/MusicVolume" to="." method="_on_options_music_volume"]
 [connection signal="value_changed" from="Options/AudioGrid/EffectVolume" to="." method="_on_options_effect_volume"]
-[connection signal="pressed" from="Options/Back" to="." method="_on_options_back_pressed"]
 [connection signal="pressed" from="Options/Remap" to="." method="_on_remap_pressed"]
+[connection signal="pressed" from="Options/Back" to="." method="_on_options_back_pressed"]
 [connection signal="pressed" from="InputSettings/Back" to="." method="_on_back_input_setting_pressed"]

@@ -38,24 +38,27 @@ func _ready():
 func _process(_delta):
 	update_Icon()
 	if get_parent().name == "MainMenu":
-		# Keyboard
-		E.hide()
-		C.hide()
-		V.hide()
-		Space.hide()
-		WASD.hide() # When does this change visibility to true?
-		# Controller
-		controller_A.hide() # E keyboard
-		controller_B.hide() # V keyboard
-		controller_X.hide() # C keyboard
-		controller_Start.hide()
-		controller_StickL.hide() # When does this change visibility to true?
+		hide_all()
 	
 	elif get_parent().name == "Control":
 		# Maybe check this after done loading the main menu scene?
 		var player = get_node('/root/Node3D/Player')
+		
+		if player.player_lockInput:
+			hide_all()
+			if get_viewport().gui_get_focus_owner() != null:
+				if Function.search_regex("Item", get_viewport().gui_get_focus_owner().name):
+					update_visibility_and_text(E, controller_A, true, "Buy Item")
+					update_visibility_and_text(C, controller_X, true, "Store Blueprint")
+				elif get_viewport().gui_get_focus_owner().name == "RerollButton":
+					update_visibility_and_text(E, controller_A, true, "Reroll Item")
+					update_visibility_and_text(C, controller_X, false)
+				elif get_viewport().gui_get_focus_owner().name == "CloseButton":
+					update_visibility_and_text(E, controller_A, true, "Close Shop")
+					update_visibility_and_text(C, controller_X, false)
+					
 		#--------------------------------------PREPARATION PHASE------------------------------------------------
-		if Global.preparation_phase:
+		elif Global.preparation_phase:
 			
 			#------------ E INPUT / INTERACT------------
 			#DEFAULT STATE -> HIDE
@@ -154,7 +157,21 @@ func _process(_delta):
 			update_visibility_and_text(V, controller_B, false)
 			#------------ SPACE INPUT / READY ------------
 			update_visibility_and_text(Space, controller_Start, false)
-	
+
+func hide_all():
+	# Keyboard
+	E.hide()
+	C.hide()
+	V.hide()
+	Space.hide()
+	WASD.hide() # When does this change visibility to true?
+	# Controller
+	controller_A.hide() # E keyboard
+	controller_B.hide() # V keyboard
+	controller_X.hide() # C keyboard
+	controller_Start.hide()
+	controller_StickL.hide() # When does this change visibility to true?
+
 func update_visibility_and_text(keyboard_keys, controller_button, visibility: bool, text: String = ""):
 	if visibility:
 		keyboard_keys.show()

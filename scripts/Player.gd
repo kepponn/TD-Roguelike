@@ -27,6 +27,8 @@ var player_interactedItem_Temp
 
 var player_holdedMats: String
 
+var player_lockInput: bool = false
+
 func _physics_process(delta):
 	# navigation.bake_navigation_mesh()
 	# for the player to be on ground via gravity
@@ -43,21 +45,20 @@ func _physics_process(delta):
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 	
-	move_and_slide()
+	if !player_lockInput: # Which mean if enable this thing will not be processed
+		move_and_slide()
+		player_model()
+		open_shop()
+		mountable_wall()
+		player_InteractItems()
+		player_InspectItems()
+		player_RotateItems()
 	player_rotation(direction)
 	player_interactionZoneProcess()
-	player_model()
-	open_shop()
-	mountable_wall()
 	player_placementPreviewProcess()
-	player_InteractItems()
-	player_InspectItems()
-	player_RotateItems()
 	ready()
 	wave_cleared()
 	esc()
-	
-	#player_ReloadItem()
 
 func _ready():
 	navigation.bake_navigation_mesh()
@@ -73,6 +74,9 @@ func open_shop():
 	if player_interactedItem_Temp != null:
 		if player_interactedItem_Temp.name == "Shop" and Input.is_action_just_pressed("inspect") and Global.preparation_phase == true:
 			shop.show()
+			player_lockInput = true
+			get_node('/root/Node3D/Control/Shop/PanelContainer2/MarginContainer/HBoxContainer/CloseButton').grab_focus()
+			#get_node('/root/Node3D/Control/Shop/PanelContainer/MarginContainer/HBoxContainer/ShopBackground/MarginContainer/Shop/ScrollContainer/ShopItem').get_child(0).grab_focus()
 
 func mountable_wall():
 	if player_interactedItem_Temp != null: # Check wall_mountable
@@ -150,7 +154,7 @@ func esc():
 		get_tree().paused = true
 
 func player_rotation(direction):
-	if direction != Vector3.ZERO:
+	if direction != Vector3.ZERO and !player_lockInput:
 		var target_rotation = atan2(direction.x, direction.z) - PI / 2
 		# more of math wizardry, last param in lerp_angle() determine how fast the character rotate
 		$Node3D.rotation.y = lerp_angle($Node3D.rotation.y, target_rotation, 0.25)

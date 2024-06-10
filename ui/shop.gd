@@ -22,14 +22,17 @@ var item_rate = {
 	"extra_health" = 5,
 }
 
+var focused
+
 func _ready():
 	self.hide()
 	update_item()
 
 func _process(_delta):
+	focused = get_viewport().gui_get_focus_owner()
 	update_uiText()
 	update_storageItem()
-	check_mouseInput()
+	check_mouseInput(focused)
 
 func spawn_item(scene):
 	var item = scene.instantiate()
@@ -104,15 +107,31 @@ func create_empty(nodes ,index):
 	nodes.add_child(empty, true)
 	nodes.move_child(empty, index)
 	
-func check_mouseInput():
-	#check what is the last button pressed for 1 frame maybe? atleast its enough time to be used by _on_item_button_pressed(item) signal
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-		mouse_input = "LMB"
-	elif Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
-		mouse_input = "RMB"
-	elif Input.is_mouse_button_pressed(MOUSE_BUTTON_NONE):
-		mouse_input = ""
-
+func check_mouseInput(focused_button):
+	if get_node('/root/Node3D/Player').player_lockInput:
+		await get_tree().create_timer(0.15).timeout
+		#check what is the last button pressed for 1 frame maybe? atleast its enough time to be used by _on_item_button_pressed(item) signal
+		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+			mouse_input = "LMB"
+		elif Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT):
+			mouse_input = "RMB"
+		elif Input.is_mouse_button_pressed(MOUSE_BUTTON_NONE):
+			mouse_input = ""
+		
+		if focused_button != null:
+			if Input.is_action_just_pressed("controller_A"):
+				mouse_input = "LMB"
+				focused_button.emit_signal("pressed")
+				print(focused_button)
+			elif Input.is_action_just_pressed("controller_X"):
+				mouse_input = "RMB"
+				focused_button.emit_signal("pressed")
+				print(focused_button)
+			elif Input.is_action_just_pressed("controller_B"):
+				_on_close_button_pressed()
+			elif Input.is_action_just_pressed("controller_Y"):
+				_on_reroll_button_pressed()
+	
 func update_uiText():
 	$PanelContainer2/MarginContainer/HBoxContainer/PlayerCurrency/Label.text = "Player Currency : " + str(Global.currency)
 	$PanelContainer2/MarginContainer/HBoxContainer/RerollButton/Label.text = "Reroll : " + str(reroll_price) + " Gold"
@@ -136,7 +155,7 @@ func _on_item_button_pressed(item):
 			spawn_item(item.item_scene)
 			create_empty(shop_itemList, item.get_index())
 			item.queue_free()
-			self.hide()
+			_on_close_button_pressed()
 	
 	#Buy Item from Storage
 	elif mouse_input == "LMB" and item.get_parent().name == "BlueprintStorageItem":
@@ -144,7 +163,7 @@ func _on_item_button_pressed(item):
 			Global.currency = Global.currency - item.item_price
 			spawn_item(item.item_scene)
 			item.queue_free()
-			self.hide()
+			_on_close_button_pressed()
 	
 	#Move Item to Storage
 	elif mouse_input == "RMB" and storage_itemList.get_child_count() < 4 and item.get_parent().name == "ShopItem":
@@ -152,12 +171,16 @@ func _on_item_button_pressed(item):
 		create_empty(shop_itemList, item.get_index())
 		item.reparent(storage_itemList)
 		storage_itemList.move_child(item,0)
+		storage_itemList.get_child(0).grab_focus()
 		
 func _on_close_button_pressed():
 	self.hide()
-
+	await get_tree().create_timer(0.15).timeout
+	get_node('/root/Node3D/Player').player_lockInput = false
+	
 func _on_reroll_button_pressed():
 	if Global.currency >= reroll_price:
 		Global.currency = Global.currency - reroll_price
 		reroll_price = reroll_price + 10
 		update_item()
+	print("asd")

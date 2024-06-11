@@ -10,16 +10,20 @@ class_name Enemy_Parent
 var max_HP: int
 var direction: Vector3
 
+# This is actually fucked up...
+# CollisionShape3D difference WILL affect how the navigation is processed
+# Default: CapluseSpahe3D, Radius: 0.45m, Height: 1.95m
+
 func ready_up():
 	max_HP = HP
 	call_deferred("nav_setup")
-	spawn.enemy_spawn()
+	$Audio/SpawnSfx.play()
 
 func check_self(_delta):
 	if HP <= 0:
 		Global.currency = Global.currency + 5
 		Global.enemy_left = Global.enemy_left - 1
-		spawn.enemy_died()
+		$Audio/DeathSfx.play()
 		print("Enemy Left = ",Global.enemy_left)
 		queue_free()
 

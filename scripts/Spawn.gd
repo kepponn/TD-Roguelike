@@ -1,6 +1,7 @@
 extends Marker3D
 
-var enemies: PackedScene = preload("res://scene/enemy.tscn")
+var enemy_scout: PackedScene = preload("res://scene/enemy_scout.tscn")
+var enemy_scout_little: PackedScene = preload("res://scene/enemy_scout_little.tscn")
 
 @onready var spawn_timer: Timer = $Timer
 @onready var nav: NavigationAgent3D = $SpawnLocation/NavigationAgent3D
@@ -64,10 +65,6 @@ func run_preview_path(is_reachable):
 			$PreviewPath.add_child(path_instance_arrow, true)
 			await get_tree().create_timer(0.15).timeout
 
-func _on_navigation_agent_3d_path_changed():
-	#preview_path(Global.is_pathReachable)
-	pass
-
 #func preview_path(is_reachable): # Being called manually by player with tab
 	## Need to call this dynamically when paths is changed (dont put this in process)
 	#for child in $PreviewPath.get_children(): # Flush points
@@ -106,20 +103,13 @@ func _on_navigation_agent_3d_path_changed():
 func spawn_enemies():
 	if $Timer.time_left <= 0 and Global.enemy_spawned != Global.total_enemies and Global.preparation_phase == false:
 		Global.enemy_spawned = Global.enemy_spawned + 1
-		var enemy = enemies.instantiate()
+		var enemy = enemy_scout.instantiate()
 		get_node("/root/Node3D/Enemies").add_child(enemy,true)
 		enemy.transform = $SpawnLocation.global_transform
 		$Timer.start(randf_range(1.5,3.0))
 		print("Enemies Spawned = ", Global.enemy_spawned)
-		
-func enemy_spawn():
-	$Audio/SpawnSfx.play()
-	
-func enemy_died():
-	$Audio/DeathSfx.play()
 
 func count_enemies():
-	#W 0:00:03:0280   Narrowing conversion (float is converted to int and loses precision).
 	Global.total_enemies = Global.base_enemiesCount * Global.waves
 	Global.enemy_left = Global.total_enemies
 	Global.enemy_spawned = 0

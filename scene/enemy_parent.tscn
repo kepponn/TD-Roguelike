@@ -1,10 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://yby5mmthp0iq"]
+[gd_scene load_steps=7 format=3 uid="uid://yby5mmthp0iq"]
 
 [ext_resource type="Script" path="res://scripts/enemy_parent.gd" id="1_qro0o"]
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_p574q"]
-radius = 0.45
-height = 1.95
+[ext_resource type="AudioStream" uid="uid://bjw6eoibkxp5" path="res://assets/audio/sfx/mixkit-arcade-mechanical-bling-210.mp3" id="2_rmav3"]
+[ext_resource type="AudioStream" uid="uid://b3om5s62o78ha" path="res://assets/audio/sfx/mixkit-mechanical-crate-pick-up-3154.mp3" id="3_4ega7"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_4ccpq"]
 viewport_path = NodePath("HealthBar3D/SubViewport")
@@ -37,14 +35,12 @@ corner_radius_bottom_left = 3
 script = ExtResource("1_qro0o")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("CapsuleShape3D_p574q")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 path_desired_distance = 0.5
 target_desired_distance = 0.5
 
 [node name="Models" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0859979, 0)
 
 [node name="HealthBar3D" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -65,5 +61,17 @@ theme_override_styles/background = SubResource("StyleBoxFlat_4ixv2")
 theme_override_styles/fill = SubResource("StyleBoxFlat_1kxvq")
 value = 100.0
 show_percentage = false
+
+[node name="Audio" type="Node" parent="."]
+
+[node name="SpawnSfx" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("2_rmav3")
+volume_db = -2.0
+bus = &"Effect"
+
+[node name="DeathSfx" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("3_4ega7")
+volume_db = 2.0
+bus = &"Effect"
 
 [connection signal="target_reached" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_target_reached"]

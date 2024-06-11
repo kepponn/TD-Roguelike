@@ -32,6 +32,7 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 
 [node name="Enemy" type="CharacterBody3D"]
+safe_margin = 0.025
 script = ExtResource("1_qro0o")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
@@ -39,6 +40,8 @@ script = ExtResource("1_qro0o")
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 path_desired_distance = 0.5
 target_desired_distance = 0.5
+path_postprocessing = 1
+debug_enabled = true
 
 [node name="Models" type="Node3D" parent="."]
 

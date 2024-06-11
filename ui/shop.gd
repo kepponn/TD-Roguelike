@@ -29,15 +29,10 @@ func _ready():
 	update_item()
 
 func _process(_delta):
-	focused = get_viewport().gui_get_focus_owner()
 	update_uiText()
 	update_storageItem()
-	check_mouseInput(focused)
-	
-	if Input.is_action_just_pressed("controller_B"):
-		_on_close_button_pressed()
-	elif Input.is_action_just_pressed("controller_Y"):
-		_on_reroll_button_pressed()
+	check_mouseInput()
+	check_controllerInput()
 
 func spawn_item(scene):
 	var item = scene.instantiate()
@@ -112,9 +107,8 @@ func create_empty(nodes ,index):
 	nodes.add_child(empty, true)
 	nodes.move_child(empty, index)
 	
-func check_mouseInput(focused_button):
+func check_mouseInput():
 	if get_node('/root/Node3D/Player').player_lockInput:
-		await get_tree().create_timer(0.15).timeout
 		#check what is the last button pressed for 1 frame maybe? atleast its enough time to be used by _on_item_button_pressed(item) signal
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 			mouse_input = "LMB"
@@ -122,17 +116,25 @@ func check_mouseInput(focused_button):
 			mouse_input = "RMB"
 		elif Input.is_mouse_button_pressed(MOUSE_BUTTON_NONE):
 			mouse_input = ""
-		
-		if focused_button != null:
-			if Input.is_action_just_pressed("controller_A"):
-				mouse_input = "LMB"
-				focused_button.emit_signal("pressed")
-				print(focused_button)
-			elif Input.is_action_just_pressed("controller_X"):
-				mouse_input = "RMB"
-				focused_button.emit_signal("pressed")
-				print(focused_button)
-	
+
+func check_controllerInput():
+	var focused_button = get_viewport().gui_get_focus_owner()
+	if get_node('/root/Node3D/Player').player_lockInput and focused_button != null:
+		# This dedicated for the following action: buy, reroll, close (all in ui button focus form)
+		if Input.is_action_just_pressed("controller_A"):
+			mouse_input = "LMB"
+			focused_button.emit_signal("pressed")
+			print(focused_button)
+		# This dedicated for only shop item to reserve/save the item blueprint
+		elif Input.is_action_just_pressed("controller_X") and focused_button.get_parent().name == "ShopItem":
+			mouse_input = "RMB"
+			focused_button.emit_signal("pressed")
+			print(focused_button)
+		elif Input.is_action_just_pressed("controller_B"):
+			_on_close_button_pressed()
+		elif Input.is_action_just_pressed("controller_Y"):
+			_on_reroll_button_pressed()
+
 func update_uiText():
 	$PanelContainer2/MarginContainer/HBoxContainer/PlayerCurrency/Label.text = "Player Currency : " + str(Global.currency)
 	$PanelContainer2/MarginContainer/HBoxContainer/RerollButton/Label.text = "Reroll : " + str(reroll_price) + " Gold"

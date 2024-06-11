@@ -53,6 +53,7 @@ func _physics_process(delta):
 		mountable_wall()
 		player_InteractItems()
 		player_InspectItems()
+		player_InspectItemsArea()
 		player_RotateItems()
 	player_rotation(direction)
 	player_interactionZoneProcess()
@@ -80,14 +81,15 @@ func open_shop():
 			#get_node('/root/Node3D/Control/Shop/PanelContainer/MarginContainer/HBoxContainer/ShopBackground/MarginContainer/Shop/ScrollContainer/ShopItem').get_child(0).grab_focus()
 
 func mountable_wall():
-	if player_interactedItem_Temp != null: # Check wall_mountable
+	# This check for preparation phase, if true then this process will be accessible
+	if player_interactedItem_Temp != null and Global.preparation_phase: # Check wall_mountable
 		if player_interactedItem_Temp.has_method("mount") and Input.is_action_just_pressed("inspect"): # check for wall_mountable function
-			if player_isHoldingItem and player_interactedItem_Temp.currently_mountable_item == null:
-				player_checkItemRange(player_interactedItem, false)
+			if player_ableInteract and player_isHoldingItem and player_interactedItem_Temp.currently_mountable_item == null:
+				# player_checkItemRange(player_interactedItem, false)
 				player_interactedItem_Temp.mount(true)
-			elif !player_isHoldingItem and player_interactedItem_Temp.currently_mountable_item != null:
+			elif player_ableInteract and !player_isHoldingItem and player_interactedItem_Temp.currently_mountable_item != null:
 				player_interactedItem_Temp.mount(false)
-				player_checkItemRange(player_interactedItem, true)
+				# player_checkItemRange(player_interactedItem, true)
 
 func player_interactionZoneProcess():
 	$"Node3D/Interaction Zone/CollisionShape3D".global_position = check_grid(%"Interaction Zone", $"Node3D/Interaction Zone/CollisionShape3D")
@@ -147,7 +149,7 @@ func wave_cleared():
 		ingame_ui.UI_animator.play("Transition_toPreparationPhase")
 		get_tree().paused = true
 		$Audio/Bgm/Preparation.play()
-		
+
 func esc():
 	if Input.is_action_just_pressed("exit"):
 		ingame_menu.show()
@@ -167,7 +169,7 @@ func player_rotation(direction):
 
 func player_model():
 	var modelHand_Tween = get_tree().create_tween()
-	if Input.is_action_just_pressed("inspect") or Input.is_action_just_pressed("rotate"):
+	if player_ableInteract and (Input.is_action_just_pressed("check") or Input.is_action_just_pressed("inspect") or Input.is_action_just_pressed("rotate")):
 		# This tween is being replaced by if-statement below, therefore only show a little hand movement
 		modelHand_Tween.tween_property($Node3D/Models/Hand, "rotation_degrees", Vector3(-53.4, 0, 0), 0.1)
 	if player_isHoldingItem:
@@ -327,15 +329,16 @@ func player_checkItemRange(item, enable: bool = true):
 	#var pattern = r"^(?i)turret.*$" # for example all turret name start with 'turret_name_affix_suffix_whatever'
 	#regex.compile(pattern) d# check for match regex on 'turret' and be happy
 	# if by any-case you want to check more than just turret, add new pattern to be checked and refactor this code into match maybe
-	if Function.search_regex("turret", item.id) and enable:
-		# modify temp variable to match the item range and show the area
-		item.visible_range.show()
-		#$"Node3D/Holded Item/Item Range".mesh.top_radius = player_interactedItem.attack_range
-		#$"Node3D/Holded Item/Item Range".mesh.bottom_radius = player_interactedItem.attack_range
-		#$"Node3D/Holded Item/Item Range".visible = true
-	elif Function.search_regex("turret", item.id) and !enable:
-		item.visible_range.hide()
-		#$"Node3D/Holded Item/Item Range".visible = false
+	if enable:
+		if Function.search_regex("turret", item.id):
+			item.visible_range.show()
+		elif Function.search_regex("wall_mountable", item.id) and item.get_child(-1).is_class("StaticBody3D"):
+			item.get_child(-1).visible_range.show()
+	else:
+		if Function.search_regex("turret", item.id):
+			item.visible_range.hide()
+		elif Function.search_regex("wall_mountable", item.id) and item.get_child(-1).is_class("StaticBody3D"):
+			item.get_child(-1).visible_range.hide()
 
 func player_checkIngredientItem():
 	# Future rework to cast the texture icon directly to Sprite3D
@@ -360,15 +363,13 @@ func player_checkIngredientItem():
 func player_InteractItems():
 	#================================================ PREPARATION PHASE ==================================================================================================
 	if Global.preparation_phase:
-	# PICK UP ITEM - NOT HOLDING item and HAVE INTERACTABLE item
+		# PICK UP ITEM - NOT HOLDING item and HAVE INTERACTABLE item
 		if player_ableInteract == true and player_isHoldingItem == false and Input.is_action_just_pressed("interact"):
 			player_isHoldingItem = true
 			# When the player decided to interact with the current item `player_interactedItem_Temp` (which always changing depend on the circumstance)
 			# It will save the `player_interactedItem_Temp` into `player_interactedItem` to be used
 			player_interactedItem = player_interactedItem_Temp
 			player_holdItem(player_interactedItem)
-			await get_tree().create_timer(0.15).timeout
-			player_checkItemRange(player_interactedItem)
 			print("Pick-up " + str(player_interactedItem) + " from " + str(player_interactedItem.position))
 			# Maybe not needed because if item is moved over character's head
 			# Then interaction zone body exited will triggered to change player_ableInteract to false
@@ -378,7 +379,6 @@ func player_InteractItems():
 		elif player_ableInteract == false and player_isHoldingItem == true and player_ableToDrop == true and Input.is_action_just_pressed("interact"):
 			# Should change the name of item placeholder into someting more unique, for now it stand as %Item
 			player_putItem(player_interactedItem)
-			player_checkItemRange(player_interactedItem, false)
 			print("Dropping " + str(player_interactedItem) + " to " + str(player_interactedItem.position))
 			# print(%"Interaction Zone".global_position)
 			# print(player_interactedItem.position)
@@ -390,13 +390,10 @@ func player_InteractItems():
 			# All this line is the basic for item swapping
 			# Swap held item property to on-ground item property
 			player_swapItem(player_interactedItem, player_interactedItem_Temp)
-			player_checkItemRange(player_interactedItem, false)
 			# Take on-ground item
 			player_interactedItem = player_interactedItem_Temp
 			print("Now holding " + str(player_interactedItem) + " as result from swapping item")
 			player_holdItem(player_interactedItem)
-			await get_tree().create_timer(0.15).timeout
-			player_checkItemRange(player_interactedItem, true)
 			
 	#================================================ DEFENSE PHASE ==================================================================================================
 	elif !Global.preparation_phase:
@@ -411,7 +408,7 @@ func player_InteractItems():
 		# RELOAD MOUNTED TURRET - HOLDING an AMMO and HAVE MOUNTED WALL that have turret in it
 		if player_ableInteract == true and player_isHoldingItem == true and Input.is_action_just_pressed("interact") and player_interactedItem_Temp.has_method("mount") and player_holdedMats == "ammo_box":
 			if player_interactedItem_Temp.get_child(-1).has_method("reload"):
-				if player_interactedItem_Temp.get_child(-1).bullet_ammo != player_interactedItem_Temp.get_child(-1).bullet_maxammo and !player_interactedItem_Temp.requesting_droneReload:
+				if player_interactedItem_Temp.get_child(-1).bullet_ammo != player_interactedItem_Temp.get_child(-1).bullet_maxammo and !player_interactedItem_Temp.get_child(-1).requesting_droneReload:
 					print("Reloading mounted ", player_interactedItem_Temp.get_child(-1), " on ", player_interactedItem_Temp)
 					player_interactedItem_Temp.get_child(-1).reload()
 					player_isHoldingItem = false
@@ -449,13 +446,13 @@ func player_InteractItems():
 			elif player_interactedItem_Temp.id == "drone_base" and player_holdedMats == "ammo_box":
 				player_interactedItem_Temp.add_ammoToBase()
 				player_checkIngredientItem()
-	
+
 func player_InspectItems():
 	# This show the player card-like information about item, will be immediately turn off if player do any action
 	# Add more information but in text-type to some items? maybe make a new UI3D for that?
 	if Input.is_action_just_pressed("inspect") and player_ableInteract == true:
 		player_inspectedItem = player_interactedItem_Temp
-		player_checkItemRange(player_inspectedItem)
+		#player_checkItemRange(player_inspectedItem, true)
 		var sprite_adjustment = Vector3(0, 2, -1.5)
 		inspectedItem_UI_Sprite.global_position = player_inspectedItem.global_position + sprite_adjustment
 		if Function.search_regex("turret", player_inspectedItem.id):
@@ -473,21 +470,48 @@ func player_InspectItems():
 				inspectedItem_UI.AttackSpeedText = player_inspectedItem.attack_speed
 				inspectedItem_UI_Sprite.show()
 			# Will mess with player interaction when mounting a turret (showing card of the wall itself and mounting at the same time)
-			#"wall_mountable":
-				#inspectedItem_UI.AttackRangeText = "+1"
-				#inspectedItem_UI_Sprite.show()
-	elif player_inspectedItem != null and player_ableInteract == false and player_isHoldingItem == false:
-		player_checkItemRange(player_inspectedItem, false)
-		inspectedItem_UI.AttackDamageText = null
-		inspectedItem_UI.AttackRangeText = null
-		inspectedItem_UI.AttackSpeedText = null
-		inspectedItem_UI.AmmoText = null
-		inspectedItem_UI_Sprite.hide()
+			"wall_mountable":
+				print("INSPECTED WALL MOUNTABLE")
+				if player_inspectedItem.get_child(-1).is_class("StaticBody3D"):
+					#if Function.search_regex("turret", player_inspectedItem.get_child(-1).id):
+					inspectedItem_UI.AttackDamageText = player_inspectedItem.get_child(-1).attack_damage
+					inspectedItem_UI.AttackRangeText = player_inspectedItem.get_child(-1).attack_range
+					inspectedItem_UI.AttackSpeedText = player_inspectedItem.get_child(-1).attack_speed
+					inspectedItem_UI.AmmoText = player_inspectedItem.get_child(-1).bullet_maxammo
+					inspectedItem_UI_Sprite.show()
+				else:
+					inspectedItem_UI.AttackDamageText = null
+					inspectedItem_UI.AttackRangeText = "+1"
+					inspectedItem_UI.AttackSpeedText = null
+					inspectedItem_UI.AmmoText = null
+					inspectedItem_UI_Sprite.show()
+	#elif player_inspectedItem != null and player_ableInteract == false and player_isHoldingItem == false:
+	elif player_inspectedItem != null and player_interactedItem_Temp != null and player_ableInteract == false:
+	# player_ableInteract to check the item itself and show the card of it
+		# This basically check if the temp is changed or player see 'empty' grid
+		if player_inspectedItem != player_interactedItem_Temp or player_ableToDrop:
+			#player_checkItemRange(player_inspectedItem, false)
+			inspectedItem_UI.AttackDamageText = null
+			inspectedItem_UI.AttackRangeText = null
+			inspectedItem_UI.AttackSpeedText = null
+			inspectedItem_UI.AmmoText = null
+			inspectedItem_UI_Sprite.hide()
+
+func player_InspectItemsArea():
+	if Input.is_action_just_pressed("check") and (player_ableInteract or player_isHoldingItem):
+		if player_isHoldingItem:
+			player_inspectedItem = player_interactedItem
+		else:
+			player_inspectedItem = player_interactedItem_Temp
+		player_checkItemRange(player_inspectedItem, true)
+	elif player_inspectedItem != null and !player_isHoldingItem:
+		if player_inspectedItem != player_interactedItem_Temp or !player_ableInteract:
+				player_checkItemRange(player_inspectedItem, false)
 
 func player_RotateItems():
 	if Input.is_action_just_pressed("rotate"):
 		player_rotateItemProcess()
-	
+
 func _on_interaction_zone_body_entered(body):
 	if body.is_class("GridMap") and player_isHoldingItem:
 		# disable drop if the interaction area collide with gridmap

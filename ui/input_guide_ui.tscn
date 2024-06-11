@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://boj1ov7anx6qx"]
+[gd_scene load_steps=20 format=3 uid="uid://boj1ov7anx6qx"]
 
 [ext_resource type="Script" path="res://ui/input_guide_ui.gd" id="1_xpl4o"]
 [ext_resource type="FontFile" uid="uid://cxvusk35yis3l" path="res://assets/font/Dadlygood.otf" id="2_7olpv"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://h42ewu31c88q" path="res://assets/icon/KeyboardButton/V_light.png" id="5_dtylm"]
 [ext_resource type="Texture2D" uid="uid://xay0sg4kxqko" path="res://assets/icon/KeyboardButton/Space_light.png" id="6_1dn71"]
 [ext_resource type="Texture2D" uid="uid://ba0ofxyvqq0y2" path="res://assets/icon/KeyboardButton/D_light.png" id="6_jcj8p"]
+[ext_resource type="Texture2D" uid="uid://c1jha7xwf8cvw" path="res://assets/icon/KeyboardButton/X_light.png" id="6_w28gs"]
 [ext_resource type="Texture2D" uid="uid://waucjx3uail6" path="res://assets/icon/ControllerButton/xbox_a_green.png" id="11_efcet"]
 [ext_resource type="Texture2D" uid="uid://dusvlws3g6i8k" path="res://assets/icon/ControllerButton/xbox_b_red.png" id="12_hmg4v"]
 [ext_resource type="Texture2D" uid="uid://d2ogcdly45bcp" path="res://assets/icon/ControllerButton/xbox_x_blue.png" id="13_fw0w3"]
@@ -107,6 +108,27 @@ theme_override_constants/outline_size = 3
 theme_override_constants/shadow_outline_size = 2
 theme_override_fonts/font = ExtResource("2_7olpv")
 text = "V Event"
+
+[node name="X" type="BoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="XIcon" type="TextureRect" parent="MarginContainer/HBoxContainer/X"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("6_w28gs")
+expand_mode = 1
+
+[node name="XEventLabel" type="Label" parent="MarginContainer/HBoxContainer/X"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0.262745, 0.290196, 0.372549, 1)
+theme_override_colors/font_outline_color = Color(0.262745, 0.290196, 0.372549, 1)
+theme_override_constants/outline_size = 3
+theme_override_constants/shadow_outline_size = 2
+theme_override_fonts/font = ExtResource("2_7olpv")
+text = "X Event"
 
 [node name="Space" type="BoxContainer" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2

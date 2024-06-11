@@ -274,6 +274,7 @@ mesh = SubResource("ArrayMesh_o4b6h")
 skeleton = NodePath("")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="Spawn/SpawnLocation"]
+path_postprocessing = 1
 
 [node name="PreviewPath" type="Marker3D" parent="Spawn"]
 

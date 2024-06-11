@@ -48,7 +48,6 @@ var requesting_droneReload: bool = false
 @onready var drone_reloadIcon = $DroneReloadIcon
 @onready var drone_base = get_node('/root/Node3D/NavigationRegion3D/Item/DroneBase2')
 
-
 func seed_property():
 	var file = FileAccess.open("res://autoload/item_db.json", FileAccess.READ)
 	var file_text = file.get_as_text()
@@ -95,11 +94,16 @@ func update_range(add_or_remove_range: int):
 		visible_range.position.z = -(attack_range * 0.5)
 	$RayCast3D.target_position.z = -attack_range
 
+func update_range_visual():
+	if $Range/VisibleRange.visible and $Range/VisibleRange.global_position.y != 0.6:
+		$Range/VisibleRange.global_position.y = 0.6
+
 func start_process():
 	update_UI()
 	wave_Reload()
 	lock_on()
 	shoot()
+	update_range_visual()
 
 func lock_on():
 	if !enemies_array.is_empty(): # check array empty state
@@ -143,8 +147,6 @@ func shoot():
 	elif bullet_ammo == 0 and !drone_base.turret_toReload.has(self):
 		drone_base.turret_toReload.append(self)
 		empty_ammoIcon.show()
-		
-		
 	
 	if !enemies_array.is_empty() and $AttackSpeed.time_left <= 0.0 and able_shoot and bullet_ammo != 0:
 		bullet_ammo -= 1
@@ -161,8 +163,6 @@ func shoot():
 		turret_projectile.transform = %ProjectileSpawn.global_transform #basically copy all of $"Head/Spawn Point" global transform(rotation, scale, position), to projectile
 		turret_projectile.set_direction = shoot_direction #direction used to set projectile movement direction
 		$AttackSpeed.start() #restart timer so it can shoot again
-	
-		
 
 func drone_reload():
 	bullet_ammo = bullet_maxammo
@@ -171,7 +171,6 @@ func reload():
 	if requesting_droneReload == false:
 		bullet_ammo = bullet_maxammo
 
-	
 func wave_Reload():
 	if Global.preparation_phase:
 		bullet_ammo = bullet_maxammo

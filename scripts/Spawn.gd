@@ -103,7 +103,14 @@ func run_preview_path(is_reachable):
 func spawn_enemies():
 	if $Timer.time_left <= 0 and Global.enemy_spawned != Global.total_enemies and Global.preparation_phase == false:
 		Global.enemy_spawned = Global.enemy_spawned + 1
-		var enemy = enemy_scout.instantiate()
+		var enemy 
+		# This randomize will give an example of how enemy will behave in queue
+		# Please do check if this will make the enemy somehow DEADLOCK/STUCK together
+		var rng = randi_range(0, 1)
+		if rng == 0:
+			enemy = enemy_scout.instantiate()
+		else:
+			enemy = enemy_scout_little.instantiate()
 		get_node("/root/Node3D/Enemies").add_child(enemy,true)
 		enemy.transform = $SpawnLocation.global_transform
 		$Timer.start(randf_range(1.5,3.0))

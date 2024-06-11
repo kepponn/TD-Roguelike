@@ -5,17 +5,20 @@ extends Control
 @onready var E = $MarginContainer/HBoxContainer/E
 @onready var C = $MarginContainer/HBoxContainer/C
 @onready var V = $MarginContainer/HBoxContainer/V
+@onready var X = $MarginContainer/HBoxContainer/X
 @onready var Space = $MarginContainer/HBoxContainer/Space
 
 @onready var text_WASD = $MarginContainer/HBoxContainer/WASD/WASDEventLabel
 @onready var text_E = $MarginContainer/HBoxContainer/E/EEventLabel
 @onready var text_C = $MarginContainer/HBoxContainer/C/CEventLabel
 @onready var text_V = $MarginContainer/HBoxContainer/V/VEventLabel
+@onready var text_X = $MarginContainer/HBoxContainer/X/XEventLabel
 @onready var text_Space = $MarginContainer/HBoxContainer/Space/SpaceEventLabel
 
 @onready var icon_E = $MarginContainer/HBoxContainer/E/EIcon
 @onready var icon_C = $MarginContainer/HBoxContainer/C/CIcon
 @onready var icon_V = $MarginContainer/HBoxContainer/V/VIcon
+@onready var icon_X = $MarginContainer/HBoxContainer/X/XIcon
 @onready var icon_Space = $MarginContainer/HBoxContainer/Space/SpaceIcon
 # Keyboard end here
 
@@ -41,10 +44,10 @@ func _process(_delta):
 	update_Icon()
 	if get_parent().name == "MainMenu":
 		hide_all()
-	
 	elif get_parent().name == "Control":
 		# Maybe check this after done loading the main menu scene?
 		var player = get_node('/root/Node3D/Player')
+		update_visibility_and_text(WASD, controller_StickL, true, "Move")
 		
 		update_visibility_and_text(null, controller_Y, false)
 		if player.player_lockInput:
@@ -65,7 +68,7 @@ func _process(_delta):
 		#--------------------------------------PREPARATION PHASE------------------------------------------------
 		elif Global.preparation_phase:
 			
-			#------------ E INPUT / INTERACT------------
+			#------------ E INPUT / INTERACT ------------
 			#DEFAULT STATE -> HIDE
 			if !player.player_ableInteract and !player.player_isHoldingItem:
 				update_visibility_and_text(E, controller_A, false)
@@ -98,6 +101,28 @@ func _process(_delta):
 			#DISMOUNT
 					elif !player.player_isHoldingItem and player.player_interactedItem_Temp.currently_mountable_item != null:
 						update_visibility_and_text(C, controller_X, true, "Dismount")
+			
+			#------------ X INPUT / CHECK ------------
+			# DEFAULT STATE -> HIDE
+			if !player.player_ableInteract and !player.player_isHoldingItem:
+				update_visibility_and_text(X, controller_Y, false)
+			#GROUND TURRET
+			elif player.player_ableInteract and !player.player_isHoldingItem:
+				if Function.search_regex("turret", player.player_interactedItem_Temp.id):
+					update_visibility_and_text(X, controller_Y, true, "Check Area")
+				else:
+					update_visibility_and_text(X, controller_Y, false)
+			#ON HEAD TURRET
+			elif !player.player_ableInteract and player.player_isHoldingItem:
+				if Function.search_regex("turret", player.player_interactedItem.id):
+					update_visibility_and_text(X, controller_Y, true, "Check Area")
+				else:
+					update_visibility_and_text(X, controller_Y, false)
+			#MOUNTED TURRET
+			elif player.player_interactedItem_Temp != null:
+				if player.player_interactedItem_Temp.has_method("mount"):
+					if !player.player_isHoldingItem and player.player_interactedItem_Temp.currently_mountable_item != null:
+						update_visibility_and_text(X, controller_Y, true, "Check Area")
 			
 			#------------ V INPUT / ROTATE ------------
 			#DEFAULT STATE -> HIDE
@@ -168,13 +193,14 @@ func hide_all():
 	E.hide()
 	C.hide()
 	V.hide()
+	X.hide()
 	Space.hide()
 	WASD.hide() # When does this change visibility to true?
 	# Controller
 	controller_A.hide() # E keyboard
 	controller_B.hide() # V keyboard
 	controller_X.hide() # C keyboard
-	controller_Y.hide()
+	controller_Y.hide() # X keyboard
 	controller_Start.hide()
 	controller_StickL.hide() # When does this change visibility to true?
 
@@ -189,6 +215,8 @@ func update_visibility_and_text(keyboard_keys, controller_button, visibility: bo
 					text_C.text = text
 				V:
 					text_V.text = text
+				X:
+					text_X.text = text
 				Space:
 					text_Space.text = text
 		if controller_button != null:
@@ -220,6 +248,9 @@ func update_Icon():
 	#Update V Icon
 	var key_V = InputMap.action_get_events("rotate")[0].as_text().trim_suffix(" (Physical)")
 	icon_V.texture = load("res://assets/icon/KeyboardButton/"+ str(key_V) +"_light.png")
+	#Update X Icon
+	var key_X = InputMap.action_get_events("check")[0].as_text().trim_suffix(" (Physical)")
+	icon_X.texture = load("res://assets/icon/KeyboardButton/"+ str(key_X) +"_light.png")
 	#Update Space Icon
 	var key_Space = InputMap.action_get_events("start")[0].as_text().trim_suffix(" (Physical)")
 	icon_Space.texture = load("res://assets/icon/KeyboardButton/"+ str(key_Space) +"_light.png")

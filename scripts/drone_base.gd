@@ -36,6 +36,7 @@ func reset():
 		drone_Tween.kill()
 	drone_isMoving = false
 	drone.position = Vector3(0, 1, 0) # Snap the the default position
+	turret_toReload = []
 	# Array already being cleared by the turret
 
 func drone_tweenToTarget():

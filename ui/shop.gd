@@ -33,6 +33,11 @@ func _process(_delta):
 	update_uiText()
 	update_storageItem()
 	check_mouseInput(focused)
+	
+	if Input.is_action_just_pressed("controller_B"):
+		_on_close_button_pressed()
+	elif Input.is_action_just_pressed("controller_Y"):
+		_on_reroll_button_pressed()
 
 func spawn_item(scene):
 	var item = scene.instantiate()
@@ -127,10 +132,6 @@ func check_mouseInput(focused_button):
 				mouse_input = "RMB"
 				focused_button.emit_signal("pressed")
 				print(focused_button)
-			elif Input.is_action_just_pressed("controller_B"):
-				_on_close_button_pressed()
-			elif Input.is_action_just_pressed("controller_Y"):
-				_on_reroll_button_pressed()
 	
 func update_uiText():
 	$PanelContainer2/MarginContainer/HBoxContainer/PlayerCurrency/Label.text = "Player Currency : " + str(Global.currency)
@@ -183,4 +184,4 @@ func _on_reroll_button_pressed():
 		Global.currency = Global.currency - reroll_price
 		reroll_price = reroll_price + 10
 		update_item()
-	print("asd")
+		$PanelContainer2/MarginContainer/HBoxContainer/RerollButton.grab_focus()

@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://b26pcq5irgyro"]
 
-[ext_resource type="Script" path="res://scene/path_runner.gd" id="1_ebchu"]
+[ext_resource type="Script" path="res://scripts/path_runner.gd" id="1_ebchu"]
 [ext_resource type="Material" uid="uid://ddxjg3gxomrtf" path="res://assets/shaders/yellow_opacity.tres" id="2_56gwe"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_xtvhj"]

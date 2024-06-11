@@ -1,12 +1,9 @@
-[gd_scene load_steps=18 format=3 uid="uid://bom3c4q187npa"]
+[gd_scene load_steps=16 format=3 uid="uid://ltgqltjwwenr"]
 
+[ext_resource type="PackedScene" uid="uid://yby5mmthp0iq" path="res://scene/enemy_parent.tscn" id="1_lm3v0"]
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="1_o3c7s"]
 [ext_resource type="Material" uid="uid://8vtfpn2hciep" path="res://models/textures/enemy_metalic.tres" id="2_l6vn1"]
 [ext_resource type="Material" uid="uid://dtv68sjnoe1ov" path="res://models/textures/generic_super_light_metal.tres" id="3_8ocju"]
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_p574q"]
-radius = 0.45
-height = 1.95
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_ihbiv"]
 _surfaces = [{
@@ -21,7 +18,7 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_tm3tl"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_blaub"]
 resource_name = "enemy_body_Cylinder"
 _surfaces = [{
 "aabb": AABB(-0.229537, -0.00668528, -0.121536, 0.459084, 0.231176, 0.243073),
@@ -51,7 +48,7 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_iu7fp"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_hvwer"]
 resource_name = "enemy_body_Cube_003"
 _surfaces = [{
 "aabb": AABB(-0.25, -0.517769, -0.277622, 0.5, 1.01361, 0.527622),
@@ -82,7 +79,7 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_a2ai7"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_gowsp"]
 resource_name = "enemy_body_Cylinder_001"
 _surfaces = [{
 "aabb": AABB(-0.925142, -13.512, 0.0988075, 1.85028, 10.1881, 1.85028),
@@ -113,7 +110,7 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_3637e"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_2ynnw"]
 resource_name = "enemy_leg_l_Cube_005"
 _surfaces = [{
 "aabb": AABB(-0.844255, -2.88813, -0.69707, 1.17494, 3.12942, 1.75672),
@@ -143,7 +140,7 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_6i42q"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_16737"]
 resource_name = "enemy_leg_r_Cube_004"
 _surfaces = [{
 "aabb": AABB(-0.844255, -2.88813, -0.69707, 1.17494, 3.12942, 1.75672),
@@ -160,109 +157,54 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_fnmju")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_4ccpq"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_7nki2"]
 viewport_path = NodePath("HealthBar3D/SubViewport")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4ixv2"]
-bg_color = Color(0.215686, 0.215686, 0.215686, 0.72549)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(0, 0, 0, 1)
-border_blend = true
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-expand_margin_left = 1.0
-expand_margin_top = 1.0
-expand_margin_right = 1.0
-expand_margin_bottom = 1.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1kxvq"]
-bg_color = Color(0.898039, 0, 0.184314, 1)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-
-[node name="Enemy" type="CharacterBody3D"]
+[node name="Enemy" instance=ExtResource("1_lm3v0")]
 script = ExtResource("1_o3c7s")
-SPEED = 10
-HP = 3000
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("CapsuleShape3D_p574q")
-
-[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
-path_desired_distance = 0.5
-target_desired_distance = 0.5
-
-[node name="Models" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0859979, 0)
-
-[node name="Body" type="Node3D" parent="Models"]
+[node name="Body" type="Node3D" parent="Models" index="0"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
-[node name="enemy_body" type="Node3D" parent="Models/Body"]
+[node name="enemy_body" type="Node3D" parent="Models/Body" index="0"]
 transform = Transform3D(1.2, 0, 0, 0, 1.32, 0, 0, 0, 1.2, 0, 0.046, 0)
 
-[node name="pelvis" type="MeshInstance3D" parent="Models/Body/enemy_body"]
+[node name="pelvis" type="MeshInstance3D" parent="Models/Body/enemy_body" index="0"]
 transform = Transform3D(0.800225, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-mesh = SubResource("ArrayMesh_tm3tl")
+mesh = SubResource("ArrayMesh_blaub")
 skeleton = NodePath("")
 
-[node name="head" type="MeshInstance3D" parent="Models/Body/enemy_body"]
+[node name="head" type="MeshInstance3D" parent="Models/Body/enemy_body" index="1"]
 transform = Transform3D(0.576302, 0, 0, 0, 0.576302, 0, 0, 0, 0.576302, 0, 0.459516, 0)
-mesh = SubResource("ArrayMesh_iu7fp")
+mesh = SubResource("ArrayMesh_hvwer")
 skeleton = NodePath("")
 
-[node name="eye" type="MeshInstance3D" parent="Models/Body/enemy_body"]
+[node name="eye" type="MeshInstance3D" parent="Models/Body/enemy_body" index="2"]
 transform = Transform3D(0.0647943, 0, 0, 0, 0, -0.0647943, 0, 0.00953365, 0, 0, 0.492733, 0.202937)
-mesh = SubResource("ArrayMesh_a2ai7")
+mesh = SubResource("ArrayMesh_gowsp")
 skeleton = NodePath("")
 
-[node name="LegL" type="Node3D" parent="Models"]
+[node name="LegL" type="Node3D" parent="Models" index="1"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.170459, 0)
 
-[node name="enemy_leg_l" type="Node3D" parent="Models/LegL"]
+[node name="enemy_leg_l" type="Node3D" parent="Models/LegL" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1.79, 0, 0, 0, 1, 0, -0.181, 0)
 
-[node name="left leg" type="MeshInstance3D" parent="Models/LegL/enemy_leg_l"]
+[node name="left leg" type="MeshInstance3D" parent="Models/LegL/enemy_leg_l" index="0"]
 transform = Transform3D(-0.208893, 0, 0, 0, 0.208893, 0, 0, 0, 0.208893, 0.14824, 0.109396, -0.0016637)
-mesh = SubResource("ArrayMesh_3637e")
+mesh = SubResource("ArrayMesh_2ynnw")
 skeleton = NodePath("")
 
-[node name="LegR" type="Node3D" parent="Models"]
+[node name="LegR" type="Node3D" parent="Models" index="2"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.170459, 0)
 
-[node name="enemy_leg_r" type="Node3D" parent="Models/LegR"]
+[node name="enemy_leg_r" type="Node3D" parent="Models/LegR" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1.79, 0, 0, 0, 1, 0, -0.181, 0)
 
-[node name="right leg" type="MeshInstance3D" parent="Models/LegR/enemy_leg_r"]
+[node name="right leg" type="MeshInstance3D" parent="Models/LegR/enemy_leg_r" index="0"]
 transform = Transform3D(0.208893, 0, 0, 0, 0.208893, 0, 0, 0, 0.208893, -0.152085, 0.109396, -0.0016637)
-mesh = SubResource("ArrayMesh_6i42q")
+mesh = SubResource("ArrayMesh_16737")
 skeleton = NodePath("")
 
-[node name="HealthBar3D" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-billboard = 1
-texture = SubResource("ViewportTexture_4ccpq")
-
-[node name="SubViewport" type="SubViewport" parent="HealthBar3D"]
-disable_3d = true
-transparent_bg = true
-size = Vector2i(102, 17)
-
-[node name="HealthBar2D" type="ProgressBar" parent="HealthBar3D/SubViewport"]
-offset_left = 1.0
-offset_top = 1.0
-offset_right = 101.0
-offset_bottom = 16.0
-theme_override_styles/background = SubResource("StyleBoxFlat_4ixv2")
-theme_override_styles/fill = SubResource("StyleBoxFlat_1kxvq")
-value = 100.0
-show_percentage = false
-
-[connection signal="target_reached" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_target_reached"]
+[node name="HealthBar3D" parent="." index="3"]
+texture = SubResource("ViewportTexture_7nki2")

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://rbcl5eelk2gh"]
 
 [ext_resource type="Material" uid="uid://hq20gua5ss2l" path="res://assets/shaders/green_opacity.tres" id="1_8bqn3"]
-[ext_resource type="Script" path="res://scene/path_runner.gd" id="1_b7t3y"]
+[ext_resource type="Script" path="res://scripts/path_runner.gd" id="1_b7t3y"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_xtvhj"]
 _surfaces = [{

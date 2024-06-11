@@ -93,13 +93,13 @@ func update_range(add_or_remove_range: int):
 		range_radius.position.z = -(attack_range * 0.5)
 		visible_range.mesh.size.z = attack_range
 		visible_range.position.z = -(attack_range * 0.5)
+	$RayCast3D.target_position.z = -attack_range
 
 func start_process():
 	update_UI()
 	wave_Reload()
 	lock_on()
 	shoot()
-	
 
 func lock_on():
 	if !enemies_array.is_empty(): # check array empty state

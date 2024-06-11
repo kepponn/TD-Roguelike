@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://boj1ov7anx6qx"]
+[gd_scene load_steps=19 format=3 uid="uid://boj1ov7anx6qx"]
 
 [ext_resource type="Script" path="res://ui/input_guide_ui.gd" id="1_xpl4o"]
 [ext_resource type="FontFile" uid="uid://cxvusk35yis3l" path="res://assets/font/Dadlygood.otf" id="2_7olpv"]
@@ -10,10 +10,11 @@
 [ext_resource type="Texture2D" uid="uid://h42ewu31c88q" path="res://assets/icon/KeyboardButton/V_light.png" id="5_dtylm"]
 [ext_resource type="Texture2D" uid="uid://xay0sg4kxqko" path="res://assets/icon/KeyboardButton/Space_light.png" id="6_1dn71"]
 [ext_resource type="Texture2D" uid="uid://ba0ofxyvqq0y2" path="res://assets/icon/KeyboardButton/D_light.png" id="6_jcj8p"]
-[ext_resource type="Texture2D" uid="uid://ckwy08a7okq5c" path="res://assets/icon/ControllerButton/xbox_a_color_light.png" id="11_vnv6q"]
-[ext_resource type="Texture2D" uid="uid://ddphmj4rvma7c" path="res://assets/icon/ControllerButton/xbox_b_color_light.png" id="12_yl5ir"]
-[ext_resource type="Texture2D" uid="uid://cy5qd26jedjm5" path="res://assets/icon/ControllerButton/xbox_x_color_light.png" id="13_a8aq6"]
-[ext_resource type="Texture2D" uid="uid://ccsn2emgeq13f" path="res://assets/icon/ControllerButton/xbox_menu_light.png" id="14_vflja"]
+[ext_resource type="Texture2D" uid="uid://waucjx3uail6" path="res://assets/icon/ControllerButton/xbox_a_green.png" id="11_efcet"]
+[ext_resource type="Texture2D" uid="uid://dusvlws3g6i8k" path="res://assets/icon/ControllerButton/xbox_b_red.png" id="12_hmg4v"]
+[ext_resource type="Texture2D" uid="uid://d2ogcdly45bcp" path="res://assets/icon/ControllerButton/xbox_x_blue.png" id="13_fw0w3"]
+[ext_resource type="Texture2D" uid="uid://d0ajm2tjsy5sx" path="res://assets/icon/ControllerButton/xbox_y_yellow.png" id="14_37neq"]
+[ext_resource type="Texture2D" uid="uid://dpgwki6e441ny" path="res://assets/icon/ControllerButton/xbox_view_light.png" id="15_70gxw"]
 [ext_resource type="Texture2D" uid="uid://dkjp8ii3hx24h" path="res://assets/icon/ControllerButton/leftstick_light.png" id="15_at7jt"]
 [ext_resource type="Texture2D" uid="uid://bkck1nq4y8ax4" path="res://assets/icon/ControllerButton/leftstick_left_light.png" id="15_kyuq8"]
 [ext_resource type="Texture2D" uid="uid://5eaoee4nrxvk" path="res://assets/icon/ControllerButton/leftstick_right_light.png" id="17_org3e"]
@@ -226,28 +227,7 @@ custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("11_vnv6q")
-expand_mode = 1
-
-[node name="B" type="BoxContainer" parent="MarginContainer/HBoxContainerController"]
-layout_mode = 2
-size_flags_horizontal = 8
-
-[node name="BEventLabel" type="Label" parent="MarginContainer/HBoxContainerController/B"]
-layout_mode = 2
-theme_override_colors/font_shadow_color = Color(0.262745, 0.290196, 0.372549, 1)
-theme_override_colors/font_outline_color = Color(0.262745, 0.290196, 0.372549, 1)
-theme_override_constants/outline_size = 3
-theme_override_constants/shadow_outline_size = 2
-theme_override_fonts/font = ExtResource("2_7olpv")
-text = "B Event"
-
-[node name="BIcon" type="TextureRect" parent="MarginContainer/HBoxContainerController/B"]
-custom_minimum_size = Vector2(20, 20)
-layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-texture = ExtResource("12_yl5ir")
+texture = ExtResource("11_efcet")
 expand_mode = 1
 
 [node name="X" type="BoxContainer" parent="MarginContainer/HBoxContainerController"]
@@ -268,7 +248,49 @@ custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("13_a8aq6")
+texture = ExtResource("13_fw0w3")
+expand_mode = 1
+
+[node name="B" type="BoxContainer" parent="MarginContainer/HBoxContainerController"]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="BEventLabel" type="Label" parent="MarginContainer/HBoxContainerController/B"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0.262745, 0.290196, 0.372549, 1)
+theme_override_colors/font_outline_color = Color(0.262745, 0.290196, 0.372549, 1)
+theme_override_constants/outline_size = 3
+theme_override_constants/shadow_outline_size = 2
+theme_override_fonts/font = ExtResource("2_7olpv")
+text = "B Event"
+
+[node name="BIcon" type="TextureRect" parent="MarginContainer/HBoxContainerController/B"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("12_hmg4v")
+expand_mode = 1
+
+[node name="Y" type="BoxContainer" parent="MarginContainer/HBoxContainerController"]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="YEventLabel" type="Label" parent="MarginContainer/HBoxContainerController/Y"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0.262745, 0.290196, 0.372549, 1)
+theme_override_colors/font_outline_color = Color(0.262745, 0.290196, 0.372549, 1)
+theme_override_constants/outline_size = 3
+theme_override_constants/shadow_outline_size = 2
+theme_override_fonts/font = ExtResource("2_7olpv")
+text = "Y Event"
+
+[node name="YIcon" type="TextureRect" parent="MarginContainer/HBoxContainerController/Y"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("14_37neq")
 expand_mode = 1
 
 [node name="Start" type="BoxContainer" parent="MarginContainer/HBoxContainerController"]
@@ -289,7 +311,7 @@ custom_minimum_size = Vector2(20, 20)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-texture = ExtResource("14_vflja")
+texture = ExtResource("15_70gxw")
 expand_mode = 1
 
 [node name="Move" type="BoxContainer" parent="MarginContainer/HBoxContainerController"]

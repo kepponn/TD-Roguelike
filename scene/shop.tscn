@@ -1,6 +1,6 @@
 [gd_scene load_steps=22 format=3 uid="uid://wil6fipqm8m1"]
 
-[ext_resource type="Script" path="res://scene/shop_terminal.gd" id="1_th7ri"]
+[ext_resource type="Script" path="res://scripts/shop_terminal.gd" id="1_th7ri"]
 [ext_resource type="Material" uid="uid://b8xph3vsgn38u" path="res://models/textures/crafter_torus.tres" id="2_r72ti"]
 [ext_resource type="Material" uid="uid://dtv68sjnoe1ov" path="res://models/textures/generic_super_light_metal.tres" id="4_fwdu1"]
 [ext_resource type="AudioStream" uid="uid://ge1i0vqaif6u" path="res://assets/audio/sfx/082499_thermal-receipt-print-amp-cut-48054.mp3" id="4_lq6vq"]

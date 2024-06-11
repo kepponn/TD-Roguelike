@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://c8otvd8emjkql"]
 
-[ext_resource type="Script" path="res://scene/extra_health.gd" id="1_0crpl"]
+[ext_resource type="Script" path="res://scripts/extra_health.gd" id="1_0crpl"]
 [ext_resource type="Material" uid="uid://dtv68sjnoe1ov" path="res://models/textures/generic_super_light_metal.tres" id="3_uwtlv"]
 [ext_resource type="Texture2D" uid="uid://haiw565n2cfg" path="res://models/extra_health_base_color.png" id="4_tdspb"]
 

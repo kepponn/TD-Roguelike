@@ -29,7 +29,7 @@ func _on_options_back_pressed():
 	$Audio/Back.play(0.25)
 	$Options.hide()
 	$Menu.show()
-	$Menu/Option.grab_focus()
+	$Menu/Options.grab_focus()
 
 func _on_quit_pressed():
 	$Audio/Quit.play()

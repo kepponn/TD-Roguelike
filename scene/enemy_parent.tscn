@@ -1,0 +1,69 @@
+[gd_scene load_steps=6 format=3 uid="uid://yby5mmthp0iq"]
+
+[ext_resource type="Script" path="res://scripts/enemy_parent.gd" id="1_qro0o"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_p574q"]
+radius = 0.45
+height = 1.95
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_4ccpq"]
+viewport_path = NodePath("HealthBar3D/SubViewport")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4ixv2"]
+bg_color = Color(0.215686, 0.215686, 0.215686, 0.72549)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1kxvq"]
+bg_color = Color(0.898039, 0, 0.184314, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[node name="Enemy" type="CharacterBody3D"]
+script = ExtResource("1_qro0o")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_p574q")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_desired_distance = 0.5
+target_desired_distance = 0.5
+
+[node name="Models" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0859979, 0)
+
+[node name="HealthBar3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+billboard = 1
+texture = SubResource("ViewportTexture_4ccpq")
+
+[node name="SubViewport" type="SubViewport" parent="HealthBar3D"]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(102, 17)
+
+[node name="HealthBar2D" type="ProgressBar" parent="HealthBar3D/SubViewport"]
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 101.0
+offset_bottom = 16.0
+theme_override_styles/background = SubResource("StyleBoxFlat_4ixv2")
+theme_override_styles/fill = SubResource("StyleBoxFlat_1kxvq")
+value = 100.0
+show_percentage = false
+
+[connection signal="target_reached" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_target_reached"]

@@ -22,7 +22,9 @@ func ready_up():
 func check_self(_delta):
 	if HP <= 0:
 		Global.currency = Global.currency + 5
+		Stats.currency_gained += 5
 		Global.enemy_left = Global.enemy_left - 1
+		Stats.enemy_killed(self.id)
 		$Audio/DeathSfx.play()
 		print("Enemy Left = ",Global.enemy_left)
 		queue_free()
@@ -56,9 +58,10 @@ func update_HP():
 	$HealthBar3D/SubViewport/HealthBar2D.value = HP
 
 func _on_navigation_agent_3d_target_reached():
-	if Global.life_array.is_empty():
-		get_tree().change_scene_to_file("res://ui/main_menu.tscn")
+	if Global.life_array.is_empty(): # Which mean game over
+		get_tree().change_scene_to_file("res://ui/game_over.tscn")
 	if Global.life_array.size() > 0:
 		Global.life_array[0].destroy()
+		Stats.life_crystal_used += 1
 	Global.enemy_left = Global.enemy_left - 1
 	queue_free()

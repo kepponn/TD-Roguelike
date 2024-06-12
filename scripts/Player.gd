@@ -139,6 +139,7 @@ func ready():
 func wave_cleared():
 	if enemies.get_child_count() == 0 and Global.enemy_left <= 0 and Global.preparation_phase == false:
 		Global.waves = Global.waves + 1
+		Stats.wave_cleared = Global.waves - 1
 		shop.update_item()
 		default_state()
 		Global.preparation_phase = true
@@ -222,7 +223,7 @@ func player_placementPreviewProcess():
 			player_placementPreviewMaterial(%"Placement Item".get_child(0), "red")
 		# Check grid location for preview item
 		if player_interactedItem_Temp != null:
-			if player_interactedItem_Temp.has_method("mount") and Function.search_regex("turret", %"Placement Item".get_child(0).id): # Unique cases for turret mounting preview
+			if player_interactedItem_Temp.has_method("mount") and Function.search_regex("turret", %"Placement Item".get_child(0).id) and player_ableInteract: # Unique cases for turret mounting preview
 				%"Placement Item".get_child(0).global_position = check_grid(%"Interaction Zone", %"Placement Item".get_child(0)) + Vector3(0, 1, 0)
 			else: # Every cases will follow this normal check grid
 				%"Placement Item".get_child(0).global_position = check_grid(%"Interaction Zone", %"Placement Item".get_child(0))

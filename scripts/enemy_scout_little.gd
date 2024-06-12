@@ -1,5 +1,6 @@
 extends Enemy_Parent
 
+var id: String = "scout_little"
 var step_change: bool = true
 
 func _ready():

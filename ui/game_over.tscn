@@ -1,0 +1,250 @@
+[gd_scene load_steps=6 format=3 uid="uid://62ic34tjij7u"]
+
+[ext_resource type="Script" path="res://ui/game_over.gd" id="1_o85hp"]
+[ext_resource type="FontFile" uid="uid://cxvusk35yis3l" path="res://assets/font/Dadlygood.otf" id="2_ali7j"]
+[ext_resource type="LabelSettings" uid="uid://bkgfirxbljc1d" path="res://assets/font/font_ui.tres" id="3_i520y"]
+[ext_resource type="AudioStream" uid="uid://b7vakkh6kagho" path="res://assets/audio/button/quit.wav" id="4_7x2c6"]
+[ext_resource type="AudioStream" uid="uid://c1y5d5oex2r2x" path="res://assets/audio/bgm/game-music-loop-6-144641.mp3" id="5_ty51o"]
+
+[node name="GameOver" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_o85hp")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -114.5
+offset_top = -210.5
+offset_right = 114.5
+offset_bottom = -93.5
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+
+[node name="Title" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ali7j")
+theme_override_font_sizes/font_size = 60
+text = "Game Over"
+horizontal_alignment = 1
+
+[node name="Time" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ali7j")
+theme_override_font_sizes/font_size = 26
+text = "Time Elapse : 12:06"
+horizontal_alignment = 1
+
+[node name="Wave" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ali7j")
+theme_override_font_sizes/font_size = 26
+text = "Wave : 3"
+horizontal_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -79.5
+offset_top = -75.0
+offset_right = 85.5
+offset_bottom = 161.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+columns = 2
+metadata/_edit_group_ = true
+
+[node name="Label" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ali7j")
+text = "Wave Cleared"
+
+[node name="WaveCleared" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ali7j")
+text = ": 2"
+
+[node name="HSeparator5" type="HSeparator" parent="GridContainer"]
+layout_mode = 2
+
+[node name="HSeparator6" type="HSeparator" parent="GridContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ali7j")
+text = "Total Enemy Killed"
+
+[node name="TotalEnemyKilled" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ali7j")
+text = ": 162"
+
+[node name="HSeparator3" type="HSeparator" parent="GridContainer"]
+layout_mode = 2
+
+[node name="HSeparator4" type="HSeparator" parent="GridContainer"]
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ali7j")
+text = "Currency Gained"
+
+[node name="CurrencyGained" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ali7j")
+text = ": 1952"
+
+[node name="Label5" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ali7j")
+text = "Currency Highest"
+
+[node name="CurrencyHighest" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ali7j")
+text = ": 1952"
+
+[node name="HSeparator2" type="HSeparator" parent="GridContainer"]
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="GridContainer"]
+layout_mode = 2
+
+[node name="Label6" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ali7j")
+text = "Shop Reroll Used"
+
+[node name="ShopReroll" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ali7j")
+text = ": 14"
+
+[node name="Label7" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ali7j")
+text = "Shop Highest Reroll"
+
+[node name="ShopRerollHighest" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ali7j")
+text = ": 220"
+
+[node name="HSeparator7" type="HSeparator" parent="GridContainer"]
+layout_mode = 2
+
+[node name="HSeparator8" type="HSeparator" parent="GridContainer"]
+layout_mode = 2
+
+[node name="Label8" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ali7j")
+text = "Total Item Purchased"
+
+[node name="TotalItemPurchased" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ali7j")
+text = ": 220"
+
+[node name="Label9" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ali7j")
+text = "Turret Purchased"
+
+[node name="TurretPurchased" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ali7j")
+text = ": 43"
+
+[node name="Label10" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ali7j")
+text = "Wall Purchased"
+
+[node name="WallPurchased" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ali7j")
+text = ": 68"
+
+[node name="HSeparator9" type="HSeparator" parent="GridContainer"]
+layout_mode = 2
+
+[node name="HSeparator10" type="HSeparator" parent="GridContainer"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ali7j")
+text = "Life Crystal Used"
+
+[node name="LifeCrystalUsed" type="Label" parent="GridContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ali7j")
+text = ": 3"
+
+[node name="Quit" type="Button" parent="."]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = 192.5
+offset_right = 100.0
+offset_bottom = 223.5
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_group_ = true
+metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="Quit"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -36.0
+offset_top = -9.5
+offset_right = 36.0
+offset_bottom = 13.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Quit Game
+"
+label_settings = ExtResource("3_i520y")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Audio" type="Node" parent="."]
+
+[node name="Quit" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("4_7x2c6")
+bus = &"Effect"
+
+[node name="BackgroundMusic" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("5_ty51o")
+volume_db = -5.0
+bus = &"Music"
+
+[connection signal="pressed" from="Quit" to="." method="_on_quit_pressed"]
+[connection signal="finished" from="Audio/Quit" to="." method="_on_quit_audio_finished"]

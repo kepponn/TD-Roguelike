@@ -19,6 +19,7 @@ config/features=PackedStringArray("4.2", "Forward Plus")
 Global="*res://autoload/global.gd"
 Settings="*res://autoload/setting.gd"
 Function="*res://autoload/function.gd"
+Stats="*res://autoload/stats.gd"
 
 [display]
 

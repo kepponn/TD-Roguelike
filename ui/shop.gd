@@ -37,6 +37,7 @@ func _process(_delta):
 func spawn_item(scene):
 	var item = scene.instantiate()
 	print("Purchased ", item)
+	Stats.shop_purchased(item)
 	# Since only 1 shop right now this is not an issues, if there going to be more shop then need to check for shop in node and check for parameter
 	item.position = get_node('/root/Node3D/NavigationRegion3D/Item/Shop/SpawnArea').global_position
 	%Item.add_child(item, true)
@@ -184,6 +185,8 @@ func _on_close_button_pressed():
 func _on_reroll_button_pressed():
 	if Global.currency >= reroll_price:
 		Global.currency = Global.currency - reroll_price
+		Stats.shop_reroll_used += 1
+		Stats.shop_highest_reroll = reroll_price
 		reroll_price = reroll_price + 10
 		update_item()
 		$PanelContainer2/MarginContainer/HBoxContainer/RerollButton.grab_focus()

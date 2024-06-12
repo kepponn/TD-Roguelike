@@ -10,7 +10,6 @@ var is_pathReachable: bool
 
 var life_array : Array = []
 
-
 #Enemy
 var spawn_position
 var base_enemiesCount: int = 2 #base number of enemy
@@ -18,4 +17,3 @@ var total_enemies: int #Total of enemies will be spawned in this waves
 var enemy_left: int #Count enemy left (alive) spawned or not spawned yet
 var enemy_spawned: int #Count spawned enemy
 var waves: int = 1
-

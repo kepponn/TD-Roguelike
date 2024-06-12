@@ -71,6 +71,7 @@ func _on_input_button_pressed(button, action):
 		button.find_child("LabelInput").text = "Press any key to bind..."
 
 func _input(event):
+	
 	if is_remapping == true:
 		#this will check if input is from mouse or keyboard only,
 		#for other input such as controller, touch, etc just type InputEvent and scroll down

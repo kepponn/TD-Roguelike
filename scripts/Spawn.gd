@@ -113,7 +113,8 @@ func spawn_enemies():
 			enemy = enemy_scout_little.instantiate()
 		get_node("/root/Node3D/Enemies").add_child(enemy,true)
 		enemy.transform = $SpawnLocation.global_transform
-		$Timer.start(randf_range(1.5,3.0))
+		#$Timer.start(randf_range(1.5,3.0))
+		$Timer.start(1)
 		print("Enemies Spawned = ", Global.enemy_spawned)
 
 func count_enemies():

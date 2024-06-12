@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://dl8dey22x882y"]
+[gd_scene load_steps=36 format=3 uid="uid://dl8dey22x882y"]
 
 [ext_resource type="PackedScene" uid="uid://dfa3wfjb564fn" path="res://scene/player.tscn" id="1_rl4h5"]
 [ext_resource type="NavigationMesh" uid="uid://1kgcqxfwhe74" path="res://Navigation.tres" id="2_qtpp8"]
@@ -23,10 +23,12 @@
 [ext_resource type="PackedScene" uid="uid://boj1ov7anx6qx" path="res://ui/input_guide_ui.tscn" id="17_lshwk"]
 [ext_resource type="PackedScene" uid="uid://ddvggjxvp527d" path="res://scene/wall_spiked.tscn" id="17_oflby"]
 [ext_resource type="PackedScene" uid="uid://bu3pm3p7au2pa" path="res://ui/shop.tscn" id="17_vv3g3"]
+[ext_resource type="PackedScene" uid="uid://8ny1inkljgiu" path="res://scene/turret_mortar.tscn" id="18_5jul5"]
 [ext_resource type="Material" uid="uid://ddxjg3gxomrtf" path="res://assets/shaders/yellow_opacity.tres" id="18_efhn5"]
 [ext_resource type="FontFile" uid="uid://cxvusk35yis3l" path="res://assets/font/Dadlygood.otf" id="20_b78p8"]
 [ext_resource type="PackedScene" uid="uid://c3va70n1nwul8" path="res://ui/inspected_item.tscn" id="24_6725n"]
 [ext_resource type="Script" path="res://ui/pathfinding_alert.gd" id="24_anaia"]
+[ext_resource type="PackedScene" uid="uid://di648bjo1jrc4" path="res://scene/turret_ricochet.tscn" id="28_k30ir"]
 
 [sub_resource type="Environment" id="Environment_m6ppc"]
 background_color = Color(0.52549, 0.52549, 0.52549, 1)
@@ -156,25 +158,28 @@ unique_name_in_owner = true
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 6, 1, 3)
 
 [node name="Turret" parent="NavigationRegion3D/Item" instance=ExtResource("11_yfnvx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, -7)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1, -9)
 
 [node name="Turret2" parent="NavigationRegion3D/Item" instance=ExtResource("11_yfnvx")]
 transform = Transform3D(1, 0, -1.06581e-14, 0, 1, 0, 1.06581e-14, 0, 1, -1, 1, 3)
 
 [node name="Turret5" parent="NavigationRegion3D/Item" instance=ExtResource("7_p8ft8")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2, 1, -4)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2, 1, -9)
 
 [node name="Turret4" parent="NavigationRegion3D/Item" instance=ExtResource("7_p8ft8")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -5, 1, -4)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -9, 1, 1)
 
 [node name="Turret3" parent="NavigationRegion3D/Item" instance=ExtResource("8_h6j8t")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 1, 5)
 
 [node name="Turret8" parent="NavigationRegion3D/Item" instance=ExtResource("15_epdbe")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -3, 1, -5)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1, -9)
 
 [node name="Wall" parent="NavigationRegion3D/Item" instance=ExtResource("16_nmw41")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, -6)
+
+[node name="Wall11" parent="NavigationRegion3D/Item" instance=ExtResource("16_nmw41")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, -3)
 
 [node name="Wall3" parent="NavigationRegion3D/Item" instance=ExtResource("17_oflby")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, -6)
@@ -183,13 +188,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, -6)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, -4)
 
 [node name="Wall5" parent="NavigationRegion3D/Item" instance=ExtResource("12_lqyh6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, -7)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, -5)
 
 [node name="Wall7" parent="NavigationRegion3D/Item" instance=ExtResource("12_lqyh6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1, -6)
 
 [node name="Wall6" parent="NavigationRegion3D/Item" instance=ExtResource("12_lqyh6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -4)
 
 [node name="Wall2" parent="NavigationRegion3D/Item" instance=ExtResource("16_nmw41")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, 6)
@@ -223,6 +228,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, -1)
 
 [node name="DroneBase2" parent="NavigationRegion3D/Item" instance=ExtResource("17_1mvib")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1, 1)
+
+[node name="Turret6" parent="NavigationRegion3D/Item" instance=ExtResource("28_k30ir")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, -5)
+
+[node name="turret_mortar" parent="NavigationRegion3D/Item" instance=ExtResource("18_5jul5")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 1, -6)
 
 [node name="PreparationTimer" type="Timer" parent="."]
 one_shot = true

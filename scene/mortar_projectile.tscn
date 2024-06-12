@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://60gmoljfc1dy"]
+
+[ext_resource type="Script" path="res://scripts/mortar_projectile.gd" id="1_kjt51"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_oop47"]
+radius = 0.25
+height = 0.5
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_wgfmj"]
+top_radius = 3.0
+bottom_radius = 3.0
+height = 0.1
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ps8mj"]
+height = 0.1
+radius = 3.0
+
+[node name="mortar_projectile" type="Node3D"]
+script = ExtResource("1_kjt51")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_oop47")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+visible = false
+mesh = SubResource("CylinderMesh_wgfmj")
+skeleton = NodePath("../MeshInstance3D")
+
+[node name="AoE" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AoE"]
+shape = SubResource("CylinderShape3D_ps8mj")
+
+[connection signal="body_entered" from="AoE" to="." method="_on_aoe_body_entered"]
+[connection signal="body_exited" from="AoE" to="." method="_on_aoe_body_exited"]

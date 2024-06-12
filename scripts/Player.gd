@@ -512,7 +512,12 @@ func player_InspectItemsArea():
 
 func player_RotateItems():
 	if Input.is_action_just_pressed("rotate"):
-		player_rotateItemProcess()
+		if Function.search_regex("mortar", player_interactedItem_Temp.id):
+			print("masuk")
+			player_lockInput = true
+			player_interactedItem_Temp.controlled = true
+		else:
+			player_rotateItemProcess()
 
 func _on_interaction_zone_body_entered(body):
 	if body.is_class("GridMap") and player_isHoldingItem:

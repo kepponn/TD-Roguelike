@@ -9,6 +9,16 @@
 	"bullet_pierce": 0,
 	"bullet_ricochet": 0
   },
+  "turret_ricochet": {
+	"price": 100,
+	"attack_damage": 1,
+	"attack_range": 5,
+	"attack_speed": 5,
+	"bullet_maxammo": 10,
+	"bullet_speed": 15,
+	"bullet_pierce": 0,
+	"bullet_ricochet": 2
+  },
   "turret_pierce": {
 	"price": 80,
 	"attack_damage": 1,

@@ -158,6 +158,7 @@ func shoot():
 			turret_projectile.pierce_counter = bullet_pierce
 		if bullet_ricochet > 0:
 			turret_projectile.ricochet_counter = bullet_ricochet
+			turret_projectile.ricochet_targetList.append_array(enemies_array)
 		turret_projectile.damage = attack_damage
 		turret_projectile.speed = bullet_speed
 		turret_projectile.transform = %ProjectileSpawn.global_transform #basically copy all of $"Head/Spawn Point" global transform(rotation, scale, position), to projectile

@@ -28,13 +28,14 @@ extends Control
 @onready var controller_X = $MarginContainer/HBoxContainerController/X
 @onready var controller_Y = $MarginContainer/HBoxContainerController/Y
 @onready var controller_Start = $MarginContainer/HBoxContainerController/Start
-@onready var controller_StickL = $MarginContainer/HBoxContainerController/Move
+@onready var controller_AnalogL = $MarginContainer/HBoxContainerController/Move
 
 @onready var text_controller_A = $MarginContainer/HBoxContainerController/A/AEventLabel
 @onready var text_controller_B = $MarginContainer/HBoxContainerController/B/BEventLabel
 @onready var text_controller_X = $MarginContainer/HBoxContainerController/X/XEventLabel
 @onready var text_controller_Y = $MarginContainer/HBoxContainerController/Y/YEventLabel
 @onready var text_controller_Start = $MarginContainer/HBoxContainerController/Start/StartEventLabel
+@onready var text_controller_AnalogL = $MarginContainer/HBoxContainerController/Move/EventLabel
 # Controller end here
 
 func _ready():
@@ -47,11 +48,11 @@ func _process(_delta):
 	elif get_parent().name == "Control":
 		# Maybe check this after done loading the main menu scene?
 		var player = get_node('/root/Node3D/Player')
-		update_visibility_and_text(WASD, controller_StickL, true, "Move")
+		update_visibility_and_text(WASD, controller_AnalogL, true, "Move")
 		
-		if player.player_lockInput:
+		if player.player_lockInput and player.player_interactedItem_Temp != null:
 			hide_all()
-			if get_viewport().gui_get_focus_owner() != null:
+			if player.player_interactedItem_Temp.id == "shop" and get_viewport().gui_get_focus_owner() != null:
 				update_visibility_and_text(null, controller_B, true, "Close Shop")
 				update_visibility_and_text(null, controller_Y, true, "Reroll Item")
 				if Function.search_regex("Item", get_viewport().gui_get_focus_owner().name):
@@ -63,7 +64,11 @@ func _process(_delta):
 				elif get_viewport().gui_get_focus_owner().name == "CloseButton":
 					update_visibility_and_text(E, controller_A, true, "Close Shop")
 					update_visibility_and_text(C, controller_X, false)
-					
+			if Function.search_regex("mortar", player.player_interactedItem_Temp.id):
+				update_visibility_and_text(E, controller_A, true, "Shoot Mortar")
+				update_visibility_and_text(V, controller_B, true, "Quit Aiming")
+				update_visibility_and_text(WASD, controller_AnalogL, true, "Aim Mortar")
+				
 		#--------------------------------------PREPARATION PHASE------------------------------------------------
 		elif Global.preparation_phase:
 			
@@ -135,6 +140,7 @@ func _process(_delta):
 				
 		#--------------------------------------DEFENSE PHASE------------------------------------------------
 		elif !Global.preparation_phase :
+			
 			#------------ E INPUT / INSPECT ------------
 			#DEFAULT STATE -> HIDE
 			if !player.player_ableInteract:
@@ -197,13 +203,15 @@ func hide_all():
 	controller_X.hide() # C keyboard
 	controller_Y.hide() # X keyboard
 	controller_Start.hide()
-	controller_StickL.hide() # When does this change visibility to true?
+	controller_AnalogL.hide() # When does this change visibility to true?
 
 func update_visibility_and_text(keyboard_keys, controller_button, visibility: bool, text: String = ""):
 	if visibility:
 		if keyboard_keys != null:
 			keyboard_keys.show()
 			match keyboard_keys:
+				WASD:
+					text_WASD.text = text
 				E:
 					text_E.text = text
 				C:
@@ -217,6 +225,8 @@ func update_visibility_and_text(keyboard_keys, controller_button, visibility: bo
 		if controller_button != null:
 			controller_button.show()
 			match controller_button:
+				controller_AnalogL:
+					text_controller_AnalogL.text = text
 				controller_A:
 					text_controller_A.text = text
 				controller_B:

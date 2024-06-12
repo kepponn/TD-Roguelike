@@ -1,59 +1,69 @@
 extends StaticBody3D
 
 @export_category("Basic Information")
-# Do we need this still for the regex? or we using with StaticObject3D node name?
-@export var id: String 
+@export var id: String = "mortar"
 var price: int
-@export_category("Model and Scene Assets")
-# How to get the asset into the node area of $Head and $Body?
-# @export var asset_head: PackedScene
-# @export var asset_legs: PackedScene
-@export var projectile_scene: PackedScene
-# @export_category("Attack Information")
-var attack_damage: int = 10
-var attack_range: int
-var attack_speed: float = 5
 
+@export_category("Model and Scene Assets")
+@export var projectile_scene: PackedScene
+
+@export_category("Attack Information")
+var attack_damage: int = 10
+var attack_speed: float = 5
 var bullet_speed: int = 6
 
 @onready var visible_range: MeshInstance3D = $TargetPivot/Target/VisibleRange
-@onready var target = $TargetPivot/Target.global_position
-
-var controlled: bool
+@onready var target = $TargetPivot/Target
+var is_controlled: bool = false
 var able_shoot: bool = true
+
+func _ready():
+	$Models/Head/Barrel.rotation_degrees.x = 4
+	$ReloadTimerBar3D.hide()
+	visible_range.hide()
+	visible_range.position.y = 1.2
 
 func _process(delta):
 	update_UI()
-	if Input.is_action_just_pressed("DEBUG"):
-		print("SHOOT")
-		shoot()
+	update_range_visual()
+	#print(target.global_position)
 		
-	if controlled:
+	if is_controlled:
 		if Input.is_action_just_pressed("ui_up") and $TargetPivot/Target.position.z >= 5 and $TargetPivot/Target.position.z < 8:
 			$TargetPivot/Target.position.z += 1
+			$Models/Head/Barrel.rotation_degrees.x += 2
 		elif Input.is_action_just_pressed("ui_down") and $TargetPivot/Target.position.z > 5 and $TargetPivot/Target.position.z <= 8:
 			$TargetPivot/Target.position.z -= 1
+			$Models/Head/Barrel.rotation_degrees.x -= 2
 		elif Input.is_action_pressed("ui_left"):
 			$TargetPivot.rotation_degrees.y += 100 * delta
+			$Models/Head.rotation_degrees.y += 100 * delta
 		elif Input.is_action_pressed("ui_right"):
 			$TargetPivot.rotation_degrees.y -= 100 * delta
-	#still bugged if interacted using same button as rotate
-	if Input.is_action_just_pressed("DEBUG"):
-		get_node('/root/Node3D/Player').player_lockInput = false
-		controlled = false
-		print("keluar")
-			
+			$Models/Head.rotation_degrees.y -= 100 * delta
+		# Press the same button again to quit the controlled state
+		elif Input.is_action_just_pressed("rotate") and $InteractTimer.time_left == 0:
+			controlled(false)
+		# Shoot the mortar while in controlled state, because why not?
+		elif Input.is_action_just_pressed("interact"):
+			shoot()
 
 func shoot():
 	if able_shoot:
 		able_shoot = false
+		print("Target", target.global_position)
+		print("Spawn Point", $Models/Head/Barrel/ProjectileSpawn.global_position)
 		var mortar_projectile = projectile_scene.instantiate()
-		mortar_projectile.target = target
-		mortar_projectile.position = self.global_position + Vector3(0,1,0)
+		mortar_projectile.target = $TargetPivot/Target.global_position
+		mortar_projectile.position = $Models/Head/Barrel/ProjectileSpawn.global_position
 		mortar_projectile.damage_explosion = attack_damage
 		mortar_projectile.speed = bullet_speed
 		get_node("/root/Node3D/Projectile").add_child(mortar_projectile, true) # if you want to shoot while still holding it maybe make projectile as unique or use absolute path to it
 		$ReloadTimer.start(attack_speed)
+
+func update_range_visual():
+	if visible_range.visible and visible_range.global_position.y != 0.6:
+		visible_range.global_position.y = 0.6
 
 func update_UI():
 	$ReloadTimerBar3D/SubViewport/ReloadTimerBar2D.max_value = attack_speed
@@ -66,4 +76,14 @@ func _on_reload_timer_timeout():
 	able_shoot = true
 	$ReloadTimerBar3D.hide()
 
-
+func controlled(enable: bool = true):
+	match enable:
+		true:
+			get_node('/root/Node3D/Player').player_lockInput = true
+			is_controlled = true
+			visible_range.show()
+			$InteractTimer.start()
+		false:
+			get_node('/root/Node3D/Player').player_lockInput = false
+			is_controlled = false
+			visible_range.hide()

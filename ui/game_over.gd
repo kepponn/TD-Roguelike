@@ -1,5 +1,12 @@
 extends Control
 
+func _unhandled_input(event):
+	if event is InputEventJoypadButton and event.is_pressed():
+		if Input.is_action_just_pressed("controller_A"):
+			var focused_button = get_viewport().gui_get_focus_owner()
+			if focused_button:
+				focused_button.emit_signal("pressed")
+
 func _ready():
 	$Audio/BackgroundMusic.play()
 	$Quit.grab_focus()

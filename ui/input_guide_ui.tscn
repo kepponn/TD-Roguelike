@@ -340,7 +340,7 @@ expand_mode = 1
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="EEventLabel" type="Label" parent="MarginContainer/HBoxContainerController/Move"]
+[node name="EventLabel" type="Label" parent="MarginContainer/HBoxContainerController/Move"]
 layout_mode = 2
 theme_override_colors/font_shadow_color = Color(0.262745, 0.290196, 0.372549, 1)
 theme_override_colors/font_outline_color = Color(0.262745, 0.290196, 0.372549, 1)

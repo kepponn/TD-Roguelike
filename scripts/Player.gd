@@ -336,11 +336,15 @@ func player_checkItemRange(item, enable: bool = true):
 			item.visible_range.show()
 		elif Function.search_regex("wall_mountable", item.id) and item.get_child(-1).is_class("StaticBody3D"):
 			item.get_child(-1).visible_range.show()
+		elif Function.search_regex("mortar", item.id):
+			item.visible_range.show()
 	else:
 		if Function.search_regex("turret", item.id):
 			item.visible_range.hide()
 		elif Function.search_regex("wall_mountable", item.id) and item.get_child(-1).is_class("StaticBody3D"):
 			item.get_child(-1).visible_range.hide()
+		elif Function.search_regex("mortar", item.id):
+			item.visible_range.hide()
 
 func player_checkIngredientItem():
 	# Future rework to cast the texture icon directly to Sprite3D
@@ -399,6 +403,9 @@ func player_InteractItems():
 			
 	#================================================ DEFENSE PHASE ==================================================================================================
 	elif !Global.preparation_phase:
+		# SHOOT MORTAR
+		if player_ableInteract == true and Input.is_action_just_pressed("interact") and player_interactedItem_Temp.has_method("controlled"):
+			player_interactedItem_Temp.shoot()
 		# RELOAD TURRET - HOLDING an AMMO and HAVE INTERACTABLE TURRET
 		if player_ableInteract == true and player_isHoldingItem == true and Input.is_action_just_pressed("interact") and player_interactedItem_Temp.has_method("reload") and player_holdedMats == "ammo_box":
 			if player_interactedItem_Temp.bullet_ammo != player_interactedItem_Temp.bullet_maxammo and !player_interactedItem_Temp.requesting_droneReload:
@@ -455,7 +462,7 @@ func player_InspectItems():
 	if Input.is_action_just_pressed("inspect") and player_ableInteract == true:
 		player_inspectedItem = player_interactedItem_Temp
 		#player_checkItemRange(player_inspectedItem, true)
-		var sprite_adjustment = Vector3(0, 2, -1.5)
+		var sprite_adjustment = Vector3(0, 2, 0) #Vector3(0, 2, -1.5)
 		inspectedItem_UI_Sprite.global_position = player_inspectedItem.global_position + sprite_adjustment
 		if Function.search_regex("turret", player_inspectedItem.id):
 			print("INSPECTED TURRET")
@@ -512,10 +519,10 @@ func player_InspectItemsArea():
 
 func player_RotateItems():
 	if Input.is_action_just_pressed("rotate"):
-		if Function.search_regex("mortar", player_interactedItem_Temp.id):
-			print("masuk")
-			player_lockInput = true
-			player_interactedItem_Temp.controlled = true
+		# Unique interaction with mortar when rotating instead it rotate the aiming of the mortar
+		if Function.search_regex("mortar", player_interactedItem_Temp.id) and Input.is_action_just_pressed("rotate"):
+			player_interactedItem_Temp.controlled()
+		# Rotate everything else with +90deg
 		else:
 			player_rotateItemProcess()
 

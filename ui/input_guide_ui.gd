@@ -49,7 +49,6 @@ func _process(_delta):
 		var player = get_node('/root/Node3D/Player')
 		update_visibility_and_text(WASD, controller_StickL, true, "Move")
 		
-		update_visibility_and_text(null, controller_Y, false)
 		if player.player_lockInput:
 			hide_all()
 			if get_viewport().gui_get_focus_owner() != null:
@@ -106,23 +105,19 @@ func _process(_delta):
 			# DEFAULT STATE -> HIDE
 			if !player.player_ableInteract and !player.player_isHoldingItem:
 				update_visibility_and_text(X, controller_Y, false)
-			#GROUND TURRET
-			elif player.player_ableInteract and !player.player_isHoldingItem:
-				if Function.search_regex("turret", player.player_interactedItem_Temp.id):
+			#MOUNTED TURRET
+			elif player.player_interactedItem_Temp.has_method("mount"):
+				if !player.player_isHoldingItem and player.player_interactedItem_Temp.is_mountable_occupied:
 					update_visibility_and_text(X, controller_Y, true, "Check Area")
-				else:
-					update_visibility_and_text(X, controller_Y, false)
 			#ON HEAD TURRET
 			elif !player.player_ableInteract and player.player_isHoldingItem:
 				if Function.search_regex("turret", player.player_interactedItem.id):
 					update_visibility_and_text(X, controller_Y, true, "Check Area")
-				else:
-					update_visibility_and_text(X, controller_Y, false)
-			#MOUNTED TURRET
-			elif player.player_interactedItem_Temp != null:
-				if player.player_interactedItem_Temp.has_method("mount"):
-					if !player.player_isHoldingItem and player.player_interactedItem_Temp.currently_mountable_item != null:
-						update_visibility_and_text(X, controller_Y, true, "Check Area")
+			#GROUND TURRET
+			elif player.player_ableInteract and !player.player_isHoldingItem:
+				if Function.search_regex("turret", player.player_interactedItem_Temp.id):
+					update_visibility_and_text(X, controller_Y, true, "Check Area")
+			
 			
 			#------------ V INPUT / ROTATE ------------
 			#DEFAULT STATE -> HIDE
@@ -136,7 +131,7 @@ func _process(_delta):
 				update_visibility_and_text(V, controller_B, true, "Rotate")
 			
 			#------------ SPACE INPUT / READY ------------
-			update_visibility_and_text(Space, controller_Start, true, "Ready")
+			update_visibility_and_text(Space, controller_Start, true, "Start Wave")
 				
 		#--------------------------------------DEFENSE PHASE------------------------------------------------
 		elif !Global.preparation_phase :

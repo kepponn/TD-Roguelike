@@ -174,6 +174,8 @@ func reload():
 func wave_Reload():
 	if Global.preparation_phase:
 		bullet_ammo = bullet_maxammo
+		empty_ammoIcon.hide()
+		drone_reloadIcon.hide()
 
 func update_UI():
 	if bullet_ammo != bullet_maxammo:

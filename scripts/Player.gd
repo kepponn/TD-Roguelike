@@ -85,11 +85,12 @@ func mountable_wall():
 	if player_interactedItem_Temp != null and Global.preparation_phase: # Check wall_mountable
 		if player_interactedItem_Temp.has_method("mount") and Input.is_action_just_pressed("inspect"): # check for wall_mountable function
 			if player_ableInteract and player_isHoldingItem and player_interactedItem_Temp.currently_mountable_item == null:
-				# player_checkItemRange(player_interactedItem, false)
 				player_interactedItem_Temp.mount(true)
 			elif player_ableInteract and !player_isHoldingItem and player_interactedItem_Temp.currently_mountable_item != null:
 				player_interactedItem_Temp.mount(false)
-				# player_checkItemRange(player_interactedItem, true)
+				# This to disable continous area check when dismounted
+				player_inspectedItem = player_interactedItem
+				player_checkItemRange(player_inspectedItem, false)
 
 func player_interactionZoneProcess():
 	$"Node3D/Interaction Zone/CollisionShape3D".global_position = check_grid(%"Interaction Zone", $"Node3D/Interaction Zone/CollisionShape3D")
@@ -489,7 +490,7 @@ func player_InspectItems():
 	elif player_inspectedItem != null and player_interactedItem_Temp != null and player_ableInteract == false:
 	# player_ableInteract to check the item itself and show the card of it
 		# This basically check if the temp is changed or player see 'empty' grid
-		if player_inspectedItem != player_interactedItem_Temp or player_ableToDrop:
+		if player_inspectedItem != player_interactedItem_Temp or player_inspectedItem != player_interactedItem or player_ableToDrop:
 			#player_checkItemRange(player_inspectedItem, false)
 			inspectedItem_UI.AttackDamageText = null
 			inspectedItem_UI.AttackRangeText = null
@@ -506,7 +507,7 @@ func player_InspectItemsArea():
 		player_checkItemRange(player_inspectedItem, true)
 	elif player_inspectedItem != null and !player_isHoldingItem:
 		if player_inspectedItem != player_interactedItem_Temp or !player_ableInteract:
-				player_checkItemRange(player_inspectedItem, false)
+			player_checkItemRange(player_inspectedItem, false)
 
 func player_RotateItems():
 	if Input.is_action_just_pressed("rotate"):

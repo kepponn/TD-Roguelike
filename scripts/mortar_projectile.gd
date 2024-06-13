@@ -28,7 +28,7 @@ func tweening_v():
 	# The new mortar have projectile spawn that can be checked with $Models/Head/Barrel/ProjectileSpawn
 	tween_v = get_tree().create_tween()
 	tween_v.set_ease(1).set_trans(4).tween_property(self, "global_position:y", global_position.distance_to(target)*0.8, tween_time/2).as_relative()
-	tween_v.set_ease(0).set_trans(4).tween_property(self, "global_position:y", -global_position.distance_to(target)*0.8 - 1, tween_time/2).as_relative()
+	tween_v.set_ease(0).set_trans(4).tween_property(self, "global_position:y", 1, tween_time/2)
 	tween_v.connect("finished", on_tweening_y_finished)
 
 func on_tweening_y_finished():

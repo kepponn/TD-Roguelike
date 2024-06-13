@@ -9,7 +9,7 @@ var price: int
 
 @export_category("Attack Information")
 var attack_damage: int = 10
-var attack_speed: float = 5
+var attack_speed: float = 0.5
 var bullet_speed: int = 6
 
 @onready var visible_range: MeshInstance3D = $TargetPivot/Target/VisibleRange

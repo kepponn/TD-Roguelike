@@ -520,7 +520,7 @@ func player_InspectItemsArea():
 func player_RotateItems():
 	if Input.is_action_just_pressed("rotate"):
 		# Unique interaction with mortar when rotating instead it rotate the aiming of the mortar
-		if Function.search_regex("mortar", player_interactedItem_Temp.id) and Input.is_action_just_pressed("rotate"):
+		if player_interactedItem_Temp != null and Function.search_regex("mortar", player_interactedItem_Temp.id) and !player_isHoldingItem:
 			player_interactedItem_Temp.controlled()
 		# Rotate everything else with +90deg
 		else:

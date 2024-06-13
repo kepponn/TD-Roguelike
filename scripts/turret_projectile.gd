@@ -34,6 +34,8 @@ func _on_body_entered(body):
 			ricochet_counter -= 1
 			ricochet_targetList.erase(body)
 			if ricochet_targetList.size() > 0:
+				if ricochet_targetList[0] == null:
+					ricochet_targetList.remove_at(0)
 				set_direction = (ricochet_targetList[0].global_position - global_position).normalized()
 			else:
 				body.hit(damage)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://dl8dey22x882y"]
+[gd_scene load_steps=37 format=3 uid="uid://dl8dey22x882y"]
 
 [ext_resource type="PackedScene" uid="uid://dfa3wfjb564fn" path="res://scene/player.tscn" id="1_rl4h5"]
 [ext_resource type="NavigationMesh" uid="uid://1kgcqxfwhe74" path="res://Navigation.tres" id="2_qtpp8"]
@@ -25,6 +25,7 @@
 [ext_resource type="PackedScene" uid="uid://bu3pm3p7au2pa" path="res://ui/shop.tscn" id="17_vv3g3"]
 [ext_resource type="PackedScene" uid="uid://8ny1inkljgiu" path="res://scene/mortar.tscn" id="18_5jul5"]
 [ext_resource type="Material" uid="uid://ddxjg3gxomrtf" path="res://assets/shaders/yellow_opacity.tres" id="18_efhn5"]
+[ext_resource type="PackedScene" uid="uid://w2tjqg7sinkm" path="res://scene/enhancement.tscn" id="19_qpmxk"]
 [ext_resource type="FontFile" uid="uid://cxvusk35yis3l" path="res://assets/font/Dadlygood.otf" id="20_b78p8"]
 [ext_resource type="PackedScene" uid="uid://c3va70n1nwul8" path="res://ui/inspected_item.tscn" id="24_6725n"]
 [ext_resource type="Script" path="res://ui/pathfinding_alert.gd" id="24_anaia"]
@@ -236,6 +237,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, -5)
 [node name="Mortar" parent="NavigationRegion3D/Item" instance=ExtResource("18_5jul5")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 1, -1)
 
+[node name="Enhancement" parent="NavigationRegion3D/Item" instance=ExtResource("19_qpmxk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
 [node name="PreparationTimer" type="Timer" parent="."]
 one_shot = true
 
@@ -356,5 +360,7 @@ visible = false
 
 [connection signal="bake_finished" from="NavigationRegion3D" to="Player" method="_on_navigation_region_3d_bake_finished"]
 [connection signal="child_entered_tree" from="NavigationRegion3D/Item" to="Player" method="_on_item_child_entered_or_exiting_tree"]
+[connection signal="child_entered_tree" from="NavigationRegion3D/Item" to="NavigationRegion3D/Item/Enhancement" method="_on_item_child_entered_tree"]
 [connection signal="child_exiting_tree" from="NavigationRegion3D/Item" to="Player" method="_on_item_child_entered_or_exiting_tree"]
+[connection signal="child_exiting_tree" from="NavigationRegion3D/Item" to="NavigationRegion3D/Item/Enhancement" method="_on_item_child_exiting_tree"]
 [connection signal="timeout" from="Spawn/PreviewPath/PreviewTimer" to="Spawn" method="_on_preview_timer_timeout"]

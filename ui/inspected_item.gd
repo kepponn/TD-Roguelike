@@ -26,7 +26,7 @@ func _process(_delta):
 		$MarginContainer/HBoxContainer/ItemImage/StatusContainer/AttackRangeBg.hide()
 		
 	if AttackSpeedText != null:
-		AttackSpeedLabel.text = str(AttackSpeedText)
+		AttackSpeedLabel.text = "%0.2f" % AttackSpeedText
 		$MarginContainer/HBoxContainer/ItemImage/StatusContainer/AttackSpeedBg.show()
 	else:
 		$MarginContainer/HBoxContainer/ItemImage/StatusContainer/AttackSpeedBg.hide()

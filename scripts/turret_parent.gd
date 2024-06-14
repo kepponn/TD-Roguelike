@@ -14,39 +14,39 @@ class_name Turret_Parent
 # Setup the $Range/CollisionShape3D and $Range/VisibleRange of the child
 # --------------------------------------------------------------------------
 
+# ------------------ SEEDER START HERE
 @export_category("Basic Information")
-# Do we need this still for the regex? or we using with StaticObject3D node name?
 @export var id: String 
 var price: int
 @export_category("Model and Scene Assets")
-# How to get the asset into the node area of $Head and $Body?
-# @export var asset_head: PackedScene
-# @export var asset_legs: PackedScene
 @export var projectile_scene: PackedScene
-# @export_category("Attack Information")
+@export_category("Attack Information")
 var attack_damage: int
 var attack_range: int
 var attack_speed: float
-
 var bullet_maxammo: int
-
 var bullet_speed: int
-#unique status depend on item
+# Unique status depend on item
 var bullet_pierce: int
 var bullet_ricochet: int
+# ------------------ SEEDER END HERE
+
 # Other information
 @onready var visible_range: MeshInstance3D = $Range/VisibleRange
 @onready var range_radius: CollisionShape3D = $Range/CollisionShape3D
-
 var enemies_array: Array = []
 var able_shoot: bool = false
 var shoot_direction: Vector3
-
 var bullet_ammo: int
 var requesting_droneReload: bool = false
 @onready var empty_ammoIcon = $EmptyAmmoIcon
 @onready var drone_reloadIcon = $DroneReloadIcon
 @onready var drone_base = get_node('/root/Node3D/NavigationRegion3D/Item/DroneBase2')
+
+# To upgrade or downgrade the turrets we have the function ready:
+# update_damage(int), update_speed(float), update_range(int)
+# This still have 0 limiter whatsoever, and so you could monke upgrade it to crazy lvl
+# Need to make a variable to check the max upgrade of said item
 
 func seed_property():
 	var file = FileAccess.open("res://autoload/item_db.json", FileAccess.READ)
@@ -81,7 +81,18 @@ func ready_up():
 	$RayCast3D.target_position.z = -attack_range
 	$RayCast3D.hide()
 
+func update_damage(add_or_remove_damage: int):
+	# Please use this in incremental of 1 (damage)
+	attack_damage += add_or_remove_damage
+
+func update_speed(add_or_remove_speed: float):
+	# Please use this in incremental of 0.1
+	# This work for keep upgrading it, but didnt work to revert the upgrade..?
+	attack_speed = attack_speed / (1 + add_or_remove_speed)
+	$AttackSpeed.wait_time = attack_speed
+
 func update_range(add_or_remove_range: int):
+	# Please use this in incremental of 1 (meter)
 	# Add range with positive number and remove range with negative number
 	attack_range += add_or_remove_range
 	if $Range/CollisionShape3D.get_shape().is_class("CylinderShape3D"):

@@ -310,11 +310,12 @@ func player_swapItem(held_item, ground_item):
 
 func player_rotateItemProcess():
 	if player_isHoldingItem:
-		# rotate in-hand item
-		# since this item in in hand it will need to pass grid_check() function
-		print("Rotating on-hand " + str(player_interactedItem) + " to " + str(player_interactedItem.rotation_degrees))
-		player_interactedItem.rotation_degrees += Vector3(0, 90, 0)
-		audio_randomSelector($Audio/Pop, -10)
+		if player_interactedItem.id != "mortar":
+			# rotate in-hand item
+			# since this item in in hand it will need to pass grid_check() function
+			print("Rotating on-hand " + str(player_interactedItem) + " to " + str(player_interactedItem.rotation_degrees))
+			player_interactedItem.rotation_degrees += Vector3(0, 90, 0)
+			audio_randomSelector($Audio/Pop, -10)
 	elif !player_isHoldingItem and player_ableInteract and player_interactedItem_Temp != null:
 		# rotate on-ground item
 		player_interactedItem = player_interactedItem_Temp
@@ -473,6 +474,14 @@ func player_InspectItems():
 			inspectedItem_UI.AttackSpeedText = player_inspectedItem.attack_speed
 			inspectedItem_UI.AmmoText = player_inspectedItem.bullet_maxammo
 			inspectedItem_UI_Sprite.show()
+		
+		if Function.search_regex("mortar", player_inspectedItem.id):
+			print("INSPECTED MORTAR")
+			inspectedItem_UI.AttackDamageText = player_inspectedItem.attack_damage
+			inspectedItem_UI.AttackRangeText = str(player_inspectedItem.attack_rangeMin) + "-" + str(player_inspectedItem.attack_rangeMax)
+			inspectedItem_UI.AttackSpeedText = player_inspectedItem.attack_speed
+			inspectedItem_UI_Sprite.show()
+		
 		match player_inspectedItem.id:
 			"wall_spiked":
 				print("INSPECTED WALL SPIKED")

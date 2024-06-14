@@ -50,6 +50,8 @@ func _process(_delta):
 		var player = get_node('/root/Node3D/Player')
 		update_visibility_and_text(WASD, controller_AnalogL, true, "Move")
 		
+		#--------------------------------------PLAYER CONTROL DISABLED------------------------------------------------
+		
 		if player.player_lockInput and player.player_interactedItem_Temp != null:
 			hide_all()
 			if player.player_interactedItem_Temp.id == "shop" and get_viewport().gui_get_focus_owner() != null:
@@ -65,8 +67,9 @@ func _process(_delta):
 					update_visibility_and_text(E, controller_A, true, "Close Shop")
 					update_visibility_and_text(C, controller_X, false)
 			if Function.search_regex("mortar", player.player_interactedItem_Temp.id):
-				update_visibility_and_text(E, controller_A, true, "Shoot Mortar")
-				update_visibility_and_text(V, controller_B, true, "Quit Aiming")
+				if !Global.preparation_phase:
+					update_visibility_and_text(E, controller_A, true, "Shoot Mortar")
+				update_visibility_and_text(V, controller_B, true, "Quit Aiming Mode")
 				update_visibility_and_text(WASD, controller_AnalogL, true, "Aim Mortar")
 				
 		#--------------------------------------PREPARATION PHASE------------------------------------------------
@@ -130,7 +133,13 @@ func _process(_delta):
 				update_visibility_and_text(V, controller_B, false)
 			#ROTATE HOLDED ITEM OR INTERACTABLE ITEM / TARGETED ITEM
 			elif (player.player_isHoldingItem or player.player_ableInteract) and !Function.search_regex("wall", player.player_interactedItem_Temp.id):
-				update_visibility_and_text(V, controller_B, true, "Rotate")
+				if Function.search_regex("mortar", player.player_interactedItem_Temp.id):
+					if player.player_ableInteract and !player.player_isHoldingItem:
+						update_visibility_and_text(V, controller_B, true, "Enter Aiming Mode")
+					else:
+						update_visibility_and_text(V, controller_B, false)
+				else:
+					update_visibility_and_text(V, controller_B, true, "Rotate")
 			#ROTATE MOUNTED ITEM
 			elif player.player_interactedItem_Temp.id == "wall_mountable" and player.player_interactedItem_Temp.get_child(-1).is_class("StaticBody3D"):
 				update_visibility_and_text(V, controller_B, true, "Rotate")
@@ -140,7 +149,6 @@ func _process(_delta):
 				
 		#--------------------------------------DEFENSE PHASE------------------------------------------------
 		elif !Global.preparation_phase :
-			
 			#------------ E INPUT / INSPECT ------------
 			#DEFAULT STATE -> HIDE
 			if !player.player_ableInteract:
@@ -185,7 +193,11 @@ func _process(_delta):
 				if player.player_interactedItem_Temp.id != "shop":
 					update_visibility_and_text(C, controller_X, true, "Inspect")
 			#------------ V INPUT / INSPECT ------------
-			update_visibility_and_text(V, controller_B, false)
+			if player.player_ableInteract and Function.search_regex("mortar", player.player_interactedItem_Temp.id):
+				update_visibility_and_text(V, controller_B, true, "Enter Aiming Mode")
+			# DEFAULT STATE -> HIDE
+			else:
+				update_visibility_and_text(V, controller_B, false)
 			#------------ SPACE INPUT / READY ------------
 			update_visibility_and_text(Space, controller_Start, false)
 

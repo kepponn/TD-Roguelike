@@ -10,6 +10,8 @@ var price: int
 @export_category("Attack Information")
 var attack_damage: int = 10
 var attack_speed: float = 0.5
+var attack_rangeMin: float = 5
+var attack_rangeMax: float = 8
 var bullet_speed: int = 6
 
 @onready var visible_range: MeshInstance3D = $TargetPivot/Target/VisibleRange
@@ -29,10 +31,10 @@ func _process(delta):
 	#print(target.global_position)
 		
 	if is_controlled:
-		if Input.is_action_just_pressed("ui_up") and $TargetPivot/Target.position.z >= 5 and $TargetPivot/Target.position.z < 8:
+		if Input.is_action_just_pressed("ui_up") and $TargetPivot/Target.position.z >= attack_rangeMin and $TargetPivot/Target.position.z < attack_rangeMax:
 			$TargetPivot/Target.position.z += 1
 			$Models/Head/Barrel.rotation_degrees.x += 2
-		elif Input.is_action_just_pressed("ui_down") and $TargetPivot/Target.position.z > 5 and $TargetPivot/Target.position.z <= 8:
+		elif Input.is_action_just_pressed("ui_down") and $TargetPivot/Target.position.z > attack_rangeMin and $TargetPivot/Target.position.z <= attack_rangeMax:
 			$TargetPivot/Target.position.z -= 1
 			$Models/Head/Barrel.rotation_degrees.x -= 2
 		elif Input.is_action_pressed("ui_left"):
@@ -45,7 +47,7 @@ func _process(delta):
 		elif Input.is_action_just_pressed("rotate") and $InteractTimer.time_left == 0:
 			controlled(false)
 		# Shoot the mortar while in controlled state, because why not?
-		elif Input.is_action_just_pressed("interact"):
+		elif Input.is_action_just_pressed("interact") and !Global.preparation_phase:
 			shoot()
 
 func shoot():

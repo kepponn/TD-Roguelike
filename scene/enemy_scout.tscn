@@ -5,9 +5,9 @@
 [ext_resource type="Material" uid="uid://8vtfpn2hciep" path="res://models/textures/enemy_metalic.tres" id="3_uhjuu"]
 [ext_resource type="Material" uid="uid://dtv68sjnoe1ov" path="res://models/textures/generic_super_light_metal.tres" id="4_ghbg2"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0sb1g"]
-radius = 0.45
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_vavrh"]
 height = 1.95
+radius = 0.45
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_ihbiv"]
 _surfaces = [{
@@ -168,8 +168,8 @@ viewport_path = NodePath("HealthBar3D/SubViewport")
 script = ExtResource("2_hb1ay")
 
 [node name="CollisionShape3D" parent="." index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0727682, 0)
-shape = SubResource("CapsuleShape3D_0sb1g")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.082028, 0)
+shape = SubResource("CylinderShape3D_vavrh")
 
 [node name="Body" type="Node3D" parent="Models" index="0"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)

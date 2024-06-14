@@ -17,6 +17,8 @@ const JUMP_VELOCITY = 4.5
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+var enable_navigation_auto_bake: bool = false
+var await_navigation_auto_bake: bool = true
 
 var player_ableInteract: bool = false
 var player_isHoldingItem: bool = false
@@ -544,4 +546,16 @@ func _on_interaction_zone_body_exited(body):
 		#print("player UNABLE to interact with " + body.name)
 
 func _on_navigation_region_3d_bake_finished():
-	navigation.bake_navigation_mesh()
+	if !enable_navigation_auto_bake:
+		enable_navigation_auto_bake = true
+		print("INITIAL BAKE DONE")
+	await_navigation_auto_bake = false
+
+func _on_item_child_entered_or_exiting_tree(_node):
+	navigation_auto_bake()
+
+func navigation_auto_bake():
+	if enable_navigation_auto_bake and !await_navigation_auto_bake:
+		await get_tree().create_timer(0.2).timeout
+		print("BAKE AUTO DONE")
+		navigation.bake_navigation_mesh()

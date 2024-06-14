@@ -133,4 +133,4 @@ DEBUG={
 
 [navigation]
 
-3d/default_cell_size=0.15
+3d/default_cell_size=0.1

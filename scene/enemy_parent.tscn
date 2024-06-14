@@ -38,14 +38,14 @@ script = ExtResource("1_qro0o")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
-path_desired_distance = 0.5
-target_desired_distance = 0.5
+path_postprocessing = 1
 debug_enabled = true
 
 [node name="Models" type="Node3D" parent="."]
 
 [node name="HealthBar3D" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+visible = false
 billboard = 1
 texture = SubResource("ViewportTexture_4ccpq")
 

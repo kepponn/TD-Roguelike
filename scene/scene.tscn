@@ -138,6 +138,7 @@ collision_mask = 1
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
 navigation_mesh = ExtResource("2_qtpp8")
+travel_cost = 0.0
 
 [node name="Environtment" type="GridMap" parent="NavigationRegion3D"]
 mesh_library = ExtResource("3_hpvrf")
@@ -227,10 +228,10 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -2, 1,
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, -1)
 
 [node name="DroneBase2" parent="NavigationRegion3D/Item" instance=ExtResource("17_1mvib")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1, 7)
 
 [node name="Turret6" parent="NavigationRegion3D/Item" instance=ExtResource("28_k30ir")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, -5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, -5)
 
 [node name="Mortar" parent="NavigationRegion3D/Item" instance=ExtResource("18_5jul5")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 1, -1)
@@ -354,4 +355,6 @@ unique_name_in_owner = true
 visible = false
 
 [connection signal="bake_finished" from="NavigationRegion3D" to="Player" method="_on_navigation_region_3d_bake_finished"]
+[connection signal="child_entered_tree" from="NavigationRegion3D/Item" to="Player" method="_on_item_child_entered_or_exiting_tree"]
+[connection signal="child_exiting_tree" from="NavigationRegion3D/Item" to="Player" method="_on_item_child_entered_or_exiting_tree"]
 [connection signal="timeout" from="Spawn/PreviewPath/PreviewTimer" to="Spawn" method="_on_preview_timer_timeout"]

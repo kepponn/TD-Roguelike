@@ -7,7 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://0x4ppc4cgbr2" path="res://assets/icon/delivery-drone.png" id="5_tns0p"]
 [ext_resource type="Texture2D" uid="uid://ckncytl0xfdgn" path="res://assets/icon/reload-gun-barrel.png" id="6_i7neg"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_p56l4"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_jjdwt"]
+height = 1.0
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_7sulh"]
 viewport_path = NodePath("AmmoBar3D/SubViewport")
@@ -54,11 +55,17 @@ stream = ExtResource("5_2vxqf")
 bus = &"Effect"
 
 [node name="BlockGridCollision" type="CollisionShape3D" parent="."]
-shape = SubResource("BoxShape3D_p56l4")
+shape = SubResource("CylinderShape3D_jjdwt")
+
+[node name="RayCast3DTemp" type="RayCast3D" parent="."]
+transform = Transform3D(1.00745, 0, 0, 0, 1.00745, 0, 0, 0, 1.00745, 0, 0.324, 0)
+target_position = Vector3(0, 0, -10)
+hit_from_inside = true
+debug_shape_custom_color = Color(1, 1, 0, 1)
+debug_shape_thickness = 5
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
 transform = Transform3D(1.00372, 0, 0, 0, 1.00372, 0, 0, 0, 1.00372, 0, 0.324204, 0)
-visible = false
 target_position = Vector3(0, 0, -10)
 debug_shape_custom_color = Color(1, 0, 0, 1)
 debug_shape_thickness = 5

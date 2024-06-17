@@ -32,6 +32,9 @@ var player_holdedMats: String
 var player_lockInput: bool = false
 
 func _physics_process(delta):
+	
+	DEBUG_turret_targeting_DEBUG()
+	
 	# navigation.bake_navigation_mesh()
 	# for the player to be on ground via gravity
 	if not is_on_floor():
@@ -63,6 +66,19 @@ func _physics_process(delta):
 	ready()
 	wave_cleared()
 	esc()
+
+func DEBUG_turret_targeting_DEBUG():
+	if player_interactedItem_Temp != null:
+		if Input.is_action_just_pressed("debug+"):
+			if Function.search_regex("turret", player_interactedItem_Temp.id):
+				player_interactedItem_Temp.update_target_priority()
+			elif player_interactedItem_Temp.id == "wall_mountable" and player_interactedItem_Temp.is_mountable_occupied:
+				player_interactedItem_Temp.currently_mountable_item.update_target_priority()
+		if Input.is_action_just_pressed("debug-"):
+			if Function.search_regex("turret", player_interactedItem_Temp.id):
+				player_interactedItem_Temp.check_target_priority()
+			elif player_interactedItem_Temp.id == "wall_mountable" and player_interactedItem_Temp.is_mountable_occupied:
+				player_interactedItem_Temp.currently_mountable_item.check_target_priority()
 
 func _ready():
 	navigation.bake_navigation_mesh()
@@ -320,8 +336,8 @@ func player_rotateItemProcess():
 		# rotate on-ground item
 		player_interactedItem = player_interactedItem_Temp
 		if Function.search_regex("wall", player_interactedItem.id):
-			if player_interactedItem.id == "wall_mountable" and player_interactedItem.get_child(-1).is_class("StaticBody3D"):
-				player_interactedItem.get_child(-1).rotation_degrees += Vector3(0, 90, 0)
+			if player_interactedItem.id == "wall_mountable" and player_interactedItem.is_mountable_occupied:
+				player_interactedItem.currently_mountable_item.rotation_degrees += Vector3(0, 90, 0)
 				audio_randomSelector($Audio/Pop, -10)
 			pass # Dont move my wall!
 		else:
@@ -337,15 +353,15 @@ func player_checkItemRange(item, enable: bool = true):
 	if enable:
 		if Function.search_regex("turret", item.id):
 			item.visible_range.show()
-		elif Function.search_regex("wall_mountable", item.id) and item.get_child(-1).is_class("StaticBody3D"):
-			item.get_child(-1).visible_range.show()
+		elif Function.search_regex("wall_mountable", item.id) and item.is_mountable_occupied:
+			item.currently_mountable_item.visible_range.show()
 		elif Function.search_regex("mortar", item.id):
 			item.visible_range.show()
 	else:
 		if Function.search_regex("turret", item.id):
 			item.visible_range.hide()
-		elif Function.search_regex("wall_mountable", item.id) and item.get_child(-1).is_class("StaticBody3D"):
-			item.get_child(-1).visible_range.hide()
+		elif Function.search_regex("wall_mountable", item.id) and item.is_mountable_occupied:
+			item.currently_mountable_item.visible_range.hide()
 		elif Function.search_regex("mortar", item.id):
 			item.visible_range.hide()
 
@@ -419,10 +435,10 @@ func player_InteractItems():
 				player_checkIngredientItem()
 		# RELOAD MOUNTED TURRET - HOLDING an AMMO and HAVE MOUNTED WALL that have turret in it
 		if player_ableInteract == true and player_isHoldingItem == true and Input.is_action_just_pressed("interact") and player_interactedItem_Temp.has_method("mount") and player_holdedMats == "ammo_box":
-			if player_interactedItem_Temp.get_child(-1).has_method("reload"):
-				if player_interactedItem_Temp.get_child(-1).bullet_ammo != player_interactedItem_Temp.get_child(-1).bullet_maxammo and !player_interactedItem_Temp.get_child(-1).requesting_droneReload:
-					print("Reloading mounted ", player_interactedItem_Temp.get_child(-1), " on ", player_interactedItem_Temp)
-					player_interactedItem_Temp.get_child(-1).reload()
+			if player_interactedItem_Temp.currently_mountable_item.has_method("reload"):
+				if player_interactedItem_Temp.currently_mountable_item.bullet_ammo != player_interactedItem_Temp.currently_mountable_item.bullet_maxammo and !player_interactedItem_Temp.currently_mountable_item.requesting_droneReload:
+					print("Reloading mounted ", player_interactedItem_Temp.currently_mountable_item, " on ", player_interactedItem_Temp)
+					player_interactedItem_Temp.currently_mountable_item.reload()
 					player_isHoldingItem = false
 					player_holdedMats = ""
 					player_checkIngredientItem()
@@ -492,12 +508,12 @@ func player_InspectItems():
 			# Will mess with player interaction when mounting a turret (showing card of the wall itself and mounting at the same time)
 			"wall_mountable":
 				print("INSPECTED WALL MOUNTABLE")
-				if player_inspectedItem.get_child(-1).is_class("StaticBody3D"):
+				if player_inspectedItem.is_mountable_occupied:
 					#if Function.search_regex("turret", player_inspectedItem.get_child(-1).id):
-					inspectedItem_UI.AttackDamageText = player_inspectedItem.get_child(-1).attack_damage
-					inspectedItem_UI.AttackRangeText = player_inspectedItem.get_child(-1).attack_range
-					inspectedItem_UI.AttackSpeedText = player_inspectedItem.get_child(-1).attack_speed
-					inspectedItem_UI.AmmoText = player_inspectedItem.get_child(-1).bullet_maxammo
+					inspectedItem_UI.AttackDamageText = player_inspectedItem.currently_mountable_item.attack_damage
+					inspectedItem_UI.AttackRangeText = player_inspectedItem.currently_mountable_item.attack_range
+					inspectedItem_UI.AttackSpeedText = player_inspectedItem.currently_mountable_item.attack_speed
+					inspectedItem_UI.AmmoText = player_inspectedItem.currently_mountable_item.bullet_maxammo
 					inspectedItem_UI_Sprite.show()
 				else:
 					inspectedItem_UI.AttackDamageText = null

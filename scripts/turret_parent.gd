@@ -35,6 +35,13 @@ var bullet_ricochet: int
 @onready var visible_range: MeshInstance3D = $Range/VisibleRange
 @onready var range_radius: CollisionShape3D = $Range/CollisionShape3D
 var enemies_array: Array = []
+# Target priority goes here
+var target # Being use for turret head visual look_at and projectile direction
+var target_temp # Being use to check for target availability (last_in and random)
+var target_priority_enum = ["first_in", "last_in", "highest_hp", "lowest_hp", "random"] # "type"
+var target_priority: String = target_priority_enum[0]
+var target_priority_index: int = 0 # Setter for target_priority cycle
+var target_priority_type: String = "scout" # Needed for type to run but still work-in-progress
 var able_shoot: bool = false
 var shoot_direction: Vector3
 var bullet_ammo: int
@@ -79,7 +86,9 @@ func ready_up():
 	visible_range.hide()
 	$AttackSpeed.wait_time = attack_speed
 	$RayCast3D.target_position.z = -attack_range
+	$RayCast3DTemp.target_position.z = -attack_range
 	$RayCast3D.hide()
+	$RayCast3DTemp.hide() # This being utilized in target_priority
 
 func update_damage(add_or_remove_damage: int):
 	# Please use this in incremental of 1 (damage)
@@ -104,21 +113,27 @@ func update_range(add_or_remove_range: int):
 		visible_range.mesh.size.z = attack_range
 		visible_range.position.z = -(attack_range * 0.5)
 	$RayCast3D.target_position.z = -attack_range
+	$RayCast3DTemp.target_position.z = -attack_range
 
 func update_range_visual():
 	if $Range/VisibleRange.visible and $Range/VisibleRange.global_position.y != 0.6:
 		$Range/VisibleRange.global_position.y = 0.6
 
 func start_process():
-	update_UI()
-	wave_Reload()
 	lock_on()
+	target_priority_lock_on()
 	shoot()
 	update_range_visual()
+	update_UI()
+	if Global.preparation_phase:
+		default_state()
 
 func lock_on():
 	if !enemies_array.is_empty(): # check array empty state
 		# the target will always be the array[0]
+		# The target priority filter shouldn't be in here, it should check IF ONLY something insert the area
+		# Checking like this means that filter will RUN on every BULLET instance
+		# Variable target will determine the look_at model and bullet projectile direction
 		$RayCast3D.look_at(enemies_array[0].position) # raycast to the target
 		$RayCast3D.force_raycast_update() # faster reporting for raycast
 		if $RayCast3D.is_colliding(): # check does the raycast even colide with something?
@@ -128,18 +143,22 @@ func lock_on():
 			if $RayCast3D.get_collider().get_parent().name != 'Enemies' and enemies_array.size() > 1:
 				#print("Vision obstructed to " + str(enemies_array[0].name) + " pushing it to back of array")
 				able_shoot = false
-				$RayCast3D.debug_shape_custom_color = Color(255,0,0)
+				#$RayCast3D.debug_shape_custom_color = Color(255,0,0)
 				enemies_array.append(enemies_array[0])
 				enemies_array.remove_at(0)
 				#print("New array for targeting: " + str(enemies_array))
 			# check if the raycast collide with 'Enemies', then execute turret movement and shoot, etc
 			elif $RayCast3D.get_collider().get_parent().name == 'Enemies':
 				able_shoot = true
-				$RayCast3D.show()
-				$Models/Head.look_at(enemies_array[0].position)
+				#$RayCast3D.show()
+				# Head visual aiming to target
+				if target != null:
+					$Models/Head.look_at(target.position)
+				else:
+					$Models/Head.look_at(enemies_array[0].position)
 				#print("Shooting at " + str(enemies_array[0].name))
 				#print("Detecting " + str(enemies_array.size()) + " enemies")
-				$RayCast3D.debug_shape_custom_color = Color(0,255,0)
+				#$RayCast3D.debug_shape_custom_color = Color(0,255,0)
 			# important fail-save for this statement, leave it with atleast something to do
 			else:
 				able_shoot = false
@@ -151,6 +170,67 @@ func lock_on():
 		$Models/Head.rotation.z = lerp_angle($Models/Head.rotation.z, 0.0, 0.1)
 		$RayCast3D.hide()
 
+func target_priority_lock_on():
+	$RayCast3DTemp.force_raycast_update()
+	if able_shoot and !enemies_array.is_empty():
+		match target_priority:
+			"last_in":
+				$RayCast3DTemp.look_at(enemies_array[-1].position)
+			"random":
+				if target_temp != null:
+					$RayCast3DTemp.look_at(target_temp.position)
+
+func check_target_priority():
+	print(self, " is targeting to : ", target_priority)
+	get_node('/root/Node3D/Control/TurretTargetChangeAlert').text = str(self.name) + " (" + str(self.id) + ") is targeting to " + str(target_priority)
+
+func update_target_priority():
+	target_priority_index = (target_priority_index + 1) % target_priority_enum.size()
+	target_priority = target_priority_enum[target_priority_index]
+	print(self, " now targeting to : ", target_priority)
+	get_node('/root/Node3D/Control/TurretTargetChangeAlert').text = str(self.name) + " (" + str(self.id) + ") now targeting to " + str(target_priority)
+
+func target_priority_check():
+	match target_priority:
+		# CRITICAL unexpected result because the raycasting is always to [0], for example:
+		# "last_in": after see the [0] enemy, aim and shoot [-1] while still behind the wall...
+		# "random": after suffle the [0] is behind walls, and yet it still shoot...
+		# Therefore we're using 2nd raycast to check this, and being processed by target_priority_lock_on()
+		"first_in": # First target in-area
+			target = enemies_array[0]
+		"last_in": # Last target in-area
+			# Trying to see last array enemy
+			if $RayCast3DTemp.get_collider() != null and $RayCast3DTemp.get_collider().get_parent().name == 'Enemies':
+				target = enemies_array[-1]
+			else: # Failed to see last array enemy
+				target = enemies_array[0]
+		"highest_hp": # Strongest?
+			# Check for the highest max_HP in enemy, otherwise run similar to first_in if all the max_HP the same
+			enemies_array.sort_custom(func(a, b): return a.max_HP > b.max_HP) # Lambda sort ver.
+			target = enemies_array[0]
+		"lowest_hp": # Weakest?
+			# Check for the lowest max_HP in enemy, otherwise run similar to first_in if all the max_HP the same
+			enemies_array.sort_custom(func(a, b): return a.max_HP < b.max_HP) # Lambda sort ver.
+			target = enemies_array[0]
+		"random": # Random go whatever
+			# Trying to see last array enemy
+			target_temp = enemies_array.pick_random()
+			if $RayCast3DTemp.get_collider() != null and $RayCast3DTemp.get_collider().get_parent().name == 'Enemies':
+				target = target_temp
+			else: # Failed to see random enemy
+				target = enemies_array[0]
+			# enemies_array[randi() % enemies_array.size()] or enemies_array.pick_random()
+			# Will create a bug where the turret look at and where the bullet goes is different
+			# Because this random didn't changes the array structure, therefore turret still look at [0]
+		"type": # Base on enemy type, work-in-progress
+			match target_priority_type:
+				"scout":
+					pass
+				"scout_little":
+					pass
+					
+	return (target.global_position - global_position).normalized()
+
 func shoot():
 	if bullet_ammo != 0 and drone_base.turret_toReload.has(self):
 		drone_base.turret_toReload.erase(self)
@@ -160,20 +240,24 @@ func shoot():
 		empty_ammoIcon.show()
 	
 	if !enemies_array.is_empty() and $AttackSpeed.time_left <= 0.0 and able_shoot and bullet_ammo != 0:
+		# Remove bullet count
 		bullet_ammo -= 1
-		shoot_direction = (enemies_array[0].global_position - global_position).normalized()
+		shoot_direction = target_priority_check()
 		var turret_projectile = projectile_scene.instantiate()
-		get_node("/root/Node3D/Projectile").add_child(turret_projectile, true) # if you want to shoot while still holding it maybe make projectile as unique or use absolute path to it
-		shoot_audio()
+		# Unique bullet type goes here
 		if bullet_pierce > 0:
 			turret_projectile.pierce_counter = bullet_pierce
 		if bullet_ricochet > 0:
 			turret_projectile.ricochet_counter = bullet_ricochet
 			turret_projectile.ricochet_targetList.append_array(enemies_array)
+		# Other fixed params for bullets
 		turret_projectile.damage = attack_damage
 		turret_projectile.speed = bullet_speed
 		turret_projectile.transform = %ProjectileSpawn.global_transform #basically copy all of $"Head/Spawn Point" global transform(rotation, scale, position), to projectile
 		turret_projectile.set_direction = shoot_direction #direction used to set projectile movement direction
+		# Create the instance of the bullet
+		get_node("/root/Node3D/Projectile").add_child(turret_projectile, true) # if you want to shoot while still holding it maybe make projectile as unique or use absolute path to it
+		shoot_audio()
 		$AttackSpeed.start() #restart timer so it can shoot again
 
 func drone_reload():
@@ -183,11 +267,12 @@ func reload():
 	if requesting_droneReload == false:
 		bullet_ammo = bullet_maxammo
 
-func wave_Reload():
-	if Global.preparation_phase:
-		bullet_ammo = bullet_maxammo
-		empty_ammoIcon.hide()
-		drone_reloadIcon.hide()
+func default_state():
+	bullet_ammo = bullet_maxammo
+	empty_ammoIcon.hide()
+	drone_reloadIcon.hide()
+	target = null
+	able_shoot = false
 
 func update_UI():
 	if bullet_ammo != bullet_maxammo:

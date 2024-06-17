@@ -5,7 +5,7 @@ var step_change: bool = true
 
 func _ready():
 	HP = 30
-	SPEED = 10
+	SPEED = 8
 	ready_up()
 
 func _process(_delta):

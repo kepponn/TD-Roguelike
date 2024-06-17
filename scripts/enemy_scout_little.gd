@@ -4,7 +4,7 @@ var id: String = "scout_little"
 var step_change: bool = true
 
 func _ready():
-	HP = 30
+	HP = 15
 	SPEED = 8
 	ready_up()
 

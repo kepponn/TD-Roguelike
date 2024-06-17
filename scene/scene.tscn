@@ -325,6 +325,23 @@ grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
 
+[node name="TurretTargetChangeAlert" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 10.0
+offset_top = 109.0
+offset_right = 266.0
+offset_bottom = 163.0
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("20_b78p8")
+text = "DEBUG TEXT - TURRET TARGETING
+(-) TO CHECK
+(+) TO CHANGE"
+
 [node name="PathfindingAlert" type="Label" parent="Control"]
 layout_mode = 1
 anchors_preset = 4
@@ -360,7 +377,5 @@ visible = false
 
 [connection signal="bake_finished" from="NavigationRegion3D" to="Player" method="_on_navigation_region_3d_bake_finished"]
 [connection signal="child_entered_tree" from="NavigationRegion3D/Item" to="Player" method="_on_item_child_entered_or_exiting_tree"]
-[connection signal="child_entered_tree" from="NavigationRegion3D/Item" to="NavigationRegion3D/Item/Enhancement" method="_on_item_child_entered_tree"]
 [connection signal="child_exiting_tree" from="NavigationRegion3D/Item" to="Player" method="_on_item_child_entered_or_exiting_tree"]
-[connection signal="child_exiting_tree" from="NavigationRegion3D/Item" to="NavigationRegion3D/Item/Enhancement" method="_on_item_child_exiting_tree"]
 [connection signal="timeout" from="Spawn/PreviewPath/PreviewTimer" to="Spawn" method="_on_preview_timer_timeout"]

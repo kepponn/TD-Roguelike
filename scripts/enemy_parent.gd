@@ -5,7 +5,6 @@ class_name Enemy_Parent
 @export var SPEED: float # = 10
 
 @onready var nav: NavigationAgent3D = $NavigationAgent3D
-@onready var spawn = get_node('/root/Node3D/Spawn')
 
 var max_HP: int
 var direction: Vector3

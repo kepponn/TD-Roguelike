@@ -1,5 +1,6 @@
 extends Marker3D
 
+var enemies_seeder_array_weight: Array = []
 var enemy_scout: PackedScene = preload("res://scene/enemy_scout.tscn")
 var enemy_scout_little: PackedScene = preload("res://scene/enemy_scout_little.tscn")
 
@@ -12,13 +13,12 @@ var path_runner_green = preload("res://scene/path_runner_green.tscn")
 var path_runner_red = preload("res://scene/path_runner_red.tscn")
 var path_runner_yellow = preload("res://scene/path_runner_yellow.tscn")
 
-#var path_points = []
-#var path_points_red = preload("res://scene/path_direction_red.tscn")
-#var path_lines_red = preload("res://scene/path_lines_red.tscn")
-#var path_points_green = preload("res://scene/path_direction_green.tscn")
-#var path_lines_green = preload("res://scene/path_lines_green.tscn")
-#var green_opacity = load("res://assets/shaders/green_opacity.tres")
-#var red_opacity = load("res://assets/shaders/red_opacity.tres")
+# The flow of the spawner:
+# ------------ CALLED IN PREP STAGE OF THE WAVE
+# seed_enemies_weight() - this will seed the enemies based on their weight and show in the incoming wave panel
+# count_enemies() - this to get the data on how many enemies will be spawn on this wave and setter for next wave
+# ------------ CALLED IN THE DEFEND STAGE OF THE WAVE
+# spawn_enemies() - this will take seed_enemies() result and get the data and spawn it 1 by 1 in back-to-front
 
 func _ready():
 	pass
@@ -27,6 +27,67 @@ func _process(_delta):
 	$SpawnLocation/Models/Orb.rotation_degrees.y += 1
 	spawn_enemies()
 	check_path()
+
+func count_enemies(): # This should be calculate in prep phase
+	#Global.total_enemies = Global.base_enemiesCount * Global.waves
+	Global.enemy_left = Global.total_enemies
+	Global.enemy_spawned = 0
+	Global.wave_weight_limit += 2 # this being used for weight calc by seed_enemies_weight()
+
+func seed_enemies_weight():
+	var enemies_weight = {
+		"enemy_scout": 2,
+		"enemy_scout_little": 1
+	}
+	
+	var count_enemy_scout: int = 0
+	var count_enemy_scout_little: int = 0
+	
+	var wave_weight_current: int = 0
+	var total_enemies: int = 0
+	
+	# This will run loop until wave_weight_current
+	while wave_weight_current < Global.wave_weight_limit:
+		#print(wave_weight_current)
+		# Check to json if anything can be added that still satisfy the limit
+		if wave_weight_current + enemies_weight.values().min() > Global.wave_weight_limit:
+			break
+		if randi_range(0, 1) == 0:
+			if wave_weight_current + enemies_weight["enemy_scout"] <= Global.wave_weight_limit:
+				enemies_seeder_array_weight.append("enemy_scout")
+				count_enemy_scout += 1
+				total_enemies += 1
+				wave_weight_current += enemies_weight["enemy_scout"]
+				#print("Add 2 weight inserting scout")
+		else:
+			if wave_weight_current + enemies_weight["enemy_scout_little"] <= Global.wave_weight_limit:
+				enemies_seeder_array_weight.append("enemy_scout_little")
+				count_enemy_scout_little += 1
+				total_enemies += 1
+				wave_weight_current += enemies_weight["enemy_scout_little"]
+				#print("Add 1 weight inserting scout little")
+	Global.total_enemies = total_enemies
+	print("Weight used ", wave_weight_current, " on global weight ", Global.wave_weight_limit)
+	print("Seed enemies with weight done ", enemies_seeder_array_weight)
+	get_node('/root/Node3D/Control/IncomingWavePanelAlert').text = "Incoming Wave Panel\n - " + str(count_enemy_scout) + "x Scout \n - " + str(count_enemy_scout_little) + "x Scout Little"
+
+func spawn_enemies():
+	if $Timer.time_left <= 0 and Global.enemy_spawned != Global.total_enemies and Global.preparation_phase == false:
+		Global.enemy_spawned = Global.enemy_spawned + 1
+		var enemy 
+		# This randomize will give an example of how enemy will behave in queue
+		# Please do check if this will make the enemy somehow DEADLOCK/STUCK together
+		match enemies_seeder_array_weight.pop_back(): # Remove and get last array data simultaneously
+			"enemy_scout":
+				enemy = enemy_scout.instantiate()
+			"enemy_scout_little":
+				enemy = enemy_scout_little.instantiate()
+		# Get spawner seed to spawn what needed to be spawned
+		enemy.transform = $SpawnLocation.global_transform
+		get_node("/root/Node3D/Enemies").add_child(enemy,true)
+		#$Timer.start(randf_range(1.5,3.0))
+		$Timer.start(1)
+		print("Enemies Spawned = ", Global.enemy_spawned, ". Seeder left: ", enemies_seeder_array_weight)
 
 func check_path():
 	nav.target_position = Global.final_target
@@ -65,6 +126,14 @@ func run_preview_path(is_reachable):
 			$PreviewPath.add_child(path_instance_arrow, true)
 			await get_tree().create_timer(0.15).timeout
 
+#var path_points = []
+#var path_points_red = preload("res://scene/path_direction_red.tscn")
+#var path_lines_red = preload("res://scene/path_lines_red.tscn")
+#var path_points_green = preload("res://scene/path_direction_green.tscn")
+#var path_lines_green = preload("res://scene/path_lines_green.tscn")
+#var green_opacity = load("res://assets/shaders/green_opacity.tres")
+#var red_opacity = load("res://assets/shaders/red_opacity.tres")
+
 #func preview_path(is_reachable): # Being called manually by player with tab
 	## Need to call this dynamically when paths is changed (dont put this in process)
 	#for child in $PreviewPath.get_children(): # Flush points
@@ -99,25 +168,3 @@ func run_preview_path(is_reachable):
 		#path_instance_lines.rotation_degrees.y = rad_to_deg(point_angle)
 		#$PreviewPath.add_child(path_instance_lines, true)
 		## --- Draw lines end here ---
-
-func spawn_enemies():
-	if $Timer.time_left <= 0 and Global.enemy_spawned != Global.total_enemies and Global.preparation_phase == false:
-		Global.enemy_spawned = Global.enemy_spawned + 1
-		var enemy 
-		# This randomize will give an example of how enemy will behave in queue
-		# Please do check if this will make the enemy somehow DEADLOCK/STUCK together
-		var rng = randi_range(0, 1)
-		if rng == 0:
-			enemy = enemy_scout.instantiate()
-		else:
-			enemy = enemy_scout_little.instantiate()
-		enemy.transform = $SpawnLocation.global_transform
-		get_node("/root/Node3D/Enemies").add_child(enemy,true)
-		#$Timer.start(randf_range(1.5,3.0))
-		$Timer.start(1)
-		print("Enemies Spawned = ", Global.enemy_spawned)
-
-func count_enemies():
-	Global.total_enemies = Global.base_enemiesCount * Global.waves
-	Global.enemy_left = Global.total_enemies
-	Global.enemy_spawned = 0

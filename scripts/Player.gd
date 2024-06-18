@@ -6,7 +6,7 @@ const JUMP_VELOCITY = 4.5
 @onready var holded_item = %"Holded Item"
 @onready var parent_item = get_node('/root/Node3D/NavigationRegion3D/Item')
 @onready var navigation = get_node('/root/Node3D/NavigationRegion3D')
-@onready var spawner = get_node('/root/Node3D/Spawn')
+@onready var spawner = get_node('/root/Node3D/Spawner')
 @onready var enemies = get_node('/root/Node3D/Enemies')
 @onready var ingame_menu = get_node('/root/Node3D/Control/IngameMenu')
 @onready var shop = get_node('/root/Node3D/Control/Shop')
@@ -89,6 +89,10 @@ func _ready():
 	$"Node3D/Ingredient Item/ammo_box".hide()
 	#preparation time given to player at the beginning of the run
 	#$PreparationTimer.start(preparation_time)
+	
+	#spawner.seed_enemies()
+	spawner.seed_enemies_weight()
+	spawner.count_enemies()
 
 func open_shop():
 	if player_interactedItem_Temp != null:
@@ -135,7 +139,6 @@ func ready():
 		# Await for player to drop the item just in case the player drop it in the same place therefore bypassing the parameters
 		await get_tree().create_timer(0.5).timeout
 		if Global.is_pathReachable == true and player_isHoldingItem == false:
-			spawner.count_enemies()
 			spawner.spawn_timer.start()
 			default_state()
 			#ingame_ui.update()
@@ -164,6 +167,8 @@ func wave_cleared():
 		print("Wave_Cleared, Entering Prep Phase")
 		$Audio/Bgm/Defending.stop()
 		prep_timer.start(Global.preparation_time)
+		spawner.seed_enemies_weight()
+		spawner.count_enemies()
 		#player_ableInteract = true
 		await get_tree().create_timer(0.5).timeout
 		ingame_ui.UI_animator.play("Transition_toPreparationPhase")

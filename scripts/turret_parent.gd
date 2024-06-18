@@ -38,10 +38,10 @@ var enemies_array: Array = []
 # Target priority goes here
 var target # Being use for turret head visual look_at and projectile direction
 var target_temp # Being use to check for target availability (last_in and random)
-var target_priority_enum = ["first_in", "last_in", "highest_hp", "lowest_hp", "random"] # "type"
+var target_priority_enum = ["first_in", "last_in", "highest_hp", "lowest_hp", "random", "type"] # "type"
 var target_priority: String = target_priority_enum[0]
 var target_priority_index: int = 0 # Setter for target_priority cycle
-var target_priority_type: String = "scout" # Needed for type to run but still work-in-progress
+var target_priority_type: String = "scout" # Needed for type to run but still no setter for this
 var able_shoot: bool = false
 var shoot_direction: Vector3
 var bullet_ammo: int
@@ -179,6 +179,21 @@ func target_priority_lock_on():
 			"random":
 				if target_temp != null:
 					$RayCast3DTemp.look_at(target_temp.position)
+			"type":
+				match target_priority_type:
+					"scout":
+						if target_temp != null:
+							$RayCast3DTemp.look_at(target_temp.position)
+					"scout_little":
+						if target_temp != null:
+							$RayCast3DTemp.look_at(target_temp.position)
+
+func target_priority_raycast_check(raycast_target):
+	# Trying to see intended target priority to shoot
+	if $RayCast3DTemp.get_collider() != null and $RayCast3DTemp.get_collider().get_parent().name == 'Enemies':
+		target = raycast_target
+	else: # Failed to see random enemy
+		target = enemies_array[0]
 
 func check_target_priority():
 	print(self, " is targeting to : ", target_priority)
@@ -189,6 +204,13 @@ func update_target_priority():
 	target_priority = target_priority_enum[target_priority_index]
 	print(self, " now targeting to : ", target_priority)
 	get_node('/root/Node3D/Control/TurretTargetChangeAlert').text = str(self.name) + " (" + str(self.id) + ") now targeting to " + str(target_priority)
+
+func target_priority_type_search(array, enemy_type):
+	# This function check for the id of the enemies and return their number in the array structure
+	for i in range(array.size()):
+		if array[i].id == enemy_type:
+			return i
+	return 0 # return -1
 
 func target_priority_check():
 	match target_priority:
@@ -213,22 +235,21 @@ func target_priority_check():
 			enemies_array.sort_custom(func(a, b): return a.max_HP < b.max_HP) # Lambda sort ver.
 			target = enemies_array[0]
 		"random": # Random go whatever
-			# Trying to see last array enemy
+			# This being called in every shot
 			target_temp = enemies_array.pick_random()
-			if $RayCast3DTemp.get_collider() != null and $RayCast3DTemp.get_collider().get_parent().name == 'Enemies':
-				target = target_temp
-			else: # Failed to see random enemy
-				target = enemies_array[0]
+			target_priority_raycast_check(target_temp)
 			# enemies_array[randi() % enemies_array.size()] or enemies_array.pick_random()
 			# Will create a bug where the turret look at and where the bullet goes is different
 			# Because this random didn't changes the array structure, therefore turret still look at [0]
 		"type": # Base on enemy type, work-in-progress
 			match target_priority_type:
 				"scout":
-					pass
+					target_temp = enemies_array[target_priority_type_search(enemies_array, "scout")]
+					target_priority_raycast_check(target_temp)
 				"scout_little":
-					pass
-					
+					target_temp = enemies_array[target_priority_type_search(enemies_array, "scout_little")]
+					target_priority_raycast_check(target_temp)
+						
 	return (target.global_position - global_position).normalized()
 
 func shoot():

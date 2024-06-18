@@ -48,7 +48,8 @@ var bullet_ammo: int
 var requesting_droneReload: bool = false
 @onready var empty_ammoIcon = $EmptyAmmoIcon
 @onready var drone_reloadIcon = $DroneReloadIcon
-@onready var drone_base = get_node('/root/Node3D/NavigationRegion3D/Item/DroneBase2')
+# This should be an optional way of reloading...
+@onready var drone_base = null #get_node('/root/Scene/NavigationRegion3D/Item/Drone')
 
 # To upgrade or downgrade the turrets we have the function ready:
 # update_damage(int), update_speed(float), update_range(int)
@@ -125,8 +126,6 @@ func start_process():
 	shoot()
 	update_range_visual()
 	update_UI()
-	if Global.preparation_phase:
-		default_state()
 
 func lock_on():
 	if !enemies_array.is_empty(): # check array empty state
@@ -197,13 +196,13 @@ func target_priority_raycast_check(raycast_target):
 
 func check_target_priority():
 	print(self, " is targeting to : ", target_priority)
-	get_node('/root/Node3D/Control/TurretTargetChangeAlert').text = str(self.name) + " (" + str(self.id) + ") is targeting to " + str(target_priority)
+	get_node('/root/Scene/Control/TurretTargetChangeAlert').text = str(self.name) + " (" + str(self.id) + ") is targeting to " + str(target_priority)
 
 func update_target_priority():
 	target_priority_index = (target_priority_index + 1) % target_priority_enum.size()
 	target_priority = target_priority_enum[target_priority_index]
 	print(self, " now targeting to : ", target_priority)
-	get_node('/root/Node3D/Control/TurretTargetChangeAlert').text = str(self.name) + " (" + str(self.id) + ") now targeting to " + str(target_priority)
+	get_node('/root/Scene/Control/TurretTargetChangeAlert').text = str(self.name) + " (" + str(self.id) + ") now targeting to " + str(target_priority)
 
 func target_priority_type_search(array, enemy_type):
 	# This function check for the id of the enemies and return their number in the array structure
@@ -253,12 +252,13 @@ func target_priority_check():
 	return (target.global_position - global_position).normalized()
 
 func shoot():
-	if bullet_ammo != 0 and drone_base.turret_toReload.has(self):
-		drone_base.turret_toReload.erase(self)
-		empty_ammoIcon.hide()
-	elif bullet_ammo == 0 and !drone_base.turret_toReload.has(self):
-		drone_base.turret_toReload.append(self)
-		empty_ammoIcon.show()
+	if drone_base != null:
+		if bullet_ammo != 0 and drone_base.turret_toReload.has(self):
+			drone_base.turret_toReload.erase(self)
+			empty_ammoIcon.hide()
+		elif bullet_ammo == 0 and !drone_base.turret_toReload.has(self):
+			drone_base.turret_toReload.append(self)
+			empty_ammoIcon.show()
 	
 	if !enemies_array.is_empty() and $AttackSpeed.time_left <= 0.0 and able_shoot and bullet_ammo != 0:
 		# Remove bullet count
@@ -277,7 +277,7 @@ func shoot():
 		turret_projectile.transform = %ProjectileSpawn.global_transform #basically copy all of $"Head/Spawn Point" global transform(rotation, scale, position), to projectile
 		turret_projectile.set_direction = shoot_direction #direction used to set projectile movement direction
 		# Create the instance of the bullet
-		get_node("/root/Node3D/Projectile").add_child(turret_projectile, true) # if you want to shoot while still holding it maybe make projectile as unique or use absolute path to it
+		get_node("/root/Scene/Projectile").add_child(turret_projectile, true) # if you want to shoot while still holding it maybe make projectile as unique or use absolute path to it
 		shoot_audio()
 		$AttackSpeed.start() #restart timer so it can shoot again
 

@@ -5,7 +5,7 @@ extends Wall_Parent
 @onready var mountable_pos: Vector3 = Vector3(0, 1, 0)
 @onready var currently_mountable_item
 
-@onready var player = get_node('/root/Node3D/Player')
+@onready var player = get_node('/root/Scene/Player')
 
 func _ready():
 	ready_up()

@@ -60,7 +60,7 @@ func shoot():
 		mortar_projectile.position = $Models/Head/Barrel/ProjectileSpawn.global_position
 		mortar_projectile.damage_explosion = attack_damage
 		mortar_projectile.speed = bullet_speed
-		get_node("/root/Node3D/Projectile").add_child(mortar_projectile, true) # if you want to shoot while still holding it maybe make projectile as unique or use absolute path to it
+		get_node("/root/Scene/Projectile").add_child(mortar_projectile, true) # if you want to shoot while still holding it maybe make projectile as unique or use absolute path to it
 		$ReloadTimer.start(attack_speed)
 
 func update_range_visual():
@@ -81,11 +81,11 @@ func _on_reload_timer_timeout():
 func controlled(enable: bool = true):
 	match enable:
 		true:
-			get_node('/root/Node3D/Player').player_lockInput = true
+			get_node('/root/Scene/Player').player_lockInput = true
 			is_controlled = true
 			visible_range.show()
 			$InteractTimer.start()
 		false:
-			get_node('/root/Node3D/Player').player_lockInput = false
+			get_node('/root/Scene/Player').player_lockInput = false
 			is_controlled = false
 			visible_range.hide()

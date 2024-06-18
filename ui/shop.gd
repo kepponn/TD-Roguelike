@@ -1,6 +1,8 @@
 extends Control
 
-@onready var shop = get_node('/root/Node3D/NavigationRegion3D/Item/Shop')
+@onready var player = get_node('/root/Scene/Player')
+
+@onready var shop = get_node('/root/Scene/NavigationRegion3D/Item/Shop')
 @onready var shop_item = preload("res://ui/shop_item.tscn")
 @onready var empty_item = preload("res://ui/shop_empty.tscn")
 
@@ -29,6 +31,8 @@ func _ready():
 	update_item()
 
 func _process(_delta):
+	if player == null:
+		player = get_node('/root/Scene/Player')
 	update_uiText()
 	update_storageItem()
 	check_mouseInput()
@@ -39,13 +43,13 @@ func spawn_item(scene):
 	print("Purchased ", item)
 	Stats.shop_purchased(item)
 	# Since only 1 shop right now this is not an issues, if there going to be more shop then need to check for shop in node and check for parameter
-	item.position = get_node('/root/Node3D/NavigationRegion3D/Item/Shop/SpawnArea').global_position
+	item.position = get_node('/root/Scene/NavigationRegion3D/Item/Shop/SpawnArea').global_position
 	%Item.add_child(item, true)
-	get_node('/root/Node3D/NavigationRegion3D/Item/Shop').purchase()
+	get_node('/root/Scene/NavigationRegion3D/Item/Shop').purchase()
 	# Set data for player to pickup the purchased item
-	get_node('/root/Node3D/Player').player_interactedItem = item
-	get_node('/root/Node3D/Player').player_interactedItem_Temp = item
-	get_node('/root/Node3D/Player').player_ableInteract = true
+	get_node('/root/Scene/Player').player_interactedItem = item
+	get_node('/root/Scene/Player').player_interactedItem_Temp = item
+	get_node('/root/Scene/Player').player_ableInteract = true
 
 func seed_item(seeder, property): # property are taken from item_rate where it MUST match an item.id
 	# Need to seed image placeholder and name property into shop_item.gd
@@ -109,7 +113,7 @@ func create_empty(nodes ,index):
 	nodes.move_child(empty, index)
 	
 func check_mouseInput():
-	if get_node('/root/Node3D/Player').player_lockInput:
+	if player.player_lockInput:
 		#check what is the last button pressed for 1 frame maybe? atleast its enough time to be used by _on_item_button_pressed(item) signal
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 			mouse_input = "LMB"
@@ -120,7 +124,7 @@ func check_mouseInput():
 
 func check_controllerInput():
 	var focused_button = get_viewport().gui_get_focus_owner()
-	if get_node('/root/Node3D/Player').player_lockInput and focused_button != null:
+	if player.player_lockInput and focused_button != null:
 		# This dedicated for the following action: buy, reroll, close (all in ui button focus form)
 		if Input.is_action_just_pressed("controller_A"):
 			mouse_input = "LMB"
@@ -180,7 +184,7 @@ func _on_item_button_pressed(item):
 func _on_close_button_pressed():
 	self.hide()
 	await get_tree().create_timer(0.15).timeout
-	get_node('/root/Node3D/Player').player_lockInput = false
+	get_node('/root/Scene/Player').player_lockInput = false
 	
 func _on_reroll_button_pressed():
 	if Global.currency >= reroll_price:

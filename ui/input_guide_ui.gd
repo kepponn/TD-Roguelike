@@ -47,7 +47,7 @@ func _process(_delta):
 		hide_all()
 	elif get_parent().name == "Control":
 		# Maybe check this after done loading the main menu scene?
-		var player = get_node('/root/Node3D/Player')
+		var player = get_node('/root/Scene/Player')
 		update_visibility_and_text(WASD, controller_AnalogL, true, "Move")
 		
 		#--------------------------------------PLAYER CONTROL DISABLED------------------------------------------------

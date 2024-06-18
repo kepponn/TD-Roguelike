@@ -1,8 +1,12 @@
-[gd_scene load_steps=31 format=3 uid="uid://dl8dey22x882y"]
+[gd_scene load_steps=35 format=3 uid="uid://dl8dey22x882y"]
 
 [ext_resource type="PackedScene" uid="uid://dfa3wfjb564fn" path="res://scene/player.tscn" id="1_rl4h5"]
+[ext_resource type="Script" path="res://scene_parent.gd" id="1_v7mt3"]
+[ext_resource type="AudioStream" uid="uid://benfdpyeb1uyp" path="res://assets/audio/bgm/game-music-loop-7-145285.mp3" id="2_8a01y"]
 [ext_resource type="NavigationMesh" uid="uid://1kgcqxfwhe74" path="res://Navigation.tres" id="2_qtpp8"]
+[ext_resource type="AudioStream" uid="uid://dw3p4b28eq11x" path="res://assets/audio/bgm/game-music-loop-1-143979.mp3" id="3_dpd7u"]
 [ext_resource type="MeshLibrary" uid="uid://bpq8ija5ngli5" path="res://Tiles.tres" id="3_hpvrf"]
+[ext_resource type="Script" path="res://scripts/player_script_rework.gd" id="3_tpfoj"]
 [ext_resource type="PackedScene" uid="uid://wil6fipqm8m1" path="res://scene/shop.tscn" id="5_ew274"]
 [ext_resource type="PackedScene" uid="uid://c7bny0q7rq2yl" path="res://scene/turret_plasma.tscn" id="7_p8ft8"]
 [ext_resource type="PackedScene" uid="uid://b8keu180bnh1a" path="res://scene/turret_pierce.tscn" id="8_h6j8t"]
@@ -29,7 +33,7 @@
 [ext_resource type="Script" path="res://ui/pathfinding_alert.gd" id="24_anaia"]
 [ext_resource type="PackedScene" uid="uid://di648bjo1jrc4" path="res://scene/turret_ricochet.tscn" id="28_k30ir"]
 
-[sub_resource type="Environment" id="Environment_m6ppc"]
+[sub_resource type="Environment" id="Environment_nmanj"]
 background_color = Color(0.52549, 0.52549, 0.52549, 1)
 ambient_light_source = 1
 reflected_light_source = 1
@@ -44,16 +48,19 @@ adjustment_saturation = 1.25
 [sub_resource type="ViewportTexture" id="ViewportTexture_8c162"]
 viewport_path = NodePath("InspectedItemUI3D/SubViewport")
 
-[node name="Node3D" type="Node3D"]
+[node name="Scene" type="Node3D"]
+script = ExtResource("1_v7mt3")
 
 [node name="Camera3D2" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.258819, 0.965926, 0, -0.965926, 0.258819, 0, 13, 4.43347)
 current = true
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_m6ppc")
+[node name="Environment" type="Node" parent="."]
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource("Environment_nmanj")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
 transform = Transform3D(0.739631, 0.568243, -0.360618, 0, 0.535827, 0.844328, 0.673012, -0.624491, 0.396314, 0, 0, 0)
 light_color = Color(0.815686, 0.815686, 0.815686, 1)
 shadow_enabled = true
@@ -63,10 +70,23 @@ shadow_transmittance_bias = 12.5
 shadow_opacity = 0.89
 shadow_blur = 2.0
 
+[node name="Audio" type="Node" parent="."]
+
+[node name="Preparation" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("2_8a01y")
+volume_db = -7.0
+bus = &"Music"
+
+[node name="Defending" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("3_dpd7u")
+volume_db = -7.0
+bus = &"Music"
+
 [node name="Player" parent="." instance=ExtResource("1_rl4h5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.572391, 1.40085, 1.76821)
 collision_layer = 1
 collision_mask = 1
+script = ExtResource("3_tpfoj")
 
 [node name="Enemies" type="Node3D" parent="."]
 
@@ -175,12 +195,11 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 1, 
 [node name="Enhancement" parent="NavigationRegion3D/Item" instance=ExtResource("19_qpmxk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="PreparationTimer" type="Timer" parent="."]
-one_shot = true
-
 [node name="Defend_Point" parent="." instance=ExtResource("20_3n541")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, 3)
 
 [node name="Spawner" parent="." instance=ExtResource("23_ii802")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1, -8)
 
 [node name="InspectedItemUI3D" type="Sprite3D" parent="."]
 visible = false
@@ -258,6 +277,7 @@ script = ExtResource("24_anaia")
 layout_mode = 1
 
 [node name="IngameUI" parent="Control" instance=ExtResource("17_d5b3e")]
+unique_name_in_owner = true
 layout_mode = 1
 
 [node name="Shop" parent="Control" instance=ExtResource("17_vv3g3")]
@@ -270,6 +290,6 @@ metadata/_edit_use_anchors_ = true
 unique_name_in_owner = true
 visible = false
 
-[connection signal="bake_finished" from="NavigationRegion3D" to="Player" method="_on_navigation_region_3d_bake_finished"]
-[connection signal="child_entered_tree" from="NavigationRegion3D/Item" to="Player" method="_on_item_child_entered_or_exiting_tree"]
-[connection signal="child_exiting_tree" from="NavigationRegion3D/Item" to="Player" method="_on_item_child_entered_or_exiting_tree"]
+[connection signal="bake_finished" from="NavigationRegion3D" to="." method="_on_navigation_region_3d_bake_finished"]
+[connection signal="child_entered_tree" from="NavigationRegion3D/Item" to="." method="_on_item_child_entered_or_exiting_tree"]
+[connection signal="child_exiting_tree" from="NavigationRegion3D/Item" to="." method="_on_item_child_entered_or_exiting_tree"]

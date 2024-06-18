@@ -69,7 +69,7 @@ func seed_enemies_weight():
 	Global.total_enemies = total_enemies
 	print("Weight used ", wave_weight_current, " on global weight ", Global.wave_weight_limit)
 	print("Seed enemies with weight done ", enemies_seeder_array_weight)
-	get_node('/root/Node3D/Control/IncomingWavePanelAlert').text = "Incoming Wave Panel\n - " + str(count_enemy_scout) + "x Scout \n - " + str(count_enemy_scout_little) + "x Scout Little"
+	$"../Control/IncomingWavePanelAlert".text = "Incoming Wave Panel\n - " + str(count_enemy_scout) + "x Scout \n - " + str(count_enemy_scout_little) + "x Scout Little"
 
 func spawn_enemies():
 	if $Timer.time_left <= 0 and Global.enemy_spawned != Global.total_enemies and Global.preparation_phase == false:
@@ -84,7 +84,7 @@ func spawn_enemies():
 				enemy = enemy_scout_little.instantiate()
 		# Get spawner seed to spawn what needed to be spawned
 		enemy.transform = $SpawnLocation.global_transform
-		get_node("/root/Node3D/Enemies").add_child(enemy,true)
+		get_node("/root/Scene/Enemies").add_child(enemy,true)
 		#$Timer.start(randf_range(1.5,3.0))
 		$Timer.start(1)
 		print("Enemies Spawned = ", Global.enemy_spawned, ". Seeder left: ", enemies_seeder_array_weight)

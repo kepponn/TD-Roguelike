@@ -3,7 +3,7 @@ extends StaticBody3D
 var id = "crafter"
 var price
 
-@onready var player = get_node('/root/Node3D/Player')
+@onready var player = get_node('/root/Scene/Player')
 
 @onready var icon_Gunpowder = $"IngredientInfo3D/SubViewport/Ingredient List/GunpowderIcon"
 @onready var icon_Bullet = $"IngredientInfo3D/SubViewport/Ingredient List/BulletIcon"

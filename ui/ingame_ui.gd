@@ -1,11 +1,10 @@
 extends Control
-@onready var player = get_node('/root/Node3D/Player')
+@onready var player = get_node('/root/Scene/Player')
 @onready var UI_animator = $IngameUiAnimator
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
-
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
@@ -23,17 +22,16 @@ func _process(_delta):
 	$MarginContainer/Control/EnemyLeftBar/Label.text = str(Global.enemy_left)
 	#Preparation Bar and Label
 	if Global.waves == 1:
-		$MarginContainer/Control/PreparationTimeLeftBar.max_value = Global.preparation_time
+		#$MarginContainer/Control/PreparationTimeLeftBar.max_value = Global.preparation_time
 		$MarginContainer/Control/PreparationTimeLeftBar.value = $MarginContainer/Control/PreparationTimeLeftBar.max_value
 		$MarginContainer/Control/PreparationTimeLeftBar/Label.text = "Press ''Space'' to Start"
 	else:
-		$MarginContainer/Control/PreparationTimeLeftBar.max_value = Global.preparation_time
-		$MarginContainer/Control/PreparationTimeLeftBar.value = player.prep_timer.time_left
-		$MarginContainer/Control/PreparationTimeLeftBar/Label.text = str(int(player.prep_timer.time_left))
+		pass
+		#$MarginContainer/Control/PreparationTimeLeftBar.max_value = Global.preparation_time
+		#$MarginContainer/Control/PreparationTimeLeftBar.value = $"../../PreparationTimer".time_left
+		#$MarginContainer/Control/PreparationTimeLeftBar/Label.text = str(int($"../../PreparationTimer".time_left))
 	#Currency
 	$MarginContainer/Control/TextureRect/PlayerCurrencyCount.text = str(Global.currency)
 
 func _on_ingame_ui_animator_animation_finished(_anim_name):
 	get_tree().paused = false
-	
-

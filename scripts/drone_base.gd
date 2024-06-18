@@ -2,7 +2,7 @@ extends StaticBody3D
 
 var id = "drone_base"
 
-@onready var player = get_node('/root/Node3D/Player')
+@onready var player = get_node('/root/Scene/Player')
 @onready var drone = $Models/Drone
 @onready var drone_ammo = $Models/Drone/ammo_box
 @onready var drone_light =  $Models/Drone/OmniLight3D

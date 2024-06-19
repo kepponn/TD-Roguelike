@@ -134,7 +134,7 @@ func _process(_delta):
 					update_visibility_and_text(X, controller_Y, true, "Check Area")
 			#GROUND TURRET
 			elif player.player_ableInteract and !player.player_isHoldingItem:
-				if Function.search_regex("turret", player.player_interactedItem_Temp.id):
+				if Function.search_regex("turret", player.player_interactedItem_Temp.id) or Function.search_regex("mortar", player.player_interactedItem_Temp.id):
 					update_visibility_and_text(X, controller_Y, true, "Check Area")
 			
 			

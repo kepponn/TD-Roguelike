@@ -17,6 +17,7 @@ var item_rate = {
 	"wall_basic" = 100,
 	"wall_mountable" = 20,
 	"wall_spiked" = 20,
+	"mortar" = 300,
 	"turret_basic" = 60,
 	"turret_pierce" = 10,
 	"turret_gatling" = 10,
@@ -65,6 +66,10 @@ func seed_item(seeder, property): # property are taken from item_rate where it M
 		seeder.AttackRangeText = property_temp.attack_range
 		seeder.AttackSpeedText = property_temp.attack_speed
 		seeder.AmmoText = property_temp.bullet_maxammo
+	if Function.search_regex("mortar", property_temp.id):
+		seeder.AttackDamageText = property_temp.attack_damage
+		seeder.AttackRangeText = str(property_temp.attack_rangeMin) + "-" + str(property_temp.attack_rangeMax)
+		seeder.AttackSpeedText = property_temp.attack_speed
 	match property_temp.id:
 		"wall_spiked":
 			seeder.AttackDamageText = property_temp.attack_damage

@@ -49,6 +49,14 @@
 	"bullet_pierce": 0,
 	"bullet_ricochet": 0
   },
+  "mortar": {
+	"price": 450,
+	"attack_damage": 10,
+	"attack_rangeMin": 5,
+	"attack_rangeMax": 8,
+	"attack_speed": 0.5,
+	"bullet_speed": 6
+  },
   "wall_basic": {
 	"price": 20,
 	"mountable": false,

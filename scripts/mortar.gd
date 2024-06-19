@@ -8,18 +8,31 @@ var price: int
 @export var projectile_scene: PackedScene
 
 @export_category("Attack Information")
-var attack_damage: int = 10
-var attack_speed: float = 0.5
-var attack_rangeMin: float = 5
-var attack_rangeMax: float = 8
-var bullet_speed: int = 6
+var attack_damage: int
+var attack_rangeMin: float
+var attack_rangeMax: float
+var attack_speed: float
+var bullet_speed: int
 
 @onready var visible_range: MeshInstance3D = $TargetPivot/Target/VisibleRange
 @onready var target = $TargetPivot/Target
 var is_controlled: bool = false
 var able_shoot: bool = true
 
+func seed_property():
+	var file = FileAccess.open("res://autoload/item_db.json", FileAccess.READ)
+	var file_text = file.get_as_text()
+	file.close()
+	# Parse JSON data to be easily modified by for loops
+	var data = JSON.parse_string(file_text)
+	# Check if the id exist in JSON data
+	if data.has(id):
+		var item_data = data[id]
+		for property in item_data:
+			self.set(property, item_data[property])
+
 func _ready():
+	seed_property()
 	$Models/Head/Barrel.rotation_degrees.x = 4
 	$ReloadTimerBar3D.hide()
 	visible_range.hide()

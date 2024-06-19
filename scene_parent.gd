@@ -64,7 +64,7 @@ func default_state_player(): # Default state for players, being called on both p
 	$Player.default_state()
 
 func request_defense_phase(player): # This is being called by player
-	if has_defensive_structure and Global.preparation_phase and Global.is_pathReachable and !player.player_isHoldingItem:
+	if has_defensive_structure and Global.preparation_phase and Global.is_pathReachable and !player.player_isHoldingItem and !player.player_lockInput:
 		%ReadyWaveAlert.hide()
 		defense_phase()
 	elif !Global.is_pathReachable:
@@ -77,6 +77,9 @@ func request_defense_phase(player): # This is being called by player
 	elif !has_defensive_structure:
 		%ReadyWaveAlert.show()
 		%ReadyWaveAlert.text = "Cannot ready-up, there is no defensive structure!"
+	elif player.player_lockInput:
+		%ReadyWaveAlert.show()
+		%ReadyWaveAlert.text = "Cannot ready-up, player is still controlling items!"
 
 func defense_phase(): # Run after request_defense_phase(player) when all params check complete
 	spawner.spawn_timer.start()
@@ -92,6 +95,7 @@ func defense_phase(): # Run after request_defense_phase(player) when all params 
 func preparation_phase(): # This is being called by self process
 	Global.waves = Global.waves + 1
 	Stats.wave_cleared = Global.waves - 1
+	%Shop.reroll_price = 0
 	%Shop.update_item()
 	default_state_player()
 	default_state()

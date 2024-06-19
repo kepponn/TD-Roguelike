@@ -25,7 +25,13 @@ var player_holdedMats: String
 
 var player_lockInput: bool = false
 
+var player_lastButtonFocused
+
 func _physics_process(delta):
+	
+	if player_lastButtonFocused != null:
+		player_lastButtonFocused.grab_focus()
+		player_lastButtonFocused = null
 	
 	DEBUG_turret_targeting_DEBUG()
 	
@@ -77,9 +83,7 @@ func _ready():
 	# Stop the audio temporary
 	$Audio/MoveSfx.stream_paused = true
 	# Hide all the ingredient icons (being used in defense phase)
-	$"Node3D/Ingredient Item/bullet_box".hide()
-	$"Node3D/Ingredient Item/gunpowder_box".hide()
-	$"Node3D/Ingredient Item/ammo_box".hide()
+	$"Node3D/Ingredient Item/Ingredient Sprite".hide()
 
 func open_shop():
 	if player_interactedItem_Temp != null:
@@ -108,9 +112,6 @@ func default_state(): # this being called by scene to reset the player state
 	player_isHoldingItem = false
 	player_interactedItem_Temp = null
 	player_holdedMats = ""
-	$"Node3D/Ingredient Item/bullet_box".hide()
-	$"Node3D/Ingredient Item/gunpowder_box".hide()
-	$"Node3D/Ingredient Item/ammo_box".hide()
 
 func ready():
 	if Input.is_action_just_pressed("start"):
@@ -118,6 +119,7 @@ func ready():
 	
 func esc():
 	if Input.is_action_just_pressed("exit"):
+		player_lastButtonFocused = get_viewport().gui_get_focus_owner()
 		scene.pause()
 
 func player_rotation(direction):
@@ -313,21 +315,16 @@ func player_checkIngredientItem():
 	# Future rework to cast the texture icon directly to Sprite3D
 	match player_holdedMats:
 		"":
-			$"Node3D/Ingredient Item/ammo_box".hide()
-			$"Node3D/Ingredient Item/gunpowder_box".hide()
-			$"Node3D/Ingredient Item/bullet_box".hide()
+			$"Node3D/Ingredient Item/Ingredient Sprite".hide()
 		"ammo_box":
-			$"Node3D/Ingredient Item/ammo_box".show()
-			$"Node3D/Ingredient Item/gunpowder_box".hide()
-			$"Node3D/Ingredient Item/bullet_box".hide()
+			$"Node3D/Ingredient Item/Ingredient Sprite".texture = load("res://assets/icon/ammo-box.png")
+			$"Node3D/Ingredient Item/Ingredient Sprite".show()
 		"gunpowder_box":
-			$"Node3D/Ingredient Item/ammo_box".hide()
-			$"Node3D/Ingredient Item/gunpowder_box".show()
-			$"Node3D/Ingredient Item/bullet_box".hide()
+			$"Node3D/Ingredient Item/Ingredient Sprite".texture = load("res://assets/icon/powder.png")
+			$"Node3D/Ingredient Item/Ingredient Sprite".show()
 		"bullet_box":
-			$"Node3D/Ingredient Item/ammo_box".hide()
-			$"Node3D/Ingredient Item/gunpowder_box".hide()
-			$"Node3D/Ingredient Item/bullet_box".show()
+			$"Node3D/Ingredient Item/Ingredient Sprite".texture = load("res://assets/icon/shotgun-rounds.png")
+			$"Node3D/Ingredient Item/Ingredient Sprite".show()
 
 func player_InteractItems():
 	#================================================ PREPARATION PHASE ==================================================================================================
@@ -494,7 +491,7 @@ func player_RotateItems():
 		if player_interactedItem_Temp != null and Function.search_regex("mortar", player_interactedItem_Temp.id) and !player_isHoldingItem:
 			player_interactedItem_Temp.controlled()
 		# Rotate everything else with +90deg
-		else:
+		elif Global.preparation_phase:
 			player_rotateItemProcess()
 
 func _on_interaction_zone_body_entered(body):

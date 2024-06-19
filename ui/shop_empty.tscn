@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://br3j1afb22r3y" path="res://models/debug-block_8740nt-hexagonal-2598-mm-architextures.jpg" id="2_de34u"]
 [ext_resource type="FontFile" uid="uid://cxvusk35yis3l" path="res://assets/font/Dadlygood.otf" id="2_wupqb"]
 
-[node name="Item" type="Button"]
+[node name="EmptyItem" type="Button"]
 modulate = Color(0.388235, 0.388235, 0.388235, 1)
 anchors_preset = 15
 anchor_right = 1.0

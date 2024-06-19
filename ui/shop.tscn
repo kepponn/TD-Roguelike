@@ -248,5 +248,7 @@ text = "Close Shop"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[connection signal="mouse_entered" from="PanelContainer2/MarginContainer/HBoxContainer/RerollButton" to="." method="_on_reroll_button_mouse_entered"]
 [connection signal="pressed" from="PanelContainer2/MarginContainer/HBoxContainer/RerollButton" to="." method="_on_reroll_button_pressed"]
+[connection signal="mouse_entered" from="PanelContainer2/MarginContainer/HBoxContainer/CloseButton" to="." method="_on_close_button_mouse_entered"]
 [connection signal="pressed" from="PanelContainer2/MarginContainer/HBoxContainer/CloseButton" to="." method="_on_close_button_pressed"]

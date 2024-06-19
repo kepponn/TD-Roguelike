@@ -4,8 +4,8 @@ var id: String = "scout"
 var step_change: bool = true
 
 func _ready():
-	HP = 30
-	SPEED = 8
+	HP = 20
+	SPEED = 7
 	ready_up()
 
 func _process(_delta):

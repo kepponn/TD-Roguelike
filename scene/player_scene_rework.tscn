@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://bscu6qqpt0hew"]
+[gd_scene load_steps=41 format=3 uid="uid://bscu6qqpt0hew"]
 
 [ext_resource type="Script" path="res://scripts/player_script_rework.gd" id="1_dci5x"]
 [ext_resource type="AudioStream" uid="uid://bqjlvqns16fqg" path="res://assets/audio/sfx/select-sound-121244.mp3" id="2_061x3"]
@@ -10,8 +10,6 @@
 [ext_resource type="Material" uid="uid://dtv68sjnoe1ov" path="res://models/textures/generic_super_light_metal.tres" id="10_3ymch"]
 [ext_resource type="Material" uid="uid://b21bl8ylev0j8" path="res://models/textures/generic_light_metal.tres" id="11_5ml45"]
 [ext_resource type="Texture2D" uid="uid://dg03wj8x3itha" path="res://assets/icon/shotgun-rounds.png" id="12_j78g0"]
-[ext_resource type="Texture2D" uid="uid://cbtohhybio73x" path="res://assets/icon/powder.png" id="13_g8p1o"]
-[ext_resource type="Texture2D" uid="uid://rmmcfqjsvhws" path="res://assets/icon/ammo-box.png" id="14_gmdwx"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_5ouot"]
 _surfaces = [{
@@ -563,23 +561,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0)
 [node name="Ingredient Item" type="Node3D" parent="Node3D"]
 unique_name_in_owner = true
 
-[node name="bullet_box" type="Sprite3D" parent="Node3D/Ingredient Item"]
+[node name="Ingredient Sprite" type="Sprite3D" parent="Node3D/Ingredient Item"]
 transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0.7, 1.2, 0)
 visible = false
 billboard = 1
 texture = ExtResource("12_j78g0")
-
-[node name="gunpowder_box" type="Sprite3D" parent="Node3D/Ingredient Item"]
-transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0.7, 1.2, 0)
-visible = false
-billboard = 1
-texture = ExtResource("13_g8p1o")
-
-[node name="ammo_box" type="Sprite3D" parent="Node3D/Ingredient Item"]
-transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 0.7, 1.2, 0)
-visible = false
-billboard = 1
-texture = ExtResource("14_gmdwx")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.9, 0, 0, 0, 0.9, 0, 0, 0, 0.9, 0, 0, 0)

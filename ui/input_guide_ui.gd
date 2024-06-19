@@ -38,6 +38,14 @@ extends Control
 @onready var text_controller_AnalogL = $MarginContainer/HBoxContainerController/Move/EventLabel
 # Controller end here
 
+func _input(event):
+	if event is InputEventKey or event is InputEventMouse:
+		$MarginContainer/HBoxContainerController.hide()
+		$MarginContainer/HBoxContainer.show()
+	elif event is InputEventJoypadButton or event is InputEventJoypadMotion:
+		$MarginContainer/HBoxContainerController.show()
+		$MarginContainer/HBoxContainer.hide()
+
 func _ready():
 	update_Icon()
 
@@ -56,12 +64,15 @@ func _process(_delta):
 			hide_all()
 			if player.player_interactedItem_Temp.id == "shop" and get_viewport().gui_get_focus_owner() != null:
 				update_visibility_and_text(null, controller_B, true, "Close Shop")
-				update_visibility_and_text(null, controller_Y, true, "Reroll Item")
+				if get_node("/root/Scene/UI/Control/Shop").reroll_price <= 50:
+					update_visibility_and_text(null, controller_Y, true, "Reroll Item")
 				if Function.search_regex("Item", get_viewport().gui_get_focus_owner().name):
 					update_visibility_and_text(E, controller_A, true, "Buy Item")
-					update_visibility_and_text(C, controller_X, true, "Store Blueprint")
+					if get_viewport().gui_get_focus_owner().get_parent().name == "ShopItem" and get_node("/root/Scene/UI/Control/Shop").storage_itemList.get_child_count() < 4:
+						update_visibility_and_text(C, controller_X, true, "Store Blueprint")
 				elif get_viewport().gui_get_focus_owner().name == "RerollButton":
-					update_visibility_and_text(E, controller_A, true, "Reroll Item")
+					if get_node("/root/Scene/UI/Control/Shop").reroll_price <= 50:
+						update_visibility_and_text(E, controller_A, true, "Reroll Item")
 					update_visibility_and_text(C, controller_X, false)
 				elif get_viewport().gui_get_focus_owner().name == "CloseButton":
 					update_visibility_and_text(E, controller_A, true, "Close Shop")

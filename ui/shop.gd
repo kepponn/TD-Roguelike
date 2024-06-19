@@ -9,7 +9,7 @@ extends Control
 @onready var shop_itemList = $PanelContainer/MarginContainer/HBoxContainer/ShopBackground/MarginContainer/Shop/ScrollContainer/ShopItem
 @onready var storage_itemList = $PanelContainer/MarginContainer/HBoxContainer/StorageBackground/MarginContainer/BlueprintStorage/BlueprintStorageItem
 
-var reroll_price: int = 10
+var reroll_price: int = 0
 var mouse_input
 
 var item_rate = {
@@ -31,8 +31,9 @@ func _ready():
 	update_item()
 
 func _process(_delta):
-	update_uiText()
+	update_ui()
 	update_storageItem()
+	check_keyboardInput()
 	check_mouseInput()
 	check_controllerInput()
 
@@ -104,11 +105,26 @@ func update_item():
 		seed_item(item, randomize_shopItem())
 		shop_itemList.add_child(item, true)
 		item.pressed.connect(_on_item_button_pressed.bind(item))
+		item.mouse_entered.connect(_on_button_mouse_entered.bind(item))
 
 func create_empty(nodes ,index):
 	var empty = empty_item.instantiate()
 	nodes.add_child(empty, true)
 	nodes.move_child(empty, index)
+	
+func check_keyboardInput():
+	var focused_button = get_viewport().gui_get_focus_owner()
+	if player.player_lockInput and focused_button != null:
+		# This dedicated for the following action: buy, reroll, close (all in ui button focus form)
+		if Input.is_action_just_pressed("interact"):
+			mouse_input = "LMB"
+			focused_button.emit_signal("pressed")
+			print(focused_button)
+		# This dedicated for only shop item to reserve/save the item blueprint
+		elif Input.is_action_just_pressed("inspect") and focused_button.get_parent().name == "ShopItem":
+			mouse_input = "RMB"
+			focused_button.emit_signal("pressed")
+			print(focused_button)
 	
 func check_mouseInput():
 	if player.player_lockInput:
@@ -138,9 +154,17 @@ func check_controllerInput():
 		elif Input.is_action_just_pressed("controller_Y"):
 			_on_reroll_button_pressed()
 
-func update_uiText():
+func update_ui():
 	$PanelContainer2/MarginContainer/HBoxContainer/PlayerCurrency/Label.text = "Player Currency : " + str(Global.currency)
-	$PanelContainer2/MarginContainer/HBoxContainer/RerollButton/Label.text = "Reroll : " + str(reroll_price) + " Gold"
+	if reroll_price <= 50:
+		$PanelContainer2/MarginContainer/HBoxContainer/RerollButton/Label.text = "Reroll : " + str(reroll_price) + " Gold"
+		$PanelContainer2/MarginContainer/HBoxContainer/RerollButton/Label.self_modulate = Color("#ffffff")
+		$PanelContainer2/MarginContainer/HBoxContainer/RerollButton.disabled = false
+	else :
+		$PanelContainer2/MarginContainer/HBoxContainer/RerollButton/Label.text = "Reroll Unavailable"
+		$PanelContainer2/MarginContainer/HBoxContainer/RerollButton/Label.self_modulate = Color("#858585")
+		$PanelContainer2/MarginContainer/HBoxContainer/RerollButton.disabled = true
+		
 
 func update_storageItem():
 	#always show 1st and 2nd child
@@ -179,16 +203,29 @@ func _on_item_button_pressed(item):
 		storage_itemList.move_child(item,0)
 		storage_itemList.get_child(0).grab_focus()
 		
+func _on_button_mouse_entered(item):
+	print(item)
+	item.grab_focus()
+
 func _on_close_button_pressed():
 	self.hide()
 	await get_tree().create_timer(0.15).timeout
 	player.player_lockInput = false
 	
 func _on_reroll_button_pressed():
-	if Global.currency >= reroll_price:
+	if Global.currency >= reroll_price and reroll_price <= 50:
 		Global.currency = Global.currency - reroll_price
 		Stats.shop_reroll_used += 1
 		Stats.shop_highest_reroll = reroll_price
 		reroll_price = reroll_price + 10
 		update_item()
 		$PanelContainer2/MarginContainer/HBoxContainer/RerollButton.grab_focus()
+
+
+
+func _on_reroll_button_mouse_entered():
+	$PanelContainer2/MarginContainer/HBoxContainer/RerollButton.grab_focus()
+
+
+func _on_close_button_mouse_entered():
+	$PanelContainer2/MarginContainer/HBoxContainer/CloseButton.grab_focus()

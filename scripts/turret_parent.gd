@@ -196,13 +196,13 @@ func target_priority_raycast_check(raycast_target):
 
 func check_target_priority():
 	print(self, " is targeting to : ", target_priority)
-	get_node('/root/Scene/Control/TurretTargetChangeAlert').text = str(self.name) + " (" + str(self.id) + ") is targeting to " + str(target_priority)
+	get_node("/root/Scene/UI/Control/TurretTargetChangeAlert").text = str(self.name) + " (" + str(self.id) + ") is targeting to " + str(target_priority)
 
 func update_target_priority():
 	target_priority_index = (target_priority_index + 1) % target_priority_enum.size()
 	target_priority = target_priority_enum[target_priority_index]
 	print(self, " now targeting to : ", target_priority)
-	get_node('/root/Scene/Control/TurretTargetChangeAlert').text = str(self.name) + " (" + str(self.id) + ") now targeting to " + str(target_priority)
+	get_node("/root/Scene/UI/Control/TurretTargetChangeAlert").text = str(self.name) + " (" + str(self.id) + ") now targeting to " + str(target_priority)
 
 func target_priority_type_search(array, enemy_type):
 	# This function check for the id of the enemies and return their number in the array structure
@@ -277,7 +277,7 @@ func shoot():
 		turret_projectile.transform = %ProjectileSpawn.global_transform #basically copy all of $"Head/Spawn Point" global transform(rotation, scale, position), to projectile
 		turret_projectile.set_direction = shoot_direction #direction used to set projectile movement direction
 		# Create the instance of the bullet
-		get_node("/root/Scene/Projectile").add_child(turret_projectile, true) # if you want to shoot while still holding it maybe make projectile as unique or use absolute path to it
+		get_node("/root/Scene/Temporary/Projectiles").add_child(turret_projectile, true) # if you want to shoot while still holding it maybe make projectile as unique or use absolute path to it
 		shoot_audio()
 		$AttackSpeed.start() #restart timer so it can shoot again
 

@@ -60,7 +60,7 @@ func shoot():
 		mortar_projectile.position = $Models/Head/Barrel/ProjectileSpawn.global_position
 		mortar_projectile.damage_explosion = attack_damage
 		mortar_projectile.speed = bullet_speed
-		get_node("/root/Scene/Projectile").add_child(mortar_projectile, true) # if you want to shoot while still holding it maybe make projectile as unique or use absolute path to it
+		get_node("/root/Scene/Temporary/Projectiles").add_child(mortar_projectile, true) # if you want to shoot while still holding it maybe make projectile as unique or use absolute path to it
 		$ReloadTimer.start(attack_speed)
 
 func update_range_visual():

@@ -1,28 +1,42 @@
 extends Node3D
+class_name Scene
 
-@onready var navigation = $NavigationRegion3D
+@onready var navigation = %NavigationRegion3D
 var enable_navigation_auto_bake: bool = false
 var await_navigation_auto_bake: bool = true
-@onready var spawner = $Spawner
+@onready var spawner = %Spawner
+@onready var enemies = %Enemies
 @onready var item_list = %Item
+
+var has_defensive_structure = false
+
+# -------------------- Setup new scene level
+# 1. Put your level gridmap in child of %NavigationRegion3D
+# 2. Adjust position of the following: Player, Spawner, Defend_Point and Shop accordingly
 
 # -------------------- Ready and process below
 
 func _ready():
 	# Request navigation bake
 	call_deferred("navigation_initial_bake")
-	# Request spawner
+	# Request and setter to spawner
+	spawner.enemies_scene_node = %Enemies
 	spawner.seed_enemies_weight()
 	spawner.count_enemies()
 	# Request audio background music
 	$Audio/Preparation.play()
 	# Additional setters
-	Global.currency = 300
+	# Global.currency = 300
 
 func _process(_delta):
 	# Process defense phase complete parameters
-	if $Enemies.get_child_count() == 0 and Global.enemy_left <= 0 and Global.preparation_phase == false:
+	if enemies.get_child_count() == 0 and Global.enemy_left <= 0 and Global.preparation_phase == false:
 		preparation_phase()
+	# Check for defensive structure to start the wave
+	if !has_defensive_structure:
+		for i in item_list.get_child_count():
+			if Function.search_regex("turret", item_list.get_child(i).id):
+				has_defensive_structure = true
 
 # -------------------- Independent function below
 
@@ -31,11 +45,14 @@ func pause(): # This is being called by player
 	%IngameMenu.esc()
 	get_tree().paused = true
 
-func default_state(): # Default state for players and items, being called on each phase
+func default_state(): # Default state for items, being called only on preparation phase
 	for i in item_list.get_child_count(): # Search for item to be reseted
 		if Function.search_regex("turret", item_list.get_child(i).id):
-			item_list.get_child(i).default_state() # Reset the drone state
+			item_list.get_child(i).default_state() # Reset the turret state
 			print("Flushing ", item_list.get_child(i))
+		if Function.search_regex("wall_mountable", item_list.get_child(i).id) and item_list.get_child(i).is_mountable_occupied:
+			item_list.get_child(i).currently_mountable_item.default_state() # Reset the turret on mounted wall state
+			print("Flushing ", item_list.get_child(i).currently_mountable_item)
 		if Function.search_regex("crafter", item_list.get_child(i).id):
 			item_list.get_child(i).reset() # Reset the value in crafter to default state
 			print("Flushing ", item_list.get_child(i))
@@ -43,14 +60,29 @@ func default_state(): # Default state for players and items, being called on eac
 			item_list.get_child(i).reset() # Reset the drone state
 			print("Flushing ", item_list.get_child(i))
 
-func default_state_player():
-	$Player.default_state() # sets for all player goes here
+func default_state_player(): # Default state for players, being called on both phase
+	$Player.default_state()
 
-func defense_phase(): # This is being called by player
+func request_defense_phase(player): # This is being called by player
+	if has_defensive_structure and Global.preparation_phase and Global.is_pathReachable and !player.player_isHoldingItem:
+		%ReadyWaveAlert.hide()
+		defense_phase()
+	elif !Global.is_pathReachable:
+		%ReadyWaveAlert.show()
+		%ReadyWaveAlert.text = "Cannot ready-up, please clear the path!"
+	elif player.player_isHoldingItem:
+		%ReadyWaveAlert.show()
+		%ReadyWaveAlert.text = "Cannot ready-up, player is still holding items!"
+	# This being run in seperate statement to make it independently check itself
+	elif !has_defensive_structure:
+		%ReadyWaveAlert.show()
+		%ReadyWaveAlert.text = "Cannot ready-up, there is no defensive structure!"
+
+func defense_phase(): # Run after request_defense_phase(player) when all params check complete
 	spawner.spawn_timer.start()
 	default_state_player()
 	Global.preparation_phase = false
-	print("Player Ready, Entering Wave ", Global.waves, " Defense Phase")
+	print("Player ready, entering defense phase wave ", Global.waves)
 	%Shop.hide()
 	$Audio/Preparation.stop()
 	%IngameUI.UI_animator.play("Transition_toDefensePhase")
@@ -64,7 +96,7 @@ func preparation_phase(): # This is being called by self process
 	default_state_player()
 	default_state()
 	Global.preparation_phase = true
-	print("Wave_Cleared, Entering Prep Phase")
+	print("Wave cleared, entering preparation phase wave ", Global.waves)
 	spawner.seed_enemies_weight()
 	spawner.count_enemies()
 	$Audio/Defending.stop()

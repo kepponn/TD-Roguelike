@@ -1,13 +1,14 @@
 extends Marker3D
 
 var enemies_seeder_array_weight: Array = []
+var enemies_scene_node
 var enemy_scout: PackedScene = preload("res://scene/enemy_scout.tscn")
 var enemy_scout_little: PackedScene = preload("res://scene/enemy_scout_little.tscn")
 
-@onready var spawn_timer: Timer = $Timer
-@onready var nav: NavigationAgent3D = $SpawnLocation/NavigationAgent3D
 var direction
 var velocity
+@onready var nav: NavigationAgent3D = $SpawnLocation/NavigationAgent3D
+@onready var spawn_timer: Timer = $Timer
 
 var path_runner_green = preload("res://scene/path_runner_green.tscn")
 var path_runner_red = preload("res://scene/path_runner_red.tscn")
@@ -23,8 +24,8 @@ var path_runner_yellow = preload("res://scene/path_runner_yellow.tscn")
 func _ready():
 	pass
 
-func _process(_delta):
-	$SpawnLocation/Models/Orb.rotation_degrees.y += 1
+func _process(delta):
+	$SpawnLocation/Models/Orb.rotation_degrees.y += 10 * delta
 	spawn_enemies()
 	check_path()
 
@@ -69,7 +70,7 @@ func seed_enemies_weight():
 	Global.total_enemies = total_enemies
 	print("Weight used ", wave_weight_current, " on global weight ", Global.wave_weight_limit)
 	print("Seed enemies with weight done ", enemies_seeder_array_weight)
-	$"../Control/IncomingWavePanelAlert".text = "Incoming Wave Panel\n - " + str(count_enemy_scout) + "x Scout \n - " + str(count_enemy_scout_little) + "x Scout Little"
+	get_node("/root/Scene/UI/Control/IncomingWavePanelAlert").text = "Incoming Wave Panel\n - " + str(count_enemy_scout) + "x Scout \n - " + str(count_enemy_scout_little) + "x Scout Little"
 
 func spawn_enemies():
 	if $Timer.time_left <= 0 and Global.enemy_spawned != Global.total_enemies and Global.preparation_phase == false:
@@ -84,7 +85,7 @@ func spawn_enemies():
 				enemy = enemy_scout_little.instantiate()
 		# Get spawner seed to spawn what needed to be spawned
 		enemy.transform = $SpawnLocation.global_transform
-		get_node("/root/Scene/Enemies").add_child(enemy,true)
+		enemies_scene_node.add_child(enemy,true)
 		#$Timer.start(randf_range(1.5,3.0))
 		$Timer.start(1)
 		print("Enemies Spawned = ", Global.enemy_spawned, ". Seeder left: ", enemies_seeder_array_weight)

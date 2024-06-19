@@ -16,7 +16,7 @@ func _on_play_pressed():
 
 func _on_play_audio_finished():
 	get_tree().paused = false
-	get_tree().change_scene_to_file("res://scene/scene.tscn")
+	get_tree().change_scene_to_file("res://scene/scene_level_debug.tscn")
 
 func _on_options_pressed():
 	# Make a volume slider and fullscreen/windowed options

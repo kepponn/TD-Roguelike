@@ -2,7 +2,7 @@ extends Control
 
 @onready var player = get_node('/root/Scene/Player')
 
-@onready var shop = get_node('/root/Scene/NavigationRegion3D/Item/Shop')
+@onready var shop = get_node('/root/Scene/World/NavigationRegion3D/Item/Shop')
 @onready var shop_item = preload("res://ui/shop_item.tscn")
 @onready var empty_item = preload("res://ui/shop_empty.tscn")
 
@@ -31,8 +31,6 @@ func _ready():
 	update_item()
 
 func _process(_delta):
-	if player == null:
-		player = get_node('/root/Scene/Player')
 	update_uiText()
 	update_storageItem()
 	check_mouseInput()
@@ -43,13 +41,13 @@ func spawn_item(scene):
 	print("Purchased ", item)
 	Stats.shop_purchased(item)
 	# Since only 1 shop right now this is not an issues, if there going to be more shop then need to check for shop in node and check for parameter
-	item.position = get_node('/root/Scene/NavigationRegion3D/Item/Shop/SpawnArea').global_position
+	item.position = get_node('/root/Scene/World/NavigationRegion3D/Item/Shop/SpawnArea').global_position
 	%Item.add_child(item, true)
-	get_node('/root/Scene/NavigationRegion3D/Item/Shop').purchase()
+	shop.purchase()
 	# Set data for player to pickup the purchased item
-	get_node('/root/Scene/Player').player_interactedItem = item
-	get_node('/root/Scene/Player').player_interactedItem_Temp = item
-	get_node('/root/Scene/Player').player_ableInteract = true
+	player.player_interactedItem = item
+	player.player_interactedItem_Temp = item
+	player.player_ableInteract = true
 
 func seed_item(seeder, property): # property are taken from item_rate where it MUST match an item.id
 	# Need to seed image placeholder and name property into shop_item.gd
@@ -184,7 +182,7 @@ func _on_item_button_pressed(item):
 func _on_close_button_pressed():
 	self.hide()
 	await get_tree().create_timer(0.15).timeout
-	get_node('/root/Scene/Player').player_lockInput = false
+	player.player_lockInput = false
 	
 func _on_reroll_button_pressed():
 	if Global.currency >= reroll_price:

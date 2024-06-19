@@ -3,13 +3,13 @@ extends CharacterBody3D
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 
-@onready var scene = get_node('/root/Scene')
+var id = "player"
 
+@onready var scene = get_node('/root/Scene')
 @onready var holded_item = %"Holded Item"
-@onready var parent_item = get_node('/root/Scene/NavigationRegion3D/Item')
-@onready var shop = get_node('/root/Scene/Control/Shop')
-@onready var inspectedItem_UI_Sprite = get_node('/root/Scene/InspectedItemUI3D')
-@onready var inspectedItem_UI = get_node('/root/Scene/InspectedItemUI3D/SubViewport/InspectedItemUI')
+@onready var parent_item = get_node('/root/Scene/World/NavigationRegion3D/Item') # All items location
+@onready var inspectedItem_UI_Sprite = get_node('/root/Scene/UI/InspectedItemUI3D')
+@onready var inspectedItem_UI = get_node('/root/Scene/UI/InspectedItemUI3D/SubViewport/InspectedItemUI')
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -74,8 +74,9 @@ func DEBUG_turret_targeting_DEBUG():
 				player_interactedItem_Temp.currently_mountable_item.check_target_priority()
 
 func _ready():
-	#$"../NavigationRegion3D".bake_navigation_mesh()
+	# Stop the audio temporary
 	$Audio/MoveSfx.stream_paused = true
+	# Hide all the ingredient icons (being used in defense phase)
 	$"Node3D/Ingredient Item/bullet_box".hide()
 	$"Node3D/Ingredient Item/gunpowder_box".hide()
 	$"Node3D/Ingredient Item/ammo_box".hide()
@@ -83,9 +84,9 @@ func _ready():
 func open_shop():
 	if player_interactedItem_Temp != null:
 		if player_interactedItem_Temp.name == "Shop" and Input.is_action_just_pressed("inspect") and Global.preparation_phase == true:
-			shop.show()
+			get_node('/root/Scene/UI/Control/Shop').show()
 			player_lockInput = true
-			get_node('/root/Scene/Control/Shop/PanelContainer2/MarginContainer/HBoxContainer/CloseButton').grab_focus()
+			get_node('/root/Scene/UI/Control/Shop/PanelContainer2/MarginContainer/HBoxContainer/CloseButton').grab_focus()
 
 func mountable_wall():
 	# This check for preparation phase, if true then this process will be accessible
@@ -112,15 +113,9 @@ func default_state(): # this being called by scene to reset the player state
 	$"Node3D/Ingredient Item/ammo_box".hide()
 
 func ready():
-	# Check for more parameters
-	if Input.is_action_just_pressed("start") and Global.preparation_phase == true and Global.is_pathReachable == true and player_isHoldingItem == false:
-		scene.defense_phase() # Call scene to start defense phase
+	if Input.is_action_just_pressed("start"):
+		scene.request_defense_phase(self)
 	
-	if Input.is_action_just_pressed("start") and Global.is_pathReachable == false:
-		print("Unable to ready, Enemy Path is Blocked, Please Move some Blocks!!!")
-	if Input.is_action_just_pressed("start") and player_isHoldingItem:
-		print("Unable to ready, Player still Holding Item, Drop Holded Item!!!")
-
 func esc():
 	if Input.is_action_just_pressed("exit"):
 		scene.pause()

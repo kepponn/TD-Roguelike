@@ -1,5 +1,4 @@
 extends Control
-@onready var player = get_node('/root/Scene/Player')
 @onready var UI_animator = $IngameUiAnimator
 
 # Called when the node enters the scene tree for the first time.

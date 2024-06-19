@@ -1,14 +1,10 @@
-[gd_scene load_steps=22 format=3 uid="uid://bajk04l7oocqf"]
+[gd_scene load_steps=18 format=3 uid="uid://bajk04l7oocqf"]
 
 [ext_resource type="Script" path="res://scene_parent.gd" id="1_7h58t"]
 [ext_resource type="AudioStream" uid="uid://benfdpyeb1uyp" path="res://assets/audio/bgm/game-music-loop-7-145285.mp3" id="2_eecwo"]
 [ext_resource type="NavigationMesh" uid="uid://1kgcqxfwhe74" path="res://Navigation.tres" id="2_rv3n5"]
-[ext_resource type="MeshLibrary" uid="uid://bpq8ija5ngli5" path="res://Tiles.tres" id="3_6bv2j"]
 [ext_resource type="AudioStream" uid="uid://dw3p4b28eq11x" path="res://assets/audio/bgm/game-music-loop-1-143979.mp3" id="3_npf3f"]
 [ext_resource type="PackedScene" uid="uid://wil6fipqm8m1" path="res://scene/shop.tscn" id="4_vn8n0"]
-[ext_resource type="PackedScene" uid="uid://edivjlbtfdg8" path="res://scene/gunpowder_box.tscn" id="13_0ohw3"]
-[ext_resource type="PackedScene" uid="uid://ir8hjuag51vg" path="res://scene/bullet_box.tscn" id="14_182do"]
-[ext_resource type="PackedScene" uid="uid://bsgn413mi8pns" path="res://scene/crafter.tscn" id="15_3ryjx"]
 [ext_resource type="PackedScene" uid="uid://bscu6qqpt0hew" path="res://scene/player_scene_rework.tscn" id="15_u2sf4"]
 [ext_resource type="PackedScene" uid="uid://g2b2ewy0w1op" path="res://scene/defend_point.tscn" id="20_xhdqf"]
 [ext_resource type="PackedScene" uid="uid://bpefgdkivwfib" path="res://scene/spawner.tscn" id="21_83lk5"]
@@ -33,7 +29,7 @@ adjustment_enabled = true
 adjustment_saturation = 1.25
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_8c162"]
-viewport_path = NodePath("InspectedItemUI3D/SubViewport")
+viewport_path = NodePath("UI/InspectedItemUI3D/SubViewport")
 
 [node name="Scene" type="Node3D"]
 script = ExtResource("1_7h58t")
@@ -69,64 +65,55 @@ stream = ExtResource("3_npf3f")
 volume_db = -7.0
 bus = &"Music"
 
-[node name="Spawner" parent="." instance=ExtResource("21_83lk5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, 6)
+[node name="Path" type="Node" parent="."]
 
-[node name="Defend_Point" parent="." instance=ExtResource("20_xhdqf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 1, -6)
+[node name="Spawner" parent="Path" instance=ExtResource("21_83lk5")]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Defend_Point" parent="Path" instance=ExtResource("20_xhdqf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="Player" parent="." instance=ExtResource("15_u2sf4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
 
-[node name="Enemies" type="Node3D" parent="."]
+[node name="Temporary" type="Node" parent="."]
 
-[node name="Projectile" type="Node3D" parent="."]
+[node name="Enemies" type="Node3D" parent="Temporary"]
+unique_name_in_owner = true
 
-[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+[node name="Projectiles" type="Node3D" parent="Temporary"]
+unique_name_in_owner = true
+
+[node name="World" type="Node" parent="."]
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="World"]
+unique_name_in_owner = true
 navigation_mesh = ExtResource("2_rv3n5")
 travel_cost = 0.0
 
-[node name="Environtment" type="GridMap" parent="NavigationRegion3D"]
-mesh_library = ExtResource("3_6bv2j")
-cell_size = Vector3(1, 1, 1)
-cell_center_x = false
-cell_center_y = false
-cell_center_z = false
-bake_navigation = true
-data = {
-"cells": PackedInt32Array(65531, 65531, 0, 65531, 65532, 0, 65531, 65533, 0, 65531, 65534, 0, 65531, 65535, 0, 65531, 0, 0, 65531, 1, 0, 65531, 2, 0, 65531, 3, 0, 65531, 4, 0, 65532, 65531, 0, 65532, 65532, 0, 65532, 65533, 0, 65532, 65534, 0, 65532, 65535, 0, 65532, 0, 0, 65532, 1, 0, 65532, 2, 0, 65532, 3, 0, 65532, 4, 0, 65533, 65531, 0, 65533, 65532, 0, 65533, 65533, 0, 65533, 65534, 0, 65533, 65535, 0, 65533, 0, 0, 65533, 1, 0, 65533, 2, 0, 65533, 3, 0, 65533, 4, 0, 65534, 65531, 0, 65534, 65532, 0, 65534, 65533, 0, 65534, 65534, 0, 65534, 65535, 0, 65534, 0, 0, 65534, 1, 0, 65534, 2, 0, 65534, 3, 0, 65534, 4, 0, 65535, 65531, 0, 65535, 65532, 0, 65535, 65533, 0, 65535, 65534, 0, 65535, 65535, 0, 65535, 0, 0, 65535, 1, 0, 65535, 2, 0, 65535, 3, 0, 65535, 4, 0, 0, 65531, 0, 0, 65532, 0, 0, 65533, 0, 0, 65534, 0, 0, 65535, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 0, 4, 0, 1, 65531, 0, 1, 65532, 0, 1, 65533, 0, 1, 65534, 0, 1, 65535, 0, 1, 0, 0, 1, 1, 0, 2, 65531, 0, 2, 65532, 0, 2, 65533, 0, 2, 65534, 0, 2, 65535, 0, 2, 0, 0, 2, 1, 0, 3, 65531, 0, 3, 65532, 0, 3, 65533, 0, 3, 65534, 0, 3, 65535, 0, 3, 0, 0, 3, 1, 0, 3, 2, 0, 3, 3, 0, 3, 4, 0, 4, 65531, 0, 4, 65532, 0, 4, 65533, 0, 4, 65534, 0, 4, 65535, 0, 4, 0, 0, 4, 1, 0, 4, 2, 0, 4, 3, 0, 4, 4, 0, 65528, 65528, 0, 65528, 65529, 0, 65528, 65530, 0, 65528, 65531, 0, 65528, 65532, 0, 65528, 65533, 0, 65528, 65534, 0, 65528, 65535, 0, 65528, 0, 0, 65528, 1, 0, 65528, 2, 0, 65528, 3, 0, 65528, 4, 0, 65528, 5, 0, 65528, 6, 0, 65528, 7, 0, 65528, 8, 0, 65529, 65528, 0, 65529, 65529, 0, 65529, 65530, 0, 65529, 65531, 0, 65529, 65532, 0, 65529, 65533, 0, 65529, 65534, 0, 65529, 65535, 0, 65529, 0, 0, 65529, 1, 0, 65529, 2, 0, 65529, 3, 0, 65529, 4, 0, 65529, 5, 0, 65529, 6, 0, 65529, 7, 0, 65529, 8, 0, 65530, 65528, 0, 65530, 65529, 0, 65530, 65530, 0, 65530, 65531, 0, 65530, 65532, 0, 65530, 65533, 0, 65530, 65534, 0, 65530, 65535, 0, 65530, 0, 0, 65530, 1, 0, 65530, 2, 0, 65530, 3, 0, 65530, 4, 0, 65530, 5, 0, 65530, 6, 0, 65530, 7, 0, 65530, 8, 0, 65531, 65528, 0, 65531, 65529, 0, 65531, 65530, 0, 65531, 5, 0, 65531, 6, 0, 65531, 7, 0, 65531, 8, 0, 65532, 65528, 0, 65532, 65529, 0, 65532, 65530, 0, 65532, 5, 0, 65532, 6, 0, 65532, 7, 0, 65532, 8, 0, 65533, 65528, 0, 65533, 65529, 0, 65533, 65530, 0, 65533, 5, 0, 65533, 6, 0, 65533, 7, 0, 65533, 8, 0, 65534, 65528, 0, 65534, 65529, 0, 65534, 65530, 0, 65534, 5, 0, 65534, 6, 0, 65534, 7, 0, 65534, 8, 0, 65535, 65528, 0, 65535, 65529, 0, 65535, 65530, 0, 65535, 5, 0, 65535, 6, 0, 65535, 7, 0, 65535, 8, 0, 0, 65528, 0, 0, 65529, 0, 0, 65530, 0, 0, 5, 0, 0, 6, 0, 0, 7, 0, 0, 8, 0, 1, 65528, 0, 1, 65529, 0, 1, 65530, 0, 1, 5, 0, 1, 6, 0, 2, 65528, 0, 2, 65529, 0, 2, 65530, 0, 2, 8, 0, 3, 65528, 0, 3, 65529, 0, 3, 65530, 0, 3, 5, 0, 3, 7, 0, 3, 8, 0, 4, 65528, 0, 4, 65529, 0, 4, 65530, 0, 4, 5, 0, 4, 6, 0, 4, 7, 0, 4, 8, 0, 5, 65528, 0, 5, 65529, 0, 5, 65530, 0, 5, 65531, 0, 5, 65532, 0, 5, 65533, 0, 5, 65534, 0, 5, 65535, 0, 5, 0, 0, 5, 1, 0, 5, 2, 0, 5, 3, 0, 5, 4, 0, 5, 5, 0, 5, 6, 0, 5, 7, 0, 5, 8, 0, 6, 65528, 0, 6, 65529, 0, 6, 65530, 0, 6, 65531, 0, 6, 65532, 0, 6, 65533, 0, 6, 65534, 0, 6, 65535, 0, 6, 0, 0, 6, 1, 0, 6, 2, 0, 6, 3, 0, 6, 4, 0, 6, 5, 0, 6, 6, 0, 6, 7, 0, 6, 8, 0, 7, 65528, 0, 7, 65529, 0, 7, 65530, 0, 7, 65531, 0, 7, 65532, 0, 7, 65533, 0, 7, 65534, 0, 7, 65535, 0, 7, 0, 0, 7, 1, 0, 7, 2, 0, 7, 3, 0, 7, 4, 0, 7, 5, 0, 7, 6, 0, 7, 7, 0, 7, 8, 0, 8, 65528, 0, 8, 65529, 0, 8, 65530, 0, 8, 65531, 0, 8, 65532, 0, 8, 65533, 0, 8, 65534, 0, 8, 65535, 0, 8, 0, 0, 8, 1, 0, 8, 2, 0, 8, 3, 0, 8, 4, 0, 8, 5, 0, 8, 6, 0, 8, 7, 0, 8, 8, 0, 1, 8, 0, 1, 7, 0, 2, 7, 0, 3, 6, 0, 2, 6, 0, 2, 5, 0, 2, 3, 0, 2, 4, 0, 1, 4, 0, 0, 3, 0, 1, 3, 0, 1, 2, 0, 2, 2, 0, 65544, 8, 1441797, 65543, 8, 1, 65542, 8, 1, 65541, 8, 1, 65540, 8, 1, 65539, 8, 1, 65538, 8, 1, 65537, 8, 1, 65536, 8, 1, 131071, 8, 1, 131070, 8, 1, 131069, 8, 1, 131068, 8, 1441796, 131067, 8, 1, 131066, 8, 1, 131065, 8, 1, 131064, 8, 655365, 196600, 8, 655365, 196601, 8, 1, 196602, 8, 1, 196603, 8, 1, 196604, 8, 1441796, 196605, 8, 1, 196606, 8, 1, 196607, 8, 1, 131072, 8, 1, 131073, 8, 1, 131074, 8, 1, 131075, 8, 1, 131076, 8, 1, 131077, 8, 1, 131078, 8, 1, 131079, 8, 1, 131080, 8, 1441797, 131068, 7, 1441793, 131068, 6, 1048578, 65540, 65528, 1048580, 65540, 65529, 1441793, 65540, 65530, 1310722, 131076, 65530, 1310722, 131076, 65529, 1310721, 131076, 65528, 1048580, 196604, 6, 1048578, 196604, 7, 1310721, 131080, 65528, 5, 131080, 65529, 1048577, 131080, 65530, 1048577, 131080, 65531, 1048577, 131080, 65532, 4, 131080, 65533, 1048577, 131080, 65534, 1048577, 131080, 65535, 1048577, 131080, 0, 1048577, 131080, 1, 1048577, 131080, 2, 1048577, 131080, 3, 1048577, 131080, 4, 1048577, 131080, 5, 1048577, 131080, 6, 1048577, 131080, 7, 1048577, 131064, 7, 1048577, 131064, 6, 1048577, 131064, 65528, 1048581, 131064, 65529, 1048577, 131064, 65530, 1048577, 131064, 65531, 1048577, 131064, 65532, 1048577, 131064, 65533, 1048577, 131064, 65534, 1048577, 131064, 65535, 1048577, 131064, 0, 1048577, 131064, 1, 1048577, 131064, 2, 1048577, 131064, 3, 1048577, 131064, 4, 655364, 131064, 5, 1048577, 196600, 65528, 1048581, 196600, 65529, 1048577, 196600, 65530, 1048577, 196600, 65532, 1048577, 196600, 65533, 1048577, 196600, 65534, 1048577, 196600, 65531, 1048577, 196600, 65535, 1048577, 196600, 0, 1048577, 196600, 1, 1048577, 196600, 2, 1048577, 196600, 3, 1048577, 196600, 4, 655364, 196600, 7, 1048577, 196600, 6, 1048577, 196600, 5, 1048577, 65544, 7, 1048577, 65544, 6, 1048577, 65544, 5, 1048577, 65544, 4, 1048577, 65544, 3, 1048577, 65544, 2, 1048577, 65544, 1, 1048577, 65544, 0, 1048577, 65544, 65535, 1048577, 65544, 65534, 1048577, 65544, 65533, 1048577, 65544, 65532, 4, 65544, 65531, 1048577, 65544, 65530, 1048577, 65544, 65529, 1048577, 65544, 65528, 5, 131068, 65528, 1, 131079, 65528, 1, 131078, 65528, 1, 131077, 65528, 1, 131075, 65528, 1, 131074, 65528, 1, 131073, 65528, 1, 131072, 65528, 1, 196607, 65528, 1, 196606, 65528, 1, 196605, 65528, 1, 196604, 65528, 1, 196603, 65528, 1, 196602, 65528, 1, 196601, 65528, 1, 65543, 65528, 1, 65542, 65528, 1, 65541, 65528, 1, 65539, 65528, 1, 65538, 65528, 1, 65537, 65528, 1, 65536, 65528, 1, 131071, 65528, 1, 131070, 65528, 1, 131069, 65528, 1, 131067, 65528, 1, 131066, 65528, 1, 131065, 65528, 1, 65542, 65532, 655362, 131078, 65532, 655362, 131065, 4, 1, 131066, 4, 2, 196602, 4, 2, 196601, 4, 1, 131079, 65532, 1, 65543, 65532, 1, 65539, 0, 655361, 131069, 0, 655361, 65536, 65533, 1048577, 65536, 3, 1048577, 65536, 4, 1048577, 65536, 5, 1048577, 65536, 65532, 1048577, 65536, 65531, 1048577, 65540, 0, 1, 65541, 0, 1, 131068, 0, 1, 131067, 0, 1, 131075, 0, 524297, 131076, 0, 524297, 131077, 0, 524297, 196603, 0, 524297, 196604, 0, 524297, 196605, 0, 524297, 131072, 3, 1310729, 131072, 4, 1310729, 131072, 5, 1310729, 131072, 65533, 1310729, 131072, 65532, 1310729, 131072, 65531, 1310729)
-}
-metadata/_editor_floor_ = Vector3(0, 2, 0)
-
-[node name="Item" type="Node3D" parent="NavigationRegion3D"]
+[node name="Item" type="Node3D" parent="World/NavigationRegion3D"]
 unique_name_in_owner = true
 
-[node name="Shop" parent="NavigationRegion3D/Item" instance=ExtResource("4_vn8n0")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -2)
+[node name="Shop" parent="World/NavigationRegion3D/Item" instance=ExtResource("4_vn8n0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="Crafter" parent="NavigationRegion3D/Item" instance=ExtResource("15_3ryjx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, -4)
+[node name="UI" type="Node" parent="."]
 
-[node name="Bullet_Box" parent="NavigationRegion3D/Item" instance=ExtResource("14_182do")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, -4)
-
-[node name="Gunpowder_Box" parent="NavigationRegion3D/Item" instance=ExtResource("13_0ohw3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1, -4)
-
-[node name="InspectedItemUI3D" type="Sprite3D" parent="."]
+[node name="InspectedItemUI3D" type="Sprite3D" parent="UI"]
 visible = false
 modulate = Color(1, 1, 1, 0.827451)
 billboard = 1
 texture = SubResource("ViewportTexture_8c162")
 
-[node name="SubViewport" type="SubViewport" parent="InspectedItemUI3D"]
+[node name="SubViewport" type="SubViewport" parent="UI/InspectedItemUI3D"]
 disable_3d = true
 size = Vector2i(200, 300)
 
-[node name="InspectedItemUI" parent="InspectedItemUI3D/SubViewport" instance=ExtResource("22_pmkw6")]
+[node name="InspectedItemUI" parent="UI/InspectedItemUI3D/SubViewport" instance=ExtResource("22_pmkw6")]
 custom_minimum_size = Vector2(200, 300)
 
-[node name="Control" type="Control" parent="."]
+[node name="Control" type="Control" parent="UI"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -135,7 +122,22 @@ grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="TurretTargetChangeAlert" type="Label" parent="Control"]
+[node name="ReadyWaveAlert" type="Label" parent="UI/Control"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 10.0
+offset_top = 28.5
+offset_right = 107.0
+offset_bottom = 51.5
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("23_u06ob")
+
+[node name="TurretTargetChangeAlert" type="Label" parent="UI/Control"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -148,11 +150,11 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_fonts/font = ExtResource("23_u06ob")
-text = "DEBUG TEXT - TURRET TARGETING
-(-) TO CHECK
-(+) TO CHANGE"
+text = "Debug Text - Turret Targeting
+(-) To check
+(+) To change"
 
-[node name="IncomingWavePanelAlert" type="Label" parent="Control"]
+[node name="IncomingWavePanelAlert" type="Label" parent="UI/Control"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -168,7 +170,7 @@ text = "Incoming Wave Panel
 - example
 - example"
 
-[node name="PathfindingAlert" type="Label" parent="Control"]
+[node name="PathfindingAlert" type="Label" parent="UI/Control"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -185,23 +187,23 @@ text = "Enemy path is currently blocked
 Make a way for the enemy to move"
 script = ExtResource("24_o3up7")
 
-[node name="Input_Guide_UI" parent="Control" instance=ExtResource("25_bk3ig")]
+[node name="InputGuideUI" parent="UI/Control" instance=ExtResource("25_bk3ig")]
 layout_mode = 1
 
-[node name="IngameUI" parent="Control" instance=ExtResource("26_ov2ag")]
+[node name="IngameUI" parent="UI/Control" instance=ExtResource("26_ov2ag")]
 unique_name_in_owner = true
 layout_mode = 1
 
-[node name="Shop" parent="Control" instance=ExtResource("27_lt3j2")]
+[node name="Shop" parent="UI/Control" instance=ExtResource("27_lt3j2")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
 metadata/_edit_use_anchors_ = true
 
-[node name="IngameMenu" parent="Control" instance=ExtResource("28_76s64")]
+[node name="IngameMenu" parent="UI/Control" instance=ExtResource("28_76s64")]
 unique_name_in_owner = true
 visible = false
 
-[connection signal="bake_finished" from="NavigationRegion3D" to="." method="_on_navigation_region_3d_bake_finished"]
-[connection signal="child_entered_tree" from="NavigationRegion3D/Item" to="." method="_on_item_child_entered_or_exiting_tree"]
-[connection signal="child_exiting_tree" from="NavigationRegion3D/Item" to="." method="_on_item_child_entered_or_exiting_tree"]
+[connection signal="bake_finished" from="World/NavigationRegion3D" to="." method="_on_navigation_region_3d_bake_finished"]
+[connection signal="child_entered_tree" from="World/NavigationRegion3D/Item" to="." method="_on_item_child_entered_or_exiting_tree"]
+[connection signal="child_exiting_tree" from="World/NavigationRegion3D/Item" to="." method="_on_item_child_entered_or_exiting_tree"]

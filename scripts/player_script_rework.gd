@@ -1,6 +1,6 @@
 extends CharacterBody3D
 
-const SPEED = 5.0
+const SPEED = 300.0
 const JUMP_VELOCITY = 4.5
 
 var id = "player"
@@ -45,8 +45,8 @@ func _physics_process(delta):
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
 	if direction:
-		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
+		velocity.x = direction.x * SPEED * delta 
+		velocity.z = direction.z * SPEED * delta 
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
@@ -426,15 +426,27 @@ func player_InspectItems():
 		inspectedItem_UI_Sprite.global_position = player_inspectedItem.global_position + sprite_adjustment
 		if Function.search_regex("turret", player_inspectedItem.id):
 			print("INSPECTED TURRET")
-			inspectedItem_UI.AttackDamageText = player_inspectedItem.attack_damage
-			inspectedItem_UI.AttackRangeText = player_inspectedItem.attack_range
+			if player_inspectedItem.buff_isEnchanted:
+				inspectedItem_UI.AttackDamageText = str(player_inspectedItem.attack_damage) + "+" + str(player_inspectedItem.enchanted_bonus)
+			else:
+				inspectedItem_UI.AttackDamageText = player_inspectedItem.attack_damage
+			if player_inspectedItem.buff_isMounted:
+				inspectedItem_UI.AttackRangeText = str(player_inspectedItem.attack_range) + "+" + str(player_inspectedItem.mounted_bonus)
+			else:
+				inspectedItem_UI.AttackRangeText = player_inspectedItem.attack_range
+			
+			#inspectedItem_UI.AttackDamageText = player_inspectedItem.attack_damage
+			#inspectedItem_UI.AttackRangeText = player_inspectedItem.attack_range
 			inspectedItem_UI.AttackSpeedText = player_inspectedItem.attack_speed
 			inspectedItem_UI.AmmoText = player_inspectedItem.bullet_maxammo
 			inspectedItem_UI_Sprite.show()
 		
 		if Function.search_regex("mortar", player_inspectedItem.id):
 			print("INSPECTED MORTAR")
-			inspectedItem_UI.AttackDamageText = player_inspectedItem.attack_damage
+			if player_inspectedItem.buff_isEnchanted:
+				inspectedItem_UI.AttackDamageText = str(player_inspectedItem.attack_damage) + "+" + str(player_inspectedItem.enchanted_bonus)
+			else:
+				inspectedItem_UI.AttackDamageText = player_inspectedItem.attack_damage
 			inspectedItem_UI.AttackRangeText = str(player_inspectedItem.attack_rangeMin) + "-" + str(player_inspectedItem.attack_rangeMax)
 			inspectedItem_UI.AttackSpeedText = player_inspectedItem.attack_speed
 			inspectedItem_UI_Sprite.show()
@@ -442,7 +454,10 @@ func player_InspectItems():
 		match player_inspectedItem.id:
 			"wall_spiked":
 				print("INSPECTED WALL SPIKED")
-				inspectedItem_UI.AttackDamageText = player_inspectedItem.attack_damage
+				if player_inspectedItem.buff_isEnchanted:
+					inspectedItem_UI.AttackDamageText = str(player_inspectedItem.attack_damage) + "+" + str(player_inspectedItem.enchanted_bonus)
+				else:
+					inspectedItem_UI.AttackDamageText = player_inspectedItem.attack_damage
 				inspectedItem_UI.AttackRangeText = "1"
 				inspectedItem_UI.AttackSpeedText = player_inspectedItem.attack_speed
 				inspectedItem_UI_Sprite.show()
@@ -451,8 +466,19 @@ func player_InspectItems():
 				print("INSPECTED WALL MOUNTABLE")
 				if player_inspectedItem.is_mountable_occupied:
 					#if Function.search_regex("turret", player_inspectedItem.get_child(-1).id):
-					inspectedItem_UI.AttackDamageText = player_inspectedItem.currently_mountable_item.attack_damage
-					inspectedItem_UI.AttackRangeText = player_inspectedItem.currently_mountable_item.attack_range
+					
+					if player_inspectedItem.currently_mountable_item.buff_isEnchanted:
+						inspectedItem_UI.AttackDamageText = str(player_inspectedItem.currently_mountable_item.attack_damage) + "+" + str(player_inspectedItem.currently_mountable_item.enchanted_bonus)
+					else:
+						inspectedItem_UI.AttackDamageText = player_inspectedItem.currently_mountable_item.attack_damage
+					
+					if player_inspectedItem.currently_mountable_item.buff_isMounted:
+						inspectedItem_UI.AttackRangeText = str(player_inspectedItem.currently_mountable_item.attack_range) + "+" + str(player_inspectedItem.currently_mountable_item.mounted_bonus)
+					else:
+						inspectedItem_UI.AttackRangeText = player_inspectedItem.currently_mountable_item.attack_range
+						
+					#inspectedItem_UI.AttackDamageText = player_inspectedItem.currently_mountable_item.attack_damage
+					#inspectedItem_UI.AttackRangeText = player_inspectedItem.currently_mountable_item.attack_range
 					inspectedItem_UI.AttackSpeedText = player_inspectedItem.currently_mountable_item.attack_speed
 					inspectedItem_UI.AmmoText = player_inspectedItem.currently_mountable_item.bullet_maxammo
 					inspectedItem_UI_Sprite.show()

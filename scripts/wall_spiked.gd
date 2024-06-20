@@ -1,12 +1,34 @@
 extends Wall_Parent
 
+#buff/debuff
+var buff_isEnchanted = false
+var enchanted_bonus = 0
+
+#FINAL STATUS
+var final_attack_damage
 
 func _ready():
 	ready_up()
+	final_attack_damage = attack_damage
+
+func update_status(buff: String, enable: bool = false, buff_effect: int = 0):
+	var mounted_effect = 0
+	var enchanted_effect = 0
+	match buff:
+		# ENCHANTED - ATTACK DAMAGE
+		"enchanted":
+			match enable:
+				true:
+					buff_isEnchanted = true
+					enchanted_effect = buff_effect
+				false: 
+					buff_isEnchanted = false
+					enchanted_effect = 0
+	final_attack_damage = attack_damage + enchanted_effect
 
 func _on_area_3d_body_entered(body):
 	if body.get_parent().name == 'Enemies' and $AttackSpeed.time_left <= 0.0:
-		body.hit(attack_damage)
+		body.hit(final_attack_damage)
 		$AttackSpeed.start(attack_speed)
 		$SpikeSfx.play()
 		var spike_Tween = get_tree().create_tween()

@@ -19,6 +19,13 @@ var bullet_speed: int
 var is_controlled: bool = false
 var able_shoot: bool = true
 
+#buff/debuff
+var buff_isEnchanted = false
+var enchanted_bonus = 0
+
+#FINAL STATUS
+var final_attack_damage
+
 func seed_property():
 	var file = FileAccess.open("res://autoload/item_db.json", FileAccess.READ)
 	var file_text = file.get_as_text()
@@ -33,6 +40,7 @@ func seed_property():
 
 func _ready():
 	seed_property()
+	final_attack_damage = attack_damage
 	$Models/Head/Barrel.rotation_degrees.x = 4
 	$ReloadTimerBar3D.hide()
 	visible_range.hide()
@@ -62,6 +70,23 @@ func _process(delta):
 		# Shoot the mortar while in controlled state, because why not?
 		elif Input.is_action_just_pressed("interact") and !Global.preparation_phase:
 			shoot()
+
+func update_status(buff: String, enable: bool = false, buff_effect: int = 0):
+	var enchanted_effect = 0
+	match buff:
+		# ENCHANTED - ATTACK DAMAGE
+		"enchanted":
+			match enable:
+				true:
+					buff_isEnchanted = true
+					enchanted_effect = buff_effect
+					enchanted_bonus = buff_effect
+				false: 
+					buff_isEnchanted = false
+					enchanted_effect = 0
+					enchanted_bonus = 0
+	
+	final_attack_damage = attack_damage + enchanted_effect
 
 func shoot():
 	if able_shoot:

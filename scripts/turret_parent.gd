@@ -35,6 +35,18 @@ var bullet_ricochet: int
 @onready var visible_range: MeshInstance3D = $Range/VisibleRange
 @onready var range_radius: CollisionShape3D = $Range/CollisionShape3D
 var enemies_array: Array = []
+
+# Buff/debuff that will affect turret status
+var buff_isMounted: bool = false # affect attack range
+var mounted_bonus = 0
+var buff_isEnchanted: bool = false # affect attack damage
+var enchanted_bonus = 0
+
+# FINAL STATUS VARIABLE
+var final_attack_damage
+var final_attack_range
+var final_attack_speed
+
 # Target priority goes here
 var target # Being use for turret head visual look_at and projectile direction
 var target_temp # Being use to check for target availability (last_in and random)
@@ -85,11 +97,53 @@ func ready_up():
 		# Zero idea on how to make a new mesh also for some reason this mesh porperty being applied to others...
 		# visible_range.mesh.top_radius = attack_range
 	visible_range.hide()
+	final_attack_damage = attack_damage
 	$AttackSpeed.wait_time = attack_speed
 	$RayCast3D.target_position.z = -attack_range
 	$RayCast3DTemp.target_position.z = -attack_range
 	$RayCast3D.hide()
 	$RayCast3DTemp.hide() # This being utilized in target_priority
+
+func start_process():
+	lock_on()
+	target_priority_lock_on()
+	shoot()
+	update_range_visual()
+	update_UI()
+	
+func update_status(buff: String, enable: bool = false, buff_effect: int = 0):
+	var mounted_effect = 0
+	var enchanted_effect = 0
+	match buff:
+		# MOUNTED - ATTACK RANGE
+		"mounted":
+			match enable:
+				true:
+					buff_isMounted = true
+					mounted_effect = buff_effect
+					mounted_bonus = buff_effect
+				false: 
+					buff_isMounted = false
+					mounted_effect = 0
+					mounted_bonus = 0
+		# ENCHANTED - ATTACK DAMAGE
+		"enchanted":
+			match enable:
+				true:
+					buff_isEnchanted = true
+					enchanted_effect = buff_effect
+					enchanted_bonus = buff_effect
+				false: 
+					buff_isEnchanted = false
+					enchanted_effect = 0
+					enchanted_bonus = 0
+	
+	final_attack_damage = attack_damage + enchanted_effect
+	final_attack_range = attack_range + mounted_effect
+	final_attack_speed = attack_speed
+	
+	update_range()
+	
 
 func update_damage(add_or_remove_damage: int):
 	# Please use this in incremental of 1 (damage)
@@ -101,31 +155,36 @@ func update_speed(add_or_remove_speed: float):
 	attack_speed = attack_speed / (1 + add_or_remove_speed)
 	$AttackSpeed.wait_time = attack_speed
 
-func update_range(add_or_remove_range: int):
-	# Please use this in incremental of 1 (meter)
-	# Add range with positive number and remove range with negative number
-	attack_range += add_or_remove_range
+#func update_range(add_or_remove_range: int):
+	## Please use this in incremental of 1 (meter)
+	## Add range with positive number and remove range with negative number
+	#attack_range += add_or_remove_range
+	#if $Range/CollisionShape3D.get_shape().is_class("CylinderShape3D"):
+		#range_radius.shape.radius = attack_range
+		#visible_range.mesh.top_radius = attack_range
+	#elif $Range/CollisionShape3D.get_shape().is_class("BoxShape3D"):
+		#range_radius.shape.size.z = attack_range
+		#range_radius.position.z = -(attack_range * 0.5)
+		#visible_range.mesh.size.z = attack_range
+		#visible_range.position.z = -(attack_range * 0.5)
+	#$RayCast3D.target_position.z = -attack_range
+	#$RayCast3DTemp.target_position.z = -attack_range
+
+func update_range():
 	if $Range/CollisionShape3D.get_shape().is_class("CylinderShape3D"):
-		range_radius.shape.radius = attack_range
-		visible_range.mesh.top_radius = attack_range
+		range_radius.shape.radius = final_attack_range
+		visible_range.mesh.top_radius = final_attack_range
 	elif $Range/CollisionShape3D.get_shape().is_class("BoxShape3D"):
-		range_radius.shape.size.z = attack_range
-		range_radius.position.z = -(attack_range * 0.5)
-		visible_range.mesh.size.z = attack_range
-		visible_range.position.z = -(attack_range * 0.5)
-	$RayCast3D.target_position.z = -attack_range
-	$RayCast3DTemp.target_position.z = -attack_range
+		range_radius.shape.size.z = final_attack_range
+		range_radius.position.z = -(final_attack_range * 0.5)
+		visible_range.mesh.size.z = final_attack_range
+		visible_range.position.z = -(final_attack_range * 0.5)
+	$RayCast3D.target_position.z = -final_attack_range
+	$RayCast3DTemp.target_position.z = -final_attack_range
 
 func update_range_visual():
 	if $Range/VisibleRange.visible and $Range/VisibleRange.global_position.y != 0.6:
 		$Range/VisibleRange.global_position.y = 0.6
-
-func start_process():
-	lock_on()
-	target_priority_lock_on()
-	shoot()
-	update_range_visual()
-	update_UI()
 
 func lock_on():
 	if !enemies_array.is_empty(): # check array empty state
@@ -272,7 +331,7 @@ func shoot():
 			turret_projectile.ricochet_counter = bullet_ricochet
 			turret_projectile.ricochet_targetList.append_array(enemies_array)
 		# Other fixed params for bullets
-		turret_projectile.damage = attack_damage
+		turret_projectile.damage = final_attack_damage
 		turret_projectile.speed = bullet_speed
 		turret_projectile.transform = %ProjectileSpawn.global_transform #basically copy all of $"Head/Spawn Point" global transform(rotation, scale, position), to projectile
 		turret_projectile.set_direction = shoot_direction #direction used to set projectile movement direction

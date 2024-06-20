@@ -7,6 +7,8 @@ extends Wall_Parent
 
 @onready var player = get_node('/root/Scene/Player')
 
+var bonus_range = 1
+
 func _ready():
 	ready_up()
 
@@ -24,7 +26,9 @@ func mount(enable: bool):
 			currently_mountable_item.reparent(self, true)
 			currently_mountable_item.set_collision_layer_value(1, true)
 			# Add modified range to currently mountable item
-			currently_mountable_item.update_range(1)
+			#currently_mountable_item.update_range(1)
+			currently_mountable_item.update_status("mounted", true, bonus_range)
+			
 			# Sets check property
 			is_mountable = false
 			is_mountable_occupied = true
@@ -34,7 +38,8 @@ func mount(enable: bool):
 		print("Taking "+str(currently_mountable_item)+" from "+str(self)+" to hand")
 		player.player_isHoldingItem = true
 		# Remove modified range to currently mountable item
-		currently_mountable_item.update_range(-1)
+		#currently_mountable_item.update_range(-1)
+		currently_mountable_item.update_status("mounted", false)
 		# Sets check property
 		is_mountable = true
 		is_mountable_occupied = false

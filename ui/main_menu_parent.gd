@@ -16,7 +16,6 @@ func ready_up():
 	$Audio/BackgroundMusic.play()
 	$Menu.show()
 	$Options.hide()
-	$InputSettings.hide()
 
 func _unhandled_input(event):
 	if event is InputEventJoypadButton and event.is_pressed():

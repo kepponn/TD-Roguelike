@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://dqcqapws0lmpx"]
+[gd_scene load_steps=13 format=3 uid="uid://dqcqapws0lmpx"]
 
 [ext_resource type="Script" path="res://ui/main_menu.gd" id="1_ps8s2"]
 [ext_resource type="AudioStream" uid="uid://snf1352d2rhi" path="res://assets/audio/button/start.wav" id="2_4cuy6"]
@@ -10,6 +10,7 @@
 [ext_resource type="AudioStream" uid="uid://c1y5d5oex2r2x" path="res://assets/audio/bgm/game-music-loop-6-144641.mp3" id="6_6digd"]
 [ext_resource type="LabelSettings" uid="uid://dx1m7q6yg45rx" path="res://assets/font/font_title.tres" id="7_avxhl"]
 [ext_resource type="PackedScene" uid="uid://dj5h5xlhpj6cn" path="res://ui/input_settings.tscn" id="8_a72wx"]
+[ext_resource type="PackedScene" uid="uid://dkhc8y65g76fj" path="res://ui/level_selection_button.tscn" id="10_jk8qt"]
 [ext_resource type="LabelSettings" uid="uid://bkgfirxbljc1d" path="res://assets/font/font_ui.tres" id="10_qfpwc"]
 
 [node name="MainMenu" type="CanvasLayer"]
@@ -66,6 +67,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+metadata/_edit_group_ = true
 
 [node name="Play" type="Button" parent="Menu"]
 custom_minimum_size = Vector2(200, 0)
@@ -171,7 +173,91 @@ label_settings = ExtResource("10_qfpwc")
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="LevelSelection" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="LevelSelection"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -53.0
+offset_top = -27.5
+offset_right = 53.0
+offset_bottom = -4.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Level Selection"
+label_settings = ExtResource("10_qfpwc")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LevelSelection"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = 10.0
+offset_right = 100.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DummyButton" parent="LevelSelection/VBoxContainer" instance=ExtResource("10_jk8qt")]
+layout_mode = 2
+
+[node name="Back" type="Button" parent="LevelSelection"]
+custom_minimum_size = Vector2(200, 30)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = 10.0
+offset_right = 100.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="LevelSelection/Back"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.5
+offset_top = -9.5
+offset_right = 20.5
+offset_bottom = 13.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Back"
+label_settings = ExtResource("10_qfpwc")
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Options" type="Control" parent="."]
+visible = false
 layout_mode = 3
 anchors_preset = 8
 anchor_left = 0.5
@@ -184,6 +270,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+metadata/_edit_group_ = true
 
 [node name="DisplayGrid" type="GridContainer" parent="Options"]
 layout_mode = 1
@@ -457,11 +544,11 @@ label_settings = ExtResource("7_avxhl")
 horizontal_alignment = 1
 uppercase = true
 
-[connection signal="finished" from="Audio/Start" to="." method="_on_play_audio_finished"]
 [connection signal="finished" from="Audio/Quit" to="." method="_on_quit_audio_finished"]
 [connection signal="pressed" from="Menu/Play" to="." method="_on_play_pressed"]
 [connection signal="pressed" from="Menu/Options" to="." method="_on_options_pressed"]
 [connection signal="pressed" from="Menu/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="LevelSelection/Back" to="." method="_on_level_selection_back_pressed"]
 [connection signal="pressed" from="Options/DisplayGrid/FullscreenButton" to="." method="_on_options_fullscreen_pressed"]
 [connection signal="pressed" from="Options/DisplayGrid/WindowedButton" to="." method="_on_options_windowed_pressed"]
 [connection signal="value_changed" from="Options/AudioGrid/MasterVolume" to="." method="_on_options_master_volume"]

@@ -16,12 +16,17 @@
 [ext_resource type="PackedScene" uid="uid://bw1rk4kissaxp" path="res://scene/drone_base.tscn" id="14_mg14c"]
 [ext_resource type="PackedScene" uid="uid://di648bjo1jrc4" path="res://scene/turret_ricochet.tscn" id="15_t3pvb"]
 [ext_resource type="PackedScene" uid="uid://8ny1inkljgiu" path="res://scene/mortar.tscn" id="16_jnwwx"]
-[ext_resource type="PackedScene" path="res://scene/enhancement.tscn" id="17_aitaa"]
+[ext_resource type="PackedScene" uid="uid://o8b31i5r67xs" path="res://scene/enhancement.tscn" id="17_aitaa"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_nt818"]
 viewport_path = NodePath("UI/InspectedItemUI3D/SubViewport")
 
 [node name="Scene" instance=ExtResource("1_30vnm")]
+
+[node name="Camera" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, 0.258819, 0.965926, 0, -0.965926, 0.258819, 0, 13, 4.43347)
+projection = 2
+size = 0.08
 
 [node name="Spawner" parent="Path" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1, -8)

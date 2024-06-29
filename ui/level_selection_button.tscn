@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://dkhc8y65g76fj"]
+
+[ext_resource type="LabelSettings" uid="uid://bkgfirxbljc1d" path="res://assets/font/font_ui.tres" id="1_abslf"]
+[ext_resource type="Script" path="res://ui/level_selection_button.gd" id="1_fjooi"]
+
+[node name="Button" type="Button"]
+custom_minimum_size = Vector2(200, 30)
+script = ExtResource("1_fjooi")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -44.5
+offset_top = -10.5
+offset_right = 44.5
+offset_bottom = 12.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Debug Level"
+label_settings = ExtResource("1_abslf")
+horizontal_alignment = 1
+vertical_alignment = 1

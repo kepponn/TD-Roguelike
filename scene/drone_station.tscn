@@ -1,10 +1,11 @@
-[gd_scene load_steps=39 format=3 uid="uid://bw1rk4kissaxp"]
+[gd_scene load_steps=42 format=3 uid="uid://bw1rk4kissaxp"]
 
-[ext_resource type="Script" path="res://scripts/drone_base.gd" id="1_bqps5"]
+[ext_resource type="Script" path="res://scripts/drone_station.gd" id="1_bqps5"]
 [ext_resource type="Material" uid="uid://b21bl8ylev0j8" path="res://models/textures/generic_light_metal.tres" id="2_168xy"]
 [ext_resource type="Material" uid="uid://dtv68sjnoe1ov" path="res://models/textures/generic_super_light_metal.tres" id="3_yypyi"]
 [ext_resource type="Material" uid="uid://dkpv8vgb27wcn" path="res://models/textures/ammo_box_temp.tres" id="4_mwekv"]
 [ext_resource type="Material" uid="uid://bdlqifvqasqvb" path="res://models/textures/shop_orange.tres" id="5_f4s8y"]
+[ext_resource type="Material" uid="uid://bak28ouni41ni" path="res://assets/shaders/turret_area_check.tres" id="6_kdjxv"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_sx27g"]
 
@@ -492,6 +493,12 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_auypd")
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_e2l70"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_b6iev"]
+material = ExtResource("6_kdjxv")
+height = 0.001
+
 [node name="DroneBase" type="StaticBody3D"]
 script = ExtResource("1_bqps5")
 
@@ -590,3 +597,17 @@ skeleton = NodePath("")
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 1, 0)
 billboard = 1
 no_depth_test = true
+
+[node name="Range" type="Area3D" parent="."]
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Range"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("CylinderShape3D_e2l70")
+
+[node name="VisibleRange" type="MeshInstance3D" parent="Range"]
+mesh = SubResource("CylinderMesh_b6iev")
+
+[connection signal="body_entered" from="Range" to="." method="_on_range_body_entered"]
+[connection signal="body_exited" from="Range" to="." method="_on_range_body_exited"]

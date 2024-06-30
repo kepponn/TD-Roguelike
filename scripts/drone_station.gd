@@ -1,6 +1,6 @@
 extends StaticBody3D
 
-var id = "drone_base"
+var id = "drone_station"
 
 @onready var player = get_node('/root/Scene/Player')
 @onready var drone = $Models/Drone
@@ -9,6 +9,10 @@ var id = "drone_base"
 @onready var drone_ammoIcon = $AmmoCountIcon
 var base_ammo = 3 #This is the max standby and (+1 from drone carrying)
 var SPEED = 5.0
+
+var area_range = 6
+@onready var area = $Range
+@onready var visible_range = $Range/VisibleRange
 
 var drone_isMoving = false
 var drone_Tween
@@ -21,15 +25,41 @@ var turret_toReload: Array = []
 var drone_isCarryingAmmo: bool = false
 
 func _ready():
+	active_state(false)
 	drone_ammo.hide() # Hide ammo box models on drone
 	$Models/ammo_box1.hide()
 	$Models/ammo_box2.hide()
 	$Models/ammo_box3.hide()
+	# Range setter for area and visual
+	$Range/CollisionShape3D.shape.radius = area_range
+	$Range/VisibleRange.mesh.bottom_radius = area_range
+	$Range/VisibleRange.hide()
 
 func _process(_delta):
+	# This is for drone reloading tween and action
 	if !turret_toReload.is_empty() and !drone_isMoving and drone_isCarryingAmmo:
 		drone_tweenToTarget()
+	# This is for turret setter drone_station to this.self, therefore turret can request a reload
+	if !Global.preparation_phase:
+		active_state(true)
+	else:
+		active_state(false)
 	drone_model_and_ammo_calc()
+	update_range_visual()
+
+func active_state(enable: bool = true):
+	# To check the new area do state change from false to true
+	match enable:
+		true:
+			area.monitoring = true
+			area.monitorable = true
+		false:
+			area.monitoring = false
+			area.monitorable = false
+
+func update_range_visual():
+	if $Range/VisibleRange.visible and $Range/VisibleRange.global_position.y != 0.6:
+		$Range/VisibleRange.global_position.y = 0.6
 
 func reset():
 	if drone_Tween:
@@ -120,3 +150,21 @@ func add_ammoToBase():
 		player.player_holdedMats = ""
 		player.player_isHoldingItem = false
 	#play sfx maybe
+
+func _on_range_body_entered(body):
+	if body.is_class("StaticBody3D") and body.get_parent().name == 'Item':
+		if Function.search_regex("turret", body.id):
+			print("Set drone station for ", body)
+			body.drone_station = self
+		elif Function.search_regex("wall_mountable", body.id) and body.is_mountable_occupied:
+			print("Set drone station for mounted ", body.currently_mountable_item)
+			body.currently_mountable_item.drone_station = self
+
+func _on_range_body_exited(body):
+	if body.is_class("StaticBody3D") and body.get_parent().name == 'Item':
+		if Function.search_regex("turret", body.id):
+			print("Remove drone station for ", body)
+			body.drone_station = null
+		elif Function.search_regex("wall_mountable", body.id) and body.is_mountable_occupied:
+			print("Set drone station for mounted ", body.currently_mountable_item)
+			body.currently_mountable_item.drone_station = null

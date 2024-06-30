@@ -19,7 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://dxveo10rv12xy" path="res://scene/turret_gatling.tscn" id="15_epdbe"]
 [ext_resource type="PackedScene" uid="uid://b163wrbe72fm5" path="res://ui/ingame_menu.tscn" id="16_gndtv"]
 [ext_resource type="PackedScene" uid="uid://g2dvesmiy3l4" path="res://scene/wall_basic.tscn" id="16_nmw41"]
-[ext_resource type="PackedScene" uid="uid://bw1rk4kissaxp" path="res://scene/drone_base.tscn" id="17_1mvib"]
+[ext_resource type="PackedScene" uid="uid://bw1rk4kissaxp" path="res://scene/drone_station.tscn" id="17_1mvib"]
 [ext_resource type="PackedScene" uid="uid://r2mchdb2drmr" path="res://ui/ingame_ui.tscn" id="17_d5b3e"]
 [ext_resource type="PackedScene" uid="uid://boj1ov7anx6qx" path="res://ui/input_guide_ui.tscn" id="17_lshwk"]
 [ext_resource type="PackedScene" uid="uid://ddvggjxvp527d" path="res://scene/wall_spiked.tscn" id="17_oflby"]

@@ -61,7 +61,7 @@ var requesting_droneReload: bool = false
 @onready var empty_ammoIcon = $EmptyAmmoIcon
 @onready var drone_reloadIcon = $DroneReloadIcon
 # This should be an optional way of reloading...
-@onready var drone_base = null #get_node('/root/Scene/NavigationRegion3D/Item/Drone')
+@onready var drone_station = null #get_node('/root/Scene/NavigationRegion3D/Item/Drone')
 
 # To upgrade or downgrade the turrets we have the function ready:
 # update_damage(int), update_speed(float), update_range(int)
@@ -110,7 +110,7 @@ func start_process():
 	shoot()
 	update_range_visual()
 	update_UI()
-	
+
 func update_status(buff: String, enable: bool = false, buff_effect: int = 0):
 	var mounted_effect = 0
 	var enchanted_effect = 0
@@ -143,7 +143,6 @@ func update_status(buff: String, enable: bool = false, buff_effect: int = 0):
 	final_attack_speed = attack_speed
 	
 	update_range()
-	
 
 func update_damage(add_or_remove_damage: int):
 	# Please use this in incremental of 1 (damage)
@@ -311,12 +310,12 @@ func target_priority_check():
 	return (target.global_position - global_position).normalized()
 
 func shoot():
-	if drone_base != null:
-		if bullet_ammo != 0 and drone_base.turret_toReload.has(self):
-			drone_base.turret_toReload.erase(self)
+	if drone_station != null:
+		if bullet_ammo != 0 and drone_station.turret_toReload.has(self):
+			drone_station.turret_toReload.erase(self)
 			empty_ammoIcon.hide()
-		elif bullet_ammo == 0 and !drone_base.turret_toReload.has(self):
-			drone_base.turret_toReload.append(self)
+		elif bullet_ammo == 0 and !drone_station.turret_toReload.has(self):
+			drone_station.turret_toReload.append(self)
 			empty_ammoIcon.show()
 	
 	if !enemies_array.is_empty() and $AttackSpeed.time_left <= 0.0 and able_shoot and bullet_ammo != 0:

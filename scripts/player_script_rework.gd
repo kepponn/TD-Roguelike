@@ -297,27 +297,15 @@ func player_checkItemRange(item, enable: bool = true):
 	#regex.compile(pattern) d# check for match regex on 'turret' and be happy
 	# if by any-case you want to check more than just turret, add new pattern to be checked and refactor this code into match maybe
 	if enable:
-		if Function.search_regex("turret", item.id):
+		if Function.search_regex("turret", item.id) or Function.search_regex("mortar", item.id) or Function.search_regex("wall_spiked", item.id) or Function.search_regex("enhancement", item.id) or Function.search_regex("drone_station", item.id):
 			item.visible_range.show()
 		elif Function.search_regex("wall_mountable", item.id) and item.is_mountable_occupied:
 			item.currently_mountable_item.visible_range.show()
-		elif Function.search_regex("mortar", item.id):
-			item.visible_range.show()
-		elif Function.search_regex("wall_spiked", item.id):
-			item.visible_range.show()
-		elif Function.search_regex("enhancement", item.id):
-			item.visible_range.show()
 	else:
-		if Function.search_regex("turret", item.id):
+		if Function.search_regex("turret", item.id) or Function.search_regex("mortar", item.id) or Function.search_regex("wall_spiked", item.id) or Function.search_regex("enhancement", item.id) or Function.search_regex("drone_station", item.id):
 			item.visible_range.hide()
 		elif Function.search_regex("wall_mountable", item.id) and item.is_mountable_occupied:
 			item.currently_mountable_item.visible_range.hide()
-		elif Function.search_regex("mortar", item.id):
-			item.visible_range.hide()
-		elif Function.search_regex("wall_spiked", item.id):
-			item.visible_range.hide()
-		elif Function.search_regex("enhancement", item.id):
-			item.visible_range.hide()
 
 func player_checkIngredientItem():
 	# Future rework to cast the texture icon directly to Sprite3D
@@ -420,7 +408,7 @@ func player_InteractItems():
 				player_interactedItem_Temp.get_ingredient(player_holdedMats)
 				player_checkIngredientItem()
 				#CHANGE CRAFTER VARIABLE
-			elif player_interactedItem_Temp.id == "drone_base" and player_holdedMats == "ammo_box":
+			elif player_interactedItem_Temp.id == "drone_station" and player_holdedMats == "ammo_box":
 				player_interactedItem_Temp.add_ammoToBase()
 				player_checkIngredientItem()
 

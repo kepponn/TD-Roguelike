@@ -303,12 +303,20 @@ func player_checkItemRange(item, enable: bool = true):
 			item.currently_mountable_item.visible_range.show()
 		elif Function.search_regex("mortar", item.id):
 			item.visible_range.show()
+		elif Function.search_regex("wall_spiked", item.id):
+			item.visible_range.show()
+		elif Function.search_regex("enhancement", item.id):
+			item.visible_range.show()
 	else:
 		if Function.search_regex("turret", item.id):
 			item.visible_range.hide()
 		elif Function.search_regex("wall_mountable", item.id) and item.is_mountable_occupied:
 			item.currently_mountable_item.visible_range.hide()
 		elif Function.search_regex("mortar", item.id):
+			item.visible_range.hide()
+		elif Function.search_regex("wall_spiked", item.id):
+			item.visible_range.hide()
+		elif Function.search_regex("enhancement", item.id):
 			item.visible_range.hide()
 
 func player_checkIngredientItem():

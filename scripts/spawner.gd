@@ -107,7 +107,7 @@ func check_path():
 
 func _on_preview_timer_timeout():
 	await run_preview_path(Global.is_pathReachable)
-	$PreviewPath/PreviewTimer.start(5)
+	$PreviewPath/PreviewTimer.start(3)
 
 func run_preview_path(is_reachable):
 	var path_instance_arrow

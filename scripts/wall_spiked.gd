@@ -6,10 +6,19 @@ var enchanted_bonus = 0
 
 #FINAL STATUS
 var final_attack_damage
+@onready var visible_range = $Range/VisibleRange
 
 func _ready():
 	ready_up()
+	visible_range.hide()
 	final_attack_damage = attack_damage
+
+func _process(_delta):
+	update_range_visual()
+	
+func update_range_visual():
+	if $Range/VisibleRange.visible and $Range/VisibleRange.global_position.y != 0.6:
+		$Range/VisibleRange.global_position.y = 0.6
 
 func update_status(buff: String, enable: bool = false, buff_effect: int = 0):
 	var mounted_effect = 0

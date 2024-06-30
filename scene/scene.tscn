@@ -1,7 +1,7 @@
 [gd_scene load_steps=35 format=3 uid="uid://dl8dey22x882y"]
 
 [ext_resource type="PackedScene" uid="uid://dfa3wfjb564fn" path="res://scene/player_scene_old.tscn" id="1_rl4h5"]
-[ext_resource type="Script" path="res://scene_parent.gd" id="1_v7mt3"]
+[ext_resource type="Script" path="res://scripts/scene_parent.gd" id="1_v7mt3"]
 [ext_resource type="AudioStream" uid="uid://benfdpyeb1uyp" path="res://assets/audio/bgm/game-music-loop-7-145285.mp3" id="2_8a01y"]
 [ext_resource type="NavigationMesh" uid="uid://1kgcqxfwhe74" path="res://Navigation.tres" id="2_qtpp8"]
 [ext_resource type="AudioStream" uid="uid://dw3p4b28eq11x" path="res://assets/audio/bgm/game-music-loop-1-143979.mp3" id="3_dpd7u"]
@@ -25,7 +25,7 @@
 [ext_resource type="PackedScene" uid="uid://ddvggjxvp527d" path="res://scene/wall_spiked.tscn" id="17_oflby"]
 [ext_resource type="PackedScene" uid="uid://bu3pm3p7au2pa" path="res://ui/shop.tscn" id="17_vv3g3"]
 [ext_resource type="PackedScene" uid="uid://8ny1inkljgiu" path="res://scene/mortar.tscn" id="18_5jul5"]
-[ext_resource type="PackedScene" path="res://scene/enhancement.tscn" id="19_qpmxk"]
+[ext_resource type="PackedScene" uid="uid://o8b31i5r67xs" path="res://scene/enhancement.tscn" id="19_qpmxk"]
 [ext_resource type="PackedScene" uid="uid://g2b2ewy0w1op" path="res://scene/defend_point.tscn" id="20_3n541"]
 [ext_resource type="FontFile" uid="uid://cxvusk35yis3l" path="res://assets/font/Dadlygood.otf" id="20_b78p8"]
 [ext_resource type="PackedScene" uid="uid://bpefgdkivwfib" path="res://scene/spawner.tscn" id="23_ii802"]

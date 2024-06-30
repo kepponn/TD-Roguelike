@@ -114,7 +114,7 @@ func _process(_delta):
 			#MOUNT
 			elif player.player_interactedItem_Temp != null:
 				if player.player_interactedItem_Temp.has_method("mount"):
-					if player.player_isHoldingItem and player.player_interactedItem_Temp.currently_mountable_item == null:
+					if player.player_isHoldingItem and player.player_interactedItem_Temp.currently_mountable_item == null and Function.search_regex("turret", player.player_interactedItem.id):
 						update_visibility_and_text(C, controller_X, true, "Mount")
 			#DISMOUNT
 					elif !player.player_isHoldingItem and player.player_interactedItem_Temp.currently_mountable_item != null:
@@ -134,7 +134,7 @@ func _process(_delta):
 					update_visibility_and_text(X, controller_Y, true, "Check Area")
 			#GROUND TURRET
 			elif player.player_ableInteract and !player.player_isHoldingItem:
-				if Function.search_regex("turret", player.player_interactedItem_Temp.id) or Function.search_regex("mortar", player.player_interactedItem_Temp.id):
+				if Function.search_regex("turret", player.player_interactedItem_Temp.id) or Function.search_regex("mortar", player.player_interactedItem_Temp.id) or Function.search_regex("enhancement", player.player_interactedItem_Temp.id) or Function.search_regex("wall_spiked", player.player_interactedItem_Temp.id):
 					update_visibility_and_text(X, controller_Y, true, "Check Area")
 			
 			

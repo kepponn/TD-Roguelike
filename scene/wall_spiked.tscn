@@ -1,8 +1,9 @@
-[gd_scene load_steps=43 format=3 uid="uid://ddvggjxvp527d"]
+[gd_scene load_steps=45 format=3 uid="uid://ddvggjxvp527d"]
 
 [ext_resource type="PackedScene" uid="uid://d3uo4ylqy172v" path="res://scene/wall_parent.tscn" id="1_dsjnv"]
 [ext_resource type="Script" path="res://scripts/wall_spiked.gd" id="2_dibqg"]
 [ext_resource type="Material" uid="uid://b21bl8ylev0j8" path="res://models/textures/generic_light_metal.tres" id="3_eoetq"]
+[ext_resource type="Material" uid="uid://bak28ouni41ni" path="res://assets/shaders/turret_area_check.tres" id="4_o72st"]
 [ext_resource type="AudioStream" uid="uid://c8phswvldi7mu" path="res://assets/audio/sfx/080879_hit-39801.mp3" id="5_cyy0i"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dnwvq"]
@@ -419,7 +420,12 @@ shadow_mesh = SubResource("ArrayMesh_tmg01")
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_aoj6y"]
 height = 1.0
-radius = 1.0
+radius = 1.5
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_k7kof"]
+material = ExtResource("4_o72st")
+bottom_radius = 1.5
+height = 0.001
 
 [node name="Wall" instance=ExtResource("1_dsjnv")]
 script = ExtResource("2_dibqg")
@@ -494,10 +500,14 @@ transform = Transform3D(0, 0.173512, 1.03421e-08, -1.03421e-08, 0, -0.173512, -0
 mesh = SubResource("ArrayMesh_8jnxu")
 skeleton = NodePath("")
 
-[node name="Area3D" type="Area3D" parent="." index="2"]
+[node name="Range" type="Area3D" parent="." index="2"]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" index="0"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Range" index="0"]
 shape = SubResource("CylinderShape3D_aoj6y")
+
+[node name="VisibleRange" type="MeshInstance3D" parent="Range" index="1"]
+visible = false
+mesh = SubResource("CylinderMesh_k7kof")
 
 [node name="AttackSpeed" type="Timer" parent="." index="3"]
 one_shot = true
@@ -506,5 +516,5 @@ one_shot = true
 stream = ExtResource("5_cyy0i")
 bus = &"Effect"
 
-[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
-[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
+[connection signal="body_entered" from="Range" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Range" to="." method="_on_area_3d_body_exited"]

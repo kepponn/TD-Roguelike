@@ -1,6 +1,7 @@
-[gd_scene load_steps=14 format=3 uid="uid://o8b31i5r67xs"]
+[gd_scene load_steps=16 format=3 uid="uid://o8b31i5r67xs"]
 
-[ext_resource type="Script" path="res://enhancement.gd" id="1_no2i3"]
+[ext_resource type="Script" path="res://scripts/enhancement.gd" id="1_utmgk"]
+[ext_resource type="Material" uid="uid://bak28ouni41ni" path="res://assets/shaders/turret_area_check.tres" id="2_7wh8x"]
 [ext_resource type="Material" uid="uid://d2bltc2dtjck3" path="res://models/textures/bullet_case.tres" id="2_h78ha"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_3v6fr"]
@@ -8,6 +9,10 @@ size = Vector3(1, 2, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1edn2"]
 size = Vector3(2.5, 2, 2.5)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_68g6r"]
+material = ExtResource("2_7wh8x")
+size = Vector2(3, 3)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1ip17"]
 
@@ -134,19 +139,23 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_mgvmv")
 
 [node name="Enhancement" type="StaticBody3D"]
-script = ExtResource("1_no2i3")
+script = ExtResource("1_utmgk")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("BoxShape3D_3v6fr")
 
-[node name="Area3D" type="Area3D" parent="."]
+[node name="Range" type="Area3D" parent="."]
 monitoring = false
 monitorable = false
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Range"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("BoxShape3D_1edn2")
+
+[node name="VisibleRange" type="MeshInstance3D" parent="Range"]
+visible = false
+mesh = SubResource("PlaneMesh_68g6r")
 
 [node name="Models" type="Node3D" parent="."]
 
@@ -170,5 +179,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0508928, 0)
 mesh = SubResource("ArrayMesh_l5u16")
 skeleton = NodePath("")
 
-[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
-[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
+[connection signal="body_entered" from="Range" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Range" to="." method="_on_area_3d_body_exited"]

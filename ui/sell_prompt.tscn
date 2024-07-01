@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://d3282iyq1bnbx"]
+[gd_scene load_steps=9 format=3 uid="uid://d3282iyq1bnbx"]
 
 [ext_resource type="LabelSettings" uid="uid://bkgfirxbljc1d" path="res://assets/font/font_ui.tres" id="1_boee3"]
 [ext_resource type="PackedScene" uid="uid://c3va70n1nwul8" path="res://ui/inspected_item.tscn" id="1_c00uy"]
 [ext_resource type="Script" path="res://ui/sell_prompt.gd" id="1_g55g4"]
 [ext_resource type="FontFile" uid="uid://cxvusk35yis3l" path="res://assets/font/Dadlygood.otf" id="2_od7hm"]
+[ext_resource type="Script" path="res://ui/inspected_item.gd" id="3_aymrj"]
+[ext_resource type="PackedScene" uid="uid://budhhix56t71m" path="res://ui/inspected_item_ui.tscn" id="4_cijjf"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_evoel"]
 font = ExtResource("2_od7hm")
@@ -46,6 +48,19 @@ offset_bottom = 240.0
 scale = Vector2(0.6, 0.6)
 size_flags_horizontal = 1
 size_flags_vertical = 1
+script = ExtResource("3_aymrj")
+
+[node name="InspectedItemUI2" parent="." instance=ExtResource("4_cijjf")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -73.0
+offset_top = -110.0
+offset_right = 177.0
+offset_bottom = 240.0
+grow_horizontal = 2
+scale = Vector2(0.6, 0.6)
 
 [node name="PanelContainer" type="PanelContainer" parent="."]
 layout_mode = 1

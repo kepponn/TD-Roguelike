@@ -21,9 +21,9 @@ var item_rate = {
 	"turret_pierce" = 20,
 	"turret_gatling" = 20,
 	"turret_plasma" = 20,
-	"enhancement" = 5,
+	"enhancement" = 10,
 	"extra_health" = 5,
-	"drone_station" = 1000
+	"drone_station" = 5
 }
 
 var focused
@@ -48,9 +48,9 @@ func spawn_item(scene):
 	%Item.add_child(item, true)
 	shop.purchase()
 	# Set data for player to pickup the purchased item
-	player.player_interactedItem = item
-	player.player_interactedItem_Temp = item
-	player.player_ableInteract = true
+	#player.player_interactedItem = item
+	#player.player_interactedItem_Temp = item
+	#player.player_ableInteract = true
 
 func seed_item(seeder, property): # property are taken from item_rate where it MUST match an item.id
 	# Need to seed image placeholder and name property into shop_item.gd

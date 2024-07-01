@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://bajk04l7oocqf"]
+[gd_scene load_steps=19 format=3 uid="uid://bajk04l7oocqf"]
 
 [ext_resource type="Script" path="res://scripts/scene_parent.gd" id="1_7h58t"]
 [ext_resource type="AudioStream" uid="uid://benfdpyeb1uyp" path="res://assets/audio/bgm/game-music-loop-7-145285.mp3" id="2_eecwo"]
@@ -6,11 +6,11 @@
 [ext_resource type="AudioStream" uid="uid://dw3p4b28eq11x" path="res://assets/audio/bgm/game-music-loop-1-143979.mp3" id="3_npf3f"]
 [ext_resource type="PackedScene" uid="uid://wil6fipqm8m1" path="res://scene/shop.tscn" id="4_vn8n0"]
 [ext_resource type="PackedScene" uid="uid://bh38r272yxs36" path="res://scene/sell.tscn" id="9_5ovn0"]
+[ext_resource type="PackedScene" uid="uid://budhhix56t71m" path="res://ui/inspected_item_ui.tscn" id="12_bhhwj"]
 [ext_resource type="PackedScene" uid="uid://bscu6qqpt0hew" path="res://scene/player_scene_rework.tscn" id="15_u2sf4"]
 [ext_resource type="PackedScene" uid="uid://d3282iyq1bnbx" path="res://ui/sell_prompt.tscn" id="15_xjgeb"]
 [ext_resource type="PackedScene" uid="uid://g2b2ewy0w1op" path="res://scene/defend_point.tscn" id="20_xhdqf"]
 [ext_resource type="PackedScene" uid="uid://bpefgdkivwfib" path="res://scene/spawner.tscn" id="21_83lk5"]
-[ext_resource type="PackedScene" uid="uid://c3va70n1nwul8" path="res://ui/inspected_item.tscn" id="22_pmkw6"]
 [ext_resource type="FontFile" uid="uid://cxvusk35yis3l" path="res://assets/font/Dadlygood.otf" id="23_u06ob"]
 [ext_resource type="Script" path="res://ui/pathfinding_alert.gd" id="24_o3up7"]
 [ext_resource type="PackedScene" uid="uid://boj1ov7anx6qx" path="res://ui/input_guide_ui.tscn" id="25_bk3ig"]
@@ -29,9 +29,6 @@ volumetric_fog_enabled = true
 volumetric_fog_density = 0.0125
 adjustment_enabled = true
 adjustment_saturation = 1.25
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_8c162"]
-viewport_path = NodePath("UI/InspectedItemUI3D/SubViewport")
 
 [node name="Scene" type="Node3D"]
 script = ExtResource("1_7h58t")
@@ -104,19 +101,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="UI" type="Node" parent="."]
-
-[node name="InspectedItemUI3D" type="Sprite3D" parent="UI"]
-visible = false
-modulate = Color(1, 1, 1, 0.827451)
-billboard = 1
-texture = SubResource("ViewportTexture_8c162")
-
-[node name="SubViewport" type="SubViewport" parent="UI/InspectedItemUI3D"]
-disable_3d = true
-size = Vector2i(200, 300)
-
-[node name="InspectedItemUI" parent="UI/InspectedItemUI3D/SubViewport" instance=ExtResource("22_pmkw6")]
-custom_minimum_size = Vector2(200, 300)
 
 [node name="Control" type="Control" parent="UI"]
 layout_mode = 3
@@ -191,6 +175,9 @@ theme_override_fonts/font = ExtResource("23_u06ob")
 text = "Enemy path is currently blocked
 Make a way for the enemy to move"
 script = ExtResource("24_o3up7")
+
+[node name="InspectedItemUI" parent="UI/Control" instance=ExtResource("12_bhhwj")]
+layout_mode = 1
 
 [node name="InputGuideUI" parent="UI/Control" instance=ExtResource("25_bk3ig")]
 layout_mode = 1

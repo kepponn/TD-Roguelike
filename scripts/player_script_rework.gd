@@ -505,7 +505,7 @@ func player_CheckItems():
 					inspectedItem_UI.AmmoText = null
 					inspectedItem_UI.show()
 			"enhancement":
-				inspectedItem_UI.AttackDamageBuffText = player_inspectedItem.bonus_attack
+				inspectedItem_UI.AttackDamageBuffText = "+5"
 				inspectedItem_UI.show()
 			"drone_station":
 				inspectedItem_UI.AttackRangeText = player_inspectedItem.area_range

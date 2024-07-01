@@ -1,27 +1,33 @@
-[gd_scene load_steps=12 format=3 uid="uid://d1u6be282t5l6"]
+[gd_scene load_steps=12 format=3 uid="uid://budhhix56t71m"]
 
-[ext_resource type="Texture2D" uid="uid://br3j1afb22r3y" path="res://models/debug-block_8740nt-hexagonal-2598-mm-architextures.jpg" id="1_q5ml5"]
-[ext_resource type="Script" path="res://ui/shop_item.gd" id="1_wlhph"]
-[ext_resource type="Texture2D" uid="uid://dkvwlf708ayk0" path="res://assets/icon/background.png" id="3_fft30"]
-[ext_resource type="FontFile" uid="uid://cxvusk35yis3l" path="res://assets/font/Dadlygood.otf" id="4_132ss"]
-[ext_resource type="Texture2D" uid="uid://c6a6ynnhxytfa" path="res://assets/icon/silver-bullet.png" id="5_dugyq"]
-[ext_resource type="Texture2D" uid="uid://qas8sp4bfv5w" path="res://assets/icon/reticule.png" id="6_7sr40"]
-[ext_resource type="Texture2D" uid="uid://boys78erqcnk2" path="res://assets/icon/empty-hourglass.png" id="7_2mav1"]
-[ext_resource type="Texture2D" uid="uid://dcbblqklxu5tg" path="res://assets/icon/bullets.png" id="8_jgx1s"]
-[ext_resource type="Texture2D" uid="uid://c4msdclevew0c" path="res://assets/icon/silver-bullet(attack-damage-buff).png" id="9_vwv0i"]
-[ext_resource type="Texture2D" uid="uid://byx2f0jj3dpj8" path="res://assets/icon/reticule(attack-range-buff).png" id="10_5pox6"]
-[ext_resource type="Texture2D" uid="uid://rmmcfqjsvhws" path="res://assets/icon/ammo-box.png" id="11_758x8"]
+[ext_resource type="Script" path="res://ui/inspected_item_ui.gd" id="1_x6c0q"]
+[ext_resource type="Texture2D" uid="uid://br3j1afb22r3y" path="res://models/debug-block_8740nt-hexagonal-2598-mm-architextures.jpg" id="2_1aug2"]
+[ext_resource type="Texture2D" uid="uid://dkvwlf708ayk0" path="res://assets/icon/background.png" id="3_qwyre"]
+[ext_resource type="FontFile" uid="uid://cxvusk35yis3l" path="res://assets/font/Dadlygood.otf" id="4_vmicn"]
+[ext_resource type="Texture2D" uid="uid://c6a6ynnhxytfa" path="res://assets/icon/silver-bullet.png" id="5_tark1"]
+[ext_resource type="Texture2D" uid="uid://qas8sp4bfv5w" path="res://assets/icon/reticule.png" id="6_wxlax"]
+[ext_resource type="Texture2D" uid="uid://boys78erqcnk2" path="res://assets/icon/empty-hourglass.png" id="7_d0ip3"]
+[ext_resource type="Texture2D" uid="uid://dcbblqklxu5tg" path="res://assets/icon/bullets.png" id="8_ncvab"]
+[ext_resource type="Texture2D" uid="uid://c4msdclevew0c" path="res://assets/icon/silver-bullet(attack-damage-buff).png" id="9_h4i81"]
+[ext_resource type="Texture2D" uid="uid://byx2f0jj3dpj8" path="res://assets/icon/reticule(attack-range-buff).png" id="10_kwv0g"]
+[ext_resource type="Texture2D" uid="uid://rmmcfqjsvhws" path="res://assets/icon/ammo-box.png" id="11_p68fi"]
 
-[node name="Item" type="Button"]
-anchors_preset = 15
+[node name="InspectedItemUI" type="Control"]
+custom_minimum_size = Vector2(200, 300)
+layout_mode = 3
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
 anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -150.0
+offset_bottom = 150.0
+grow_horizontal = 0
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-button_mask = 3
-script = ExtResource("1_wlhph")
+script = ExtResource("1_x6c0q")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -41,7 +47,7 @@ layout_mode = 2
 [node name="ItemImage" type="TextureRect" parent="MarginContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-texture = ExtResource("1_q5ml5")
+texture = ExtResource("2_1aug2")
 expand_mode = 1
 stretch_mode = 6
 
@@ -53,233 +59,237 @@ anchor_right = 1.0
 offset_left = -25.0
 offset_top = 5.0
 offset_right = -5.0
-offset_bottom = 177.0
+offset_bottom = 217.0
 grow_horizontal = 0
 
 [node name="AttackDamageBg" type="TextureRect" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer"]
-visible = false
 layout_mode = 2
-texture = ExtResource("3_fft30")
+texture = ExtResource("3_qwyre")
 expand_mode = 4
 
 [node name="AttackDamageLabel" type="Label" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer/AttackDamageBg"]
-unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = -45.0
-offset_top = -14.5
-offset_right = -5.0
-offset_bottom = 8.5
+offset_left = -43.0
+offset_top = -13.5
+offset_right = -3.0
+offset_bottom = 9.5
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.847059, 0, 0.211765, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
 theme_override_constants/shadow_outline_size = 2
-theme_override_fonts/font = ExtResource("4_132ss")
-theme_override_font_sizes/font_size = 13
+theme_override_fonts/font = ExtResource("4_vmicn")
+theme_override_font_sizes/font_size = 16
+text = "123"
 horizontal_alignment = 2
 vertical_alignment = 2
 
 [node name="AttackDamageIcon" type="TextureRect" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer/AttackDamageBg"]
-unique_name_in_owner = true
 self_modulate = Color(0.847059, 0, 0.211765, 1)
-layout_mode = 2
-offset_right = 20.0
-offset_bottom = 20.0
-texture = ExtResource("5_dugyq")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_tark1")
 expand_mode = 4
 
 [node name="AttackRangeBg" type="TextureRect" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer"]
-visible = false
 layout_mode = 2
-texture = ExtResource("3_fft30")
+texture = ExtResource("3_qwyre")
 expand_mode = 4
 
 [node name="AttackRangeLabel" type="Label" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer/AttackRangeBg"]
-unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = -45.0
-offset_top = -14.5
-offset_right = -5.0
-offset_bottom = 8.5
+offset_left = -43.0
+offset_top = -13.5
+offset_right = -3.0
+offset_bottom = 9.5
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.25098, 1, 0.247059, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
 theme_override_constants/shadow_outline_size = 2
-theme_override_fonts/font = ExtResource("4_132ss")
-theme_override_font_sizes/font_size = 13
+theme_override_fonts/font = ExtResource("4_vmicn")
+theme_override_font_sizes/font_size = 16
+text = "123"
 horizontal_alignment = 2
 vertical_alignment = 2
 
 [node name="AttackRangeIcon" type="TextureRect" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer/AttackRangeBg"]
-unique_name_in_owner = true
 self_modulate = Color(0.25098, 1, 0.247059, 1)
-layout_mode = 2
-offset_right = 20.0
-offset_bottom = 20.0
-texture = ExtResource("6_7sr40")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("6_wxlax")
 expand_mode = 4
 
 [node name="AttackSpeedBg" type="TextureRect" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer"]
-visible = false
 layout_mode = 2
-texture = ExtResource("3_fft30")
+texture = ExtResource("3_qwyre")
 expand_mode = 4
 
 [node name="AttackSpeedLabel" type="Label" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer/AttackSpeedBg"]
-unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = -45.0
-offset_top = -14.5
-offset_right = -5.0
-offset_bottom = 8.5
+offset_left = -43.0
+offset_top = -13.5
+offset_right = -3.0
+offset_bottom = 9.5
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.32549, 1, 1, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
 theme_override_constants/shadow_outline_size = 2
-theme_override_fonts/font = ExtResource("4_132ss")
-theme_override_font_sizes/font_size = 13
+theme_override_fonts/font = ExtResource("4_vmicn")
+theme_override_font_sizes/font_size = 16
+text = "123"
 horizontal_alignment = 2
 vertical_alignment = 2
 
 [node name="AttackSpeedIcon" type="TextureRect" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer/AttackSpeedBg"]
-unique_name_in_owner = true
 self_modulate = Color(0.32549, 1, 1, 1)
-layout_mode = 2
-offset_right = 20.0
-offset_bottom = 20.0
-texture = ExtResource("7_2mav1")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_d0ip3")
 expand_mode = 4
 
 [node name="AmmoBg" type="TextureRect" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer"]
-visible = false
 layout_mode = 2
-texture = ExtResource("3_fft30")
+texture = ExtResource("3_qwyre")
 expand_mode = 4
 
 [node name="AmmoLabel" type="Label" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer/AmmoBg"]
-unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = -45.0
-offset_top = -14.5
-offset_right = -5.0
-offset_bottom = 8.5
+offset_left = -43.0
+offset_top = -13.5
+offset_right = -3.0
+offset_bottom = 9.5
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.505882, 0.505882, 0.505882, 1)
 theme_override_colors/font_shadow_color = Color(0.0431373, 0.0431373, 0.0431373, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
 theme_override_constants/shadow_outline_size = 2
-theme_override_fonts/font = ExtResource("4_132ss")
-theme_override_font_sizes/font_size = 13
+theme_override_fonts/font = ExtResource("4_vmicn")
+theme_override_font_sizes/font_size = 16
+text = "123"
 horizontal_alignment = 2
 vertical_alignment = 2
 
 [node name="AmmoIcon" type="TextureRect" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer/AmmoBg"]
-unique_name_in_owner = true
 self_modulate = Color(0.505882, 0.505882, 0.505882, 1)
-layout_mode = 2
-offset_right = 20.0
-offset_bottom = 20.0
-texture = ExtResource("8_jgx1s")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_ncvab")
 expand_mode = 4
 
 [node name="AttackDamageBuffBg" type="TextureRect" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer"]
-visible = false
 layout_mode = 2
-texture = ExtResource("3_fft30")
+texture = ExtResource("3_qwyre")
 expand_mode = 4
 
 [node name="AttackDamageBuffLabel" type="Label" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer/AttackDamageBuffBg"]
-unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = -45.0
-offset_top = -14.5
-offset_right = -5.0
-offset_bottom = 8.5
+offset_left = -43.0
+offset_top = -13.5
+offset_right = -3.0
+offset_bottom = 9.5
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.847059, 0, 0.211765, 1)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0.0431373, 0.0431373, 0.0431373, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
 theme_override_constants/shadow_outline_size = 2
-theme_override_fonts/font = ExtResource("4_132ss")
-theme_override_font_sizes/font_size = 13
+theme_override_fonts/font = ExtResource("4_vmicn")
+theme_override_font_sizes/font_size = 16
+text = "123"
 horizontal_alignment = 2
 vertical_alignment = 2
 
-[node name="AttackDamageBuffIcon" type="TextureRect" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer/AttackDamageBuffBg"]
-unique_name_in_owner = true
+[node name="AttackDamageBuff" type="TextureRect" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer/AttackDamageBuffBg"]
 self_modulate = Color(0.847059, 0, 0.211765, 1)
-layout_mode = 2
-offset_right = 20.0
-offset_bottom = 20.0
-texture = ExtResource("9_vwv0i")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("9_h4i81")
 expand_mode = 4
 
 [node name="AttackRangeBuffBg" type="TextureRect" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer"]
-visible = false
 layout_mode = 2
-texture = ExtResource("3_fft30")
+texture = ExtResource("3_qwyre")
 expand_mode = 4
 
 [node name="AttackRangeBuffLabel" type="Label" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer/AttackRangeBuffBg"]
-unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
-offset_left = -45.0
-offset_top = -14.5
-offset_right = -5.0
-offset_bottom = 8.5
+offset_left = -43.0
+offset_top = -13.5
+offset_right = -3.0
+offset_bottom = 9.5
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.25098, 1, 0.247059, 1)
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
 theme_override_constants/shadow_outline_size = 2
-theme_override_fonts/font = ExtResource("4_132ss")
-theme_override_font_sizes/font_size = 13
+theme_override_fonts/font = ExtResource("4_vmicn")
+theme_override_font_sizes/font_size = 16
+text = "123"
 horizontal_alignment = 2
 vertical_alignment = 2
 
 [node name="AttackRangeBuffIcon" type="TextureRect" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer/AttackRangeBuffBg"]
-unique_name_in_owner = true
 self_modulate = Color(0.25098, 1, 0.247059, 1)
-layout_mode = 2
-offset_right = 20.0
-offset_bottom = 20.0
-texture = ExtResource("10_5pox6")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("10_kwv0g")
 expand_mode = 4
 
 [node name="DroneAmmoCapacityBg" type="TextureRect" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer"]
-visible = false
 layout_mode = 2
-texture = ExtResource("3_fft30")
+texture = ExtResource("3_qwyre")
 expand_mode = 4
 
 [node name="DroneAmmoCapacityLabel" type="Label" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer/DroneAmmoCapacityBg"]
-unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
@@ -294,48 +304,15 @@ theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
 theme_override_constants/shadow_outline_size = 2
-theme_override_fonts/font = ExtResource("4_132ss")
+theme_override_fonts/font = ExtResource("4_vmicn")
 theme_override_font_sizes/font_size = 13
 horizontal_alignment = 2
 vertical_alignment = 2
 
 [node name="DroneAmmoCapacityIcon" type="TextureRect" parent="MarginContainer/HBoxContainer/ItemImage/StatusContainer/DroneAmmoCapacityBg"]
-unique_name_in_owner = true
 self_modulate = Color(0.847059, 0.941176, 0.372549, 1)
 layout_mode = 2
 offset_right = 20.0
 offset_bottom = 20.0
-texture = ExtResource("11_758x8")
+texture = ExtResource("11_p68fi")
 expand_mode = 4
-
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer"]
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 2
-size_flags_vertical = 8
-texture = ExtResource("1_q5ml5")
-expand_mode = 1
-stretch_mode = 1
-
-[node name="Price" type="Label" parent="MarginContainer/HBoxContainer/TextureRect"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -29.5
-offset_top = -11.5
-offset_right = 29.5
-offset_bottom = 11.5
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 10
-mouse_filter = 1
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_shadow_color = Color(0.615686, 0.615686, 0.615686, 1)
-theme_override_constants/shadow_outline_size = 3
-theme_override_fonts/font = ExtResource("4_132ss")
-text = "30 Gold"
-horizontal_alignment = 1
-vertical_alignment = 2

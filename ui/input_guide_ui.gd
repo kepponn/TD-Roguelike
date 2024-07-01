@@ -104,12 +104,9 @@ func _process(_delta):
 			#DEFAULT STATE -> HIDE
 			if !player.player_ableInteract:
 				update_visibility_and_text(C, controller_X, false)
-			#INSPECT
-			elif player.player_ableInteract and !player.player_isHoldingItem and !player.player_interactedItem_Temp.has_method("mount"):
-				if player.player_interactedItem_Temp.id != "shop":
-					update_visibility_and_text(C, controller_X, true, "Inspect")
 			#OPEN SHOP
-				else:
+			elif player.player_ableInteract and !player.player_isHoldingItem and !player.player_interactedItem_Temp.has_method("mount"):
+				if player.player_interactedItem_Temp.id == "shop":
 					update_visibility_and_text(C, controller_X, true, "Open Shop")
 			#MOUNT
 			elif player.player_interactedItem_Temp != null:
@@ -127,15 +124,15 @@ func _process(_delta):
 			#MOUNTED TURRET
 			elif player.player_interactedItem_Temp.has_method("mount"):
 				if !player.player_isHoldingItem and player.player_interactedItem_Temp.is_mountable_occupied:
-					update_visibility_and_text(X, controller_Y, true, "Check Area")
+					update_visibility_and_text(X, controller_Y, true, "Check Items")
 			#ON HEAD TURRET
 			elif !player.player_ableInteract and player.player_isHoldingItem:
 				if Function.search_regex("turret", player.player_interactedItem.id):
-					update_visibility_and_text(X, controller_Y, true, "Check Area")
+					update_visibility_and_text(X, controller_Y, true, "Check Items")
 			#GROUND TURRET
 			elif player.player_ableInteract and !player.player_isHoldingItem:
 				if Function.search_regex("turret", player.player_interactedItem_Temp.id) or Function.search_regex("mortar", player.player_interactedItem_Temp.id) or Function.search_regex("enhancement", player.player_interactedItem_Temp.id) or Function.search_regex("wall_spiked", player.player_interactedItem_Temp.id):
-					update_visibility_and_text(X, controller_Y, true, "Check Area")
+					update_visibility_and_text(X, controller_Y, true, "Check Items")
 			
 			
 			#------------ V INPUT / ROTATE ------------

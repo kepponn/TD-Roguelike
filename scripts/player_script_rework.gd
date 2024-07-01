@@ -8,9 +8,9 @@ var id = "player"
 @onready var scene = get_node('/root/Scene')
 @onready var holded_item = %"Holded Item"
 @onready var parent_item = get_node('/root/Scene/World/NavigationRegion3D/Item') # All items location
-@onready var inspectedItem_UI_Sprite = get_node('/root/Scene/UI/InspectedItemUI3D')
-@onready var inspectedItem_UI = get_node('/root/Scene/UI/InspectedItemUI3D/SubViewport/InspectedItemUI')
-
+#@onready var inspectedItem_UI_Sprite = get_node('/root/Scene/UI/InspectedItemUI3D')
+#@onready var inspectedItem_UIOLD = get_node('/root/Scene/UI/InspectedItemUI3D/SubViewport/InspectedItemUI')
+@onready var inspectedItem_UI = get_node('/root/Scene/UI/Control/InspectedItemUI')
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
@@ -28,6 +28,12 @@ var player_lockInput: bool = false
 var player_lastButtonFocused
 
 func _physics_process(delta):
+	print("player interacted item : ",player_interactedItem)
+	print("player interacted item TEMP : ",player_interactedItem_Temp)
+	print("player inspected item : ",player_inspectedItem)
+	
+	
+	
 	
 	if player_lastButtonFocused != null:
 		player_lastButtonFocused.grab_focus()
@@ -57,8 +63,8 @@ func _physics_process(delta):
 		open_shop()
 		mountable_wall()
 		player_InteractItems()
-		player_InspectItems()
-		player_InspectItemsArea()
+		player_CheckItems()
+		#player_InspectItemsArea()
 		player_RotateItems()
 	player_rotation(direction)
 	player_interactionZoneProcess()
@@ -107,6 +113,7 @@ func mountable_wall():
 		if player_interactedItem_Temp.has_method("mount") and Input.is_action_just_pressed("inspect"): # check for wall_mountable function
 			if player_ableInteract and player_isHoldingItem and player_interactedItem_Temp.currently_mountable_item == null:
 				player_interactedItem_Temp.mount(true)
+				player_interactedItem = null
 			elif player_ableInteract and !player_isHoldingItem and player_interactedItem_Temp.currently_mountable_item != null:
 				player_interactedItem_Temp.mount(false)
 				# This to disable continous area check when dismounted
@@ -249,7 +256,7 @@ func player_placementPreview(enable: bool):
 func player_holdItem(item) -> void: # need to return something so the last timer didnt stop prematurely
 	$Audio/SelectSfx.play()
 	player_placementPreview(true)
-	inspectedItem_UI_Sprite.hide()
+	#inspectedItem_UI_Sprite.hide()
 	item.reparent(holded_item, true) # Change the item parent into `%"Holded Item"` which reside in player node
 	item.set_collision_layer_value(1, false) # Remove the collision layer from the item while being held in-hand
 	#item.position = Vector3(0.5, 1, 0) # Set item position to be on top of player
@@ -261,7 +268,7 @@ func player_holdItem(item) -> void: # need to return something so the last timer
 func player_putItem(item):
 	$Audio/SelectSfx.play()
 	player_placementPreview(false)
-	inspectedItem_UI_Sprite.hide()
+	#inspectedItem_UI_Sprite.hide()
 	item.reparent(parent_item, true) # Change the item parent into `%Item` node
 	#item.set_collision_layer_value(1, true) # Enable the collision layer of the item
 	# Check the grid of item when putting down to the world
@@ -273,7 +280,7 @@ func player_putItem(item):
 
 func player_swapItem(held_item, ground_item):
 	player_placementPreview(false)
-	inspectedItem_UI_Sprite.hide()
+	#inspectedItem_UI_Sprite.hide()
 	held_item.reparent(parent_item, true) 
 	held_item.set_collision_layer_value(1, true)
 	held_item.position = ground_item.position # Swap the position property from held item to ground item
@@ -354,6 +361,7 @@ func player_InteractItems():
 			# print(%"Interaction Zone".global_position)
 			# print(player_interactedItem.position)
 			player_isHoldingItem = false
+			player_interactedItem = null
 			
 		# SWAP ITEM - HOLDING an items and HAVE INTERACTABLE item
 		elif player_ableInteract == true and player_isHoldingItem == true and player_ableToDrop == true and Input.is_action_just_pressed("interact"):
@@ -421,14 +429,19 @@ func player_InteractItems():
 				player_interactedItem_Temp.add_ammoToBase()
 				player_checkIngredientItem()
 
-func player_InspectItems():
+func player_CheckItems():
 	# This show the player card-like information about item, will be immediately turn off if player do any action
 	# Add more information but in text-type to some items? maybe make a new UI3D for that?
-	if Input.is_action_just_pressed("inspect") and player_ableInteract == true:
-		player_inspectedItem = player_interactedItem_Temp
+	if Input.is_action_just_pressed("check") and (player_ableInteract or player_isHoldingItem):
+		if player_isHoldingItem:
+			player_inspectedItem = player_interactedItem
+		else:
+			player_inspectedItem = player_interactedItem_Temp
+		player_checkItemRange(player_inspectedItem, true)
+		#player_inspectedItem = player_interactedItem_Temp
 		#player_checkItemRange(player_inspectedItem, true)
-		var sprite_adjustment = Vector3(0, 2, 0) #Vector3(0, 2, -1.5)
-		inspectedItem_UI_Sprite.global_position = player_inspectedItem.global_position + sprite_adjustment
+		#var sprite_adjustment = Vector3(0, 2, 0) #Vector3(0, 2, -1.5)
+		#inspectedItem_UI_Sprite.global_position = player_inspectedItem.global_position + sprite_adjustment
 		if Function.search_regex("turret", player_inspectedItem.id):
 			print("INSPECTED TURRET")
 			if player_inspectedItem.buff_isEnchanted:
@@ -444,7 +457,7 @@ func player_InspectItems():
 			#inspectedItem_UI.AttackRangeText = player_inspectedItem.attack_range
 			inspectedItem_UI.AttackSpeedText = player_inspectedItem.attack_speed
 			inspectedItem_UI.AmmoText = player_inspectedItem.bullet_maxammo
-			inspectedItem_UI_Sprite.show()
+			inspectedItem_UI.show()
 		
 		if Function.search_regex("mortar", player_inspectedItem.id):
 			print("INSPECTED MORTAR")
@@ -454,7 +467,7 @@ func player_InspectItems():
 				inspectedItem_UI.AttackDamageText = player_inspectedItem.attack_damage
 			inspectedItem_UI.AttackRangeText = str(player_inspectedItem.attack_rangeMin) + "-" + str(player_inspectedItem.attack_rangeMax)
 			inspectedItem_UI.AttackSpeedText = player_inspectedItem.attack_speed
-			inspectedItem_UI_Sprite.show()
+			inspectedItem_UI.show()
 		
 		match player_inspectedItem.id:
 			"wall_spiked":
@@ -465,7 +478,7 @@ func player_InspectItems():
 					inspectedItem_UI.AttackDamageText = player_inspectedItem.attack_damage
 				inspectedItem_UI.AttackRangeText = "1"
 				inspectedItem_UI.AttackSpeedText = player_inspectedItem.attack_speed
-				inspectedItem_UI_Sprite.show()
+				inspectedItem_UI.show()
 			# Will mess with player interaction when mounting a turret (showing card of the wall itself and mounting at the same time)
 			"wall_mountable":
 				print("INSPECTED WALL MOUNTABLE")
@@ -482,28 +495,36 @@ func player_InspectItems():
 					else:
 						inspectedItem_UI.AttackRangeText = player_inspectedItem.currently_mountable_item.attack_range
 						
-					#inspectedItem_UI.AttackDamageText = player_inspectedItem.currently_mountable_item.attack_damage
-					#inspectedItem_UI.AttackRangeText = player_inspectedItem.currently_mountable_item.attack_range
 					inspectedItem_UI.AttackSpeedText = player_inspectedItem.currently_mountable_item.attack_speed
 					inspectedItem_UI.AmmoText = player_inspectedItem.currently_mountable_item.bullet_maxammo
-					inspectedItem_UI_Sprite.show()
+					inspectedItem_UI.show()
 				else:
 					inspectedItem_UI.AttackDamageText = null
-					inspectedItem_UI.AttackRangeText = "+1"
+					inspectedItem_UI.AttackRangeBuffText = "+1"
 					inspectedItem_UI.AttackSpeedText = null
 					inspectedItem_UI.AmmoText = null
-					inspectedItem_UI_Sprite.show()
+					inspectedItem_UI.show()
+			"enhancement":
+				inspectedItem_UI.AttackDamageBuffText = player_inspectedItem.bonus_attack
+				inspectedItem_UI.show()
+			"drone_station":
+				inspectedItem_UI.AttackRangeText = player_inspectedItem.area_range
+				inspectedItem_UI.DroneAmmoCapacityText = "3"
+				inspectedItem_UI.show()
 	#elif player_inspectedItem != null and player_ableInteract == false and player_isHoldingItem == false:
 	elif player_inspectedItem != null and player_interactedItem_Temp != null and player_ableInteract == false:
 	# player_ableInteract to check the item itself and show the card of it
 		# This basically check if the temp is changed or player see 'empty' grid
-		if player_inspectedItem != player_interactedItem_Temp or player_inspectedItem != player_interactedItem or player_ableToDrop:
+		if player_inspectedItem != player_interactedItem:
 			#player_checkItemRange(player_inspectedItem, false)
 			inspectedItem_UI.AttackDamageText = null
 			inspectedItem_UI.AttackRangeText = null
 			inspectedItem_UI.AttackSpeedText = null
 			inspectedItem_UI.AmmoText = null
-			inspectedItem_UI_Sprite.hide()
+			inspectedItem_UI.AttackDamageBuffText = null
+			inspectedItem_UI.AttackRangeBuffText = null
+			inspectedItem_UI.hide()
+			player_checkItemRange(player_inspectedItem, false)
 
 func player_InspectItemsArea():
 	if Input.is_action_just_pressed("check") and (player_ableInteract or player_isHoldingItem):

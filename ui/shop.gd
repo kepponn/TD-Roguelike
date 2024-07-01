@@ -13,16 +13,17 @@ var reroll_price: int = 0
 var mouse_input
 
 var item_rate = {
-	#current sum = 250
 	"wall_basic" = 100,
-	"wall_mountable" = 20,
-	"wall_spiked" = 20,
+	"wall_mountable" = 25,
+	"wall_spiked" = 25,
 	"mortar" = 300,
 	"turret_basic" = 60,
-	"turret_pierce" = 10,
-	"turret_gatling" = 10,
-	"turret_plasma" = 10,
+	"turret_pierce" = 20,
+	"turret_gatling" = 20,
+	"turret_plasma" = 20,
+	"enhancement" = 5,
 	"extra_health" = 5,
+	"drone_station" = 1000
 }
 
 var focused
@@ -76,7 +77,12 @@ func seed_item(seeder, property): # property are taken from item_rate where it M
 			seeder.AttackRangeText = "1"
 			seeder.AttackSpeedText = property_temp.attack_speed
 		"wall_mountable":
-			seeder.AttackRangeText = "+1"
+			seeder.AttackRangeBuffText = "+1"
+		"enhancement":
+			seeder.AttackDamageBuffText = property_temp.bonus_attack
+		"drone_station":
+			seeder.AttackRangeText = property_temp.area_range
+			seeder.DroneAmmoCapacityText = property_temp.base_ammo
 
 func randomize_shopItem():
 	var rng = RandomNumberGenerator.new()

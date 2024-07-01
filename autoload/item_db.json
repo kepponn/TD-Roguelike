@@ -67,14 +67,20 @@
 	"mountable": true,
 	"spiked": false
   },
-   "wall_spiked": {
+  "wall_spiked": {
 	"price": 180,
 	"mountable": false,
 	"spiked": true,
 	"attack_damage": 1,
 	"attack_speed": 3
   },
-   "extra_health": {
+  "enhancement": {
+	"price": 250,
+  },
+  "extra_health": {
 	"price": 500
+  },
+  "drone_station": {
+	"price": 1000
   }
 }

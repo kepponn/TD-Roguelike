@@ -1,6 +1,7 @@
 extends StaticBody3D
 
 var id = "enhancement"
+var price
 var bonus_attack = 5
 
 @onready var area = $Range
@@ -9,6 +10,7 @@ var bonus_attack = 5
 # Therefore need to turn on active state to use, after done then returning back to default state
 func _ready():
 	active_state(false)
+	seed_property()
 	visible_range.hide()
 
 func _process(_delta):
@@ -18,6 +20,18 @@ func _process(_delta):
 		active_state(true)
 	else:
 		active_state(false)
+
+func seed_property():
+	var file = FileAccess.open("res://autoload/item_db.json", FileAccess.READ)
+	var file_text = file.get_as_text()
+	file.close()
+	# Parse JSON data to be easily modified by for loops
+	var data = JSON.parse_string(file_text)
+	# Check if the id exist in JSON data
+	if data.has(id):
+		var item_data = data[id]
+		for property in item_data:
+			self.set(property, item_data[property])
 
 func active_state(enable: bool = true):
 	# To check the new area do state change from false to true

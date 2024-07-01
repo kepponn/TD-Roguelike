@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dvg33xpbeviag"]
+[gd_scene load_steps=18 format=3 uid="uid://dvg33xpbeviag"]
 
 [ext_resource type="PackedScene" uid="uid://bajk04l7oocqf" path="res://scene/scene_parent.tscn" id="1_30vnm"]
 [ext_resource type="MeshLibrary" uid="uid://bpq8ija5ngli5" path="res://Tiles.tres" id="2_86584"]
@@ -17,9 +17,6 @@
 [ext_resource type="PackedScene" uid="uid://di648bjo1jrc4" path="res://scene/turret_ricochet.tscn" id="15_t3pvb"]
 [ext_resource type="PackedScene" uid="uid://8ny1inkljgiu" path="res://scene/mortar.tscn" id="16_jnwwx"]
 [ext_resource type="PackedScene" uid="uid://o8b31i5r67xs" path="res://scene/enhancement.tscn" id="17_aitaa"]
-
-[sub_resource type="ViewportTexture" id="ViewportTexture_nt818"]
-viewport_path = NodePath("UI/InspectedItemUI3D/SubViewport")
 
 [node name="Scene" instance=ExtResource("1_30vnm")]
 
@@ -134,6 +131,3 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 1, 
 
 [node name="Enhancement" parent="World/NavigationRegion3D/Item" index="28" instance=ExtResource("17_aitaa")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-
-[node name="InspectedItemUI3D" parent="UI" index="0"]
-texture = SubResource("ViewportTexture_nt818")

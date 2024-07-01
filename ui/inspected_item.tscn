@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://c3va70n1nwul8"]
 
-[ext_resource type="Script" path="res://ui/inspected_item.gd" id="1_25oeg"]
+[ext_resource type="Script" path="res://ui/inspected_item_ui.gd" id="1_25oeg"]
 [ext_resource type="Texture2D" uid="uid://br3j1afb22r3y" path="res://models/debug-block_8740nt-hexagonal-2598-mm-architextures.jpg" id="2_ienrm"]
 [ext_resource type="Texture2D" uid="uid://dkvwlf708ayk0" path="res://assets/icon/background.png" id="3_56w5x"]
 [ext_resource type="FontFile" uid="uid://cxvusk35yis3l" path="res://assets/font/Dadlygood.otf" id="4_jfdq3"]

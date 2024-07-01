@@ -1,11 +1,13 @@
-[gd_scene load_steps=18 format=3 uid="uid://bajk04l7oocqf"]
+[gd_scene load_steps=20 format=3 uid="uid://bajk04l7oocqf"]
 
 [ext_resource type="Script" path="res://scripts/scene_parent.gd" id="1_7h58t"]
 [ext_resource type="AudioStream" uid="uid://benfdpyeb1uyp" path="res://assets/audio/bgm/game-music-loop-7-145285.mp3" id="2_eecwo"]
 [ext_resource type="NavigationMesh" uid="uid://1kgcqxfwhe74" path="res://Navigation.tres" id="2_rv3n5"]
 [ext_resource type="AudioStream" uid="uid://dw3p4b28eq11x" path="res://assets/audio/bgm/game-music-loop-1-143979.mp3" id="3_npf3f"]
 [ext_resource type="PackedScene" uid="uid://wil6fipqm8m1" path="res://scene/shop.tscn" id="4_vn8n0"]
+[ext_resource type="PackedScene" uid="uid://bh38r272yxs36" path="res://scene/sell.tscn" id="9_5ovn0"]
 [ext_resource type="PackedScene" uid="uid://bscu6qqpt0hew" path="res://scene/player_scene_rework.tscn" id="15_u2sf4"]
+[ext_resource type="PackedScene" uid="uid://d3282iyq1bnbx" path="res://ui/sell_prompt.tscn" id="15_xjgeb"]
 [ext_resource type="PackedScene" uid="uid://g2b2ewy0w1op" path="res://scene/defend_point.tscn" id="20_xhdqf"]
 [ext_resource type="PackedScene" uid="uid://bpefgdkivwfib" path="res://scene/spawner.tscn" id="21_83lk5"]
 [ext_resource type="PackedScene" uid="uid://c3va70n1nwul8" path="res://ui/inspected_item.tscn" id="22_pmkw6"]
@@ -96,6 +98,9 @@ travel_cost = 0.0
 unique_name_in_owner = true
 
 [node name="Shop" parent="World/NavigationRegion3D/Item" instance=ExtResource("4_vn8n0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Sell" parent="World/NavigationRegion3D/Item" instance=ExtResource("9_5ovn0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="UI" type="Node" parent="."]
@@ -192,6 +197,10 @@ layout_mode = 1
 
 [node name="IngameUI" parent="UI/Control" instance=ExtResource("26_ov2ag")]
 unique_name_in_owner = true
+layout_mode = 1
+
+[node name="SellPrompt" parent="UI/Control" instance=ExtResource("15_xjgeb")]
+visible = false
 layout_mode = 1
 
 [node name="Shop" parent="UI/Control" instance=ExtResource("27_lt3j2")]

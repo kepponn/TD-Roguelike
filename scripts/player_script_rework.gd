@@ -87,10 +87,19 @@ func _ready():
 
 func open_shop():
 	if player_interactedItem_Temp != null:
+		# Open shop action
 		if player_interactedItem_Temp.name == "Shop" and Input.is_action_just_pressed("inspect") and Global.preparation_phase == true:
 			get_node('/root/Scene/UI/Control/Shop').show()
 			player_lockInput = true
 			get_node('/root/Scene/UI/Control/Shop/PanelContainer2/MarginContainer/HBoxContainer/CloseButton').grab_focus()
+		# Sell item action
+		elif player_interactedItem_Temp.name == "Sell" and Input.is_action_just_pressed("inspect") and player_isHoldingItem and Global.preparation_phase == true:
+			# Check what the player is holding, some items are not available to sell like (shop or crafting station)
+			# And make sure all the item have sell price, beucase it will be needed for calculation
+			# Add item list in the if-or parameters (this can be refactored by making array of item.id which can be sold and for-each it with search_regex function)
+			if Function.search_regex("turret", player_interactedItem.id) or Function.search_regex("wall", player_interactedItem.id) or Function.search_regex("mortar", player_interactedItem.id):
+				player_interactedItem_Temp.sell(player_interactedItem)
+				player_lockInput = true
 
 func mountable_wall():
 	# This check for preparation phase, if true then this process will be accessible

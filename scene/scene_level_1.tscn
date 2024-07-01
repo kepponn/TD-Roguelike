@@ -28,5 +28,8 @@ metadata/_editor_floor_ = Vector3(0, 1, 0)
 [node name="Shop" parent="World/NavigationRegion3D/Item" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -2)
 
+[node name="Sell" parent="World/NavigationRegion3D/Item" index="1"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1, 2)
+
 [node name="InspectedItemUI3D" parent="UI" index="0"]
 texture = SubResource("ViewportTexture_o1xpk")

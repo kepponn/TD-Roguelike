@@ -98,6 +98,8 @@ func open_shop():
 			# And make sure all the item have sell price, beucase it will be needed for calculation
 			# Add item list in the if-or parameters (this can be refactored by making array of item.id which can be sold and for-each it with search_regex function)
 			if Function.search_regex("turret", player_interactedItem.id) or Function.search_regex("wall", player_interactedItem.id) or Function.search_regex("mortar", player_interactedItem.id):
+				inspectedItem_UI.hide()
+				player_checkItemRange(player_inspectedItem, false)
 				player_interactedItem_Temp.sell(player_interactedItem)
 				player_lockInput = true
 
@@ -480,7 +482,6 @@ func player_CheckItems():
 			inspectedItem_UI.AttackRangeBuffText = null
 			inspectedItem_UI.DroneAmmoCapacityText = null
 			inspectedItem_UI.hide()
-			player_checkItemRange(player_inspectedItem, false)
 		#-------------------------------------------------------------------------------------------------------------------------------------------------
 		#if Function.search_regex("turret", player_inspectedItem.id):
 			#print("INSPECTED TURRET")

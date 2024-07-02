@@ -177,6 +177,7 @@ Make a way for the enemy to move"
 script = ExtResource("24_o3up7")
 
 [node name="InspectedItemUI" parent="UI/Control" instance=ExtResource("12_bhhwj")]
+visible = false
 layout_mode = 1
 
 [node name="InputGuideUI" parent="UI/Control" instance=ExtResource("25_bk3ig")]

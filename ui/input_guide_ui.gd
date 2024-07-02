@@ -82,7 +82,11 @@ func _process(_delta):
 					update_visibility_and_text(E, controller_A, true, "Shoot Mortar")
 				update_visibility_and_text(V, controller_B, true, "Quit Aiming Mode")
 				update_visibility_and_text(WASD, controller_AnalogL, true, "Aim Mortar")
-				
+			if player.player_interactedItem_Temp.name == "Sell" and get_viewport().gui_get_focus_owner() != null:
+				if get_viewport().gui_get_focus_owner().name == "Yes":
+					update_visibility_and_text(E, controller_A, true, "Sell Item")
+				elif get_viewport().gui_get_focus_owner().name == "No":
+					update_visibility_and_text(E, controller_A, true, "Cancel")
 		#--------------------------------------PREPARATION PHASE------------------------------------------------
 		elif Global.preparation_phase:
 			
@@ -125,19 +129,24 @@ func _process(_delta):
 			# DEFAULT STATE -> HIDE
 			if !player.player_ableInteract and !player.player_isHoldingItem:
 				update_visibility_and_text(X, controller_Y, false)
-			#MOUNTED TURRET
+			#MOUNTED TURRET & MOUNTABLE WALL
 			elif player.player_interactedItem_Temp.has_method("mount"):
 				if !player.player_isHoldingItem and player.player_interactedItem_Temp.is_mountable_occupied:
+					update_visibility_and_text(X, controller_Y, true, "Check Mounted Items")
+					print("CHECKING MOUNTED TURRET")
+				elif !player.player_isHoldingItem and !player.player_interactedItem_Temp.is_mountable_occupied:
 					update_visibility_and_text(X, controller_Y, true, "Check Items")
+					print("CHECKING MOUNTABLE WALL")
 			#ON HEAD TURRET
 			elif !player.player_ableInteract and player.player_isHoldingItem:
 				if Function.search_regex("turret", player.player_interactedItem.id):
 					update_visibility_and_text(X, controller_Y, true, "Check Items")
+				print("CHECKING ON HEAD TURRET")
 			#GROUND TURRET
 			elif player.player_ableInteract and !player.player_isHoldingItem:
-				if Function.search_regex("turret", player.player_interactedItem_Temp.id) or Function.search_regex("mortar", player.player_interactedItem_Temp.id) or Function.search_regex("enhancement", player.player_interactedItem_Temp.id) or Function.search_regex("wall_spiked", player.player_interactedItem_Temp.id):
-					update_visibility_and_text(X, controller_Y, true, "Check Items")
-			
+				#if Function.search_regex("turret", player.player_interactedItem_Temp.id) or Function.search_regex("mortar", player.player_interactedItem_Temp.id) or Function.search_regex("enhancement", player.player_interactedItem_Temp.id) or Function.search_regex("wall_spiked", player.player_interactedItem_Temp.id):
+				update_visibility_and_text(X, controller_Y, true, "Check Items")
+				print("CHECKING GROUND TURRET")
 			
 			#------------ V INPUT / ROTATE ------------
 			#DEFAULT STATE -> HIDE

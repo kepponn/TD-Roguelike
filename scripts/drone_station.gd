@@ -8,7 +8,8 @@ var id = "drone_station"
 @onready var drone_light =  $Models/Drone/OmniLight3D
 @onready var drone_ammoIcon = $AmmoCountIcon
 var price
-var base_ammo = 3 #This is the max standby and (+1 from drone carrying)
+var max_ammo = 3 #This is the max standby and (+1 from drone carrying)
+var base_ammo = 0 #This is current standby ammo
 var SPEED = 5.0
 
 #var area_range = 6  #name changed to "attack_range", used for item information card on player_scene_rework -> player_CheckItems()
@@ -155,7 +156,7 @@ func drone_model_and_ammo_calc():
 			$Models/ammo_box3.show()
 
 func add_ammoToBase():
-	if base_ammo >= 3:
+	if base_ammo >= max_ammo:
 		player.player_holdedMats = "ammo_box"
 		player.player_isHoldingItem = true
 		print("Cannot drop ", player.player_holdedMats, ", ammo quantity is full")

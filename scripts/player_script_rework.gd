@@ -456,22 +456,22 @@ func player_CheckItems():
 			inspectedItem_UI.AttackSpeedText = player_inspectedItem.attack_speed
 		if "is_mountable_occupied" in player_inspectedItem:
 			if player_inspectedItem.is_mountable_occupied:
-				inspectedItem_UI.AttackDamageText = player_inspectedItem.currently_mountable_item.attack_damage
-				inspectedItem_UI.AttackRangeText = player_inspectedItem.currently_mountable_item.attack_range
-				inspectedItem_UI.AttackSpeedText = player_inspectedItem.currently_mountable_item.attack_speed
-				inspectedItem_UI.AmmoText = player_inspectedItem.currently_mountable_item.bullet_maxammo
+				inspectedItem_UI.AttackDamageText = str(player_inspectedItem.currently_mountable_item.attack_damage)
+				inspectedItem_UI.AttackRangeText = str(player_inspectedItem.currently_mountable_item.attack_range)
+				inspectedItem_UI.AttackSpeedText = str(player_inspectedItem.currently_mountable_item.attack_speed)
+				inspectedItem_UI.AmmoText = str(player_inspectedItem.currently_mountable_item.bullet_maxammo)
 				if player_inspectedItem.currently_mountable_item.buff_isEnchanted:
-					inspectedItem_UI.AttackDamageText = str(inspectedItem_UI.AttackDamageText) + "+" + str(player_inspectedItem.currently_mountable_item.enchanted_bonus)
+					inspectedItem_UI.AttackDamageText = inspectedItem_UI.AttackDamageText + "+" + str(player_inspectedItem.currently_mountable_item.enchanted_bonus)
 				if player_inspectedItem.currently_mountable_item.buff_isMounted:
-					inspectedItem_UI.AttackRangeText = str(inspectedItem_UI.AttackRangeText) + "+" + str(player_inspectedItem.currently_mountable_item.mounted_bonus)
+					inspectedItem_UI.AttackRangeText = inspectedItem_UI.AttackRangeText + "+" + str(player_inspectedItem.currently_mountable_item.mounted_bonus)
 		if "bullet_maxammo" in player_inspectedItem:
-			inspectedItem_UI.AmmoText = player_inspectedItem.bullet_maxammo
+			inspectedItem_UI.AmmoText = str(player_inspectedItem.bullet_maxammo)
 		if "bonus_range" in player_inspectedItem and !player_inspectedItem.is_mountable_occupied:
-			inspectedItem_UI.AttackRangeBuffText = "+1"
+			inspectedItem_UI.AttackRangeBuffText = "+" + str(player_inspectedItem.bonus_range)
 		if "bonus_attack" in player_inspectedItem:
-			inspectedItem_UI.AttackDamageBuffText = "+5"
+			inspectedItem_UI.AttackDamageBuffText = "+" + str(player_inspectedItem.bonus_attack)
 		if "base_ammo" in player_inspectedItem:
-			inspectedItem_UI.DroneAmmoCapacityText = "3"
+			inspectedItem_UI.DroneAmmoCapacityText = str(player_inspectedItem.max_ammo)
 		inspectedItem_UI.show()
 	elif player_inspectedItem != null and player_interactedItem_Temp != null and player_ableInteract == false:
 	# player_ableInteract to check the item itself and show the card of it

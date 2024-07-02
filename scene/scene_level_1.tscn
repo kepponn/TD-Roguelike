@@ -1,12 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://cnpghi58xce32"]
+[gd_scene load_steps=3 format=3 uid="uid://cnpghi58xce32"]
 
 [ext_resource type="PackedScene" uid="uid://bajk04l7oocqf" path="res://scene/scene_parent.tscn" id="1_gqtne"]
 [ext_resource type="MeshLibrary" uid="uid://bpq8ija5ngli5" path="res://Tiles.tres" id="2_trwqw"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_o1xpk"]
-viewport_path = NodePath("UI/InspectedItemUI3D/SubViewport")
-
 [node name="Scene" instance=ExtResource("1_gqtne")]
+stage_id = "stage_1"
 
 [node name="Spawner" parent="Path" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, 6)
@@ -30,6 +28,3 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -2)
 
 [node name="Sell" parent="World/NavigationRegion3D/Item" index="1"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1, 2)
-
-[node name="InspectedItemUI3D" parent="UI" index="0"]
-texture = SubResource("ViewportTexture_o1xpk")

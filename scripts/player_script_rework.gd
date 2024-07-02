@@ -28,13 +28,7 @@ var player_lockInput: bool = false
 var player_lastButtonFocused
 
 func _physics_process(delta):
-	print("player interacted item : ",player_interactedItem)
-	print("player interacted item TEMP : ",player_interactedItem_Temp)
-	print("player inspected item : ",player_inspectedItem)
-	
-	
-	
-	
+
 	if player_lastButtonFocused != null:
 		player_lastButtonFocused.grab_focus()
 		player_lastButtonFocused = null

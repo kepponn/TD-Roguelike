@@ -19,6 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://o8b31i5r67xs" path="res://scene/enhancement.tscn" id="17_aitaa"]
 
 [node name="Scene" instance=ExtResource("1_30vnm")]
+stage_id = "stage_debug"
 
 [node name="Camera" parent="." index="0"]
 projection = 2

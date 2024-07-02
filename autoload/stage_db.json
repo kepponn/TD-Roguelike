@@ -1,0 +1,10 @@
+{
+  "stage_1": {
+	"enemy_scout": 5,
+	"enemy_scout_little": 1
+  },
+  "stage_debug": {
+	"enemy_scout": 10,
+	"enemy_scout_little": 20
+  }
+}

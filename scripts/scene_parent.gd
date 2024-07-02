@@ -1,5 +1,7 @@
 extends Node3D
 class_name Scene
+@export_category("Basic Information")
+@export var stage_id: String 
 
 @onready var navigation = %NavigationRegion3D
 var enable_navigation_auto_bake: bool = false
@@ -16,7 +18,20 @@ var has_defensive_structure = false
 
 # -------------------- Ready and process below
 
+func seed_enemiesRNGWeight():
+	var file = FileAccess.open("res://autoload/stage_db.json", FileAccess.READ)
+	var file_text = file.get_as_text()
+	file.close()
+	# Parse JSON data to be easily modified by for loops
+	var data = JSON.parse_string(file_text)
+	# Check if the id exist in JSON data
+	if data.has(stage_id):
+		var stage_data = data[stage_id]
+		spawner.enemies_spawn_rate = stage_data
+	print("This print from Scene ",spawner.enemies_spawn_rate)
+
 func _ready():
+	seed_enemiesRNGWeight()
 	# Request navigation bake
 	call_deferred("navigation_initial_bake")
 	# Request and setter to spawner

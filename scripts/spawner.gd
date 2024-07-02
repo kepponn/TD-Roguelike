@@ -1,5 +1,7 @@
 extends Marker3D
 
+var enemies_spawn_rate
+
 var enemies_seeder_array_weight: Array = []
 var enemies_scene_node
 var enemy_scout: PackedScene = preload("res://scene/enemy_scout.tscn")
@@ -13,6 +15,10 @@ var velocity
 var path_runner_green = preload("res://scene/path_runner_green.tscn")
 var path_runner_red = preload("res://scene/path_runner_red.tscn")
 var path_runner_yellow = preload("res://scene/path_runner_yellow.tscn")
+
+var count_enemy_scout: int = 0
+var count_enemy_scout_little: int = 0
+
 
 # The flow of the spawner:
 # ------------ CALLED IN PREP STAGE OF THE WAVE
@@ -35,15 +41,40 @@ func count_enemies(): # This should be calculate in prep phase
 	Global.enemy_spawned = 0
 	Global.wave_weight_limit += 2 # this being used for weight calc by seed_enemies_weight()
 
+func randomize_enemiesType():
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	
+	var weight_sum = 0
+	var first_num = 0
+	var second_num = 0
+	
+	#sum all of the weight
+	for n in enemies_spawn_rate:
+		weight_sum = weight_sum + enemies_spawn_rate[n]
+		
+	#choose a random number between 0 to total weight
+	var random_number = rng.randi_range(1,weight_sum)
+	#print("your random generated number is : ", random_number)
+	
+	for n in enemies_spawn_rate:
+		first_num = second_num
+		second_num = second_num  + enemies_spawn_rate[n]
+		if random_number > first_num and random_number <= second_num:
+			#print("your number are between: ", first_num, " and ", second_num)
+			#print("therefore spawned item will be: ", n)
+			return n
+
 func seed_enemies_weight():
 	var enemies_weight = {
 		"enemy_scout": 2,
 		"enemy_scout_little": 1
 	}
 	
-	var count_enemy_scout: int = 0
-	var count_enemy_scout_little: int = 0
-	
+	#var count_enemy_scout: int = 0
+	#var count_enemy_scout_little: int = 0
+	count_enemy_scout = 0
+	count_enemy_scout_little = 0
 	var wave_weight_current: int = 0
 	var total_enemies: int = 0
 	
@@ -53,20 +84,50 @@ func seed_enemies_weight():
 		# Check to json if anything can be added that still satisfy the limit
 		if wave_weight_current + enemies_weight.values().min() > Global.wave_weight_limit:
 			break
-		if randi_range(0, 1) == 0:
-			if wave_weight_current + enemies_weight["enemy_scout"] <= Global.wave_weight_limit:
-				enemies_seeder_array_weight.append("enemy_scout")
-				count_enemy_scout += 1
-				total_enemies += 1
-				wave_weight_current += enemies_weight["enemy_scout"]
-				#print("Add 2 weight inserting scout")
-		else:
-			if wave_weight_current + enemies_weight["enemy_scout_little"] <= Global.wave_weight_limit:
-				enemies_seeder_array_weight.append("enemy_scout_little")
-				count_enemy_scout_little += 1
-				total_enemies += 1
-				wave_weight_current += enemies_weight["enemy_scout_little"]
-				#print("Add 1 weight inserting scout little")
+			
+		var enemy_spawned = randomize_enemiesType()
+		enemies_seeder_array_weight.append(enemy_spawned)
+		wave_weight_current += enemies_weight[enemy_spawned]
+		total_enemies += 1
+		#--------------------------------------------------------------------------------------------------------------------------------------------
+		# 1. 
+		#idk why but 
+			#count_enemy_scout = 0
+			#count_enemy_scout_little = 0
+		#these 2 need to be declared for whole spawner at line 19 and 20, otherwise set("count_"+enemy_spawned, +1) doesn't work
+		
+		#this set still broken because it won't add 1 value to selected property, but it set the property to +1 (positive 1)
+		#set("count_" + enemy_spawned, +1)
+		#--------------------------------------------------------------------------------------------------------------------------------------------
+		# 2.
+		#this is brute force one but work fine, but will be annoying if there will be many type of enemies
+		#if enemy_spawned == "enemy_scout":
+			#count_enemy_scout += 1
+		#elif enemy_spawned == "enemy_scout_little":
+			#count_enemy_scout_little += 1
+		#--------------------------------------------------------------------------------------------------------------------------------------------
+		# 3.
+		#another alternative: using count(), but have same problem as the NO.2 because we need to add new lines for every enemy types in the future
+		#if we are going to use this, then move this to line 130 before "Global.total_enemies = total_enemies"
+		#OR put this inside line 134 and we can get rid of count_enemy_scout and count_enemy_scout_little variable and any possible new enemy count variable in the future
+		count_enemy_scout = enemies_seeder_array_weight.count("enemy_scout")
+		count_enemy_scout_little = enemies_seeder_array_weight.count("enemy_scout_little")
+		#--------------------------------------------------------------------------------------------------------------------------------------------
+		
+		#if randi_range(0, 1) == 0:
+			#if wave_weight_current + enemies_weight["enemy_scout"] <= Global.wave_weight_limit:
+				#enemies_seeder_array_weight.append("enemy_scout")
+				#count_enemy_scout += 1
+				#total_enemies += 1
+				#wave_weight_current += enemies_weight["enemy_scout"]
+				##print("Add 2 weight inserting scout")
+		#else:
+			#if wave_weight_current + enemies_weight["enemy_scout_little"] <= Global.wave_weight_limit:
+				#enemies_seeder_array_weight.append("enemy_scout_little")
+				#count_enemy_scout_little += 1
+				#total_enemies += 1
+				#wave_weight_current += enemies_weight["enemy_scout_little"]
+				##print("Add 1 weight inserting scout little")
 	Global.total_enemies = total_enemies
 	print("Weight used ", wave_weight_current, " on global weight ", Global.wave_weight_limit)
 	print("Seed enemies with weight done ", enemies_seeder_array_weight)

@@ -11,7 +11,8 @@ var price
 var base_ammo = 3 #This is the max standby and (+1 from drone carrying)
 var SPEED = 5.0
 
-var area_range = 6
+#var area_range = 6  #name changed to "attack_range", used for item information card on player_scene_rework -> player_CheckItems()
+var attack_range = 6 #does not change anything but better to have same property name since it work same as attack range 
 @onready var area = $Range
 @onready var visible_range = $Range/VisibleRange
 
@@ -33,8 +34,8 @@ func _ready():
 	$Models/ammo_box2.hide()
 	$Models/ammo_box3.hide()
 	# Range setter for area and visual
-	$Range/CollisionShape3D.shape.radius = area_range
-	$Range/VisibleRange.mesh.bottom_radius = area_range
+	$Range/CollisionShape3D.shape.radius = attack_range
+	$Range/VisibleRange.mesh.bottom_radius = attack_range
 	$Range/VisibleRange.hide()
 
 func _process(_delta):

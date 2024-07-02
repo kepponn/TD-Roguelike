@@ -442,89 +442,136 @@ func player_CheckItems():
 		#player_checkItemRange(player_inspectedItem, true)
 		#var sprite_adjustment = Vector3(0, 2, 0) #Vector3(0, 2, -1.5)
 		#inspectedItem_UI_Sprite.global_position = player_inspectedItem.global_position + sprite_adjustment
-		if Function.search_regex("turret", player_inspectedItem.id):
-			print("INSPECTED TURRET")
+		if "attack_damage" in player_inspectedItem and player_inspectedItem.attack_damage != null:
+			inspectedItem_UI.AttackDamageText = str(player_inspectedItem.attack_damage)
 			if player_inspectedItem.buff_isEnchanted:
-				inspectedItem_UI.AttackDamageText = str(player_inspectedItem.attack_damage) + "+" + str(player_inspectedItem.enchanted_bonus)
-			else:
-				inspectedItem_UI.AttackDamageText = player_inspectedItem.attack_damage
-			if player_inspectedItem.buff_isMounted:
-				inspectedItem_UI.AttackRangeText = str(player_inspectedItem.attack_range) + "+" + str(player_inspectedItem.mounted_bonus)
-			else:
-				inspectedItem_UI.AttackRangeText = player_inspectedItem.attack_range
-			
-			#inspectedItem_UI.AttackDamageText = player_inspectedItem.attack_damage
-			#inspectedItem_UI.AttackRangeText = player_inspectedItem.attack_range
-			inspectedItem_UI.AttackSpeedText = player_inspectedItem.attack_speed
-			inspectedItem_UI.AmmoText = player_inspectedItem.bullet_maxammo
-			inspectedItem_UI.show()
-		
-		if Function.search_regex("mortar", player_inspectedItem.id):
-			print("INSPECTED MORTAR")
-			if player_inspectedItem.buff_isEnchanted:
-				inspectedItem_UI.AttackDamageText = str(player_inspectedItem.attack_damage) + "+" + str(player_inspectedItem.enchanted_bonus)
-			else:
-				inspectedItem_UI.AttackDamageText = player_inspectedItem.attack_damage
-			inspectedItem_UI.AttackRangeText = str(player_inspectedItem.attack_rangeMin) + "-" + str(player_inspectedItem.attack_rangeMax)
-			inspectedItem_UI.AttackSpeedText = player_inspectedItem.attack_speed
-			inspectedItem_UI.show()
-		
-		match player_inspectedItem.id:
-			"wall_spiked":
-				print("INSPECTED WALL SPIKED")
-				if player_inspectedItem.buff_isEnchanted:
-					inspectedItem_UI.AttackDamageText = str(player_inspectedItem.attack_damage) + "+" + str(player_inspectedItem.enchanted_bonus)
-				else:
-					inspectedItem_UI.AttackDamageText = player_inspectedItem.attack_damage
+				inspectedItem_UI.AttackDamageText = inspectedItem_UI.AttackDamageText + "+" + str(player_inspectedItem.enchanted_bonus)
+		if "attack_range" in player_inspectedItem:
+			inspectedItem_UI.AttackRangeText = str(player_inspectedItem.attack_range)
+			if player_inspectedItem.id == "mortar":
+				inspectedItem_UI.AttackRangeText = str(player_inspectedItem.attack_rangeMin) + "~" + str(player_inspectedItem.attack_rangeMax)
+			if player_inspectedItem.id == "wall_spiked":
 				inspectedItem_UI.AttackRangeText = "1"
-				inspectedItem_UI.AttackSpeedText = player_inspectedItem.attack_speed
-				inspectedItem_UI.show()
-			# Will mess with player interaction when mounting a turret (showing card of the wall itself and mounting at the same time)
-			"wall_mountable":
-				print("INSPECTED WALL MOUNTABLE")
-				if player_inspectedItem.is_mountable_occupied:
-					#if Function.search_regex("turret", player_inspectedItem.get_child(-1).id):
-					
-					if player_inspectedItem.currently_mountable_item.buff_isEnchanted:
-						inspectedItem_UI.AttackDamageText = str(player_inspectedItem.currently_mountable_item.attack_damage) + "+" + str(player_inspectedItem.currently_mountable_item.enchanted_bonus)
-					else:
-						inspectedItem_UI.AttackDamageText = player_inspectedItem.currently_mountable_item.attack_damage
-					
-					if player_inspectedItem.currently_mountable_item.buff_isMounted:
-						inspectedItem_UI.AttackRangeText = str(player_inspectedItem.currently_mountable_item.attack_range) + "+" + str(player_inspectedItem.currently_mountable_item.mounted_bonus)
-					else:
-						inspectedItem_UI.AttackRangeText = player_inspectedItem.currently_mountable_item.attack_range
-						
-					inspectedItem_UI.AttackSpeedText = player_inspectedItem.currently_mountable_item.attack_speed
-					inspectedItem_UI.AmmoText = player_inspectedItem.currently_mountable_item.bullet_maxammo
-					inspectedItem_UI.show()
-				else:
-					inspectedItem_UI.AttackDamageText = null
-					inspectedItem_UI.AttackRangeBuffText = "+1"
-					inspectedItem_UI.AttackSpeedText = null
-					inspectedItem_UI.AmmoText = null
-					inspectedItem_UI.show()
-			"enhancement":
-				inspectedItem_UI.AttackDamageBuffText = "+5"
-				inspectedItem_UI.show()
-			"drone_station":
-				inspectedItem_UI.AttackRangeText = player_inspectedItem.area_range
-				inspectedItem_UI.DroneAmmoCapacityText = "3"
-				inspectedItem_UI.show()
-	#elif player_inspectedItem != null and player_ableInteract == false and player_isHoldingItem == false:
+		if "attack_speed" in player_inspectedItem:
+			inspectedItem_UI.AttackSpeedText = player_inspectedItem.attack_speed
+		if "is_mountable_occupied" in player_inspectedItem:
+			if player_inspectedItem.is_mountable_occupied:
+				inspectedItem_UI.AttackDamageText = player_inspectedItem.currently_mountable_item.attack_damage
+				inspectedItem_UI.AttackRangeText = player_inspectedItem.currently_mountable_item.attack_range
+				inspectedItem_UI.AttackSpeedText = player_inspectedItem.currently_mountable_item.attack_speed
+				inspectedItem_UI.AmmoText = player_inspectedItem.currently_mountable_item.bullet_maxammo
+				if player_inspectedItem.currently_mountable_item.buff_isEnchanted:
+					inspectedItem_UI.AttackDamageText = str(inspectedItem_UI.AttackDamageText) + "+" + str(player_inspectedItem.currently_mountable_item.enchanted_bonus)
+				if player_inspectedItem.currently_mountable_item.buff_isMounted:
+					inspectedItem_UI.AttackRangeText = str(inspectedItem_UI.AttackRangeText) + "+" + str(player_inspectedItem.currently_mountable_item.mounted_bonus)
+		if "bullet_maxammo" in player_inspectedItem:
+			inspectedItem_UI.AmmoText = player_inspectedItem.bullet_maxammo
+		if "bonus_range" in player_inspectedItem and !player_inspectedItem.is_mountable_occupied:
+			inspectedItem_UI.AttackRangeBuffText = "+1"
+		if "bonus_attack" in player_inspectedItem:
+			inspectedItem_UI.AttackDamageBuffText = "+5"
+		if "base_ammo" in player_inspectedItem:
+			inspectedItem_UI.DroneAmmoCapacityText = "3"
+		inspectedItem_UI.show()
 	elif player_inspectedItem != null and player_interactedItem_Temp != null and player_ableInteract == false:
 	# player_ableInteract to check the item itself and show the card of it
 		# This basically check if the temp is changed or player see 'empty' grid
 		if player_inspectedItem != player_interactedItem:
-			#player_checkItemRange(player_inspectedItem, false)
+			player_checkItemRange(player_inspectedItem, false)
 			inspectedItem_UI.AttackDamageText = null
 			inspectedItem_UI.AttackRangeText = null
 			inspectedItem_UI.AttackSpeedText = null
 			inspectedItem_UI.AmmoText = null
 			inspectedItem_UI.AttackDamageBuffText = null
 			inspectedItem_UI.AttackRangeBuffText = null
+			inspectedItem_UI.DroneAmmoCapacityText = null
 			inspectedItem_UI.hide()
 			player_checkItemRange(player_inspectedItem, false)
+		#-------------------------------------------------------------------------------------------------------------------------------------------------
+		#if Function.search_regex("turret", player_inspectedItem.id):
+			#print("INSPECTED TURRET")
+			#if player_inspectedItem.buff_isEnchanted:
+				#inspectedItem_UI.AttackDamageText = str(player_inspectedItem.attack_damage) + "+" + str(player_inspectedItem.enchanted_bonus)
+			#else:
+				#inspectedItem_UI.AttackDamageText = player_inspectedItem.attack_damage
+			#if player_inspectedItem.buff_isMounted:
+				#inspectedItem_UI.AttackRangeText = str(player_inspectedItem.attack_range) + "+" + str(player_inspectedItem.mounted_bonus)
+			#else:
+				#inspectedItem_UI.AttackRangeText = player_inspectedItem.attack_range
+			#
+			##inspectedItem_UI.AttackDamageText = player_inspectedItem.attack_damage
+			##inspectedItem_UI.AttackRangeText = player_inspectedItem.attack_range
+			#inspectedItem_UI.AttackSpeedText = player_inspectedItem.attack_speed
+			#inspectedItem_UI.AmmoText = player_inspectedItem.bullet_maxammo
+			#inspectedItem_UI.show()
+		#
+		#if Function.search_regex("mortar", player_inspectedItem.id):
+			#print("INSPECTED MORTAR")
+			#if player_inspectedItem.buff_isEnchanted:
+				#inspectedItem_UI.AttackDamageText = str(player_inspectedItem.attack_damage) + "+" + str(player_inspectedItem.enchanted_bonus)
+			#else:
+				#inspectedItem_UI.AttackDamageText = player_inspectedItem.attack_damage
+			#inspectedItem_UI.AttackRangeText = str(player_inspectedItem.attack_rangeMin) + "-" + str(player_inspectedItem.attack_rangeMax)
+			#inspectedItem_UI.AttackSpeedText = player_inspectedItem.attack_speed
+			#inspectedItem_UI.show()
+		#
+		#match player_inspectedItem.id:
+			#"wall_spiked":
+				#print("INSPECTED WALL SPIKED")
+				#if player_inspectedItem.buff_isEnchanted:
+					#inspectedItem_UI.AttackDamageText = str(player_inspectedItem.attack_damage) + "+" + str(player_inspectedItem.enchanted_bonus)
+				#else:
+					#inspectedItem_UI.AttackDamageText = player_inspectedItem.attack_damage
+				#inspectedItem_UI.AttackRangeText = "1"
+				#inspectedItem_UI.AttackSpeedText = player_inspectedItem.attack_speed
+				#inspectedItem_UI.show()
+			## Will mess with player interaction when mounting a turret (showing card of the wall itself and mounting at the same time)
+			#"wall_mountable":
+				#print("INSPECTED WALL MOUNTABLE")
+				#if player_inspectedItem.is_mountable_occupied:
+					##if Function.search_regex("turret", player_inspectedItem.get_child(-1).id):
+					#
+					#if player_inspectedItem.currently_mountable_item.buff_isEnchanted:
+						#inspectedItem_UI.AttackDamageText = str(player_inspectedItem.currently_mountable_item.attack_damage) + "+" + str(player_inspectedItem.currently_mountable_item.enchanted_bonus)
+					#else:
+						#inspectedItem_UI.AttackDamageText = player_inspectedItem.currently_mountable_item.attack_damage
+					#
+					#if player_inspectedItem.currently_mountable_item.buff_isMounted:
+						#inspectedItem_UI.AttackRangeText = str(player_inspectedItem.currently_mountable_item.attack_range) + "+" + str(player_inspectedItem.currently_mountable_item.mounted_bonus)
+					#else:
+						#inspectedItem_UI.AttackRangeText = player_inspectedItem.currently_mountable_item.attack_range
+						#
+					#inspectedItem_UI.AttackSpeedText = player_inspectedItem.currently_mountable_item.attack_speed
+					#inspectedItem_UI.AmmoText = player_inspectedItem.currently_mountable_item.bullet_maxammo
+					#inspectedItem_UI.show()
+				#else:
+					#inspectedItem_UI.AttackDamageText = null
+					#inspectedItem_UI.AttackRangeBuffText = "+1"
+					#inspectedItem_UI.AttackSpeedText = null
+					#inspectedItem_UI.AmmoText = null
+					#inspectedItem_UI.show()
+			#"enhancement":
+				#inspectedItem_UI.AttackDamageBuffText = "+5"
+				#inspectedItem_UI.show()
+			#"drone_station":
+				#inspectedItem_UI.AttackRangeText = player_inspectedItem.area_range
+				#inspectedItem_UI.DroneAmmoCapacityText = "3"
+				#inspectedItem_UI.show()
+	##elif player_inspectedItem != null and player_ableInteract == false and player_isHoldingItem == false:
+	#elif player_inspectedItem != null and player_interactedItem_Temp != null and player_ableInteract == false:
+	## player_ableInteract to check the item itself and show the card of it
+		## This basically check if the temp is changed or player see 'empty' grid
+		#if player_inspectedItem != player_interactedItem:
+			##player_checkItemRange(player_inspectedItem, false)
+			#inspectedItem_UI.AttackDamageText = null
+			#inspectedItem_UI.AttackRangeText = null
+			#inspectedItem_UI.AttackSpeedText = null
+			#inspectedItem_UI.AmmoText = null
+			#inspectedItem_UI.AttackDamageBuffText = null
+			#inspectedItem_UI.AttackRangeBuffText = null
+			#inspectedItem_UI.hide()
+			#player_checkItemRange(player_inspectedItem, false)
+	#-------------------------------------------------------------------------------------------------------------------------------------------------
 
 func player_InspectItemsArea():
 	if Input.is_action_just_pressed("check") and (player_ableInteract or player_isHoldingItem):

@@ -18,7 +18,7 @@ var bullet_speed: int
 @onready var target = $TargetPivot/Target
 var is_controlled: bool = false
 var able_shoot: bool = true
-
+var attack_range #does not change anything but it is necessary to have | only used for generating item information card on player_scene_rework -> player_CheckItems() | 
 #buff/debuff
 var buff_isEnchanted = false
 var enchanted_bonus = 0

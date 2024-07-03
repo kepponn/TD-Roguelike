@@ -110,8 +110,9 @@ func _process(_delta):
 				update_visibility_and_text(C, controller_X, false)
 			#SELL
 			elif player.player_interactedItem_Temp.name == "Sell" and player.player_isHoldingItem:
-				if Function.search_regex("turret", player.player_interactedItem.id) or Function.search_regex("wall", player.player_interactedItem.id) or Function.search_regex("mortar", player.player_interactedItem.id):
-					update_visibility_and_text(C, controller_X, true, "Sell Item")
+				for sellable_item_check in Global.sellable_item:
+					if Function.search_regex(sellable_item_check, player.player_interactedItem.id):
+						update_visibility_and_text(C, controller_X, true, "Sell Item")
 			#OPEN SHOP
 			elif player.player_ableInteract and !player.player_interactedItem_Temp.has_method("mount"):
 				if player.player_interactedItem_Temp.id == "shop":

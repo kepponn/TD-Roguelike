@@ -94,14 +94,14 @@ func open_shop():
 			get_node('/root/Scene/UI/Control/Shop/PanelContainer2/MarginContainer/HBoxContainer/CloseButton').grab_focus()
 		# Sell item action
 		elif player_interactedItem_Temp.name == "Sell" and Input.is_action_just_pressed("inspect") and player_isHoldingItem and Global.preparation_phase == true:
-			# Check what the player is holding, some items are not available to sell like (shop or crafting station)
+			# Item list in Global.sellable_item
 			# And make sure all the item have sell price, beucase it will be needed for calculation
-			# Add item list in the if-or parameters (this can be refactored by making array of item.id which can be sold and for-each it with search_regex function)
-			if Function.search_regex("turret", player_interactedItem.id) or Function.search_regex("wall", player_interactedItem.id) or Function.search_regex("mortar", player_interactedItem.id):
-				inspectedItem_UI.hide()
-				player_checkItemRange(player_inspectedItem, false)
-				player_interactedItem_Temp.sell(player_interactedItem)
-				player_lockInput = true
+			for sellable_item_check in Global.sellable_item:
+				if Function.search_regex(sellable_item_check, player_interactedItem.id):
+					inspectedItem_UI.hide()
+					player_checkItemRange(player_interactedItem, false)
+					player_interactedItem_Temp.sell(player_interactedItem)
+					player_lockInput = true
 
 func mountable_wall():
 	# This check for preparation phase, if true then this process will be accessible
@@ -304,6 +304,7 @@ func player_rotateItemProcess():
 			audio_randomSelector($Audio/Pop, -10)
 
 func player_checkItemRange(item, enable: bool = true):
+	print(item, enable)
 	#var regex = RegEx.new() # need to add some regex to check for all the name id of turret
 	#var pattern = r"^(?i)turret.*$" # for example all turret name start with 'turret_name_affix_suffix_whatever'
 	#regex.compile(pattern) d# check for match regex on 'turret' and be happy

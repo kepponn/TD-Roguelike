@@ -3,6 +3,8 @@ extends Node
 var final_target
 
 var currency: int = 9999
+# This being used with Function.search_regex()
+var sellable_item: Array = ["turret", "wall", "mortar", "enhancement", "extra_health"]
 
 var preparation_phase: bool = true
 var is_pathReachable: bool
@@ -17,5 +19,3 @@ var total_enemies: int #Total of enemies will be spawned in this waves
 var enemy_left: int #Count enemy left (alive) spawned or not spawned yet
 var enemy_spawned: int #Count spawned enemy
 var waves: int = 1
-
-

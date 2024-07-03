@@ -86,9 +86,11 @@ func seed_enemies_weight():
 			break
 			
 		var enemy_spawned = randomize_enemiesType()
-		enemies_seeder_array_weight.append(enemy_spawned)
-		wave_weight_current += enemies_weight[enemy_spawned]
-		total_enemies += 1
+		# Check if the enemy weight still fit in Global.weight or not, you better have it less than weight than over by 1..
+		if wave_weight_current + enemies_weight[enemy_spawned] <= Global.wave_weight_limit:
+			enemies_seeder_array_weight.append(enemy_spawned)
+			wave_weight_current += enemies_weight[enemy_spawned]
+			total_enemies += 1
 		#--------------------------------------------------------------------------------------------------------------------------------------------
 		# 1. 
 		#idk why but 

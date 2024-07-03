@@ -18,7 +18,7 @@ func ready_up():
 	call_deferred("nav_setup")
 	$Audio/SpawnSfx.play()
 
-func check_self(_delta):
+func check_self():
 	if HP <= 0:
 		Global.currency = Global.currency + 5
 		Stats.currency_gained += 5

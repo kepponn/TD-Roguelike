@@ -5,6 +5,7 @@
   },
   "stage_debug": {
 	"enemy_scout": 10,
-	"enemy_scout_little": 20
+	"enemy_scout_little": 20,
+	"enemy_flying_test": 10
   }
 }

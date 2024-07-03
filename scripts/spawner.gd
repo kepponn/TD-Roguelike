@@ -6,6 +6,7 @@ var enemies_seeder_array_weight: Array = []
 var enemies_scene_node
 var enemy_scout: PackedScene = preload("res://scene/enemy_scout.tscn")
 var enemy_scout_little: PackedScene = preload("res://scene/enemy_scout_little.tscn")
+var enemy_flying_test: PackedScene = preload("res://scene/enemy_flying.tscn")
 
 var direction
 var velocity
@@ -68,7 +69,8 @@ func randomize_enemiesType():
 func seed_enemies_weight():
 	var enemies_weight = {
 		"enemy_scout": 2,
-		"enemy_scout_little": 1
+		"enemy_scout_little": 1,
+		"enemy_flying_test": 1
 	}
 	
 	#var count_enemy_scout: int = 0
@@ -146,6 +148,8 @@ func spawn_enemies():
 				enemy = enemy_scout.instantiate()
 			"enemy_scout_little":
 				enemy = enemy_scout_little.instantiate()
+			"enemy_flying_test":
+				enemy = enemy_flying_test.instantiate()
 		# Get spawner seed to spawn what needed to be spawned
 		enemy.transform = $SpawnLocation.global_transform
 		enemies_scene_node.add_child(enemy,true)

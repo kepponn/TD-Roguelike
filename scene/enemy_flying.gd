@@ -9,7 +9,7 @@ func _ready():
 	ready_up()
 
 func _process(delta):
-	check_self()
+	#check_self()
 	$Models/Rotor.rotation_degrees.y += 320 * delta
 
 func _physics_process(delta):

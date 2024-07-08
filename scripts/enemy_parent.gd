@@ -5,10 +5,10 @@ class_name Enemy_Parent
 @export var SPEED: float # = 10
 
 @onready var nav: NavigationAgent3D = $NavigationAgent3D
+@onready var explosion_effect = preload("res://scene/explosion_effect.tscn")
 
 var max_HP: int
 var direction: Vector3
-
 # This is actually fucked up...
 # CollisionShape3D difference WILL affect how the navigation is processed
 # Default: CapluseSpahe3D, Radius: 0.45m, Height: 1.95m
@@ -20,7 +20,13 @@ func ready_up():
 
 func check_self():
 	if HP <= 0:
-		Global.currency = Global.currency + 5
+		var explosion = explosion_effect.instantiate()
+		get_node("/root/Scene/Temporary/Projectiles").add_child(explosion, true)
+		explosion.global_position = global_position
+		var tween = get_tree().create_tween()
+		tween.tween_property(Global, "currency", Global.currency + 5, 1)
+		print(Global.currency)
+		#Global.currency = Global.currency + 5
 		Stats.currency_gained += 5
 		Global.enemy_left = Global.enemy_left - 1
 		Stats.enemy_killed(self.id)
@@ -48,6 +54,7 @@ func nav_setup():
 	
 func hit(damage):
 	HP = HP - damage
+	check_self()
 
 func update_HP():
 	if HP != max_HP:

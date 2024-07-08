@@ -9,7 +9,8 @@ func _ready():
 	ready_up()
 
 func _process(_delta):
-	check_self()
+	pass
+	#check_self()
 
 func _physics_process(delta):
 	run_navigation(delta)

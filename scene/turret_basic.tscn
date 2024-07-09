@@ -104,6 +104,9 @@ skeleton = NodePath("")
 [node name="ProjectileSpawn" parent="Models/Head" index="1"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.3, -0.8)
 
+[node name="MuzzleFlash" parent="Models/Head" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.33085, -0.693209)
+
 [node name="Body" parent="Models" index="1"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 0.981, 0, -0.707107, 0, 0.707107, 0, -0.444, 0)
 
@@ -118,5 +121,5 @@ shape = SubResource("CylinderShape3D_e4yrd")
 [node name="VisibleRange" parent="Range" index="1"]
 mesh = SubResource("CylinderMesh_qcf33")
 
-[node name="AmmoBar3D" parent="." index="6"]
+[node name="AmmoBar3D" parent="." index="7"]
 texture = SubResource("ViewportTexture_n03iv")

@@ -34,6 +34,8 @@ var bullet_ricochet: int
 # Other information
 @onready var visible_range: MeshInstance3D = $Range/VisibleRange
 @onready var range_radius: CollisionShape3D = $Range/CollisionShape3D
+@onready var muzzle_flash = $Models/Head/MuzzleFlash
+
 var enemies_array: Array = []
 
 # Buff/debuff that will affect turret status
@@ -336,6 +338,8 @@ func shoot():
 		turret_projectile.set_direction = shoot_direction #direction used to set projectile movement direction
 		# Create the instance of the bullet
 		get_node("/root/Scene/Temporary/Projectiles").add_child(turret_projectile, true) # if you want to shoot while still holding it maybe make projectile as unique or use absolute path to it
+		# emit muzzle flash particles
+		muzzle_flash.spawn_muzzle_flash()
 		shoot_audio()
 		$AttackSpeed.start() #restart timer so it can shoot again
 

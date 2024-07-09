@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://55ipv7ij7bcg"]
+[gd_scene load_steps=12 format=3 uid="uid://55ipv7ij7bcg"]
 
 [ext_resource type="Script" path="res://scripts/turret_parent.gd" id="1_weacm"]
 [ext_resource type="AudioStream" uid="uid://b3bmtyrhcg1ql" path="res://assets/audio/sfx/080877_bullet-39803.mp3" id="2_53j1g"]
 [ext_resource type="AudioStream" uid="uid://b6ri0nenfcyy2" path="res://assets/audio/sfx/080880_bullet-39799.mp3" id="4_k8twk"]
 [ext_resource type="AudioStream" uid="uid://cpbktccmqkqhx" path="res://assets/audio/sfx/080977_bullet-39804.mp3" id="5_2vxqf"]
+[ext_resource type="PackedScene" uid="uid://cv2yso7cbgfiv" path="res://scene/muzzle_flash.tscn" id="5_fuffc"]
 [ext_resource type="Texture2D" uid="uid://0x4ppc4cgbr2" path="res://assets/icon/delivery-drone.png" id="5_tns0p"]
 [ext_resource type="Texture2D" uid="uid://ckncytl0xfdgn" path="res://assets/icon/reload-gun-barrel.png" id="6_i7neg"]
 
@@ -84,6 +85,8 @@ one_shot = true
 [node name="ProjectileSpawn" type="Marker3D" parent="Models/Head"]
 unique_name_in_owner = true
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0)
+
+[node name="MuzzleFlash" parent="Models/Head" instance=ExtResource("5_fuffc")]
 
 [node name="Body" type="Node3D" parent="Models"]
 

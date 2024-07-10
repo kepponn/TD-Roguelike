@@ -134,7 +134,7 @@ func seed_enemies_weight():
 				##print("Add 1 weight inserting scout little")
 	Global.total_enemies = total_enemies
 	print("Weight used ", wave_weight_current, " on global weight ", Global.wave_weight_limit)
-	print("Seed enemies with weight done ", enemies_seeder_array_weight)
+	#print("Seed enemies with weight done ", enemies_seeder_array_weight)
 	get_node("/root/Scene/UI/Control/IncomingWavePanelAlert").text = "Incoming Wave Panel\n - " + str(count_enemy_scout) + "x Scout \n - " + str(count_enemy_scout_little) + "x Scout Little"
 
 func spawn_enemies():
@@ -155,7 +155,7 @@ func spawn_enemies():
 		enemies_scene_node.add_child(enemy,true)
 		#$Timer.start(randf_range(1.5,3.0))
 		$Timer.start(1)
-		print("Enemies Spawned = ", Global.enemy_spawned, ". Seeder left: ", enemies_seeder_array_weight)
+		#print("Enemies Spawned = ", Global.enemy_spawned, ". Seeder left: ", enemies_seeder_array_weight)
 
 func check_path():
 	nav.target_position = Global.final_target

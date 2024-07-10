@@ -410,6 +410,12 @@ func player_InteractItems():
 			elif player_interactedItem_Temp.id == "crafter":
 				player_interactedItem_Temp.get_product()
 				player_checkIngredientItem()
+			elif player_interactedItem_Temp.id == "conveyor":
+				if !player_interactedItem_Temp.inv.is_empty():
+					player_holdedMats = player_interactedItem_Temp.takeItem()
+					player_isHoldingItem = true
+					player_checkIngredientItem()
+					player_ableInteract = false
 		
 		# DROP INGREDIENT
 		elif player_ableInteract == true and player_isHoldingItem == true and player_ableToDrop == true and Input.is_action_just_pressed("interact"):
@@ -425,6 +431,12 @@ func player_InteractItems():
 			elif player_interactedItem_Temp.id == "drone_station" and player_holdedMats == "ammo_box":
 				player_interactedItem_Temp.add_ammoToBase()
 				player_checkIngredientItem()
+			elif player_interactedItem_Temp.id == "conveyor":
+				if player_interactedItem_Temp.inv.is_empty():
+					player_interactedItem_Temp.recieveItem(player_holdedMats)
+					player_isHoldingItem = false
+					player_holdedMats = ""
+					player_checkIngredientItem()
 
 func player_CheckItems():
 	# This show the player card-like information about item, will be immediately turn off if player do any action

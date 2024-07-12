@@ -134,20 +134,16 @@ func _process(_delta):
 			elif player.player_interactedItem_Temp.has_method("mount"):
 				if !player.player_isHoldingItem and player.player_interactedItem_Temp.is_mountable_occupied:
 					update_visibility_and_text(X, controller_Y, true, "Check Mounted Items")
-					print("CHECKING MOUNTED TURRET")
 				elif !player.player_isHoldingItem and !player.player_interactedItem_Temp.is_mountable_occupied:
 					update_visibility_and_text(X, controller_Y, true, "Check Items")
-					print("CHECKING MOUNTABLE WALL")
 			#ON HEAD TURRET
 			elif !player.player_ableInteract and player.player_isHoldingItem:
 				if Function.search_regex("turret", player.player_interactedItem.id):
 					update_visibility_and_text(X, controller_Y, true, "Check Items")
-				print("CHECKING ON HEAD TURRET")
 			#GROUND TURRET
 			elif player.player_ableInteract and !player.player_isHoldingItem:
 				#if Function.search_regex("turret", player.player_interactedItem_Temp.id) or Function.search_regex("mortar", player.player_interactedItem_Temp.id) or Function.search_regex("enhancement", player.player_interactedItem_Temp.id) or Function.search_regex("wall_spiked", player.player_interactedItem_Temp.id):
 				update_visibility_and_text(X, controller_Y, true, "Check Items")
-				print("CHECKING GROUND TURRET")
 			
 			#------------ V INPUT / ROTATE ------------
 			#DEFAULT STATE -> HIDE

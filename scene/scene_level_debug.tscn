@@ -1,13 +1,11 @@
-[gd_scene load_steps=19 format=3 uid="uid://dvg33xpbeviag"]
+[gd_scene load_steps=17 format=3 uid="uid://dvg33xpbeviag"]
 
 [ext_resource type="PackedScene" uid="uid://bajk04l7oocqf" path="res://scene/scene_parent.tscn" id="1_30vnm"]
 [ext_resource type="MeshLibrary" uid="uid://bpq8ija5ngli5" path="res://Tiles.tres" id="2_86584"]
 [ext_resource type="PackedScene" uid="uid://r0wfovaac7gq" path="res://scene/turret_basic.tscn" id="3_fs5vx"]
 [ext_resource type="PackedScene" uid="uid://c7bny0q7rq2yl" path="res://scene/turret_plasma.tscn" id="4_txdyd"]
-[ext_resource type="PackedScene" uid="uid://b8keu180bnh1a" path="res://scene/turret_pierce.tscn" id="5_k385s"]
 [ext_resource type="PackedScene" uid="uid://dxveo10rv12xy" path="res://scene/turret_gatling.tscn" id="6_80117"]
 [ext_resource type="PackedScene" uid="uid://g2dvesmiy3l4" path="res://scene/wall_basic.tscn" id="7_p2rqa"]
-[ext_resource type="PackedScene" uid="uid://ddvggjxvp527d" path="res://scene/wall_spiked.tscn" id="8_8ta0i"]
 [ext_resource type="PackedScene" uid="uid://xbhbdy3st7vx" path="res://scene/wall_mountable.tscn" id="9_jn1td"]
 [ext_resource type="PackedScene" uid="uid://c8otvd8emjkql" path="res://scene/extra_health.tscn" id="10_a4k7m"]
 [ext_resource type="PackedScene" uid="uid://edivjlbtfdg8" path="res://scene/gunpowder_box.tscn" id="11_3aqng"]
@@ -62,92 +60,179 @@ transform = Transform3D(1, 0, -1.06581e-14, 0, 1, 0, 1.06581e-14, 0, 1, 1, 1, 4)
 [node name="Turret5" parent="World/NavigationRegion3D/Item" index="4" instance=ExtResource("4_txdyd")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2, 1, -9)
 
-[node name="Turret4" parent="World/NavigationRegion3D/Item" index="5" instance=ExtResource("4_txdyd")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -9, 1, 1)
-
-[node name="Turret3" parent="World/NavigationRegion3D/Item" index="6" instance=ExtResource("5_k385s")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 1, 5)
-
-[node name="Turret8" parent="World/NavigationRegion3D/Item" index="7" instance=ExtResource("6_80117")]
+[node name="Turret8" parent="World/NavigationRegion3D/Item" index="5" instance=ExtResource("6_80117")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1, -9)
 
-[node name="Wall" parent="World/NavigationRegion3D/Item" index="8" instance=ExtResource("7_p2rqa")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, -6)
+[node name="Wall" parent="World/NavigationRegion3D/Item" index="6" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 1, -7)
 
-[node name="Wall11" parent="World/NavigationRegion3D/Item" index="9" instance=ExtResource("7_p2rqa")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, -3)
+[node name="Wall12" parent="World/NavigationRegion3D/Item" index="7" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, -8)
 
-[node name="Wall3" parent="World/NavigationRegion3D/Item" index="10" instance=ExtResource("8_8ta0i")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, -6)
+[node name="Wall14" parent="World/NavigationRegion3D/Item" index="8" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, -8)
 
-[node name="Wall4" parent="World/NavigationRegion3D/Item" index="11" instance=ExtResource("8_8ta0i")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, -4)
-
-[node name="Wall5" parent="World/NavigationRegion3D/Item" index="12" instance=ExtResource("9_jn1td")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, -5)
-
-[node name="Wall7" parent="World/NavigationRegion3D/Item" index="13" instance=ExtResource("9_jn1td")]
+[node name="Wall15" parent="World/NavigationRegion3D/Item" index="9" instance=ExtResource("7_p2rqa")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1, -6)
 
-[node name="Wall6" parent="World/NavigationRegion3D/Item" index="14" instance=ExtResource("9_jn1td")]
+[node name="Wall16" parent="World/NavigationRegion3D/Item" index="10" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, -6)
+
+[node name="Wall17" parent="World/NavigationRegion3D/Item" index="11" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, -5)
+
+[node name="Wall18" parent="World/NavigationRegion3D/Item" index="12" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 1, -6)
+
+[node name="Wall19" parent="World/NavigationRegion3D/Item" index="13" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 1, -5)
+
+[node name="Wall20" parent="World/NavigationRegion3D/Item" index="14" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1, -4)
+
+[node name="Wall21" parent="World/NavigationRegion3D/Item" index="15" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 1, -2)
+
+[node name="Wall22" parent="World/NavigationRegion3D/Item" index="16" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 1, -1)
+
+[node name="Wall23" parent="World/NavigationRegion3D/Item" index="17" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1, 0)
+
+[node name="Wall24" parent="World/NavigationRegion3D/Item" index="18" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1, 1)
+
+[node name="Wall25" parent="World/NavigationRegion3D/Item" index="19" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1, 2)
+
+[node name="Wall26" parent="World/NavigationRegion3D/Item" index="20" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1, 3)
+
+[node name="Wall27" parent="World/NavigationRegion3D/Item" index="21" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1, 4)
+
+[node name="Wall28" parent="World/NavigationRegion3D/Item" index="22" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1, 5)
+
+[node name="Wall29" parent="World/NavigationRegion3D/Item" index="23" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1, 6)
+
+[node name="Wall30" parent="World/NavigationRegion3D/Item" index="24" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1, 7)
+
+[node name="Wall31" parent="World/NavigationRegion3D/Item" index="25" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, 8)
+
+[node name="Wall32" parent="World/NavigationRegion3D/Item" index="26" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, 7)
+
+[node name="Wall33" parent="World/NavigationRegion3D/Item" index="27" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, 6)
+
+[node name="Wall34" parent="World/NavigationRegion3D/Item" index="28" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, 5)
+
+[node name="Wall35" parent="World/NavigationRegion3D/Item" index="29" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, 4)
+
+[node name="Wall36" parent="World/NavigationRegion3D/Item" index="30" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, 3)
+
+[node name="Wall37" parent="World/NavigationRegion3D/Item" index="31" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, 2)
+
+[node name="Wall38" parent="World/NavigationRegion3D/Item" index="32" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, 1)
+
+[node name="Wall39" parent="World/NavigationRegion3D/Item" index="33" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, 0)
+
+[node name="Wall40" parent="World/NavigationRegion3D/Item" index="34" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, 1)
+
+[node name="Wall11" parent="World/NavigationRegion3D/Item" index="35" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, -3)
+
+[node name="Wall5" parent="World/NavigationRegion3D/Item" index="36" instance=ExtResource("9_jn1td")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, -5)
+
+[node name="Wall7" parent="World/NavigationRegion3D/Item" index="37" instance=ExtResource("9_jn1td")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1, -7)
+
+[node name="Wall6" parent="World/NavigationRegion3D/Item" index="38" instance=ExtResource("9_jn1td")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -4)
 
-[node name="Wall2" parent="World/NavigationRegion3D/Item" index="15" instance=ExtResource("7_p2rqa")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, 6)
+[node name="Wall2" parent="World/NavigationRegion3D/Item" index="39" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1, 2)
 
-[node name="Wall8" parent="World/NavigationRegion3D/Item" index="16" instance=ExtResource("7_p2rqa")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, 7)
+[node name="Wall8" parent="World/NavigationRegion3D/Item" index="40" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 1, 4)
 
-[node name="Wall9" parent="World/NavigationRegion3D/Item" index="17" instance=ExtResource("7_p2rqa")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 1, 8)
+[node name="Wall9" parent="World/NavigationRegion3D/Item" index="41" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1, 6)
 
-[node name="Wall10" parent="World/NavigationRegion3D/Item" index="18" instance=ExtResource("7_p2rqa")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1, 2)
+[node name="Wall41" parent="World/NavigationRegion3D/Item" index="42" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 1, 7)
 
-[node name="ExtraHealth" parent="World/NavigationRegion3D/Item" index="19" instance=ExtResource("10_a4k7m")]
+[node name="Wall42" parent="World/NavigationRegion3D/Item" index="43" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, 8)
+
+[node name="Wall43" parent="World/NavigationRegion3D/Item" index="44" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, 7)
+
+[node name="Wall44" parent="World/NavigationRegion3D/Item" index="45" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, 5)
+
+[node name="Wall45" parent="World/NavigationRegion3D/Item" index="46" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, 5)
+
+[node name="Wall10" parent="World/NavigationRegion3D/Item" index="47" instance=ExtResource("7_p2rqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1, 0)
+
+[node name="ExtraHealth" parent="World/NavigationRegion3D/Item" index="48" instance=ExtResource("10_a4k7m")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, -1)
 
-[node name="ExtraHealth2" parent="World/NavigationRegion3D/Item" index="20" instance=ExtResource("10_a4k7m")]
+[node name="ExtraHealth2" parent="World/NavigationRegion3D/Item" index="49" instance=ExtResource("10_a4k7m")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, -1)
 
-[node name="ExtraHealth3" parent="World/NavigationRegion3D/Item" index="21" instance=ExtResource("10_a4k7m")]
+[node name="ExtraHealth3" parent="World/NavigationRegion3D/Item" index="50" instance=ExtResource("10_a4k7m")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 1, -1)
 
-[node name="Gunpowder_Box" parent="World/NavigationRegion3D/Item" index="22" instance=ExtResource("11_3aqng")]
+[node name="Gunpowder_Box" parent="World/NavigationRegion3D/Item" index="51" instance=ExtResource("11_3aqng")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -2, 1, 0)
 
-[node name="Bullet_Box" parent="World/NavigationRegion3D/Item" index="23" instance=ExtResource("12_3dpcr")]
+[node name="Bullet_Box" parent="World/NavigationRegion3D/Item" index="52" instance=ExtResource("12_3dpcr")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -2, 1, 1)
 
-[node name="Crafter" parent="World/NavigationRegion3D/Item" index="24" instance=ExtResource("13_yo4g5")]
+[node name="Crafter" parent="World/NavigationRegion3D/Item" index="53" instance=ExtResource("13_yo4g5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, -1)
 
-[node name="DroneBase2" parent="World/NavigationRegion3D/Item" index="25" instance=ExtResource("14_mg14c")]
+[node name="DroneBase2" parent="World/NavigationRegion3D/Item" index="54" instance=ExtResource("14_mg14c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1, 7)
 
-[node name="Turret6" parent="World/NavigationRegion3D/Item" index="26" instance=ExtResource("15_t3pvb")]
+[node name="Turret6" parent="World/NavigationRegion3D/Item" index="55" instance=ExtResource("15_t3pvb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, -5)
 
-[node name="Mortar" parent="World/NavigationRegion3D/Item" index="27" instance=ExtResource("16_jnwwx")]
+[node name="Mortar" parent="World/NavigationRegion3D/Item" index="56" instance=ExtResource("16_jnwwx")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 1, -1)
 
-[node name="Enhancement" parent="World/NavigationRegion3D/Item" index="28" instance=ExtResource("17_aitaa")]
+[node name="Enhancement" parent="World/NavigationRegion3D/Item" index="57" instance=ExtResource("17_aitaa")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
-[node name="Conveyor" parent="World/NavigationRegion3D/Item" index="29" instance=ExtResource("18_gbjfy")]
+[node name="Conveyor" parent="World/NavigationRegion3D/Item" index="58" instance=ExtResource("18_gbjfy")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 3, 1, 0)
 
-[node name="Conveyor2" parent="World/NavigationRegion3D/Item" index="30" instance=ExtResource("18_gbjfy")]
+[node name="Conveyor2" parent="World/NavigationRegion3D/Item" index="59" instance=ExtResource("18_gbjfy")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 4, 1, 0)
 
-[node name="Conveyor3" parent="World/NavigationRegion3D/Item" index="31" instance=ExtResource("18_gbjfy")]
+[node name="Conveyor3" parent="World/NavigationRegion3D/Item" index="60" instance=ExtResource("18_gbjfy")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 4, 1, 1)
 
-[node name="Conveyor4" parent="World/NavigationRegion3D/Item" index="32" instance=ExtResource("18_gbjfy")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1, 1)
+[node name="Conveyor4" parent="World/NavigationRegion3D/Item" index="61" instance=ExtResource("18_gbjfy")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 4, 1, 2)
 
-[node name="Conveyor5" parent="World/NavigationRegion3D/Item" index="33" instance=ExtResource("18_gbjfy")]
+[node name="Conveyor5" parent="World/NavigationRegion3D/Item" index="62" instance=ExtResource("18_gbjfy")]
 transform = Transform3D(1, 0, -1.74846e-07, 0, 1, 0, 1.74846e-07, 0, 1, 3, 1, 2)
 
-[node name="Conveyor6" parent="World/NavigationRegion3D/Item" index="34" instance=ExtResource("18_gbjfy")]
-transform = Transform3D(1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, 4, 1, 2)
+[node name="Conveyor6" parent="World/NavigationRegion3D/Item" index="63" instance=ExtResource("18_gbjfy")]
+transform = Transform3D(1, 0, -1.74845e-07, 0, 1, 0, 1.74845e-07, 0, 1, 3, 1, 1)

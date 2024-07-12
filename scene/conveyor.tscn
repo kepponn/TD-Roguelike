@@ -1,6 +1,6 @@
 [gd_scene load_steps=25 format=3 uid="uid://bxk3getkqajfa"]
 
-[ext_resource type="Script" path="res://scripts/conveyor.gd" id="1_oybhm"]
+[ext_resource type="Script" path="res://scripts/conveyorTest.gd" id="1_bgw0e"]
 [ext_resource type="Material" uid="uid://dkpv8vgb27wcn" path="res://models/textures/ammo_box_temp.tres" id="1_tn73t"]
 [ext_resource type="Material" uid="uid://b21bl8ylev0j8" path="res://models/textures/generic_light_metal.tres" id="2_fqcee"]
 [ext_resource type="Material" uid="uid://hq20gua5ss2l" path="res://assets/shaders/green_opacity.tres" id="3_notg0"]
@@ -287,7 +287,7 @@ shadow_mesh = SubResource("ArrayMesh_h07f3")
 size = Vector3(0.5, 0.5, 0.5)
 
 [node name="Conveyor" type="StaticBody3D"]
-script = ExtResource("1_oybhm")
+script = ExtResource("1_bgw0e")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_xrom3")
@@ -351,10 +351,5 @@ monitorable = false
 [node name="CollisionShape3D" type="CollisionShape3D" parent="NextConveyor"]
 shape = SubResource("BoxShape3D_8txvp")
 
-[node name="Timer" type="Timer" parent="."]
-wait_time = 2.0
-one_shot = true
-
 [connection signal="body_entered" from="NextConveyor" to="." method="_on_next_conveyor_body_entered"]
 [connection signal="body_exited" from="NextConveyor" to="." method="_on_next_conveyor_body_exited"]
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

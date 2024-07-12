@@ -124,6 +124,7 @@ func default_state(): # this being called by scene to reset the player state
 	player_isHoldingItem = false
 	player_interactedItem_Temp = null
 	player_holdedMats = ""
+	player_checkIngredientItem()
 
 func ready():
 	if Input.is_action_just_pressed("start"):

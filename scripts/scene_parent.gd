@@ -74,6 +74,9 @@ func default_state(): # Default state for items, being called only on preparatio
 		if Function.search_regex("drone", item_list.get_child(i).id):
 			item_list.get_child(i).reset() # Reset the drone state
 			print("Flushing ", item_list.get_child(i))
+		if Function.search_regex("conveyor", item_list.get_child(i).id):
+			item_list.get_child(i).reset()
+			print("Flushing ", item_list.get_child(i))
 
 func default_state_player(): # Default state for players, being called on both phase
 	$Player.default_state()

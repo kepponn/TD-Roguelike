@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://dvg33xpbeviag"]
+[gd_scene load_steps=19 format=3 uid="uid://dvg33xpbeviag"]
 
 [ext_resource type="PackedScene" uid="uid://bajk04l7oocqf" path="res://scene/scene_parent.tscn" id="1_30vnm"]
 [ext_resource type="MeshLibrary" uid="uid://bpq8ija5ngli5" path="res://Tiles.tres" id="2_86584"]
@@ -15,8 +15,9 @@
 [ext_resource type="PackedScene" uid="uid://di648bjo1jrc4" path="res://scene/turret_ricochet.tscn" id="15_t3pvb"]
 [ext_resource type="PackedScene" uid="uid://8ny1inkljgiu" path="res://scene/mortar.tscn" id="16_jnwwx"]
 [ext_resource type="PackedScene" uid="uid://o8b31i5r67xs" path="res://scene/enhancement.tscn" id="17_aitaa"]
-[ext_resource type="PackedScene" uid="uid://71mffj8s2jy2" path="res://scene/conveyor_grabber.tscn" id="17_x4bbe"]
-[ext_resource type="PackedScene" uid="uid://bxk3getkqajfa" path="res://scene/conveyor.tscn" id="18_gbjfy"]
+[ext_resource type="PackedScene" uid="uid://iwws5aq0va6m" path="res://scene/conveyor_grabber.tscn" id="17_x4bbe"]
+[ext_resource type="PackedScene" uid="uid://xhv01q1gg5sy" path="res://scene/conveyor.tscn" id="18_gbjfy"]
+[ext_resource type="PackedScene" uid="uid://dvpc7txlm5e6o" path="res://scene/conveyor_setter.tscn" id="18_ubx4l"]
 
 [node name="Scene" instance=ExtResource("1_30vnm")]
 stage_id = "stage_debug"
@@ -50,13 +51,13 @@ metadata/_editor_floor_ = Vector3(0, 2, 0)
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 6, 1, 2)
 
 [node name="Sell" parent="World/NavigationRegion3D/Item" index="1"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -2, 1, 3)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -2, 1, 4)
 
 [node name="Turret" parent="World/NavigationRegion3D/Item" index="2" instance=ExtResource("3_fs5vx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1, -9)
 
 [node name="Turret2" parent="World/NavigationRegion3D/Item" index="3" instance=ExtResource("3_fs5vx")]
-transform = Transform3D(1, 0, -1.06581e-14, 0, 1, 0, 1.06581e-14, 0, 1, 1, 1, 4)
+transform = Transform3D(1, 0, -1.06581e-14, 0, 1, 0, 1.06581e-14, 0, 1, 2, 1, 4)
 
 [node name="Turret5" parent="World/NavigationRegion3D/Item" index="4" instance=ExtResource("4_txdyd")]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2, 1, -9)
@@ -200,43 +201,52 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, -1)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 1, -1)
 
 [node name="Gunpowder_Box" parent="World/NavigationRegion3D/Item" index="51" instance=ExtResource("11_3aqng")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -2, 1, 0)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 3, 1, 0)
 
 [node name="Bullet_Box" parent="World/NavigationRegion3D/Item" index="52" instance=ExtResource("12_3dpcr")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -2, 1, 1)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -2, 1, 0)
 
 [node name="Crafter" parent="World/NavigationRegion3D/Item" index="53" instance=ExtResource("13_yo4g5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, -1)
 
 [node name="DroneBase2" parent="World/NavigationRegion3D/Item" index="54" instance=ExtResource("14_mg14c")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1, 7)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, -1)
 
 [node name="Turret6" parent="World/NavigationRegion3D/Item" index="55" instance=ExtResource("15_t3pvb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, -5)
 
 [node name="Mortar" parent="World/NavigationRegion3D/Item" index="56" instance=ExtResource("16_jnwwx")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 1, -1)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -1, 1, 4)
 
 [node name="Enhancement" parent="World/NavigationRegion3D/Item" index="57" instance=ExtResource("17_aitaa")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, -3)
 
 [node name="Conveyor" parent="World/NavigationRegion3D/Item" index="58" instance=ExtResource("18_gbjfy")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 3, 1, 0)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 1, 3)
 
 [node name="Conveyor2" parent="World/NavigationRegion3D/Item" index="59" instance=ExtResource("18_gbjfy")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 4, 1, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, 1)
 
 [node name="Conveyor3" parent="World/NavigationRegion3D/Item" index="60" instance=ExtResource("18_gbjfy")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 4, 1, 1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, 2)
 
 [node name="Conveyor4" parent="World/NavigationRegion3D/Item" index="61" instance=ExtResource("18_gbjfy")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 4, 1, 2)
+transform = Transform3D(1, 0, -1.74846e-07, 0, 1, 0, 1.74846e-07, 0, 1, 1, 1, -7)
 
 [node name="Conveyor5" parent="World/NavigationRegion3D/Item" index="62" instance=ExtResource("18_gbjfy")]
-transform = Transform3D(1, 0, -1.74846e-07, 0, 1, 0, 1.74846e-07, 0, 1, 3, 1, 2)
+transform = Transform3D(1, 0, -1.74846e-07, 0, 1, 0, 1.74846e-07, 0, 1, -1, 1, 3)
 
 [node name="Conveyor6" parent="World/NavigationRegion3D/Item" index="63" instance=ExtResource("18_gbjfy")]
-transform = Transform3D(1, 0, -1.74845e-07, 0, 1, 0, 1.74845e-07, 0, 1, 3, 1, 1)
+transform = Transform3D(-2.18557e-07, 0, -1, 0, 1, 0, 1, 0, -2.18557e-07, -2, 1, 2)
 
 [node name="Conveyor_Grabber" parent="World/NavigationRegion3D/Item" index="64" instance=ExtResource("17_x4bbe")]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -2, 1, 2)
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -2, 1, 1)
+
+[node name="Conveyor_Grabber2" parent="World/NavigationRegion3D/Item" index="65" instance=ExtResource("17_x4bbe")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 1, -1)
+
+[node name="Conveyor_Setter" parent="World/NavigationRegion3D/Item" index="66" instance=ExtResource("18_ubx4l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, 0)
+
+[node name="Conveyor_Setter2" parent="World/NavigationRegion3D/Item" index="67" instance=ExtResource("18_ubx4l")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 1, 1, -1)

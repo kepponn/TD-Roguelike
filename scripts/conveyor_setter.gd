@@ -1,4 +1,4 @@
 extends Conveyor_Parent
 
 func _ready():
-	id = "conveyor"
+	id = "conveyor_setter"

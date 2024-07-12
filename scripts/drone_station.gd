@@ -167,6 +167,9 @@ func add_ammoToBase():
 		player.player_isHoldingItem = false
 	#play sfx maybe
 
+func conveyor_put_ammo():
+	base_ammo += 1
+
 func _on_range_body_entered(body):
 	if body.is_class("StaticBody3D") and body.get_parent().name == 'Item':
 		if Function.search_regex("turret", body.id):

@@ -116,3 +116,13 @@ func _on_crafting_timer_timeout():
 	prod_ammo_box = 1
 	is_crafting = false
 	
+func conveyor_put_ingredient(mats_id):
+	if mats_id == "gunpowder_box" and mats_gunpowder_box == 0:
+		mats_gunpowder_box = 1
+	elif mats_id == "bullet_box" and mats_bullet_box == 0:
+		mats_bullet_box = 1
+
+func conveyor_get_product():
+	if prod_ammo_box == 1:
+		prod_ammo_box = 0
+		return "ammo_box"

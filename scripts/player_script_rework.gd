@@ -411,7 +411,7 @@ func player_InteractItems():
 			elif player_interactedItem_Temp.id == "crafter":
 				player_interactedItem_Temp.get_product()
 				player_checkIngredientItem()
-			elif player_interactedItem_Temp.id == "conveyor":
+			elif player_interactedItem_Temp.id == "conveyor" or player_interactedItem_Temp.id == "conveyor_grabber":
 				if !player_interactedItem_Temp.inv.is_empty():
 					player_holdedMats = player_interactedItem_Temp.takeItem()
 					player_isHoldingItem = true
@@ -432,7 +432,7 @@ func player_InteractItems():
 			elif player_interactedItem_Temp.id == "drone_station" and player_holdedMats == "ammo_box":
 				player_interactedItem_Temp.add_ammoToBase()
 				player_checkIngredientItem()
-			elif player_interactedItem_Temp.id == "conveyor":
+			elif player_interactedItem_Temp.id == "conveyor" or player_interactedItem_Temp.id == "conveyor_grabber":
 				if player_interactedItem_Temp.inv.is_empty():
 					player_interactedItem_Temp.recieveItem(player_holdedMats)
 					player_isHoldingItem = false

@@ -65,3 +65,11 @@ func open_gate():
 	set_collision_layer_value(1, false)
 	set_collision_mask_value(1, false)
 
+func set_front_back_collision(enable: bool):
+	if enable:
+		$FrontCollisionChecker.disabled = false
+		$BackCollisionChecker.disabled = false
+	elif !enable:
+		$FrontCollisionChecker.disabled = true
+		$BackCollisionChecker.disabled = true
+

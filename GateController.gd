@@ -13,6 +13,8 @@ func operate_gate():
 	print("Opened Gate Index: ", opened_gate_index)
 	# open the selected gate from randomizer, and close every not selected gate
 	for gate in gateList:
+		# turn front-back collision checker to FALSE so enemy can pass on the front/back of the gate
+		gate.set_front_back_collision(false)
 		if gate == gateList[opened_gate_index]:
 			gate.open_gate()
 			print("opening ", gate)
@@ -28,6 +30,8 @@ func default_state(): # Called by scene_parent script -> default_state_gate()
 	#default state is all door opened
 	for gate in gateList:
 		gate.open_gate()
+		# turn front-back collision checker to TRUE player can't drop any item in front/back of gate to block it
+		gate.set_front_back_collision(true)
 
 func create_scene_timer():
 	gate_Timer = get_tree().create_timer(randi_range(3,6))

@@ -18,6 +18,14 @@ script = ExtResource("1_aq5go")
 [node name="Collision" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_r7smb")
 
+[node name="FrontCollisionChecker" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+shape = SubResource("BoxShape3D_r7smb")
+
+[node name="BackCollisionChecker" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+shape = SubResource("BoxShape3D_r7smb")
+
 [node name="Model" type="Node3D" parent="."]
 
 [node name="Gate" type="MeshInstance3D" parent="Model"]

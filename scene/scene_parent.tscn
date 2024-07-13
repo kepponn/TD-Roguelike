@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bajk04l7oocqf"]
+[gd_scene load_steps=20 format=3 uid="uid://bajk04l7oocqf"]
 
 [ext_resource type="Script" path="res://scripts/scene_parent.gd" id="1_7h58t"]
 [ext_resource type="AudioStream" uid="uid://benfdpyeb1uyp" path="res://assets/audio/bgm/game-music-loop-7-145285.mp3" id="2_eecwo"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://budhhix56t71m" path="res://ui/inspected_item_ui.tscn" id="12_bhhwj"]
 [ext_resource type="PackedScene" uid="uid://bscu6qqpt0hew" path="res://scene/player_scene_rework.tscn" id="15_u2sf4"]
 [ext_resource type="PackedScene" uid="uid://d3282iyq1bnbx" path="res://ui/sell_prompt.tscn" id="15_xjgeb"]
+[ext_resource type="Script" path="res://GateController.gd" id="18_swbev"]
 [ext_resource type="PackedScene" uid="uid://g2b2ewy0w1op" path="res://scene/defend_point.tscn" id="20_xhdqf"]
 [ext_resource type="PackedScene" uid="uid://bpefgdkivwfib" path="res://scene/spawner.tscn" id="21_83lk5"]
 [ext_resource type="FontFile" uid="uid://cxvusk35yis3l" path="res://assets/font/Dadlygood.otf" id="23_u06ob"]
@@ -200,6 +201,9 @@ metadata/_edit_use_anchors_ = true
 [node name="IngameMenu" parent="UI/Control" instance=ExtResource("28_76s64")]
 unique_name_in_owner = true
 visible = false
+
+[node name="GateController" type="Node" parent="."]
+script = ExtResource("18_swbev")
 
 [connection signal="bake_finished" from="World/NavigationRegion3D" to="." method="_on_navigation_region_3d_bake_finished"]
 [connection signal="child_entered_tree" from="World/NavigationRegion3D/Item" to="." method="_on_item_child_entered_or_exiting_tree"]

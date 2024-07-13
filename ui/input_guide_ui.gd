@@ -95,7 +95,7 @@ func _process(_delta):
 			if !player.player_ableInteract and !player.player_isHoldingItem:
 				update_visibility_and_text(E, controller_A, false)
 			#PICK ITEM
-			elif player.player_ableInteract and !player.player_isHoldingItem:
+			elif player.player_ableInteract and !player.player_isHoldingItem and player.player_interactedItem_Temp.id != "gate":
 				update_visibility_and_text(E, controller_A, true, "Pick up")
 			#DROP ITEM
 			elif !player.player_ableInteract and player.player_isHoldingItem:
@@ -150,7 +150,7 @@ func _process(_delta):
 			if !player.player_ableInteract and !player.player_isHoldingItem:
 				update_visibility_and_text(V, controller_B, false)
 			#ROTATE HOLDED ITEM OR INTERACTABLE ITEM / TARGETED ITEM
-			elif (player.player_isHoldingItem or player.player_ableInteract) and !Function.search_regex("wall", player.player_interactedItem_Temp.id):
+			elif (player.player_isHoldingItem or player.player_ableInteract) and !Function.search_regex("wall", player.player_interactedItem_Temp.id) and player.player_interactedItem_Temp.id != "gate":
 				if Function.search_regex("mortar", player.player_interactedItem_Temp.id):
 					if player.player_ableInteract and !player.player_isHoldingItem:
 						update_visibility_and_text(V, controller_B, true, "Enter Aiming Mode")
@@ -203,14 +203,15 @@ func _process(_delta):
 						if player.player_holdedMats == "ammo_box":
 							update_visibility_and_text(E, controller_A, true, "Add Ammo")
 			#------------ C INPUT / INSPECT ------------
-			#DEFAULT STATE -> HIDE
+			# EFAULT STATE -> HIDE
 			if !player.player_ableInteract:
 				update_visibility_and_text(C, controller_X, false)
-			#INSPECT
+			# INSPECT
 			elif player.player_ableInteract and !player.player_isHoldingItem and !player.player_interactedItem_Temp.has_method("mount"):
 				if player.player_interactedItem_Temp.id != "shop":
 					update_visibility_and_text(C, controller_X, true, "Inspect")
-			#------------ V INPUT / INSPECT ------------
+			#------------ V INPUT / ROTATE ------------
+			# ENTER MORTAR AIMING MODE
 			if player.player_ableInteract and Function.search_regex("mortar", player.player_interactedItem_Temp.id):
 				update_visibility_and_text(V, controller_B, true, "Enter Aiming Mode")
 			# DEFAULT STATE -> HIDE

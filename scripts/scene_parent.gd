@@ -38,6 +38,7 @@ func _ready():
 	spawner.enemies_scene_node = %Enemies
 	spawner.seed_enemies_weight()
 	spawner.count_enemies()
+	default_state_gate()
 	# Request audio background music
 	$Audio/Preparation.play()
 	# Additional setters
@@ -51,7 +52,7 @@ func _process(_delta):
 	if !has_defensive_structure:
 		for i in item_list.get_child_count():
 			if Function.search_regex("turret", item_list.get_child(i).id):
-				has_defensive_structure = true
+					has_defensive_structure = true
 
 # -------------------- Independent function below
 
@@ -78,6 +79,10 @@ func default_state(): # Default state for items, being called only on preparatio
 			item_list.get_child(i).reset()
 			print("Flushing ", item_list.get_child(i))
 
+func default_state_gate(): # Default state for gate, being called on preparation phase
+	#default state is all door opened
+	$GateController.default_state()
+
 func default_state_player(): # Default state for players, being called on both phase
 	$Player.default_state()
 
@@ -102,6 +107,7 @@ func request_defense_phase(player): # This is being called by player
 func defense_phase(): # Run after request_defense_phase(player) when all params check complete
 	spawner.spawn_timer.start()
 	default_state_player()
+	$GateController.operate_gate()
 	Global.preparation_phase = false
 	print("Player ready, entering defense phase wave ", Global.waves)
 	%Shop.hide()
@@ -117,6 +123,7 @@ func preparation_phase(): # This is being called by self process
 	%Shop.update_item()
 	default_state_player()
 	default_state()
+	default_state_gate()
 	Global.preparation_phase = true
 	print("Wave cleared, entering preparation phase wave ", Global.waves)
 	spawner.seed_enemies_weight()

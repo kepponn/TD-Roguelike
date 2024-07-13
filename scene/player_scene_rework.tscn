@@ -542,6 +542,8 @@ skeleton = NodePath("")
 [node name="Interaction Zone" type="Area3D" parent="Node3D"]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -0.161922, 0)
+collision_layer = 3
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/Interaction Zone"]
 shape = SubResource("CylinderShape3D_3nlo6")

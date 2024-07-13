@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://d0jbj4wmfsta6"]
+
+[ext_resource type="Script" path="res://scene/gate.gd" id="1_aq5go"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_r7smb"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ska27"]
+size = Vector3(1, 1, 0.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_taknp"]
+size = Vector3(0.15, 1.25, 0.5)
+
+[node name="Gate" type="StaticBody3D"]
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_aq5go")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_r7smb")
+
+[node name="Model" type="Node3D" parent="."]
+
+[node name="Gate" type="MeshInstance3D" parent="Model"]
+mesh = SubResource("BoxMesh_ska27")
+skeleton = NodePath("../..")
+
+[node name="Frame" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.424873, 0, 0)
+mesh = SubResource("BoxMesh_taknp")
+skeleton = NodePath("../..")
+
+[node name="Frame2" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.424826, 0, 0)
+mesh = SubResource("BoxMesh_taknp")
+skeleton = NodePath("../..")

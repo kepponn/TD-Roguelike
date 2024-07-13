@@ -305,7 +305,6 @@ func player_rotateItemProcess():
 			audio_randomSelector($Audio/Pop, -10)
 
 func player_checkItemRange(item, enable: bool = true):
-	print(item, enable)
 	#var regex = RegEx.new() # need to add some regex to check for all the name id of turret
 	#var pattern = r"^(?i)turret.*$" # for example all turret name start with 'turret_name_affix_suffix_whatever'
 	#regex.compile(pattern) d# check for match regex on 'turret' and be happy
@@ -340,7 +339,7 @@ func player_InteractItems():
 	#================================================ PREPARATION PHASE ==================================================================================================
 	if Global.preparation_phase:
 		# PICK UP ITEM - NOT HOLDING item and HAVE INTERACTABLE item
-		if player_ableInteract == true and player_isHoldingItem == false and Input.is_action_just_pressed("interact"):
+		if player_ableInteract == true and player_isHoldingItem == false and Input.is_action_just_pressed("interact") and player_interactedItem_Temp.id != "gate":
 			player_isHoldingItem = true
 			# When the player decided to interact with the current item `player_interactedItem_Temp` (which always changing depend on the circumstance)
 			# It will save the `player_interactedItem_Temp` into `player_interactedItem` to be used
@@ -362,7 +361,7 @@ func player_InteractItems():
 			player_interactedItem = null
 			
 		# SWAP ITEM - HOLDING an items and HAVE INTERACTABLE item
-		elif player_ableInteract == true and player_isHoldingItem == true and player_ableToDrop == true and Input.is_action_just_pressed("interact"):
+		elif player_ableInteract == true and player_isHoldingItem == true and player_ableToDrop == true and Input.is_action_just_pressed("interact") and player_interactedItem_Temp.id != "gate":
 			print("Swapping " + str(player_interactedItem) + " with " + str(player_interactedItem_Temp))
 			# All this line is the basic for item swapping
 			# Swap held item property to on-ground item property
@@ -448,10 +447,7 @@ func player_CheckItems():
 		else:
 			player_inspectedItem = player_interactedItem_Temp
 		player_checkItemRange(player_inspectedItem, true)
-		#player_inspectedItem = player_interactedItem_Temp
-		#player_checkItemRange(player_inspectedItem, true)
-		#var sprite_adjustment = Vector3(0, 2, 0) #Vector3(0, 2, -1.5)
-		#inspectedItem_UI_Sprite.global_position = player_inspectedItem.global_position + sprite_adjustment
+		
 		if "attack_damage" in player_inspectedItem and player_inspectedItem.attack_damage != null:
 			inspectedItem_UI.AttackDamageText = str(player_inspectedItem.attack_damage)
 			if player_inspectedItem.buff_isEnchanted:
@@ -496,91 +492,7 @@ func player_CheckItems():
 			inspectedItem_UI.AttackRangeBuffText = null
 			inspectedItem_UI.DroneAmmoCapacityText = null
 			inspectedItem_UI.hide()
-		#-------------------------------------------------------------------------------------------------------------------------------------------------
-		#if Function.search_regex("turret", player_inspectedItem.id):
-			#print("INSPECTED TURRET")
-			#if player_inspectedItem.buff_isEnchanted:
-				#inspectedItem_UI.AttackDamageText = str(player_inspectedItem.attack_damage) + "+" + str(player_inspectedItem.enchanted_bonus)
-			#else:
-				#inspectedItem_UI.AttackDamageText = player_inspectedItem.attack_damage
-			#if player_inspectedItem.buff_isMounted:
-				#inspectedItem_UI.AttackRangeText = str(player_inspectedItem.attack_range) + "+" + str(player_inspectedItem.mounted_bonus)
-			#else:
-				#inspectedItem_UI.AttackRangeText = player_inspectedItem.attack_range
-			#
-			##inspectedItem_UI.AttackDamageText = player_inspectedItem.attack_damage
-			##inspectedItem_UI.AttackRangeText = player_inspectedItem.attack_range
-			#inspectedItem_UI.AttackSpeedText = player_inspectedItem.attack_speed
-			#inspectedItem_UI.AmmoText = player_inspectedItem.bullet_maxammo
-			#inspectedItem_UI.show()
-		#
-		#if Function.search_regex("mortar", player_inspectedItem.id):
-			#print("INSPECTED MORTAR")
-			#if player_inspectedItem.buff_isEnchanted:
-				#inspectedItem_UI.AttackDamageText = str(player_inspectedItem.attack_damage) + "+" + str(player_inspectedItem.enchanted_bonus)
-			#else:
-				#inspectedItem_UI.AttackDamageText = player_inspectedItem.attack_damage
-			#inspectedItem_UI.AttackRangeText = str(player_inspectedItem.attack_rangeMin) + "-" + str(player_inspectedItem.attack_rangeMax)
-			#inspectedItem_UI.AttackSpeedText = player_inspectedItem.attack_speed
-			#inspectedItem_UI.show()
-		#
-		#match player_inspectedItem.id:
-			#"wall_spiked":
-				#print("INSPECTED WALL SPIKED")
-				#if player_inspectedItem.buff_isEnchanted:
-					#inspectedItem_UI.AttackDamageText = str(player_inspectedItem.attack_damage) + "+" + str(player_inspectedItem.enchanted_bonus)
-				#else:
-					#inspectedItem_UI.AttackDamageText = player_inspectedItem.attack_damage
-				#inspectedItem_UI.AttackRangeText = "1"
-				#inspectedItem_UI.AttackSpeedText = player_inspectedItem.attack_speed
-				#inspectedItem_UI.show()
-			## Will mess with player interaction when mounting a turret (showing card of the wall itself and mounting at the same time)
-			#"wall_mountable":
-				#print("INSPECTED WALL MOUNTABLE")
-				#if player_inspectedItem.is_mountable_occupied:
-					##if Function.search_regex("turret", player_inspectedItem.get_child(-1).id):
-					#
-					#if player_inspectedItem.currently_mountable_item.buff_isEnchanted:
-						#inspectedItem_UI.AttackDamageText = str(player_inspectedItem.currently_mountable_item.attack_damage) + "+" + str(player_inspectedItem.currently_mountable_item.enchanted_bonus)
-					#else:
-						#inspectedItem_UI.AttackDamageText = player_inspectedItem.currently_mountable_item.attack_damage
-					#
-					#if player_inspectedItem.currently_mountable_item.buff_isMounted:
-						#inspectedItem_UI.AttackRangeText = str(player_inspectedItem.currently_mountable_item.attack_range) + "+" + str(player_inspectedItem.currently_mountable_item.mounted_bonus)
-					#else:
-						#inspectedItem_UI.AttackRangeText = player_inspectedItem.currently_mountable_item.attack_range
-						#
-					#inspectedItem_UI.AttackSpeedText = player_inspectedItem.currently_mountable_item.attack_speed
-					#inspectedItem_UI.AmmoText = player_inspectedItem.currently_mountable_item.bullet_maxammo
-					#inspectedItem_UI.show()
-				#else:
-					#inspectedItem_UI.AttackDamageText = null
-					#inspectedItem_UI.AttackRangeBuffText = "+1"
-					#inspectedItem_UI.AttackSpeedText = null
-					#inspectedItem_UI.AmmoText = null
-					#inspectedItem_UI.show()
-			#"enhancement":
-				#inspectedItem_UI.AttackDamageBuffText = "+5"
-				#inspectedItem_UI.show()
-			#"drone_station":
-				#inspectedItem_UI.AttackRangeText = player_inspectedItem.area_range
-				#inspectedItem_UI.DroneAmmoCapacityText = "3"
-				#inspectedItem_UI.show()
-	##elif player_inspectedItem != null and player_ableInteract == false and player_isHoldingItem == false:
-	#elif player_inspectedItem != null and player_interactedItem_Temp != null and player_ableInteract == false:
-	## player_ableInteract to check the item itself and show the card of it
-		## This basically check if the temp is changed or player see 'empty' grid
-		#if player_inspectedItem != player_interactedItem:
-			##player_checkItemRange(player_inspectedItem, false)
-			#inspectedItem_UI.AttackDamageText = null
-			#inspectedItem_UI.AttackRangeText = null
-			#inspectedItem_UI.AttackSpeedText = null
-			#inspectedItem_UI.AmmoText = null
-			#inspectedItem_UI.AttackDamageBuffText = null
-			#inspectedItem_UI.AttackRangeBuffText = null
-			#inspectedItem_UI.hide()
-			#player_checkItemRange(player_inspectedItem, false)
-	#-------------------------------------------------------------------------------------------------------------------------------------------------
+		
 
 func player_InspectItemsArea():
 	if Input.is_action_just_pressed("check") and (player_ableInteract or player_isHoldingItem):
@@ -599,7 +511,7 @@ func player_RotateItems():
 		if player_interactedItem_Temp != null and Function.search_regex("mortar", player_interactedItem_Temp.id) and !player_isHoldingItem:
 			player_interactedItem_Temp.controlled()
 		# Rotate everything else with +90deg
-		elif Global.preparation_phase:
+		elif Global.preparation_phase and player_interactedItem_Temp.id != "gate":
 			player_rotateItemProcess()
 
 func _on_interaction_zone_body_entered(body):

@@ -79,8 +79,9 @@ func default_state(): # Default state for items, being called only on preparatio
 			item_list.get_child(i).reset()
 			print("Flushing ", item_list.get_child(i))
 
-func default_state_gate(): # Default state for gate, being called on preparation phase
-	#default state is all door opened
+func default_state_gate(): # Default state for gate, being called on both phase
+	# if on preparation phase -> all door will be opened
+	# if on defense phase -> all door will be closed
 	$GateController.default_state()
 
 func default_state_player(): # Default state for players, being called on both phase
@@ -107,8 +108,9 @@ func request_defense_phase(player): # This is being called by player
 func defense_phase(): # Run after request_defense_phase(player) when all params check complete
 	spawner.spawn_timer.start()
 	default_state_player()
-	$GateController.operate_gate()
 	Global.preparation_phase = false
+	default_state_gate()
+	$GateController.operate_gate()
 	print("Player ready, entering defense phase wave ", Global.waves)
 	%Shop.hide()
 	$Audio/Preparation.stop()
@@ -123,8 +125,8 @@ func preparation_phase(): # This is being called by self process
 	%Shop.update_item()
 	default_state_player()
 	default_state()
-	default_state_gate()
 	Global.preparation_phase = true
+	default_state_gate()
 	print("Wave cleared, entering preparation phase wave ", Global.waves)
 	spawner.seed_enemies_weight()
 	spawner.count_enemies()

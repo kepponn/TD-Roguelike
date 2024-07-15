@@ -18,14 +18,6 @@ script = ExtResource("1_aq5go")
 [node name="Collision" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_r7smb")
 
-[node name="FrontCollisionChecker" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
-shape = SubResource("BoxShape3D_r7smb")
-
-[node name="BackCollisionChecker" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
-shape = SubResource("BoxShape3D_r7smb")
-
 [node name="Model" type="Node3D" parent="."]
 
 [node name="Gate" type="MeshInstance3D" parent="Model"]
@@ -41,3 +33,15 @@ skeleton = NodePath("../..")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.424826, 0, 0)
 mesh = SubResource("BoxMesh_taknp")
 skeleton = NodePath("../..")
+
+[node name="Checker" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+
+[node name="NavigationChecker" type="NavigationAgent3D" parent="Checker"]
+path_desired_distance = 0.1
+target_desired_distance = 0.1
+path_max_distance = 0.01
+path_postprocessing = 1
+debug_enabled = true
+debug_use_custom = true
+debug_path_custom_color = Color(0, 0, 0, 1)

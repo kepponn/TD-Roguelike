@@ -518,7 +518,7 @@ func _on_interaction_zone_body_entered(body):
 	if body.is_class("GridMap") and player_isHoldingItem:
 		# disable drop if the interaction area collide with gridmap
 		player_ableToDrop = false
-	if body.is_class("StaticBody3D") and body.get_parent().name == 'Item':
+	if body.is_class("StaticBody3D") and (body.get_parent().name == 'Item' or body.get_parent().name == 'gate'):
 		player_interactedItem_Temp = body
 		player_ableInteract = true
 		#print("player ABLE to interact with w" + body.name)
@@ -527,6 +527,6 @@ func _on_interaction_zone_body_exited(body):
 	if body.is_class("GridMap") and player_isHoldingItem:
 		# enable drop if the interaction area collide with gridmap
 		player_ableToDrop = true
-	if body.is_class("StaticBody3D") and body.get_parent().name == 'Item':
+	if body.is_class("StaticBody3D") and (body.get_parent().name == 'Item' or body.get_parent().name == 'gate'):
 		player_ableInteract = false
 		#print("player UNABLE to interact with " + body.name)

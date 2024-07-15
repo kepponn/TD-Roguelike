@@ -49,9 +49,15 @@ var price: int
 var tween
 @onready var gate_controller = get_node("/root/Scene/GateController")
 @onready var gate = $Model/Gate
+@onready var navigation_checker = $Checker/NavigationChecker
+
+var direction
 
 func _ready():
-	gate_controller.gateList.append(self)
+	gate_controller.gate_List.append(self)
+
+func _process(delta):
+	check_path()
 
 func close_gate():
 	tween = get_tree().create_tween()
@@ -65,11 +71,15 @@ func open_gate():
 	set_collision_layer_value(1, false)
 	set_collision_mask_value(1, false)
 
-func set_front_back_collision(enable: bool):
-	if enable:
-		$FrontCollisionChecker.disabled = false
-		$BackCollisionChecker.disabled = false
-	elif !enable:
-		$FrontCollisionChecker.disabled = true
-		$BackCollisionChecker.disabled = true
-
+func check_path():
+	navigation_checker.target_position = Global.final_target
+	direction = navigation_checker.get_next_path_position() - global_position
+	
+	if round($Checker.global_position.distance_to(navigation_checker.get_current_navigation_path()[0])) == 0:
+		if !gate_controller.operatable_Gate_List.has(self):
+			gate_controller.operatable_Gate_List.append(self)
+		#print("path from ",name," is ok")
+	else :
+		if gate_controller.operatable_Gate_List.has(self):
+			gate_controller.operatable_Gate_List.erase(self)
+		#print("path from ",name," is blocked")

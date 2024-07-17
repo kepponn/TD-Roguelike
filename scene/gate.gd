@@ -56,7 +56,7 @@ var direction
 func _ready():
 	gate_controller.gate_List.append(self)
 
-func _process(delta):
+func _process(_delta):
 	check_path()
 
 func close_gate():

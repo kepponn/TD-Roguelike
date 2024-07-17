@@ -442,11 +442,15 @@ func player_CheckItems():
 	# This show the player card-like information about item, will be immediately turn off if player do any action
 	# Add more information but in text-type to some items? maybe make a new UI3D for that?
 	if Input.is_action_just_pressed("check") and (player_ableInteract or player_isHoldingItem):
+		# To delete previous area range check if there any
+		# This is a bug fixer where player inspect new item with temp variable that dont have area and bypassing elif checker in below
+		if player_inspectedItem != null:
+			player_checkItemRange(player_inspectedItem, false)
+			
 		if player_isHoldingItem:
 			player_inspectedItem = player_interactedItem
 		else:
 			player_inspectedItem = player_interactedItem_Temp
-		player_checkItemRange(player_inspectedItem, true)
 		
 		if "attack_damage" in player_inspectedItem and player_inspectedItem.attack_damage != null:
 			inspectedItem_UI.AttackDamageText = str(player_inspectedItem.attack_damage)
@@ -478,7 +482,14 @@ func player_CheckItems():
 			inspectedItem_UI.AttackDamageBuffText = "+" + str(player_inspectedItem.bonus_attack)
 		if "base_ammo" in player_inspectedItem:
 			inspectedItem_UI.DroneAmmoCapacityText = str(player_inspectedItem.max_ammo)
-		inspectedItem_UI.show()
+		# Using setter function to set new data into inspectedItem_UI
+		inspectedItem_UI.setter()
+		# This is the limiter for card-info, which will show the card if the inspected property have at least 1 icon
+		# This prevent inspect item with empty card structure
+		for card_info in inspectedItem_UI.ui_icon_parent.get_children():
+			if card_info.visible:
+				player_checkItemRange(player_inspectedItem, true)
+				inspectedItem_UI.show()
 	elif player_inspectedItem != null and player_interactedItem_Temp != null and player_ableInteract == false:
 	# player_ableInteract to check the item itself and show the card of it
 		# This basically check if the temp is changed or player see 'empty' grid
@@ -492,7 +503,6 @@ func player_CheckItems():
 			inspectedItem_UI.AttackRangeBuffText = null
 			inspectedItem_UI.DroneAmmoCapacityText = null
 			inspectedItem_UI.hide()
-		
 
 func player_InspectItemsArea():
 	if Input.is_action_just_pressed("check") and (player_ableInteract or player_isHoldingItem):

@@ -48,29 +48,25 @@ script = ExtResource("1_0djw8")
 
 [node name="N" type="MeshInstance3D" parent="NeighbourWalls"]
 unique_name_in_owner = true
-transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 1.6, 0, -0.2, -0.6)
-visible = false
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 1.4, 0, -0.2, -0.5)
 mesh = SubResource("ArrayMesh_x8rxk")
 skeleton = NodePath("")
 
 [node name="W" type="MeshInstance3D" parent="NeighbourWalls"]
 unique_name_in_owner = true
 transform = Transform3D(-2.62268e-08, 0, 1.4, 0, 0.6, 0, -0.6, 0, -6.11959e-08, -0.5, -0.2, 0)
-visible = false
 mesh = SubResource("ArrayMesh_x8rxk")
 skeleton = NodePath("")
 
 [node name="E" type="MeshInstance3D" parent="NeighbourWalls"]
 unique_name_in_owner = true
 transform = Transform3D(-2.62268e-08, 0, 1.4, 0, 0.6, 0, -0.6, 0, -6.11959e-08, 0.5, -0.2, 0)
-visible = false
 mesh = SubResource("ArrayMesh_x8rxk")
 skeleton = NodePath("")
 
 [node name="S" type="MeshInstance3D" parent="NeighbourWalls"]
 unique_name_in_owner = true
 transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 1.4, 0, -0.2, 0.5)
-visible = false
 mesh = SubResource("ArrayMesh_x8rxk")
 skeleton = NodePath("")
 

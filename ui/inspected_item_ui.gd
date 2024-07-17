@@ -3,6 +3,8 @@ extends Control
 @export var item_price: int
 @export var item_name: String
 
+@onready var ui_icon_parent = $MarginContainer/HBoxContainer/ItemImage/StatusContainer
+
 var AttackDamageText
 var AttackRangeText
 var AttackSpeedText
@@ -18,7 +20,8 @@ var DroneAmmoCapacityText
 @onready var AttackRangeBuffLabel = $MarginContainer/HBoxContainer/ItemImage/StatusContainer/AttackRangeBuffBg/AttackRangeBuffLabel
 @onready var DroneAmmoCapacityLabel = $MarginContainer/HBoxContainer/ItemImage/StatusContainer/DroneAmmoCapacityBg/DroneAmmoCapacityLabel
 
-func _process(_delta):
+# using process is too slow and the timing is fucked up
+func setter():
 	if AttackDamageText != null:
 		AttackDamageLabel.text = str(AttackDamageText)
 		$MarginContainer/HBoxContainer/ItemImage/StatusContainer/AttackDamageBg.show()

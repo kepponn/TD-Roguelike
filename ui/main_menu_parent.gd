@@ -10,6 +10,9 @@ class_name Main_Menu_Parent
 # --------------------------------------------------------------------------
 
 func ready_up():
+	print("Controller list: ", Input.get_connected_joypads())
+	for controller in Input.get_connected_joypads():
+		print("GUID: ", Input.get_joy_guid(controller), " | INFO: ", Input.get_joy_info(controller), " | NAME: ", Input.get_joy_name(controller))
 	get_tree().paused = true
 	_displaySettings()
 	_audioSettings()

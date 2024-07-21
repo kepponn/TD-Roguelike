@@ -35,7 +35,7 @@ func setter():
 		$MarginContainer/HBoxContainer/ItemImage/StatusContainer/AttackRangeBg.hide()
 		
 	if AttackSpeedText != null:
-		AttackSpeedLabel.text = "%0.2f" % AttackSpeedText
+		AttackSpeedLabel.text = "%0.2f" % float(AttackSpeedText)
 		$MarginContainer/HBoxContainer/ItemImage/StatusContainer/AttackSpeedBg.show()
 	else:
 		$MarginContainer/HBoxContainer/ItemImage/StatusContainer/AttackSpeedBg.hide()

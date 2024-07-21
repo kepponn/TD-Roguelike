@@ -24,8 +24,45 @@ var player_interactedItem_Temp
 var player_holdedMats: String
 
 var player_lockInput: bool = false
-
 var player_lastButtonFocused
+
+# Check for this controller, either [0, 1, 2, 3] this being map manually in inputmap
+# This index id need to be store in scene before queried down for player controls
+var controller_index = 0
+# Control map for player (default to keyboard, directly change if controller is connected)
+# Being set for controller in _ready() function
+var ui_up = "ui_up"
+var ui_down = "ui_down"
+var ui_left = "ui_left"
+var ui_right = "ui_right"
+var interact = "interact"
+var inspect = "inspect"
+var check = "check"
+@warning_ignore("shadowed_variable_base_class") # this ingnore all shadowed variable or just one below it? (auto-gen content from debugger ignore)
+var rotate = "rotate"
+var start = "start"
+var exit = "exit"
+
+func _ready():
+	# Stop the audio temporary
+	$Audio/MoveSfx.stream_paused = true
+	# Hide all the ingredient icons (being used in defense phase)
+	$"Node3D/Ingredient Item/Ingredient Sprite".hide()
+	
+	if Input.get_connected_joypads().has(controller_index):
+		print("InputMap: ", self.id, " is using controller ", "GUID: ", Input.get_joy_guid(controller_index), " | INFO: ", Input.get_joy_info(controller_index), " | NAME: ", Input.get_joy_name(controller_index))
+		ui_up = "controller_"+str(controller_index)+"_move_up"
+		ui_down = "controller_"+str(controller_index)+"_move_down"
+		ui_left = "controller_"+str(controller_index)+"_move_left"
+		ui_right = "controller_"+str(controller_index)+"_move_right"
+		interact = "controller_"+str(controller_index)+"_interact"
+		inspect = "controller_"+str(controller_index)+"_inspect"
+		check = "controller_"+str(controller_index)+"_check"
+		rotate = "controller_"+str(controller_index)+"_rotate"
+		start = "controller_"+str(controller_index)+"_start"
+		exit = "controller_"+str(controller_index)+"_exit"
+	else:
+		print("InputMap: ", self.id, " is using keyboard (default settings)")
 
 func _physics_process(delta):
 
@@ -41,7 +78,7 @@ func _physics_process(delta):
 		velocity.y -= gravity * delta
 		
 	# Equal to keyboard WASD and controller Stick Left analog and dpad
-	var input_dir = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	var input_dir = Input.get_vector(ui_left, ui_right, ui_up, ui_down)
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
 	if direction:
@@ -79,21 +116,15 @@ func DEBUG_turret_targeting_DEBUG():
 			elif player_interactedItem_Temp.id == "wall_mountable" and player_interactedItem_Temp.is_mountable_occupied:
 				player_interactedItem_Temp.currently_mountable_item.check_target_priority()
 
-func _ready():
-	# Stop the audio temporary
-	$Audio/MoveSfx.stream_paused = true
-	# Hide all the ingredient icons (being used in defense phase)
-	$"Node3D/Ingredient Item/Ingredient Sprite".hide()
-
 func open_shop():
 	if player_interactedItem_Temp != null:
 		# Open shop action
-		if player_interactedItem_Temp.name == "Shop" and Input.is_action_just_pressed("inspect") and Global.preparation_phase == true:
+		if player_interactedItem_Temp.name == "Shop" and Input.is_action_just_pressed(inspect) and Global.preparation_phase == true:
 			get_node('/root/Scene/UI/Control/Shop').show()
 			player_lockInput = true
 			get_node('/root/Scene/UI/Control/Shop/PanelContainer2/MarginContainer/HBoxContainer/CloseButton').grab_focus()
 		# Sell item action
-		elif player_interactedItem_Temp.name == "Sell" and Input.is_action_just_pressed("inspect") and player_isHoldingItem and Global.preparation_phase == true:
+		elif player_interactedItem_Temp.name == "Sell" and Input.is_action_just_pressed(inspect) and player_isHoldingItem and Global.preparation_phase == true:
 			# Item list in Global.sellable_item
 			# And make sure all the item have sell price, beucase it will be needed for calculation
 			for sellable_item_check in Global.sellable_item:
@@ -106,7 +137,7 @@ func open_shop():
 func mountable_wall():
 	# This check for preparation phase, if true then this process will be accessible
 	if player_interactedItem_Temp != null and Global.preparation_phase: # Check wall_mountable
-		if player_interactedItem_Temp.has_method("mount") and Input.is_action_just_pressed("inspect"): # check for wall_mountable function
+		if player_interactedItem_Temp.has_method("mount") and Input.is_action_just_pressed(inspect): # check for wall_mountable function
 			if player_ableInteract and player_isHoldingItem and player_interactedItem_Temp.currently_mountable_item == null:
 				player_interactedItem_Temp.mount(true)
 				player_interactedItem = null
@@ -127,11 +158,11 @@ func default_state(): # this being called by scene to reset the player state
 	player_checkIngredientItem()
 
 func ready():
-	if Input.is_action_just_pressed("start"):
+	if Input.is_action_just_pressed(start):
 		scene.request_defense_phase(self)
 	
 func esc():
-	if Input.is_action_just_pressed("exit"):
+	if Input.is_action_just_pressed(exit):
 		player_lastButtonFocused = get_viewport().gui_get_focus_owner()
 		scene.pause()
 
@@ -148,7 +179,7 @@ func player_rotation(direction):
 
 func player_model():
 	var modelHand_Tween = get_tree().create_tween()
-	if player_ableInteract and (Input.is_action_just_pressed("check") or Input.is_action_just_pressed("inspect") or Input.is_action_just_pressed("rotate")):
+	if player_ableInteract and (Input.is_action_just_pressed(check) or Input.is_action_just_pressed(inspect) or Input.is_action_just_pressed(rotate)):
 		# This tween is being replaced by if-statement below, therefore only show a little hand movement
 		modelHand_Tween.tween_property($Node3D/Models/Hand, "rotation_degrees", Vector3(-53.4, 0, 0), 0.1)
 	if player_isHoldingItem:
@@ -339,7 +370,7 @@ func player_InteractItems():
 	#================================================ PREPARATION PHASE ==================================================================================================
 	if Global.preparation_phase:
 		# PICK UP ITEM - NOT HOLDING item and HAVE INTERACTABLE item
-		if player_ableInteract == true and player_isHoldingItem == false and Input.is_action_just_pressed("interact") and player_interactedItem_Temp.id != "gate":
+		if player_ableInteract == true and player_isHoldingItem == false and Input.is_action_just_pressed(interact) and player_interactedItem_Temp.id != "gate":
 			player_isHoldingItem = true
 			# When the player decided to interact with the current item `player_interactedItem_Temp` (which always changing depend on the circumstance)
 			# It will save the `player_interactedItem_Temp` into `player_interactedItem` to be used
@@ -351,7 +382,7 @@ func player_InteractItems():
 			player_ableInteract = false
 			
 		# DROP DOWN ITEM - HOLDING an item and NOT INTERACTING with other items
-		elif player_ableInteract == false and player_isHoldingItem == true and player_ableToDrop == true and Input.is_action_just_pressed("interact"):
+		elif player_ableInteract == false and player_isHoldingItem == true and player_ableToDrop == true and Input.is_action_just_pressed(interact):
 			# Should change the name of item placeholder into someting more unique, for now it stand as %Item
 			player_putItem(player_interactedItem)
 			print("Dropping " + str(player_interactedItem) + " to " + str(player_interactedItem.position))
@@ -361,7 +392,7 @@ func player_InteractItems():
 			player_interactedItem = null
 			
 		# SWAP ITEM - HOLDING an items and HAVE INTERACTABLE item
-		elif player_ableInteract == true and player_isHoldingItem == true and player_ableToDrop == true and Input.is_action_just_pressed("interact") and player_interactedItem_Temp.id != "gate":
+		elif player_ableInteract == true and player_isHoldingItem == true and player_ableToDrop == true and Input.is_action_just_pressed(interact) and player_interactedItem_Temp.id != "gate":
 			print("Swapping " + str(player_interactedItem) + " with " + str(player_interactedItem_Temp))
 			# All this line is the basic for item swapping
 			# Swap held item property to on-ground item property
@@ -374,10 +405,10 @@ func player_InteractItems():
 	#================================================ DEFENSE PHASE ==================================================================================================
 	elif !Global.preparation_phase:
 		# SHOOT MORTAR
-		if player_ableInteract == true and Input.is_action_just_pressed("interact") and player_interactedItem_Temp.has_method("controlled"):
+		if player_ableInteract == true and Input.is_action_just_pressed(interact) and player_interactedItem_Temp.has_method("controlled"):
 			player_interactedItem_Temp.shoot()
 		# RELOAD TURRET - HOLDING an AMMO and HAVE INTERACTABLE TURRET
-		if player_ableInteract == true and player_isHoldingItem == true and Input.is_action_just_pressed("interact") and player_interactedItem_Temp.has_method("reload") and player_holdedMats == "ammo_box":
+		if player_ableInteract == true and player_isHoldingItem == true and Input.is_action_just_pressed(interact) and player_interactedItem_Temp.has_method("reload") and player_holdedMats == "ammo_box":
 			if player_interactedItem_Temp.bullet_ammo != player_interactedItem_Temp.bullet_maxammo and !player_interactedItem_Temp.requesting_droneReload:
 				print("Reloading ", player_interactedItem_Temp)
 				player_interactedItem_Temp.reload()
@@ -385,7 +416,7 @@ func player_InteractItems():
 				player_holdedMats = ""
 				player_checkIngredientItem()
 		# RELOAD MOUNTED TURRET - HOLDING an AMMO and HAVE MOUNTED WALL that have turret in it
-		if player_ableInteract == true and player_isHoldingItem == true and Input.is_action_just_pressed("interact") and player_interactedItem_Temp.has_method("mount") and player_holdedMats == "ammo_box":
+		if player_ableInteract == true and player_isHoldingItem == true and Input.is_action_just_pressed(interact) and player_interactedItem_Temp.has_method("mount") and player_holdedMats == "ammo_box":
 			if player_interactedItem_Temp.currently_mountable_item.has_method("reload"):
 				if player_interactedItem_Temp.currently_mountable_item.bullet_ammo != player_interactedItem_Temp.currently_mountable_item.bullet_maxammo and !player_interactedItem_Temp.currently_mountable_item.requesting_droneReload:
 					print("Reloading mounted ", player_interactedItem_Temp.currently_mountable_item, " on ", player_interactedItem_Temp)
@@ -394,7 +425,7 @@ func player_InteractItems():
 					player_holdedMats = ""
 					player_checkIngredientItem()
 		# PICK UP INGREDIENT
-		elif player_ableInteract == true and player_isHoldingItem == false and Input.is_action_just_pressed("interact") and !Function.search_regex("turret", player_interactedItem_Temp.id):
+		elif player_ableInteract == true and player_isHoldingItem == false and Input.is_action_just_pressed(interact) and !Function.search_regex("turret", player_interactedItem_Temp.id):
 			if player_interactedItem_Temp.id == "gunpowder_box":
 				player_holdedMats = "gunpowder_box"
 				player_isHoldingItem = true
@@ -418,7 +449,7 @@ func player_InteractItems():
 					player_ableInteract = false
 		
 		# DROP INGREDIENT
-		elif player_ableInteract == true and player_isHoldingItem == true and player_ableToDrop == true and Input.is_action_just_pressed("interact"):
+		elif player_ableInteract == true and player_isHoldingItem == true and player_ableToDrop == true and Input.is_action_just_pressed(interact):
 			if player_holdedMats == player_interactedItem_Temp.id:
 				print("Dropped back ", player_holdedMats)
 				player_isHoldingItem = false
@@ -441,7 +472,7 @@ func player_InteractItems():
 func player_CheckItems():
 	# This show the player card-like information about item, will be immediately turn off if player do any action
 	# Add more information but in text-type to some items? maybe make a new UI3D for that?
-	if Input.is_action_just_pressed("check") and (player_ableInteract or player_isHoldingItem):
+	if Input.is_action_just_pressed(check) and (player_ableInteract or player_isHoldingItem):
 		# To delete previous area range check if there any
 		# This is a bug fixer where player inspect new item with temp variable that dont have area and bypassing elif checker in below
 		if player_inspectedItem != null:
@@ -505,7 +536,7 @@ func player_CheckItems():
 			inspectedItem_UI.hide()
 
 func player_InspectItemsArea():
-	if Input.is_action_just_pressed("check") and (player_ableInteract or player_isHoldingItem):
+	if Input.is_action_just_pressed(check) and (player_ableInteract or player_isHoldingItem):
 		if player_isHoldingItem:
 			player_inspectedItem = player_interactedItem
 		else:
@@ -516,7 +547,7 @@ func player_InspectItemsArea():
 			player_checkItemRange(player_inspectedItem, false)
 
 func player_RotateItems():
-	if Input.is_action_just_pressed("rotate"):
+	if Input.is_action_just_pressed(rotate):
 		# Unique interaction with mortar when rotating instead it rotate the aiming of the mortar
 		if player_interactedItem_Temp != null and Function.search_regex("mortar", player_interactedItem_Temp.id) and !player_isHoldingItem:
 			player_interactedItem_Temp.controlled()

@@ -11,8 +11,6 @@ size = Vector3(1, 1, 0.1)
 size = Vector3(0.15, 1.25, 0.5)
 
 [node name="Gate" type="StaticBody3D"]
-collision_layer = 3
-collision_mask = 3
 script = ExtResource("1_aq5go")
 
 [node name="Collision" type="CollisionShape3D" parent="."]
@@ -34,10 +32,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.424826, 0, 0)
 mesh = SubResource("BoxMesh_taknp")
 skeleton = NodePath("../..")
 
-[node name="Checker" type="Marker3D" parent="."]
+[node name="CheckerBack" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 
-[node name="NavigationChecker" type="NavigationAgent3D" parent="Checker"]
+[node name="NavigationCheckerBack" type="NavigationAgent3D" parent="CheckerBack"]
 path_desired_distance = 0.1
 target_desired_distance = 0.1
 path_max_distance = 0.01
@@ -45,3 +43,15 @@ path_postprocessing = 1
 debug_enabled = true
 debug_use_custom = true
 debug_path_custom_color = Color(0, 0, 0, 1)
+
+[node name="CheckerFront" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+
+[node name="NavigationCheckerFront" type="NavigationAgent3D" parent="CheckerFront"]
+path_desired_distance = 0.1
+target_desired_distance = 0.1
+path_max_distance = 0.01
+path_postprocessing = 1
+debug_enabled = true
+debug_use_custom = true
+debug_path_custom_color = Color(0.615686, 0.858824, 0.380392, 0.466667)

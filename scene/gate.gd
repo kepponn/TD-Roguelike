@@ -49,15 +49,17 @@ var price: int
 var tween
 @onready var gate_controller = get_node("/root/Scene/GateController")
 @onready var gate = $Model/Gate
-@onready var navigation_checker = $Checker/NavigationChecker
+@onready var navigation_checker_back = $CheckerBack/NavigationCheckerBack
+@onready var navigation_checker_front = $CheckerFront/NavigationCheckerFront
+@onready var spawner = get_node("/root/Scene/Path/Spawner")
 
 var direction
 
+#func _process(delta):
+	#check_path()
+
 func _ready():
 	gate_controller.gate_List.append(self)
-
-func _process(_delta):
-	check_path()
 
 func close_gate():
 	tween = get_tree().create_tween()
@@ -72,10 +74,13 @@ func open_gate():
 	set_collision_mask_value(1, false)
 
 func check_path():
-	navigation_checker.target_position = Global.final_target
-	direction = navigation_checker.get_next_path_position() - global_position
+	navigation_checker_back.target_position = Global.final_target
+	direction = navigation_checker_back.get_next_path_position() - global_position
 	
-	if round($Checker.global_position.distance_to(navigation_checker.get_current_navigation_path()[0])) == 0:
+	navigation_checker_front.target_position = spawner.global_position
+	direction = navigation_checker_front.get_next_path_position() - global_position
+	
+	if (navigation_checker_back.is_target_reachable() and round($CheckerBack.global_position.distance_to(navigation_checker_back.get_current_navigation_path()[0])) == 0) and (navigation_checker_front.is_target_reachable() and round($CheckerFront.global_position.distance_to(navigation_checker_front.get_current_navigation_path()[0])) == 0):
 		if !gate_controller.operatable_Gate_List.has(self):
 			gate_controller.operatable_Gate_List.append(self)
 		#print("path from ",name," is ok")
@@ -83,3 +88,12 @@ func check_path():
 		if gate_controller.operatable_Gate_List.has(self):
 			gate_controller.operatable_Gate_List.erase(self)
 		#print("path from ",name," is blocked")
+	
+	#if round($CheckerBack.global_position.distance_to(navigation_checker_back.get_current_navigation_path()[0])) == 0 and round($CheckerFront.global_position.distance_to(navigation_checker_front.get_current_navigation_path()[0])) == 0:
+		#if !gate_controller.operatable_Gate_List.has(self):
+			#gate_controller.operatable_Gate_List.append(self)
+		##print("path from ",name," is ok")
+	#else :
+		#if gate_controller.operatable_Gate_List.has(self):
+			#gate_controller.operatable_Gate_List.erase(self)
+		##print("path from ",name," is blocked")

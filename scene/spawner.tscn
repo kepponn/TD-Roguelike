@@ -92,7 +92,6 @@ skeleton = NodePath("")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="SpawnLocation"]
 path_postprocessing = 1
-debug_enabled = true
 
 [node name="PreviewPath" type="Marker3D" parent="."]
 

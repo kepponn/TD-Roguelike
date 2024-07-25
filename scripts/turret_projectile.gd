@@ -2,7 +2,7 @@ extends Area3D
 
 var damage: int # the attack damage are inserted from 'turret_parent.gd'
 var speed: int # the speed are inserted from 'turret_parent.gd'
-var lifetime: float = 5 # timer for bullet life in second
+var lifetime: float = 10 # timer for bullet life in second
 
 var pierce_counter: int
 var ricochet_counter: int

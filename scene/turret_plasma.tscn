@@ -1,8 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://c7bny0q7rq2yl"]
+[gd_scene load_steps=25 format=3 uid="uid://c7bny0q7rq2yl"]
 
 [ext_resource type="PackedScene" uid="uid://55ipv7ij7bcg" path="res://scene/turret_parent.tscn" id="1_g84pl"]
 [ext_resource type="Script" path="res://scripts/turret_plasma.gd" id="2_wuwv4"]
-[ext_resource type="PackedScene" uid="uid://du7rlk6sqbkic" path="res://scene/turret_projectile.tscn" id="3_i0kup"]
+[ext_resource type="PackedScene" uid="uid://b0677x74e551k" path="res://scene/plasma_projectile.tscn" id="3_s4kvo"]
 [ext_resource type="Material" uid="uid://bak28ouni41ni" path="res://assets/shaders/turret_area_check.tres" id="6_qsc1o"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xf7da"]
@@ -38,6 +38,72 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_5hqii")
+
+[sub_resource type="Curve" id="Curve_gcv1h"]
+max_value = 2.0
+_data = [Vector2(0, 0.5), 0.0, 0.0, 0, 0, Vector2(1, 2), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_7edmx"]
+curve = SubResource("Curve_gcv1h")
+
+[sub_resource type="Curve" id="Curve_vddut"]
+_data = [Vector2(0, 0.345113), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_d3yxu"]
+curve = SubResource("Curve_vddut")
+
+[sub_resource type="Curve" id="Curve_ylpee"]
+_data = [Vector2(0.142857, 1), 0.0, 0.0, 0, 0, Vector2(0.56044, 0.667669), 0.0, 0.0, 0, 0, Vector2(1, 0.149624), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_taimx"]
+curve = SubResource("Curve_ylpee")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_r8ym3"]
+emission_shape = 2
+emission_sphere_radius = 0.75
+direction = Vector3(0, 0, 0)
+spread = 180.0
+orbit_velocity_min = 0.05
+orbit_velocity_max = 0.15
+orbit_velocity_curve = SubResource("CurveTexture_7edmx")
+radial_velocity_min = -2.0
+radial_velocity_max = -1.0
+radial_velocity_curve = SubResource("CurveTexture_d3yxu")
+gravity = Vector3(0, 0, 0)
+scale_min = 0.1
+scale_max = 0.3
+scale_curve = SubResource("CurveTexture_taimx")
+
+[sub_resource type="Gradient" id="Gradient_hn0nm"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.228916, 1)
+colors = PackedColorArray(1, 0.772549, 0.921569, 1, 0.972349, 0.000218706, 0.831216, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_yuiqm"]
+gradient = SubResource("Gradient_hn0nm")
+width = 100
+height = 100
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.1, 0.1)
+
+[sub_resource type="ORMMaterial3D" id="ORMMaterial3D_h8uxo"]
+transparency = 1
+albedo_texture = SubResource("GradientTexture2D_yuiqm")
+emission_enabled = true
+emission = Color(1, 0.588235, 0.87451, 1)
+emission_energy_multiplier = 2.0
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_lplgu"]
+material = SubResource("ORMMaterial3D_h8uxo")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aurm3"]
 resource_name = "Material"
@@ -90,7 +156,7 @@ viewport_path = NodePath("AmmoBar3D/SubViewport")
 [node name="Turret" instance=ExtResource("1_g84pl")]
 script = ExtResource("2_wuwv4")
 id = "turret_plasma"
-projectile_scene = ExtResource("3_i0kup")
+projectile_scene = ExtResource("3_s4kvo")
 
 [node name="HeadModels" parent="Models/Head" index="0"]
 transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0, 0.292, 0.114)
@@ -103,7 +169,20 @@ skeleton = NodePath("")
 [node name="ProjectileSpawn" parent="Models/Head" index="1"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.3, -0.8)
 
-[node name="MuzzleFlash" parent="Models/Head" index="2"]
+[node name="PlasmaChargingParticlesNode" type="Node3D" parent="Models/Head" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, -0.709321)
+
+[node name="PlasmaChargingParticles" type="GPUParticles3D" parent="Models/Head/PlasmaChargingParticlesNode" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.078734)
+emitting = false
+amount = 12
+one_shot = true
+fixed_fps = 60
+trail_lifetime = 5.9
+process_material = SubResource("ParticleProcessMaterial_r8ym3")
+draw_pass_1 = SubResource("QuadMesh_lplgu")
+
+[node name="MuzzleFlash" parent="Models/Head" index="3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, -0.754399)
 
 [node name="Body" parent="Models" index="1"]

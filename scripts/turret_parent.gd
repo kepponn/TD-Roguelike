@@ -107,7 +107,8 @@ func ready_up():
 	$RayCast3DTemp.hide() # This being utilized in target_priority
 
 func start_process():
-	lock_on()
+	if self.id == "turret_plasma": lock_on_static()
+	else: lock_on()
 	target_priority_lock_on()
 	shoot()
 	update_range_visual()
@@ -229,6 +230,20 @@ func lock_on():
 		$Models/Head.rotation.z = lerp_angle($Models/Head.rotation.z, 0.0, 0.1)
 		$RayCast3D.hide()
 
+func lock_on_static():
+	if !enemies_array.is_empty(): # check array empty state
+		$RayCast3D.force_raycast_update() # faster reporting for raycast
+		if $RayCast3D.is_colliding(): # check does the raycast even colide with something?
+			if $RayCast3D.get_collider().get_parent().name != 'Enemies' and enemies_array.size() > 1:
+				able_shoot = false
+				enemies_array.append(enemies_array[0])
+				enemies_array.remove_at(0)
+			elif $RayCast3D.get_collider().get_parent().name == 'Enemies':
+				able_shoot = true
+			else:
+				able_shoot = false
+				$RayCast3D.hide()
+
 func target_priority_lock_on():
 	$RayCast3DTemp.force_raycast_update()
 	if able_shoot and !enemies_array.is_empty():
@@ -323,8 +338,10 @@ func shoot():
 	if !enemies_array.is_empty() and $AttackSpeed.time_left <= 0.0 and able_shoot and bullet_ammo != 0:
 		# Remove bullet count
 		bullet_ammo -= 1
-		shoot_direction = target_priority_check()
+		if self.id == "turret_plasma": shoot_direction = %ProjectileSpawn.position + Vector3(0,0,-attack_range) # unique cases for static aiming
+		else: shoot_direction = target_priority_check()
 		var turret_projectile = projectile_scene.instantiate()
+		turret_projectile.req_id = self.id
 		# Unique bullet type goes here
 		if bullet_pierce > 0:
 			turret_projectile.pierce_counter = bullet_pierce

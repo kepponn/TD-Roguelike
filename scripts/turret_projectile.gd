@@ -1,5 +1,7 @@
 extends Area3D
 
+var req_id: String # which turret is requesting this projectile to spawn (being use in customization)
+
 var damage: int # the attack damage are inserted from 'turret_parent.gd'
 var speed: int # the speed are inserted from 'turret_parent.gd'
 var lifetime: float = 10 # timer for bullet life in second
@@ -16,6 +18,12 @@ var ricochet_targetNext
 
 func _ready():
 	$Lifetime.start(lifetime)
+	# Customization to create type of bullet, skip this if you want the default one
+	match req_id:
+		"turret_plasma":
+			$OmniLight3D.light_color = Color("d282d6")
+			$CollisionShape3D.scale = Vector3(3,1,3) # To easier hitting an enemies since this turret is static
+			$MeshInstance3D.material_override = load("res://models/textures/projectile_plasma.tres")
 
 func _process(delta):
 	position += set_direction * speed * delta
@@ -49,6 +57,7 @@ func _on_body_entered(body):
 			body.hit(damage)
 			queue_free()
 	else: # hit function does not exist (hitting anything beside enemy)
+		print(body)
 		queue_free()
 	
 	# old commented code

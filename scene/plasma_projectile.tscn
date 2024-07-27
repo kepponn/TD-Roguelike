@@ -1,16 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://b0677x74e551k"]
+[gd_scene load_steps=5 format=3 uid="uid://cjiydbbr6l6ic"]
 
 [ext_resource type="Script" path="res://scripts/plasma_projectile.gd" id="1_ougqj"]
+[ext_resource type="Material" uid="uid://crfquv6aoh82s" path="res://models/textures/projectile_plasma.tres" id="2_nudsg"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_m0xie"]
 radius = 0.05
 height = 0.3
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bacln"]
-albedo_color = Color(0.866667, 0.47451, 0.839216, 1)
-
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_byt8u"]
-material = SubResource("StandardMaterial3D_bacln")
+material = ExtResource("2_nudsg")
 radius = 0.05
 height = 0.3
 

@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://55ipv7ij7bcg" path="res://scene/turret_parent.tscn" id="1_g84pl"]
 [ext_resource type="Script" path="res://scripts/turret_plasma.gd" id="2_wuwv4"]
-[ext_resource type="PackedScene" uid="uid://b0677x74e551k" path="res://scene/plasma_projectile.tscn" id="3_s4kvo"]
+[ext_resource type="PackedScene" uid="uid://du7rlk6sqbkic" path="res://scene/turret_projectile.tscn" id="3_gjdye"]
 [ext_resource type="Material" uid="uid://bak28ouni41ni" path="res://assets/shaders/turret_area_check.tres" id="6_qsc1o"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xf7da"]
@@ -149,6 +149,7 @@ shadow_mesh = SubResource("ArrayMesh_eicxr")
 
 [sub_resource type="BoxMesh" id="BoxMesh_7gsf3"]
 material = ExtResource("6_qsc1o")
+size = Vector3(0.2, 1, 1)
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_i4tfs"]
 viewport_path = NodePath("AmmoBar3D/SubViewport")
@@ -156,7 +157,13 @@ viewport_path = NodePath("AmmoBar3D/SubViewport")
 [node name="Turret" instance=ExtResource("1_g84pl")]
 script = ExtResource("2_wuwv4")
 id = "turret_plasma"
-projectile_scene = ExtResource("3_s4kvo")
+projectile_scene = ExtResource("3_gjdye")
+
+[node name="RayCast3DTemp" parent="." index="2"]
+visible = true
+
+[node name="RayCast3D" parent="." index="3"]
+visible = true
 
 [node name="HeadModels" parent="Models/Head" index="0"]
 transform = Transform3D(-4.37114e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -1, -4.37114e-08, 1.91069e-15, 0, 0.292, 0.114)

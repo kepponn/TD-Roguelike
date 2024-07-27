@@ -516,5 +516,8 @@ one_shot = true
 stream = ExtResource("5_cyy0i")
 bus = &"Effect"
 
+[node name="NeighbourWalls" parent="." index="5"]
+visible = false
+
 [connection signal="body_entered" from="Range" to="." method="_on_area_3d_body_entered"]
 [connection signal="body_exited" from="Range" to="." method="_on_area_3d_body_exited"]

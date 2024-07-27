@@ -28,7 +28,7 @@ var player_lastButtonFocused
 
 # Check for this controller, either [0, 1, 2, 3] this being map manually in inputmap
 # This index id need to be store in scene before queried down for player controls
-var controller_index = 0
+var controller_index = 1
 # Control map for player (default to keyboard, directly change if controller is connected)
 # Being set for controller in _ready() function
 var ui_up = "ui_up"

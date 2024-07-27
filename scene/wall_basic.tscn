@@ -48,3 +48,6 @@ shape = SubResource("BoxShape3D_rehx7")
 [node name="Cube_001" type="MeshInstance3D" parent="Models" index="0"]
 mesh = SubResource("ArrayMesh_ossx2")
 skeleton = NodePath("")
+
+[node name="NeighbourWalls" parent="." index="2"]
+visible = false

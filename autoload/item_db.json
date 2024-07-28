@@ -51,7 +51,7 @@
   },
   "mortar": {
 	"price": 450,
-	"attack_damage": 10,
+	"attack_damage": 1,
 	"attack_rangeMin": 5,
 	"attack_rangeMax": 8,
 	"attack_speed": 0.5,

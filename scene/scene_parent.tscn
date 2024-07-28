@@ -205,6 +205,8 @@ visible = false
 [node name="GateController" type="Node" parent="."]
 script = ExtResource("18_swbev")
 
+[node name="GateTimer" type="Timer" parent="GateController"]
+
 [connection signal="bake_finished" from="World/NavigationRegion3D" to="." method="_on_navigation_region_3d_bake_finished"]
 [connection signal="child_entered_tree" from="World/NavigationRegion3D/Item" to="." method="_on_item_child_entered_or_exiting_tree"]
 [connection signal="child_exiting_tree" from="World/NavigationRegion3D/Item" to="." method="_on_item_child_entered_or_exiting_tree"]

@@ -1,15 +1,23 @@
 extends Node3D
 
+var req_id: String # which turret is requesting this projectile to spawn (being use in customization)
 
+
+var explosion_damage
+var effect_areaLingerTime
+var effect_burnDamage = 3
+var effect_slowPower = 0.5
+var enemies_array: Array
+
+# Tween variables
 var target
 var tween_h
 var tween_v
 var tween_time
-
-var damage_explosion
 var speed
 
-var enemies_array: Array
+
+
 
 func _ready():
 	tween_time = global_position.distance_to(target)/speed
@@ -32,17 +40,28 @@ func tweening_v():
 	tween_v.connect("finished", on_tweening_y_finished)
 
 func on_tweening_y_finished():
-	$MeshInstance3D.hide()
+	$CannonBall.hide()
+	$LingeringEffect.show()
+	$LingeringEffect/LingeringEffectTimer.start(5)
 	for enemy in enemies_array:
-		enemy.hit(damage_explosion)
-	queue_free()
+		enemy.hit(explosion_damage)
+
 
 func _on_aoe_body_entered(body):
 	if body.has_method("hit"): # hit function exist in body
+		if effect_burnDamage != 0:
+			body.burned(effect_burnDamage)
+		if effect_slowPower != 0:
+			body.slowed(effect_slowPower)
 		enemies_array.append(body)
 
 func _on_aoe_body_exited(body):
 	if enemies_array.has(body): # hit function exist in body
+		if effect_burnDamage != 0:
+			body.burned_lingerStart()
+		if effect_slowPower != 0:
+			body.slowed_lingerStart()
 		enemies_array.erase(body)
 
-
+func _on_lingering_effect_timer_timeout():
+	queue_free()

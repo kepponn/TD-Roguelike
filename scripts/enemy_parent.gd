@@ -4,11 +4,25 @@ class_name Enemy_Parent
 @export var HP: int # = 3
 @export var SPEED: float # = 10
 
+# Navigation
 @onready var nav: NavigationAgent3D = $NavigationAgent3D
+
+# Particles
 @onready var explosion_effect = preload("res://scene/explosion_effect.tscn")
+
+# Effect Section - Slow / Burned DoT
+var burn_damage
+@onready var burn_linger_timer = $EffectTimer/BurnLingerTimer
+@onready var burn_tick_timer = $EffectTimer/BurnTickTimer
+
+var slow_multiplier = 0
+@onready var slow_linger_timer = $EffectTimer/SlowLingerTimer
 
 var max_HP: int
 var direction: Vector3
+
+
+
 # This is actually fucked up...
 # CollisionShape3D difference WILL affect how the navigation is processed
 # Default: CapluseSpahe3D, Radius: 0.45m, Height: 1.95m
@@ -40,7 +54,7 @@ func run_navigation(delta):
 	# velocity = direction * SPEED * (0.2 + delta)
 	# The use of lerp in here make that the enemy navigation dont stuck like a fucking retard
 	# Please check and tweak the $NavigationRegion3D
-	velocity = velocity.lerp(direction * SPEED * (0.2 + delta), 0.15)
+	velocity = velocity.lerp(direction * SPEED* (1 - slow_multiplier) * (0.2 + delta), 0.15)
 	move_and_slide()
 	update_HP()
 
@@ -55,7 +69,39 @@ func nav_setup():
 func hit(damage):
 	HP = HP - damage
 	check_self()
+#--------------------------------------------------------- EFFECT ------------------------------------------------------------
+# BURN EFFECT
+func burned(damage):
+	print(self.name, " is just burned")
+	burn_damage = damage
+	burn_tick_timer.start()
 
+func burned_lingerStart():
+	burn_linger_timer.start()
+
+func _on_burn_tick_timer_timeout():
+	HP = HP - burn_damage
+	check_self()
+	print(self.name, " is taking burn damage")
+	burn_tick_timer.start()
+
+func _on_burn_linger_timer_timeout():
+	print(self.name, " is not burned anymore")
+	burn_tick_timer.stop()
+
+# SLOW EFFECT
+func slowed(multiplier):
+	print(self.name, " is just slowed")
+	slow_multiplier = multiplier
+
+func slowed_lingerStart():
+	slow_linger_timer.start()
+
+func _on_slow_linger_timer_timeout():
+	print(self.name, " is not slowed anymore")
+	slow_multiplier = 0
+	
+#-------------------------------------------------------------------------------------------------------------------------------
 func update_HP():
 	if HP != max_HP:
 		$HealthBar3D.show()
@@ -71,3 +117,7 @@ func _on_navigation_agent_3d_target_reached():
 		Stats.life_crystal_used += 1
 	Global.enemy_left = Global.enemy_left - 1
 	queue_free()
+
+
+
+

@@ -76,4 +76,21 @@ stream = ExtResource("3_4ega7")
 volume_db = 2.0
 bus = &"Effect"
 
+[node name="EffectTimer" type="Node" parent="."]
+
+[node name="SlowLingerTimer" type="Timer" parent="EffectTimer"]
+wait_time = 2.0
+one_shot = true
+
+[node name="BurnLingerTimer" type="Timer" parent="EffectTimer"]
+wait_time = 5.0
+one_shot = true
+
+[node name="BurnTickTimer" type="Timer" parent="EffectTimer"]
+wait_time = 0.2
+one_shot = true
+
 [connection signal="target_reached" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_target_reached"]
+[connection signal="timeout" from="EffectTimer/SlowLingerTimer" to="." method="_on_slow_linger_timer_timeout"]
+[connection signal="timeout" from="EffectTimer/BurnLingerTimer" to="." method="_on_burn_linger_timer_timeout"]
+[connection signal="timeout" from="EffectTimer/BurnTickTimer" to="." method="_on_burn_tick_timer_timeout"]

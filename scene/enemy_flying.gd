@@ -4,7 +4,7 @@ var id: String = "enemy_flying_test"
 var step_change: bool = true
 
 func _ready():
-	HP = 5
+	HP = 50
 	SPEED = 7
 	ready_up()
 

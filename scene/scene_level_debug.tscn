@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://dvg33xpbeviag"]
+[gd_scene load_steps=20 format=3 uid="uid://dvg33xpbeviag"]
 
 [ext_resource type="PackedScene" uid="uid://bajk04l7oocqf" path="res://scene/scene_parent.tscn" id="1_30vnm"]
 [ext_resource type="MeshLibrary" uid="uid://bpq8ija5ngli5" path="res://Tiles.tres" id="2_86584"]
@@ -17,6 +17,7 @@
 [ext_resource type="PackedScene" uid="uid://iwws5aq0va6m" path="res://scene/conveyor_grabber.tscn" id="17_x4bbe"]
 [ext_resource type="PackedScene" uid="uid://xhv01q1gg5sy" path="res://scene/conveyor.tscn" id="18_gbjfy"]
 [ext_resource type="PackedScene" uid="uid://dvpc7txlm5e6o" path="res://scene/conveyor_setter.tscn" id="18_ubx4l"]
+[ext_resource type="PackedScene" uid="uid://8ny1inkljgiu" path="res://scene/mortar.tscn" id="19_6ob6m"]
 [ext_resource type="PackedScene" uid="uid://d0jbj4wmfsta6" path="res://scene/gate.tscn" id="19_r7wjp"]
 
 [node name="Scene" instance=ExtResource("1_30vnm")]
@@ -257,10 +258,8 @@ transform = Transform3D(-4.37116e-08, 0, -1, 0, 1, 0, 1, 0, -4.37116e-08, -3, 1,
 [node name="Gate5" parent="World/NavigationRegion3D/Item" index="69" instance=ExtResource("19_r7wjp")]
 transform = Transform3D(1, 0, -1.77636e-13, 0, 1, 0, 1.77636e-13, 0, 1, -2, 1, 5)
 
+[node name="Mortar" parent="World/NavigationRegion3D/Item" index="70" instance=ExtResource("19_6ob6m")]
+transform = Transform3D(-1, 0, 1.19209e-07, 0, 1, 0, -1.19209e-07, 0, -1, 2, 1, -1)
+
 [node name="GateController" parent="." index="8"]
 gate_Timer_Time = 5.0
-
-[node name="GateTimer" type="Timer" parent="GateController" index="0"]
-one_shot = true
-
-[connection signal="timeout" from="GateController/GateTimer" to="GateController" method="_on_gate_timer_timeout"]

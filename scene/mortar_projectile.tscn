@@ -18,18 +18,22 @@ radius = 3.0
 [node name="mortar_projectile" type="Node3D"]
 script = ExtResource("1_kjt51")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="CannonBall" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_oop47")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+[node name="LingeringEffect" type="MeshInstance3D" parent="."]
 visible = false
 mesh = SubResource("CylinderMesh_wgfmj")
-skeleton = NodePath("../MeshInstance3D")
+skeleton = NodePath("../CannonBall")
+
+[node name="LingeringEffectTimer" type="Timer" parent="LingeringEffect"]
+one_shot = true
 
 [node name="AoE" type="Area3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AoE"]
 shape = SubResource("CylinderShape3D_ps8mj")
 
+[connection signal="timeout" from="LingeringEffect/LingeringEffectTimer" to="." method="_on_lingering_effect_timer_timeout"]
 [connection signal="body_entered" from="AoE" to="." method="_on_aoe_body_entered"]
 [connection signal="body_exited" from="AoE" to="." method="_on_aoe_body_exited"]

@@ -26,6 +26,8 @@ func operate_gate():
 	
 func default_state(): # Called by scene_parent script -> default_state_gate()
 	if Global.preparation_phase :
+		#flush operatable_gate_list array
+		operatable_Gate_List.clear()
 		#on preparation - open all gate
 		for gate in gate_List:
 			gate.open_gate()

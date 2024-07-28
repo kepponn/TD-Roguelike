@@ -96,7 +96,7 @@ func shoot():
 		var mortar_projectile = projectile_scene.instantiate()
 		mortar_projectile.target = $TargetPivot/Target.global_position
 		mortar_projectile.position = $Models/Head/Barrel/ProjectileSpawn.global_position
-		mortar_projectile.damage_explosion = attack_damage
+		mortar_projectile.explosion_damage = attack_damage
 		mortar_projectile.speed = bullet_speed
 		get_node("/root/Scene/Temporary/Projectiles").add_child(mortar_projectile, true) # if you want to shoot while still holding it maybe make projectile as unique or use absolute path to it
 		$ReloadTimer.start(attack_speed)

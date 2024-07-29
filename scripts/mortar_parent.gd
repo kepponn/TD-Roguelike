@@ -1,7 +1,8 @@
 extends StaticBody3D
+class_name Mortar_Parent
 
 @export_category("Basic Information")
-@export var id: String = "mortar"
+@export var id: String #= "mortar"
 var price: int
 
 @export_category("Model and Scene Assets")
@@ -13,6 +14,11 @@ var attack_rangeMin: float
 var attack_rangeMax: float
 var attack_speed: float
 var bullet_speed: int
+var effect_areaLingerTime: float
+var effect_lingerTime: float
+var effect_burnDamage: int
+var effect_burnTickTime: float
+var effect_slowPower: float
 
 @onready var visible_range: MeshInstance3D = $TargetPivot/Target/VisibleRange
 @onready var target = $TargetPivot/Target
@@ -38,7 +44,10 @@ func seed_property():
 		for property in item_data:
 			self.set(property, item_data[property])
 
-func _ready():
+func default_state():
+	controlled(false)
+
+func ready_up():
 	seed_property()
 	final_attack_damage = attack_damage
 	$Models/Head/Barrel.rotation_degrees.x = 4
@@ -46,7 +55,7 @@ func _ready():
 	visible_range.hide()
 	visible_range.position.y = 1.2
 
-func _process(delta):
+func start_process(delta):
 	update_UI()
 	update_range_visual()
 	#print(target.global_position)
@@ -94,10 +103,16 @@ func shoot():
 		print("Target", target.global_position)
 		print("Spawn Point", $Models/Head/Barrel/ProjectileSpawn.global_position)
 		var mortar_projectile = projectile_scene.instantiate()
+		mortar_projectile.req_id = self.id
 		mortar_projectile.target = $TargetPivot/Target.global_position
 		mortar_projectile.position = $Models/Head/Barrel/ProjectileSpawn.global_position
 		mortar_projectile.explosion_damage = attack_damage
 		mortar_projectile.speed = bullet_speed
+		mortar_projectile.effect_areaLingerTime = effect_areaLingerTime
+		mortar_projectile.effect_lingerTime = effect_lingerTime
+		mortar_projectile.effect_burnDamage = effect_burnDamage
+		mortar_projectile.effect_burnTickTime = effect_burnTickTime
+		mortar_projectile.effect_slowPower = effect_slowPower
 		get_node("/root/Scene/Temporary/Projectiles").add_child(mortar_projectile, true) # if you want to shoot while still holding it maybe make projectile as unique or use absolute path to it
 		$ReloadTimer.start(attack_speed)
 

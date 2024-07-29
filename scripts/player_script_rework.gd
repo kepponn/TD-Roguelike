@@ -316,7 +316,7 @@ func player_swapItem(held_item, ground_item):
 
 func player_rotateItemProcess():
 	if player_isHoldingItem:
-		if player_interactedItem.id != "mortar":
+		if !Function.search_regex("mortar", player_interactedItem.id):
 			# rotate in-hand item
 			# since this item in in hand it will need to pass grid_check() function
 			print("Rotating on-hand " + str(player_interactedItem) + " to " + str(player_interactedItem.rotation_degrees))
@@ -489,7 +489,7 @@ func player_CheckItems():
 				inspectedItem_UI.AttackDamageText = inspectedItem_UI.AttackDamageText + "+" + str(player_inspectedItem.enchanted_bonus)
 		if "attack_range" in player_inspectedItem:
 			inspectedItem_UI.AttackRangeText = str(player_inspectedItem.attack_range)
-			if player_inspectedItem.id == "mortar":
+			if Function.search_regex("mortar", player_interactedItem.id):
 				inspectedItem_UI.AttackRangeText = str(player_inspectedItem.attack_rangeMin) + "~" + str(player_inspectedItem.attack_rangeMax)
 			if player_inspectedItem.id == "wall_spiked":
 				inspectedItem_UI.AttackRangeText = "1"

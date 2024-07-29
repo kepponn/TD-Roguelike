@@ -71,13 +71,11 @@ func hit(damage):
 	check_self()
 #--------------------------------------------------------- EFFECT ------------------------------------------------------------
 # BURN EFFECT
-func burned(damage):
+func burned(damage, ticktime):
 	print(self.name, " is just burned")
 	burn_damage = damage
-	burn_tick_timer.start()
-
-func burned_lingerStart():
-	burn_linger_timer.start()
+	burn_tick_timer.wait_time = ticktime
+	burn_tick_timer.start(ticktime)
 
 func _on_burn_tick_timer_timeout():
 	HP = HP - burn_damage
@@ -93,9 +91,6 @@ func _on_burn_linger_timer_timeout():
 func slowed(multiplier):
 	print(self.name, " is just slowed")
 	slow_multiplier = multiplier
-
-func slowed_lingerStart():
-	slow_linger_timer.start()
 
 func _on_slow_linger_timer_timeout():
 	print(self.name, " is not slowed anymore")

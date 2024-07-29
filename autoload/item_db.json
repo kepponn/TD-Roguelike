@@ -49,13 +49,44 @@
 	"bullet_pierce": 20,
 	"bullet_ricochet": 0
   },
-  "mortar": {
+  "mortar_basic": {
 	"price": 450,
-	"attack_damage": 1,
+	"attack_damage": 10,
 	"attack_rangeMin": 5,
 	"attack_rangeMax": 8,
 	"attack_speed": 0.5,
-	"bullet_speed": 6
+	"bullet_speed": 6,
+	"effect_areaLingerTime": 0,
+	"effect_lingerTime": 0,
+	"effect_burnDamage": 0,
+	"effect_burnTickTime": 0,
+	"effect_slowPower": 0
+  },
+  "mortar_cryo": {
+	"price": 450,
+	"attack_damage": 5,
+	"attack_rangeMin": 5,
+	"attack_rangeMax": 8,
+	"attack_speed": 0.5,
+	"bullet_speed": 6,
+	"effect_areaLingerTime": 5,
+	"effect_lingerTime": 5,
+	"effect_burnDamage": 0,
+	"effect_burnTickTime": 0,
+	"effect_slowPower": 0.5
+  },
+  "mortar_pyro": {
+	"price": 450,
+	"attack_damage": 5,
+	"attack_rangeMin": 5,
+	"attack_rangeMax": 8,
+	"attack_speed": 0.5,
+	"bullet_speed": 6,
+	"effect_areaLingerTime": 5,
+	"effect_lingerTime": 3,
+	"effect_burnDamage": 3,
+	"effect_burnTickTime": 0.5,
+	"effect_slowPower": 0
   },
   "wall_basic": {
 	"price": 20,

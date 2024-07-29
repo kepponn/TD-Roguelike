@@ -4,9 +4,13 @@ var req_id: String # which turret is requesting this projectile to spawn (being 
 
 
 var explosion_damage
+
 var effect_areaLingerTime
-var effect_burnDamage = 3
-var effect_slowPower = 0.5
+var effect_lingerTime
+var effect_burnDamage
+var effect_burnTickTime
+var effect_slowPower
+
 var enemies_array: Array
 
 # Tween variables
@@ -16,12 +20,12 @@ var tween_v
 var tween_time
 var speed
 
-
-
-
 func _ready():
+	if req_id == "mortar_cryo":
+		$LingeringEffect.mesh.material.albedo_color = Color("#2c8cff")
+	elif req_id == "mortar_pyro":
+		$LingeringEffect.mesh.material.albedo_color = Color("#d83242")
 	tween_time = global_position.distance_to(target)/speed
-	print(tween_time)
 	tweening_h()
 	tweening_v()
 
@@ -41,16 +45,20 @@ func tweening_v():
 
 func on_tweening_y_finished():
 	$CannonBall.hide()
-	$LingeringEffect.show()
-	$LingeringEffect/LingeringEffectTimer.start(5)
+	
 	for enemy in enemies_array:
 		enemy.hit(explosion_damage)
-
-
+		
+	if req_id == "mortar_cryo" or req_id == "mortar_pyro":
+		$LingeringEffect.show()
+		$LingeringEffect/LingeringEffectTimer.start(effect_areaLingerTime)
+	else:
+		queue_free()
+	
 func _on_aoe_body_entered(body):
 	if body.has_method("hit"): # hit function exist in body
 		if effect_burnDamage != 0:
-			body.burned(effect_burnDamage)
+			body.burned(effect_burnDamage, effect_burnTickTime)
 		if effect_slowPower != 0:
 			body.slowed(effect_slowPower)
 		enemies_array.append(body)
@@ -58,9 +66,9 @@ func _on_aoe_body_entered(body):
 func _on_aoe_body_exited(body):
 	if enemies_array.has(body): # hit function exist in body
 		if effect_burnDamage != 0:
-			body.burned_lingerStart()
+			body.burn_linger_timer.start(effect_lingerTime)
 		if effect_slowPower != 0:
-			body.slowed_lingerStart()
+			body.slow_linger_timer.start(effect_lingerTime)
 		enemies_array.erase(body)
 
 func _on_lingering_effect_timer_timeout():

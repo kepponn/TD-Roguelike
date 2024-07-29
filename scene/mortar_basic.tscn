@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://b2y6buw3g43up"]
+
+[ext_resource type="PackedScene" uid="uid://8ny1inkljgiu" path="res://scene/mortar_parent.tscn" id="1_vb7h3"]
+[ext_resource type="Script" path="res://scene/mortar_basic.gd" id="2_ah41b"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_bdpio"]
+viewport_path = NodePath("ReloadTimerBar3D/SubViewport")
+
+[node name="Mortar" instance=ExtResource("1_vb7h3")]
+script = ExtResource("2_ah41b")
+id = "mortar_basic"
+
+[node name="ReloadTimerBar3D" parent="." index="3"]
+texture = SubResource("ViewportTexture_bdpio")

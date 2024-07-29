@@ -1,6 +1,6 @@
 [gd_scene load_steps=18 format=3 uid="uid://8ny1inkljgiu"]
 
-[ext_resource type="Script" path="res://scripts/mortar.gd" id="1_bmj1n"]
+[ext_resource type="Script" path="res://scripts/mortar_parent.gd" id="1_bmj1n"]
 [ext_resource type="PackedScene" uid="uid://60gmoljfc1dy" path="res://scene/mortar_projectile.tscn" id="2_u7nb5"]
 [ext_resource type="Material" uid="uid://bak28ouni41ni" path="res://assets/shaders/turret_area_check.tres" id="3_6ccfo"]
 

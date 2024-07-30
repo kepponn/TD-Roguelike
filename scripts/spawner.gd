@@ -6,7 +6,7 @@ var enemies_seeder_array_weight: Array = []
 var enemies_scene_node
 var enemy_scout: PackedScene = preload("res://scene/enemy_scout.tscn")
 var enemy_scout_little: PackedScene = preload("res://scene/enemy_scout_little.tscn")
-var enemy_flying_test: PackedScene = preload("res://scene/enemy_flying.tscn")
+var enemy_scout_flying: PackedScene = preload("res://scene/enemy_flying.tscn")
 
 var direction
 var velocity
@@ -17,9 +17,11 @@ var path_runner_green = preload("res://scene/path_runner_green.tscn")
 var path_runner_red = preload("res://scene/path_runner_red.tscn")
 var path_runner_yellow = preload("res://scene/path_runner_yellow.tscn")
 
-var count_enemy_scout: int = 0
-var count_enemy_scout_little: int = 0
+#var count_enemy_scout: int = 0
+#var count_enemy_scout_little: int = 0
+#var count_enemy_scout_flying: int = 0
 
+@onready var wavepanel_ui = get_node("/root/Scene/UI/Control/IncomingWavePanelAlert")
 
 # The flow of the spawner:
 # ------------ CALLED IN PREP STAGE OF THE WAVE
@@ -67,16 +69,19 @@ func randomize_enemiesType():
 			return n
 
 func seed_enemies_weight():
+	# this counting shit need to be refactored somehow, can you add a new var in the go? like .new() do to object?
+	
 	var enemies_weight = {
 		"enemy_scout": 2,
 		"enemy_scout_little": 1,
-		"enemy_flying_test": 1
+		"enemy_scout_flying": 1
 	}
 	
-	#var count_enemy_scout: int = 0
-	#var count_enemy_scout_little: int = 0
-	count_enemy_scout = 0
-	count_enemy_scout_little = 0
+	##var count_enemy_scout: int = 0
+	##var count_enemy_scout_little: int = 0
+	#count_enemy_scout = 0
+	#count_enemy_scout_little = 0
+	#count_enemy_scout_flying = 0
 	var wave_weight_current: int = 0
 	var total_enemies: int = 0
 	
@@ -114,8 +119,9 @@ func seed_enemies_weight():
 		#another alternative: using count(), but have same problem as the NO.2 because we need to add new lines for every enemy types in the future
 		#if we are going to use this, then move this to line 130 before "Global.total_enemies = total_enemies"
 		#OR put this inside line 134 and we can get rid of count_enemy_scout and count_enemy_scout_little variable and any possible new enemy count variable in the future
-		count_enemy_scout = enemies_seeder_array_weight.count("enemy_scout")
-		count_enemy_scout_little = enemies_seeder_array_weight.count("enemy_scout_little")
+		#count_enemy_scout = enemies_seeder_array_weight.count("enemy_scout")
+		#count_enemy_scout_little = enemies_seeder_array_weight.count("enemy_scout_little")
+		#count_enemy_scout_flying = enemies_seeder_array_weight.count("enemy_scout_flying")
 		#--------------------------------------------------------------------------------------------------------------------------------------------
 		
 		#if randi_range(0, 1) == 0:
@@ -135,7 +141,14 @@ func seed_enemies_weight():
 	Global.total_enemies = total_enemies
 	print("Weight used ", wave_weight_current, " on global weight ", Global.wave_weight_limit)
 	#print("Seed enemies with weight done ", enemies_seeder_array_weight)
-	get_node("/root/Scene/UI/Control/IncomingWavePanelAlert").text = "Incoming Wave Panel\n - " + str(count_enemy_scout) + "x Scout \n - " + str(count_enemy_scout_little) + "x Scout Little"
+	# Setting wavepanel ui details
+	wavepanel_ui.text = "Incoming Wave Panel"
+	if enemies_seeder_array_weight.count("enemy_scout") > 0:
+		wavepanel_ui.text = wavepanel_ui.text + "\n - " + str(enemies_seeder_array_weight.count("enemy_scout")) + "x Scout"
+	if enemies_seeder_array_weight.count("enemy_scout_little") > 0:
+		wavepanel_ui.text = wavepanel_ui.text + "\n - " + str(enemies_seeder_array_weight.count("enemy_scout_little")) + "x Scout Little"
+	if enemies_seeder_array_weight.count("enemy_scout_flying") > 0:
+		wavepanel_ui.text = wavepanel_ui.text + "\n - " + str(enemies_seeder_array_weight.count("enemy_scout_flying")) + "x Scout Flying"
 
 func spawn_enemies():
 	if $Timer.time_left <= 0 and Global.enemy_spawned != Global.total_enemies and Global.preparation_phase == false:
@@ -148,8 +161,8 @@ func spawn_enemies():
 				enemy = enemy_scout.instantiate()
 			"enemy_scout_little":
 				enemy = enemy_scout_little.instantiate()
-			"enemy_flying_test":
-				enemy = enemy_flying_test.instantiate()
+			"enemy_scout_flying":
+				enemy = enemy_scout_flying.instantiate()
 		# Get spawner seed to spawn what needed to be spawned
 		enemy.transform = $SpawnLocation.global_transform
 		enemies_scene_node.add_child(enemy,true)

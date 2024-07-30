@@ -59,6 +59,7 @@ var direction
 	#check_path()
 
 func _ready():
+	$OmniLight3D.hide()
 	gate_controller.gate_List.append(self)
 
 func close_gate():
@@ -66,12 +67,22 @@ func close_gate():
 	tween.tween_property(gate, "position:y", 0, 1)
 	set_collision_layer_value(1, true)
 	set_collision_mask_value(1, true)
+	# new gate
+	$Models/Gate.show()
+	$OmniLight3D.show()
+	for i in $Models/Path.get_child_count():
+		$Models/Path.get_child(i).material_override = load("res://assets/shaders/red_opacity.tres")
 	
 func open_gate():
 	tween = get_tree().create_tween()
 	tween.tween_property(gate, "position:y", -1, 1)
 	set_collision_layer_value(1, false)
 	set_collision_mask_value(1, false)
+	# new gate
+	$Models/Gate.hide()
+	$OmniLight3D.hide()
+	for i in $Models/Path.get_child_count():
+		$Models/Path.get_child(i).material_override = load("res://assets/shaders/green_opacity.tres")
 
 func check_path():
 	navigation_checker_back.target_position = Global.final_target

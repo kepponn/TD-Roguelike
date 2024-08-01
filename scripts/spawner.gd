@@ -17,9 +17,7 @@ var path_runner_green = preload("res://scene/path_runner_green.tscn")
 var path_runner_red = preload("res://scene/path_runner_red.tscn")
 var path_runner_yellow = preload("res://scene/path_runner_yellow.tscn")
 
-#var count_enemy_scout: int = 0
-#var count_enemy_scout_little: int = 0
-#var count_enemy_scout_flying: int = 0
+var check_array: Array
 
 @onready var wavepanel_ui = get_node("/root/Scene/UI/Control/IncomingWavePanelAlert")
 
@@ -77,11 +75,6 @@ func seed_enemies_weight():
 		"enemy_scout_flying": 1
 	}
 	
-	##var count_enemy_scout: int = 0
-	##var count_enemy_scout_little: int = 0
-	#count_enemy_scout = 0
-	#count_enemy_scout_little = 0
-	#count_enemy_scout_flying = 0
 	var wave_weight_current: int = 0
 	var total_enemies: int = 0
 	
@@ -97,58 +90,25 @@ func seed_enemies_weight():
 		if wave_weight_current + enemies_weight[enemy_spawned] <= Global.wave_weight_limit:
 			enemies_seeder_array_weight.append(enemy_spawned)
 			wave_weight_current += enemies_weight[enemy_spawned]
+			if !check_array.has(enemy_spawned): # can be check from rng.json and check it into main data exmp: main_data.has(rng.json) -> 2nd array
+				check_array.append(enemy_spawned)
 			total_enemies += 1
-		#--------------------------------------------------------------------------------------------------------------------------------------------
-		# 1. 
-		#idk why but 
-			#count_enemy_scout = 0
-			#count_enemy_scout_little = 0
-		#these 2 need to be declared for whole spawner at line 19 and 20, otherwise set("count_"+enemy_spawned, +1) doesn't work
-		
-		#this set still broken because it won't add 1 value to selected property, but it set the property to +1 (positive 1)
-		#set("count_" + enemy_spawned, +1)
-		#--------------------------------------------------------------------------------------------------------------------------------------------
-		# 2.
-		#this is brute force one but work fine, but will be annoying if there will be many type of enemies
-		#if enemy_spawned == "enemy_scout":
-			#count_enemy_scout += 1
-		#elif enemy_spawned == "enemy_scout_little":
-			#count_enemy_scout_little += 1
-		#--------------------------------------------------------------------------------------------------------------------------------------------
-		# 3.
-		#another alternative: using count(), but have same problem as the NO.2 because we need to add new lines for every enemy types in the future
-		#if we are going to use this, then move this to line 130 before "Global.total_enemies = total_enemies"
-		#OR put this inside line 134 and we can get rid of count_enemy_scout and count_enemy_scout_little variable and any possible new enemy count variable in the future
-		#count_enemy_scout = enemies_seeder_array_weight.count("enemy_scout")
-		#count_enemy_scout_little = enemies_seeder_array_weight.count("enemy_scout_little")
-		#count_enemy_scout_flying = enemies_seeder_array_weight.count("enemy_scout_flying")
-		#--------------------------------------------------------------------------------------------------------------------------------------------
-		
-		#if randi_range(0, 1) == 0:
-			#if wave_weight_current + enemies_weight["enemy_scout"] <= Global.wave_weight_limit:
-				#enemies_seeder_array_weight.append("enemy_scout")
-				#count_enemy_scout += 1
-				#total_enemies += 1
-				#wave_weight_current += enemies_weight["enemy_scout"]
-				##print("Add 2 weight inserting scout")
-		#else:
-			#if wave_weight_current + enemies_weight["enemy_scout_little"] <= Global.wave_weight_limit:
-				#enemies_seeder_array_weight.append("enemy_scout_little")
-				#count_enemy_scout_little += 1
-				#total_enemies += 1
-				#wave_weight_current += enemies_weight["enemy_scout_little"]
-				##print("Add 1 weight inserting scout little")
+	
 	Global.total_enemies = total_enemies
 	print("Weight used ", wave_weight_current, " on global weight ", Global.wave_weight_limit)
 	#print("Seed enemies with weight done ", enemies_seeder_array_weight)
 	# Setting wavepanel ui details
+	print(check_array)
 	wavepanel_ui.text = "Incoming Wave Panel"
-	if enemies_seeder_array_weight.count("enemy_scout") > 0:
-		wavepanel_ui.text = wavepanel_ui.text + "\n - " + str(enemies_seeder_array_weight.count("enemy_scout")) + "x Scout"
-	if enemies_seeder_array_weight.count("enemy_scout_little") > 0:
-		wavepanel_ui.text = wavepanel_ui.text + "\n - " + str(enemies_seeder_array_weight.count("enemy_scout_little")) + "x Scout Little"
-	if enemies_seeder_array_weight.count("enemy_scout_flying") > 0:
-		wavepanel_ui.text = wavepanel_ui.text + "\n - " + str(enemies_seeder_array_weight.count("enemy_scout_flying")) + "x Scout Flying"
+	for i in check_array:
+		wavepanel_ui.text = wavepanel_ui.text + "\n - " + str(enemies_seeder_array_weight.count(i)) + "x [" +i + "]" # repair this
+	#if enemies_seeder_array_weight.count("enemy_scout") > 0:
+		#wavepanel_ui.text = wavepanel_ui.text + "\n - " + str(enemies_seeder_array_weight.count("enemy_scout")) + "x Scout"
+	#if enemies_seeder_array_weight.count("enemy_scout_little") > 0:
+		#wavepanel_ui.text = wavepanel_ui.text + "\n - " + str(enemies_seeder_array_weight.count("enemy_scout_little")) + "x Scout Little"
+	#if enemies_seeder_array_weight.count("enemy_scout_flying") > 0:
+		#wavepanel_ui.text = wavepanel_ui.text + "\n - " + str(enemies_seeder_array_weight.count("enemy_scout_flying")) + "x Scout Flying"
+		
 
 func spawn_enemies():
 	if $Timer.time_left <= 0 and Global.enemy_spawned != Global.total_enemies and Global.preparation_phase == false:

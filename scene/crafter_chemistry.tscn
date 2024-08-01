@@ -1,0 +1,34 @@
+[gd_scene load_steps=4 format=3 uid="uid://bid67ym4mtwv6"]
+
+[ext_resource type="Script" path="res://scripts/crafter_chemistry.gd" id="1_e6h86"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_si1nw"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_xejgk"]
+
+[node name="Crafter_Chemistry" type="StaticBody3D"]
+script = ExtResource("1_e6h86")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_si1nw")
+
+[node name="Models" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Models"]
+mesh = SubResource("BoxMesh_xejgk")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Models"]
+transform = Transform3D(0.769112, 0, 0, 0, 0.915332, 0, 0, 0, 0.244636, -0.033839, 0.712791, -0.266321)
+mesh = SubResource("BoxMesh_xejgk")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Models"]
+transform = Transform3D(0.456804, 0, 0, 0, 0.915332, 0, 0, 0, 0.244636, -0.123466, 0.51253, 0.0323015)
+mesh = SubResource("BoxMesh_xejgk")
+skeleton = NodePath("../..")
+
+[node name="CraftingTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[connection signal="timeout" from="CraftingTimer" to="." method="_on_crafting_timer_timeout"]

@@ -19,7 +19,7 @@ var has_defensive_structure = false
 # -------------------- Ready and process below
 
 func seed_enemiesRNGWeight():
-	var file = FileAccess.open("res://autoload/stage_db.json", FileAccess.READ)
+	var file = FileAccess.open("res://autoload/stage_db_rng.json", FileAccess.READ)
 	var file_text = file.get_as_text()
 	file.close()
 	# Parse JSON data to be easily modified by for loops

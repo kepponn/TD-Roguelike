@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://dvg33xpbeviag"]
+[gd_scene load_steps=27 format=3 uid="uid://dvg33xpbeviag"]
 
 [ext_resource type="PackedScene" uid="uid://bajk04l7oocqf" path="res://scene/scene_parent.tscn" id="1_30vnm"]
 [ext_resource type="MeshLibrary" uid="uid://bpq8ija5ngli5" path="res://Tiles.tres" id="2_86584"]
@@ -19,6 +19,13 @@
 [ext_resource type="PackedScene" uid="uid://dvpc7txlm5e6o" path="res://scene/conveyor_setter.tscn" id="18_ubx4l"]
 [ext_resource type="PackedScene" uid="uid://b2y6buw3g43up" path="res://scene/mortar_basic.tscn" id="19_kwnqi"]
 [ext_resource type="PackedScene" uid="uid://d0jbj4wmfsta6" path="res://scene/gate.tscn" id="19_r7wjp"]
+[ext_resource type="PackedScene" uid="uid://bsnuxh3c23tqn" path="res://scene/ore_copper.tscn" id="20_ra328"]
+[ext_resource type="PackedScene" uid="uid://bdxqurrjt460x" path="res://scene/ore_zinc.tscn" id="21_3u008"]
+[ext_resource type="PackedScene" uid="uid://0aattq8qdtt7" path="res://scene/ore_sulphur.tscn" id="22_d007b"]
+[ext_resource type="PackedScene" uid="uid://bjbhh7a4mey75" path="res://scene/ore_saltpetre.tscn" id="23_fih1q"]
+[ext_resource type="PackedScene" uid="uid://bid67ym4mtwv6" path="res://scene/crafter_chemistry.tscn" id="24_i1271"]
+[ext_resource type="PackedScene" uid="uid://ceaayshg10nlh" path="res://scene/crafter_foundry.tscn" id="25_uoarr"]
+[ext_resource type="PackedScene" uid="uid://pqna5ng3gr3o" path="res://scene/storage_box.tscn" id="26_grl6v"]
 
 [node name="Scene" instance=ExtResource("1_30vnm")]
 stage_id = "stage_debug"
@@ -184,7 +191,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 1, -1)
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 3, 1, -8)
 
 [node name="Bullet_Box" parent="World/NavigationRegion3D/Item" index="45" instance=ExtResource("12_3dpcr")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -2, 1, -9)
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 1, -8)
 
 [node name="Crafter" parent="World/NavigationRegion3D/Item" index="46" instance=ExtResource("13_yo4g5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, -9)
@@ -204,41 +211,59 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, -7)
 [node name="Conveyor3" parent="World/NavigationRegion3D/Item" index="51" instance=ExtResource("18_gbjfy")]
 transform = Transform3D(0.999987, 0.00264617, -0.00436941, -0.00264513, 0.999996, 0.000244243, 0.00437004, -0.000232702, 0.99999, 0, 1, -7)
 
-[node name="Conveyor4" parent="World/NavigationRegion3D/Item" index="52" instance=ExtResource("18_gbjfy")]
-transform = Transform3D(1, 0, -1.74846e-07, 0, 1, 0, 1.74846e-07, 0, 1, 1, 1, -7)
-
-[node name="Conveyor6" parent="World/NavigationRegion3D/Item" index="53" instance=ExtResource("18_gbjfy")]
+[node name="Conveyor6" parent="World/NavigationRegion3D/Item" index="52" instance=ExtResource("18_gbjfy")]
 transform = Transform3D(-2.18557e-07, 0, -1, 0, 1, 0, 1, 0, -2.18557e-07, -2, 1, -7)
 
-[node name="Conveyor_Grabber" parent="World/NavigationRegion3D/Item" index="54" instance=ExtResource("17_x4bbe")]
+[node name="Conveyor_Grabber" parent="World/NavigationRegion3D/Item" index="53" instance=ExtResource("17_x4bbe")]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, -2, 1, -8)
 
-[node name="Conveyor_Grabber2" parent="World/NavigationRegion3D/Item" index="55" instance=ExtResource("17_x4bbe")]
+[node name="Conveyor_Grabber2" parent="World/NavigationRegion3D/Item" index="54" instance=ExtResource("17_x4bbe")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 1, -9)
 
-[node name="Conveyor_Setter" parent="World/NavigationRegion3D/Item" index="56" instance=ExtResource("18_ubx4l")]
+[node name="Conveyor_Setter" parent="World/NavigationRegion3D/Item" index="55" instance=ExtResource("18_ubx4l")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, -8)
 
-[node name="Conveyor_Setter2" parent="World/NavigationRegion3D/Item" index="57" instance=ExtResource("18_ubx4l")]
+[node name="Conveyor_Setter2" parent="World/NavigationRegion3D/Item" index="56" instance=ExtResource("18_ubx4l")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 1, 1, -9)
 
-[node name="Gate3" parent="World/NavigationRegion3D/Item" index="58" instance=ExtResource("19_r7wjp")]
+[node name="Gate3" parent="World/NavigationRegion3D/Item" index="57" instance=ExtResource("19_r7wjp")]
 transform = Transform3D(-1, 0, -8.74226e-08, 0, 1, 0, 8.74226e-08, 0, -1, 1, 1, -2)
 
-[node name="Gate4" parent="World/NavigationRegion3D/Item" index="59" instance=ExtResource("19_r7wjp")]
+[node name="Gate4" parent="World/NavigationRegion3D/Item" index="58" instance=ExtResource("19_r7wjp")]
 transform = Transform3D(-4.37116e-08, 0, -1, 0, 1, 0, 1, 0, -4.37116e-08, -3, 1, 1)
 
-[node name="Gate5" parent="World/NavigationRegion3D/Item" index="60" instance=ExtResource("19_r7wjp")]
+[node name="Gate5" parent="World/NavigationRegion3D/Item" index="59" instance=ExtResource("19_r7wjp")]
 transform = Transform3D(1, 0, -1.77636e-13, 0, 1, 0, 1.77636e-13, 0, 1, 8, 1, 4)
 
-[node name="Mortar" parent="World/NavigationRegion3D/Item" index="61" instance=ExtResource("17_885og")]
+[node name="Mortar" parent="World/NavigationRegion3D/Item" index="60" instance=ExtResource("17_885og")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1, -1)
 
-[node name="Mortar2" parent="World/NavigationRegion3D/Item" index="62" instance=ExtResource("18_2opsx")]
+[node name="Mortar2" parent="World/NavigationRegion3D/Item" index="61" instance=ExtResource("18_2opsx")]
 transform = Transform3D(-1, 0, -5.96046e-08, 0, 1, 0, 5.96046e-08, 0, -1, -1, 1, -1)
 
-[node name="Mortar3" parent="World/NavigationRegion3D/Item" index="63" instance=ExtResource("19_kwnqi")]
+[node name="Mortar3" parent="World/NavigationRegion3D/Item" index="62" instance=ExtResource("19_kwnqi")]
 transform = Transform3D(-1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, -1, -2, 1, -1)
+
+[node name="Ore_Copper" parent="World/NavigationRegion3D/Item" index="63" instance=ExtResource("20_ra328")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -2, 1, 2)
+
+[node name="Ore_Zinc" parent="World/NavigationRegion3D/Item" index="64" instance=ExtResource("21_3u008")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -2, 1, 3)
+
+[node name="Ore_Sulphur" parent="World/NavigationRegion3D/Item" index="65" instance=ExtResource("22_d007b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, 4)
+
+[node name="Ore_Saltpetre" parent="World/NavigationRegion3D/Item" index="66" instance=ExtResource("23_fih1q")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -2, 1, 5)
+
+[node name="Crafter_Chemistry" parent="World/NavigationRegion3D/Item" index="67" instance=ExtResource("24_i1271")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 5)
+
+[node name="Crafter_Foundry" parent="World/NavigationRegion3D/Item" index="68" instance=ExtResource("25_uoarr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Storage_Box" parent="World/NavigationRegion3D/Item" index="69" instance=ExtResource("26_grl6v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, -7)
 
 [node name="GateController" parent="." index="8"]
 gate_Timer_Time = 5.0

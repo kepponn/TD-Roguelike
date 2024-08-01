@@ -426,7 +426,17 @@ func player_InteractItems():
 					player_checkIngredientItem()
 		# PICK UP INGREDIENT
 		elif player_ableInteract == true and player_isHoldingItem == false and Input.is_action_just_pressed(interact) and !Function.search_regex("turret", player_interactedItem_Temp.id):
-			if player_interactedItem_Temp.id == "gunpowder_box":
+			if "type" in player_interactedItem_Temp:
+				# being use for ores
+				if player_interactedItem_Temp.type == "ingredients":
+					player_interactedItem_Temp.take(self)
+				# being use for chemistry and foundry
+				elif player_interactedItem_Temp.type == "crafter":
+					player_interactedItem_Temp.take(self)
+				# being use for multi-purpose storage
+				elif player_interactedItem_Temp.type == "storage":
+					player_interactedItem_Temp.take(self)
+			elif player_interactedItem_Temp.id == "gunpowder_box":
 				player_holdedMats = "gunpowder_box"
 				player_isHoldingItem = true
 				player_checkIngredientItem()
@@ -455,6 +465,13 @@ func player_InteractItems():
 				player_isHoldingItem = false
 				player_holdedMats = ""
 				player_checkIngredientItem()
+			elif "type" in player_interactedItem_Temp:
+				# this being use for chemistry and foundry
+				if player_interactedItem_Temp.type == "crafter":
+					player_interactedItem_Temp.put(self, player_holdedMats)
+				# being use for multi-purpose storage
+				elif player_interactedItem_Temp.type == "storage":
+					player_interactedItem_Temp.put(self, player_holdedMats)
 			elif player_interactedItem_Temp.id == "crafter":
 				player_interactedItem_Temp.get_ingredient(player_holdedMats)
 				player_checkIngredientItem()

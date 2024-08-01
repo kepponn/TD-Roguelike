@@ -338,7 +338,7 @@ func shoot():
 	if !enemies_array.is_empty() and $AttackSpeed.time_left <= 0.0 and able_shoot and bullet_ammo != 0:
 		# Remove bullet count
 		bullet_ammo -= 1
-		if self.id == "turret_plasma": shoot_direction = %ProjectileSpawn.position + Vector3(0,0,-attack_range) # unique cases for static aiming
+		if self.id == "turret_plasma": shoot_direction = -self.global_transform.basis.z # unique cases for static aiming
 		else: shoot_direction = target_priority_check()
 		var turret_projectile = projectile_scene.instantiate()
 		turret_projectile.req_id = self.id

@@ -489,7 +489,7 @@ func player_CheckItems():
 				inspectedItem_UI.AttackDamageText = inspectedItem_UI.AttackDamageText + "+" + str(player_inspectedItem.enchanted_bonus)
 		if "attack_range" in player_inspectedItem:
 			inspectedItem_UI.AttackRangeText = str(player_inspectedItem.attack_range)
-			if Function.search_regex("mortar", player_interactedItem.id):
+			if Function.search_regex("mortar", player_inspectedItem.id):
 				inspectedItem_UI.AttackRangeText = str(player_inspectedItem.attack_rangeMin) + "~" + str(player_inspectedItem.attack_rangeMax)
 			if player_inspectedItem.id == "wall_spiked":
 				inspectedItem_UI.AttackRangeText = "1"

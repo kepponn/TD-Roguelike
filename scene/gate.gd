@@ -48,7 +48,7 @@ var id: String = "gate"
 var price: int
 var tween
 @onready var gate_controller = get_node("/root/Scene/GateController")
-@onready var gate = $Model/Gate
+@onready var gate = $Models/Gate
 @onready var navigation_checker_back = $CheckerBack/NavigationCheckerBack
 @onready var navigation_checker_front = $CheckerFront/NavigationCheckerFront
 @onready var spawner = get_node("/root/Scene/Path/Spawner")

@@ -210,3 +210,4 @@ script = ExtResource("18_swbev")
 [connection signal="bake_finished" from="World/NavigationRegion3D" to="." method="_on_navigation_region_3d_bake_finished"]
 [connection signal="child_entered_tree" from="World/NavigationRegion3D/Item" to="." method="_on_item_child_entered_or_exiting_tree"]
 [connection signal="child_exiting_tree" from="World/NavigationRegion3D/Item" to="." method="_on_item_child_entered_or_exiting_tree"]
+[connection signal="timeout" from="GateController/GateTimer" to="GateController" method="_on_gate_timer_timeout"]

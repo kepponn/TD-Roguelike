@@ -20,11 +20,20 @@ var tween_v
 var tween_time
 var speed
 
+func _process(delta):
+	$LingeringEffect/EffectIcon.rotation_degrees.y += 20 * delta
+
 func _ready():
 	if req_id == "mortar_cryo":
-		$LingeringEffect.mesh.material.albedo_color = Color("#2c8cff")
+		$LingeringEffect/LingeringEffectCircle.material_override = load("res://assets/shaders/mortar_projectile_cryo_lingeringAoE.tres")
+		$LingeringEffect/EffectIcon.mesh = load("res://assets/shaders/mortar_projectile_cryo_lingeringAoE_mesh.tres")
+		$LingeringEffect/CryoParticles.show()
+		$LingeringEffect/CryoParticles.emitting = true
 	elif req_id == "mortar_pyro":
-		$LingeringEffect.mesh.material.albedo_color = Color("#d83242")
+		$LingeringEffect/LingeringEffectCircle.material_override = load("res://assets/shaders/mortar_projectile_pyro_lingeringAoE.tres")
+		$LingeringEffect/EffectIcon.mesh = load("res://assets/shaders/mortar_projectile_pyro_lingeringAoE_mesh.tres")
+		$LingeringEffect/PyroParticles.show()
+		$LingeringEffect/PyroParticles.emitting = true
 	tween_time = global_position.distance_to(target)/speed
 	tweening_h()
 	tweening_v()

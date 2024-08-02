@@ -1,18 +1,90 @@
-[gd_scene load_steps=6 format=3 uid="uid://60gmoljfc1dy"]
+[gd_scene load_steps=17 format=3 uid="uid://60gmoljfc1dy"]
 
 [ext_resource type="Script" path="res://scripts/mortar_projectile.gd" id="1_kjt51"]
+[ext_resource type="Texture2D" uid="uid://sy88tdyxquix" path="res://assets/icon/SnowIcon/Asset 4.png" id="2_bbgcm"]
+[ext_resource type="Texture2D" uid="uid://nmt0bff4tdy5" path="res://assets/icon/FireIcon/FireIcon1/Asset 18.png" id="3_t0lpk"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_oop47"]
 radius = 0.25
 height = 0.5
 
-[sub_resource type="ORMMaterial3D" id="ORMMaterial3D_pmdh4"]
+[sub_resource type="QuadMesh" id="QuadMesh_7yrn3"]
+lightmap_size_hint = Vector2i(32, 32)
+size = Vector2(6, 6)
+orientation = 1
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_ukj5c"]
-material = SubResource("ORMMaterial3D_pmdh4")
-top_radius = 3.0
-bottom_radius = 3.0
-height = 0.5
+[sub_resource type="Curve" id="Curve_0egds"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.818182, 0.549451), 0.0, 0.0, 0, 0, Vector2(1, 0.153846), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_o0cf0"]
+curve = SubResource("Curve_0egds")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1jtls"]
+lifetime_randomness = 0.2
+particle_flag_rotate_y = true
+emission_shape_offset = Vector3(0, 1.5, 0)
+emission_shape = 3
+emission_box_extents = Vector3(2.5, 0, 2.5)
+direction = Vector3(0, 0, 0)
+spread = 90.0
+initial_velocity_max = 0.5
+angular_velocity_min = 75.0
+angular_velocity_max = 135.0
+orbit_velocity_max = 0.372
+gravity = Vector3(0, -2, 0)
+scale_min = 0.75
+scale_curve = SubResource("CurveTexture_o0cf0")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vq486"]
+transparency = 1
+cull_mode = 2
+albedo_color = Color(0.607843, 0.894118, 1, 1)
+albedo_texture = ExtResource("2_bbgcm")
+emission_enabled = true
+emission = Color(0.541176, 0.878431, 1, 1)
+emission_energy_multiplier = 2.5
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_opq51"]
+material = SubResource("StandardMaterial3D_vq486")
+size = Vector2(0.5, 0.5)
+orientation = 0
+
+[sub_resource type="Curve" id="Curve_uxpmx"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.818182, 0.549451), 0.0, 0.0, 0, 0, Vector2(1, 0.153846), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_4e5k4"]
+curve = SubResource("Curve_uxpmx")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_axei7"]
+lifetime_randomness = 0.2
+particle_flag_rotate_y = true
+emission_shape_offset = Vector3(0, -1, 0)
+emission_shape = 3
+emission_box_extents = Vector3(2.5, 0, 2.5)
+direction = Vector3(0, 0, 0)
+spread = 90.0
+initial_velocity_max = 0.5
+angular_velocity_min = 75.0
+angular_velocity_max = 135.0
+orbit_velocity_max = 0.372
+gravity = Vector3(0, 2, 0)
+scale_max = 1.75
+scale_curve = SubResource("CurveTexture_4e5k4")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_otwqg"]
+transparency = 1
+cull_mode = 2
+albedo_texture = ExtResource("3_t0lpk")
+emission_enabled = true
+emission = Color(0.988235, 0, 0, 1)
+emission_energy_multiplier = 2.5
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_c4667"]
+material = SubResource("StandardMaterial3D_otwqg")
+size = Vector2(0.35, 0.5)
+orientation = 0
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_ps8mj"]
 height = 0.1
@@ -24,9 +96,32 @@ script = ExtResource("1_kjt51")
 [node name="CannonBall" type="MeshInstance3D" parent="."]
 mesh = SubResource("SphereMesh_oop47")
 
-[node name="LingeringEffect" type="MeshInstance3D" parent="."]
+[node name="LingeringEffect" type="Node3D" parent="."]
 visible = false
-mesh = SubResource("CylinderMesh_ukj5c")
+
+[node name="LingeringEffectCircle" type="MeshInstance3D" parent="LingeringEffect"]
+mesh = SubResource("QuadMesh_7yrn3")
+skeleton = NodePath("../..")
+
+[node name="EffectIcon" type="MeshInstance3D" parent="LingeringEffect"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, 0)
+skeleton = NodePath("../LingeringEffectCircle")
+
+[node name="CryoParticles" type="GPUParticles3D" parent="LingeringEffect"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+visible = false
+lifetime = 2.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_1jtls")
+draw_pass_1 = SubResource("PlaneMesh_opq51")
+
+[node name="PyroParticles" type="GPUParticles3D" parent="LingeringEffect"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+visible = false
+lifetime = 2.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_axei7")
+draw_pass_1 = SubResource("PlaneMesh_c4667")
 
 [node name="LingeringEffectTimer" type="Timer" parent="LingeringEffect"]
 one_shot = true
@@ -34,7 +129,6 @@ one_shot = true
 [node name="AoE" type="Area3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AoE"]
-visible = false
 shape = SubResource("CylinderShape3D_ps8mj")
 
 [connection signal="timeout" from="LingeringEffect/LingeringEffectTimer" to="." method="_on_lingering_effect_timer_timeout"]

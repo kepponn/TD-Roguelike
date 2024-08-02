@@ -160,3 +160,4 @@ func navigation_auto_bake():
 		await get_tree().create_timer(0.2).timeout
 		print("Navigation - Auto bake finished")
 		navigation.bake_navigation_mesh()
+

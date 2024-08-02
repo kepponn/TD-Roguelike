@@ -14,6 +14,7 @@ func operate_gate():
 	if !Global.preparation_phase:
 		var opened_gate_index = opened_gate_randomizer()
 		# open the selected gate from randomizer, and close every not selected gate
+		print("open gate : ", opened_gate_index)
 		for gate in operatable_Gate_List:
 			if gate == operatable_Gate_List[opened_gate_index]:
 				gate.open_gate()

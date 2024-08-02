@@ -65,7 +65,7 @@ func _ready():
 		print("InputMap: ", self.id, " is using keyboard (default settings)")
 
 func _physics_process(delta):
-
+	
 	if player_lastButtonFocused != null:
 		player_lastButtonFocused.grab_focus()
 		player_lastButtonFocused = null
@@ -116,23 +116,14 @@ func DEBUG_turret_targeting_DEBUG():
 			elif player_interactedItem_Temp.id == "wall_mountable" and player_interactedItem_Temp.is_mountable_occupied:
 				player_interactedItem_Temp.currently_mountable_item.check_target_priority()
 
-func open_shop():
-	if player_interactedItem_Temp != null:
-		# Open shop action
-		if player_interactedItem_Temp.name == "Shop" and Input.is_action_just_pressed(inspect) and Global.preparation_phase == true:
-			get_node('/root/Scene/UI/Control/Shop').show()
-			player_lockInput = true
-			get_node('/root/Scene/UI/Control/Shop/PanelContainer2/MarginContainer/HBoxContainer/CloseButton').grab_focus()
+func open_shop(): # this actually include shop and sell as well
+	if player_ableInteract and player_interactedItem_Temp != null:
+		# Open shop action (using regex just in case there is 2 shop terminal in the scene)
+		if (player_interactedItem_Temp.name == "Shop" or Function.search_regex("Shop", player_interactedItem_Temp.name)) and Input.is_action_just_pressed(inspect) and Global.preparation_phase == true:
+			player_interactedItem_Temp.open_shop(self)
 		# Sell item action
 		elif player_interactedItem_Temp.name == "Sell" and Input.is_action_just_pressed(inspect) and player_isHoldingItem and Global.preparation_phase == true:
-			# Item list in Global.sellable_item
-			# And make sure all the item have sell price, beucase it will be needed for calculation
-			for sellable_item_check in Global.sellable_item:
-				if Function.search_regex(sellable_item_check, player_interactedItem.id):
-					inspectedItem_UI.hide()
-					player_checkItemRange(player_interactedItem, false)
-					player_interactedItem_Temp.sell(player_interactedItem)
-					player_lockInput = true
+			player_interactedItem_Temp.sell(self, player_interactedItem)
 
 func mountable_wall():
 	# This check for preparation phase, if true then this process will be accessible

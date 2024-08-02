@@ -1,8 +1,8 @@
 extends Control
 
-@onready var player = get_node('/root/Scene/Player')
+var local_requestor # temp for player, data is given in from shop_terminal.gd
+var shop # being set from shop itself
 
-@onready var shop = get_node('/root/Scene/World/NavigationRegion3D/Item/Shop')
 @onready var shop_item = preload("res://ui/shop_item.tscn")
 @onready var empty_item = preload("res://ui/shop_empty.tscn")
 
@@ -42,17 +42,7 @@ func _process(_delta):
 	check_controllerInput()
 
 func spawn_item(scene):
-	var item = scene.instantiate()
-	print("Purchased ", item)
-	Stats.shop_purchased(item)
-	# Since only 1 shop right now this is not an issues, if there going to be more shop then need to check for shop in node and check for parameter
-	item.position = get_node('/root/Scene/World/NavigationRegion3D/Item/Shop/SpawnArea').global_position
-	%Item.add_child(item, true)
-	shop.purchase()
-	# Set data for player to pickup the purchased item
-	#player.player_interactedItem = item
-	#player.player_interactedItem_Temp = item
-	#player.player_ableInteract = true
+	shop.purchase(scene)
 
 func seed_item(seeder, property): # property are taken from item_rate where it MUST match an item.id
 	# Need to seed image placeholder and name property into shop_item.gd
@@ -148,7 +138,7 @@ func create_empty(nodes ,index):
 	
 func check_keyboardInput():
 	var focused_button = get_viewport().gui_get_focus_owner()
-	if player.player_lockInput and focused_button != null:
+	if local_requestor != null and local_requestor.player_lockInput and focused_button != null:
 		# This dedicated for the following action: buy, reroll, close (all in ui button focus form)
 		if Input.is_action_just_pressed("interact"):
 			mouse_input = "LMB"
@@ -161,7 +151,7 @@ func check_keyboardInput():
 			print(focused_button)
 	
 func check_mouseInput():
-	if player.player_lockInput:
+	if local_requestor != null and local_requestor.player_lockInput:
 		#check what is the last button pressed for 1 frame maybe? atleast its enough time to be used by _on_item_button_pressed(item) signal
 		if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 			mouse_input = "LMB"
@@ -170,9 +160,9 @@ func check_mouseInput():
 		elif Input.is_mouse_button_pressed(MOUSE_BUTTON_NONE):
 			mouse_input = ""
 
-func check_controllerInput():
+func check_controllerInput(): # use requestor param?
 	var focused_button = get_viewport().gui_get_focus_owner()
-	if player.player_lockInput and focused_button != null:
+	if local_requestor != null and local_requestor.player_lockInput and focused_button != null:
 		# This dedicated for the following action: buy, reroll, close (all in ui button focus form)
 		if Input.is_action_just_pressed("controller_A"):
 			mouse_input = "LMB"
@@ -198,7 +188,6 @@ func update_ui():
 		$PanelContainer2/MarginContainer/HBoxContainer/RerollButton/Label.text = "Reroll Unavailable"
 		$PanelContainer2/MarginContainer/HBoxContainer/RerollButton/Label.self_modulate = Color("#858585")
 		$PanelContainer2/MarginContainer/HBoxContainer/RerollButton.disabled = true
-		
 
 func update_storageItem():
 	#always show 1st and 2nd child
@@ -210,7 +199,7 @@ func update_storageItem():
 	elif storage_itemList.get_child_count() == 4:
 		storage_itemList.get_child(2).hide()
 		storage_itemList.get_child(3).hide()
-	
+
 func _on_item_button_pressed(item):
 	#Buy Item from Shop
 	if mouse_input == "LMB" and item.get_parent().name == "ShopItem":
@@ -236,7 +225,7 @@ func _on_item_button_pressed(item):
 		item.reparent(storage_itemList)
 		storage_itemList.move_child(item,0)
 		storage_itemList.get_child(0).grab_focus()
-		
+
 func _on_button_mouse_entered(item):
 	print(item)
 	item.grab_focus()
@@ -244,8 +233,10 @@ func _on_button_mouse_entered(item):
 func _on_close_button_pressed():
 	self.hide()
 	await get_tree().create_timer(0.15).timeout
-	player.player_lockInput = false
-	
+	local_requestor.player_lockInput = false
+	local_requestor = null
+	shop = null
+
 func _on_reroll_button_pressed():
 	if Global.currency >= reroll_price and reroll_price <= 50:
 		Global.currency = Global.currency - reroll_price
@@ -255,11 +246,8 @@ func _on_reroll_button_pressed():
 		update_item()
 		$PanelContainer2/MarginContainer/HBoxContainer/RerollButton.grab_focus()
 
-
-
 func _on_reroll_button_mouse_entered():
 	$PanelContainer2/MarginContainer/HBoxContainer/RerollButton.grab_focus()
-
 
 func _on_close_button_mouse_entered():
 	$PanelContainer2/MarginContainer/HBoxContainer/CloseButton.grab_focus()

@@ -3,7 +3,7 @@ extends StaticBody3D
 @onready var id = "sell"
 var step_change: bool = true
 
-@onready var sell_ui = get_node('/root/Scene/UI/Control/SellPrompt')
+@onready var sell_ui = get_node('/root/Scene/UI/Control/Sell')
 
 func _process(delta):
 	var process_speed = 0.4 * delta
@@ -22,5 +22,13 @@ func _process(delta):
 		if $Models/ScanLight.position.y >= 0:
 			step_change = true
 
-func sell(item):
-	sell_ui.sell_prompt(item)
+func sell(requestor, item):
+	# Item list in Global.sellable_item
+	# And make sure all the item have sell price, beucase it will be needed for calculation
+	# Unpriced item will be destoryed instead of 50% currency refund
+	for sellable_item_check in Global.sellable_item:
+		if Function.search_regex(sellable_item_check, item.id):
+			requestor.inspectedItem_UI.hide()
+			requestor.player_checkItemRange(requestor.player_interactedItem, false)
+			sell_ui.sell_ui(requestor, item) # sell item, pass the item parameter into sell_ui.gd
+			requestor.player_lockInput = true

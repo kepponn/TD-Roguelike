@@ -23,7 +23,7 @@
 [ext_resource type="PackedScene" uid="uid://r2mchdb2drmr" path="res://ui/ingame_ui.tscn" id="17_d5b3e"]
 [ext_resource type="PackedScene" uid="uid://boj1ov7anx6qx" path="res://ui/input_guide_ui.tscn" id="17_lshwk"]
 [ext_resource type="PackedScene" uid="uid://ddvggjxvp527d" path="res://scene/wall_spiked.tscn" id="17_oflby"]
-[ext_resource type="PackedScene" uid="uid://bu3pm3p7au2pa" path="res://ui/shop.tscn" id="17_vv3g3"]
+[ext_resource type="PackedScene" uid="uid://bu3pm3p7au2pa" path="res://ui/shop_ui.tscn" id="17_vv3g3"]
 [ext_resource type="PackedScene" uid="uid://8ny1inkljgiu" path="res://scene/mortar_parent.tscn" id="18_5jul5"]
 [ext_resource type="PackedScene" uid="uid://o8b31i5r67xs" path="res://scene/enhancement.tscn" id="19_qpmxk"]
 [ext_resource type="PackedScene" uid="uid://g2b2ewy0w1op" path="res://scene/defend_point.tscn" id="20_3n541"]

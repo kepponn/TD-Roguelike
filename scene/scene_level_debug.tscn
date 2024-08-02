@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://dvg33xpbeviag"]
+[gd_scene load_steps=28 format=3 uid="uid://dvg33xpbeviag"]
 
 [ext_resource type="PackedScene" uid="uid://bajk04l7oocqf" path="res://scene/scene_parent.tscn" id="1_30vnm"]
 [ext_resource type="MeshLibrary" uid="uid://bpq8ija5ngli5" path="res://Tiles.tres" id="2_86584"]
@@ -26,6 +26,7 @@
 [ext_resource type="PackedScene" uid="uid://bid67ym4mtwv6" path="res://scene/crafter_chemistry.tscn" id="24_i1271"]
 [ext_resource type="PackedScene" uid="uid://ceaayshg10nlh" path="res://scene/crafter_foundry.tscn" id="25_uoarr"]
 [ext_resource type="PackedScene" uid="uid://pqna5ng3gr3o" path="res://scene/storage_box.tscn" id="26_grl6v"]
+[ext_resource type="PackedScene" uid="uid://wil6fipqm8m1" path="res://scene/shop.tscn" id="27_rptph"]
 
 [node name="Scene" instance=ExtResource("1_30vnm")]
 stage_id = "stage_debug"
@@ -264,6 +265,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="Storage_Box" parent="World/NavigationRegion3D/Item" index="69" instance=ExtResource("26_grl6v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, -7)
+
+[node name="ShopObject" parent="World/NavigationRegion3D/Item" index="70" instance=ExtResource("27_rptph")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, -1)
 
 [node name="GateController" parent="." index="8"]
 gate_Timer_Time = 5.0

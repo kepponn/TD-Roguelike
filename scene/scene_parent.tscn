@@ -8,7 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://bh38r272yxs36" path="res://scene/sell.tscn" id="9_5ovn0"]
 [ext_resource type="PackedScene" uid="uid://budhhix56t71m" path="res://ui/inspected_item_ui.tscn" id="12_bhhwj"]
 [ext_resource type="PackedScene" uid="uid://bscu6qqpt0hew" path="res://scene/player_scene_rework.tscn" id="15_u2sf4"]
-[ext_resource type="PackedScene" uid="uid://d3282iyq1bnbx" path="res://ui/sell_prompt.tscn" id="15_xjgeb"]
+[ext_resource type="PackedScene" uid="uid://d3282iyq1bnbx" path="res://ui/sell_ui.tscn" id="15_uy3sd"]
+[ext_resource type="PackedScene" uid="uid://bu3pm3p7au2pa" path="res://ui/shop_ui.tscn" id="16_tptca"]
 [ext_resource type="Script" path="res://GateController.gd" id="18_swbev"]
 [ext_resource type="PackedScene" uid="uid://g2b2ewy0w1op" path="res://scene/defend_point.tscn" id="20_xhdqf"]
 [ext_resource type="PackedScene" uid="uid://bpefgdkivwfib" path="res://scene/spawner.tscn" id="21_83lk5"]
@@ -16,7 +17,6 @@
 [ext_resource type="Script" path="res://ui/pathfinding_alert.gd" id="24_o3up7"]
 [ext_resource type="PackedScene" uid="uid://boj1ov7anx6qx" path="res://ui/input_guide_ui.tscn" id="25_bk3ig"]
 [ext_resource type="PackedScene" uid="uid://r2mchdb2drmr" path="res://ui/ingame_ui.tscn" id="26_ov2ag"]
-[ext_resource type="PackedScene" uid="uid://bu3pm3p7au2pa" path="res://ui/shop.tscn" id="27_lt3j2"]
 [ext_resource type="PackedScene" uid="uid://b163wrbe72fm5" path="res://ui/ingame_menu.tscn" id="28_76s64"]
 
 [sub_resource type="Environment" id="Environment_m6ppc"]
@@ -188,11 +188,11 @@ layout_mode = 1
 unique_name_in_owner = true
 layout_mode = 1
 
-[node name="SellPrompt" parent="UI/Control" instance=ExtResource("15_xjgeb")]
+[node name="Sell" parent="UI/Control" instance=ExtResource("15_uy3sd")]
 visible = false
 layout_mode = 1
 
-[node name="Shop" parent="UI/Control" instance=ExtResource("27_lt3j2")]
+[node name="Shop" parent="UI/Control" instance=ExtResource("16_tptca")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1

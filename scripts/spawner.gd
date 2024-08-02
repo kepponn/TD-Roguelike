@@ -67,7 +67,6 @@ func randomize_enemiesType():
 			return n
 
 func seed_enemies_weight():
-	# this counting shit need to be refactored somehow, can you add a new var in the go? like .new() do to object?
 	
 	var enemies_weight = {
 		"enemy_scout": 2,
@@ -101,14 +100,8 @@ func seed_enemies_weight():
 	print(check_array)
 	wavepanel_ui.text = "Incoming Wave Panel"
 	for i in check_array:
-		wavepanel_ui.text = wavepanel_ui.text + "\n - " + str(enemies_seeder_array_weight.count(i)) + "x [" +i + "]" # repair this
-	#if enemies_seeder_array_weight.count("enemy_scout") > 0:
-		#wavepanel_ui.text = wavepanel_ui.text + "\n - " + str(enemies_seeder_array_weight.count("enemy_scout")) + "x Scout"
-	#if enemies_seeder_array_weight.count("enemy_scout_little") > 0:
-		#wavepanel_ui.text = wavepanel_ui.text + "\n - " + str(enemies_seeder_array_weight.count("enemy_scout_little")) + "x Scout Little"
-	#if enemies_seeder_array_weight.count("enemy_scout_flying") > 0:
-		#wavepanel_ui.text = wavepanel_ui.text + "\n - " + str(enemies_seeder_array_weight.count("enemy_scout_flying")) + "x Scout Flying"
-		
+		wavepanel_ui.text = wavepanel_ui.text + "\n - " + str(enemies_seeder_array_weight.count(i)) + "x " + i.trim_prefix("enemy_").capitalize()
+		#wavepanel_ui.text = wavepanel_ui.text + "\n - " + str(enemies_seeder_array_weight.count(i)) + "x [" +i + "]" # original variable name
 
 func spawn_enemies():
 	if $Timer.time_left <= 0 and Global.enemy_spawned != Global.total_enemies and Global.preparation_phase == false:

@@ -395,6 +395,11 @@ func player_InteractItems():
 			
 	#================================================ DEFENSE PHASE ==================================================================================================
 	elif !Global.preparation_phase:
+		# COLLECTING INGREDIENT (HOLD MECHANIC ON STUFF PROGRESSING WITH TIME)
+		if player_ableInteract == true and player_isHoldingItem == false and "type" in player_interactedItem_Temp and player_interactedItem_Temp.type == "ingredients":
+			if Function.search_regex("ore", player_interactedItem_Temp.id):
+				if Input.is_action_pressed(interact): player_interactedItem_Temp.start_collecting(self)
+				else: player_interactedItem_Temp.stop_collecting()
 		# SHOOT MORTAR
 		if player_ableInteract == true and Input.is_action_just_pressed(interact) and player_interactedItem_Temp.has_method("controlled"):
 			player_interactedItem_Temp.shoot()
@@ -418,11 +423,8 @@ func player_InteractItems():
 		# PICK UP INGREDIENT
 		elif player_ableInteract == true and player_isHoldingItem == false and Input.is_action_just_pressed(interact) and !Function.search_regex("turret", player_interactedItem_Temp.id):
 			if "type" in player_interactedItem_Temp:
-				# being use for ores
-				if player_interactedItem_Temp.type == "ingredients":
-					player_interactedItem_Temp.take(self)
 				# being use for chemistry and foundry
-				elif player_interactedItem_Temp.type == "crafter":
+				if player_interactedItem_Temp.type == "crafter":
 					player_interactedItem_Temp.take(self)
 				# being use for multi-purpose storage
 				elif player_interactedItem_Temp.type == "storage":

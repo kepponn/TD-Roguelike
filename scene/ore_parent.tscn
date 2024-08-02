@@ -1,9 +1,38 @@
-[gd_scene load_steps=3 format=3 uid="uid://dcq8eigdcytqk"]
+[gd_scene load_steps=8 format=3 uid="uid://dcq8eigdcytqk"]
 
 [ext_resource type="Script" path="res://scripts/ore_parent.gd" id="1_vskmg"]
+[ext_resource type="AudioStream" uid="uid://du6ggmbj1ltd8" path="res://assets/audio/sfx/pickaxe_rock_faster.mp3" id="2_d6dgo"]
+[ext_resource type="AudioStream" uid="uid://cposcjwl3xtep" path="res://assets/audio/sfx/sledgehammer_rock.mp3" id="3_h7ium"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_28ylm"]
 size = Vector3(1, 1.1532, 1)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_8ufi7"]
+viewport_path = NodePath("ProgressBar3D/SubViewport")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2tree"]
+bg_color = Color(0.215686, 0.215686, 0.215686, 0.72549)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_omfue"]
+bg_color = Color(0.329412, 0.909804, 0, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [node name="Ore_Parent" type="StaticBody3D"]
 script = ExtResource("1_vskmg")
@@ -13,3 +42,34 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0765991, 0)
 shape = SubResource("BoxShape3D_28ylm")
 
 [node name="Models" type="Node3D" parent="."]
+
+[node name="Audio" type="Node" parent="."]
+
+[node name="Progress" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("2_d6dgo")
+bus = &"Effect"
+
+[node name="Break" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("3_h7ium")
+bus = &"Effect"
+
+[node name="ProgressBar3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0232, 0)
+visible = false
+billboard = 1
+no_depth_test = true
+texture = SubResource("ViewportTexture_8ufi7")
+
+[node name="SubViewport" type="SubViewport" parent="ProgressBar3D"]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(102, 17)
+
+[node name="ProgressBar2D" type="ProgressBar" parent="ProgressBar3D/SubViewport"]
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 101.0
+offset_bottom = 16.0
+theme_override_styles/background = SubResource("StyleBoxFlat_2tree")
+theme_override_styles/fill = SubResource("StyleBoxFlat_omfue")
+show_percentage = false

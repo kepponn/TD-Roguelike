@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://ceaayshg10nlh"]
+[gd_scene load_steps=7 format=3 uid="uid://ceaayshg10nlh"]
 
 [ext_resource type="Script" path="res://scripts/crafter_foundry.gd" id="1_sr7x6"]
 
@@ -6,6 +6,33 @@
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_ad1k3"]
 height = 1.0
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_oj51u"]
+viewport_path = NodePath("ProgressBar3D/SubViewport")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ltye4"]
+bg_color = Color(0.215686, 0.215686, 0.215686, 0.72549)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+expand_margin_left = 1.0
+expand_margin_top = 1.0
+expand_margin_right = 1.0
+expand_margin_bottom = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_28ge2"]
+bg_color = Color(0.329412, 0.909804, 0, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [node name="Crafter_Foundry" type="StaticBody3D"]
 script = ExtResource("1_sr7x6")
@@ -22,5 +49,25 @@ skeleton = NodePath("../..")
 [node name="CraftingTimer" type="Timer" parent="."]
 wait_time = 3.0
 one_shot = true
+
+[node name="ProgressBar3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.882538, 0)
+billboard = 1
+no_depth_test = true
+texture = SubResource("ViewportTexture_oj51u")
+
+[node name="SubViewport" type="SubViewport" parent="ProgressBar3D"]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(102, 17)
+
+[node name="ProgressBar2D" type="ProgressBar" parent="ProgressBar3D/SubViewport"]
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 101.0
+offset_bottom = 16.0
+theme_override_styles/background = SubResource("StyleBoxFlat_ltye4")
+theme_override_styles/fill = SubResource("StyleBoxFlat_28ge2")
+show_percentage = false
 
 [connection signal="timeout" from="CraftingTimer" to="." method="_on_crafting_timer_timeout"]

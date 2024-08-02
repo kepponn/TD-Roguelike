@@ -39,7 +39,7 @@ func purchase(scene):
 	# Since only 1 shop right now this is not an issues, if there going to be more shop then need to check for shop in node and check for parameter
 	# thii issues is fixed because every interaction it will send the shop data into ui and back to shop to spawn and etc
 	item.position = spawn_area.global_position
-	%Item.add_child(item, true)
+	get_parent().add_child(item, true)
 	# Set data for player to pickup the purchased item if needed, this result in item being blinked
 	#player.player_interactedItem = item
 	#player.player_interactedItem_Temp = item

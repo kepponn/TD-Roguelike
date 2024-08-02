@@ -14,7 +14,12 @@ var gunpowder_box: bool = false
 # when true the progress bar is increasing, only if player hold interact to it
 var is_crafting: bool = false
 
+func _ready():
+	$ProgressBar3D/SubViewport/ProgressBar2D.max_value = $CraftingTimer.wait_time
+	$ProgressBar3D/SubViewport/ProgressBar2D.value = 0
+
 func reset():
+	$CraftingTimer.stop()
 	is_crafting = false
 	ore_saltpetre = false
 	ore_sulphur = false
@@ -47,10 +52,21 @@ func clean_requestor(requestor):
 	requestor.player_checkIngredientItem()
 
 func _process(_delta):
+	progress_ui()
+	if gunpowder_box:
+		pass # show icon for this / item ready
 	if ore_saltpetre and ore_sulphur and !is_crafting and !gunpowder_box:
 		is_crafting = true
 		$CraftingTimer.start()
 		print("chemistry craft start")
+
+func progress_ui():
+	if is_crafting:
+		$ProgressBar3D.show()
+		$ProgressBar3D/SubViewport/ProgressBar2D.max_value = $CraftingTimer.wait_time
+		$ProgressBar3D/SubViewport/ProgressBar2D.value = $CraftingTimer.wait_time - $CraftingTimer.time_left
+	else:
+		$ProgressBar3D.hide()
 
 func _on_crafting_timer_timeout():
 	is_crafting = false

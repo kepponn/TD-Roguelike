@@ -29,6 +29,7 @@ func _process(delta):
 	craft_ammo()
 	
 func reset(): # To reset all crafter inventory, being call by default_state() in player.gd
+	$CraftingTimer.stop()
 	mats_gunpowder_box = 0
 	mats_bullet_box = 0
 	prod_ammo_box = 0

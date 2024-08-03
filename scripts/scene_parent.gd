@@ -54,6 +54,18 @@ func _process(_delta):
 			if Function.search_regex("turret", item_list.get_child(i).id):
 					has_defensive_structure = true
 
+# -------------------- Camera function below
+
+func camera_swap():
+	if $Camera/CameraPerspective.current:
+		$Camera/CameraPerspective.clear_current()
+		$Camera/CameraOrthogonal.make_current()
+		print("Scene - Perspective camera active!")
+	else:
+		$Camera/CameraOrthogonal.clear_current()
+		$Camera/CameraPerspective.make_current()
+		print("Scene - Orthogonal (strategic) camera active!")
+
 # -------------------- Independent function below
 
 func pause(): # This is being called by player

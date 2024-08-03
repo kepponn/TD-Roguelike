@@ -104,6 +104,8 @@ func _physics_process(delta):
 	esc()
 
 func DEBUG_turret_targeting_DEBUG():
+	if Input.is_action_just_pressed("debug_camera"):
+		scene.camera_swap()
 	if player_interactedItem_Temp != null:
 		if Input.is_action_just_pressed("debug+"):
 			if Function.search_regex("turret", player_interactedItem_Temp.id):

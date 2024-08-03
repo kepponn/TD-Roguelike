@@ -195,7 +195,7 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 3, 1, 
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 1, -8)
 
 [node name="Crafter" parent="World/NavigationRegion3D/Item" index="46" instance=ExtResource("13_yo4g5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, -9)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, 2)
 
 [node name="DroneBase2" parent="World/NavigationRegion3D/Item" index="47" instance=ExtResource("14_mg14c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, -9)
@@ -266,7 +266,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 [node name="Storage_Box" parent="World/NavigationRegion3D/Item" index="69" instance=ExtResource("26_grl6v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, -7)
 
-[node name="ShopObject" parent="World/NavigationRegion3D/Item" index="70" instance=ExtResource("27_rptph")]
+[node name="Storage_Box2" parent="World/NavigationRegion3D/Item" index="70" instance=ExtResource("26_grl6v")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 4)
+
+[node name="ShopObject" parent="World/NavigationRegion3D/Item" index="71" instance=ExtResource("27_rptph")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, -1)
 
 [node name="GateController" parent="." index="8"]

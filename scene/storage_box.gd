@@ -5,7 +5,7 @@ var id: String = "storage_box"
 var type: String = "storage"
 
 var is_used: bool = false
-var items_display: String # this should be "bullet_box" or "ammo_box"
+var items_display: String # this should be whatever below the $Models
 var items_count: int = 0
 var items_count_max: int = 3
 
@@ -58,10 +58,22 @@ func check_self(): # refactor this into check_self() and call it when something 
 			"gunpowder_box":
 				$Models/gunpowder_box.show()
 				check_self_item()
+			"ore_copper":
+				$Models/ore_copper.show()
+				check_self_item()
+			"ore_zinc":
+				$Models/ore_zinc.show()
+				check_self_item()
+			"ore_sulphur":
+				$Models/ore_sulphur.show()
+				check_self_item()
+			"ore_saltpetre":
+				$Models/ore_saltpetre.show()
+				check_self_item()
 	else:
-		$Models/ammo_box.hide()
-		$Models/bullet_box.hide()
-		$Models/gunpowder_box.hide()
+		for child in $Models.get_children():
+			if child is Node3D and not child is MeshInstance3D:
+				child.hide()
 
 func check_self_item():
 	match items_count:

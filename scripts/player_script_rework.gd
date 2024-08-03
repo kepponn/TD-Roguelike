@@ -348,13 +348,25 @@ func player_checkIngredientItem():
 		"":
 			$"Node3D/Ingredient Item/Ingredient Sprite".hide()
 		"ammo_box":
-			$"Node3D/Ingredient Item/Ingredient Sprite".texture = load("res://assets/icon/ammo-box.png")
+			$"Node3D/Ingredient Item/Ingredient Sprite".texture = load("res://assets/icon/ingredients/ammo_box.png")
 			$"Node3D/Ingredient Item/Ingredient Sprite".show()
 		"gunpowder_box":
-			$"Node3D/Ingredient Item/Ingredient Sprite".texture = load("res://assets/icon/powder.png")
+			$"Node3D/Ingredient Item/Ingredient Sprite".texture = load("res://assets/icon/ingredients/gunpowder_barrel.png")
 			$"Node3D/Ingredient Item/Ingredient Sprite".show()
 		"bullet_box":
-			$"Node3D/Ingredient Item/Ingredient Sprite".texture = load("res://assets/icon/shotgun-rounds.png")
+			$"Node3D/Ingredient Item/Ingredient Sprite".texture = load("res://assets/icon/ingredients/bullet_case.png")
+			$"Node3D/Ingredient Item/Ingredient Sprite".show()
+		"ore_copper":
+			$"Node3D/Ingredient Item/Ingredient Sprite".texture = load("res://assets/icon/ingredients/ore/ore_copper.png")
+			$"Node3D/Ingredient Item/Ingredient Sprite".show()
+		"ore_saltpetre":
+			$"Node3D/Ingredient Item/Ingredient Sprite".texture = load("res://assets/icon/ingredients/ore/ore_saltpetre.png")
+			$"Node3D/Ingredient Item/Ingredient Sprite".show()
+		"ore_sulphur":
+			$"Node3D/Ingredient Item/Ingredient Sprite".texture = load("res://assets/icon/ingredients/ore/ore_sulphur.png")
+			$"Node3D/Ingredient Item/Ingredient Sprite".show()
+		"ore_zinc":
+			$"Node3D/Ingredient Item/Ingredient Sprite".texture = load("res://assets/icon/ingredients/ore/ore_zinc.png")
 			$"Node3D/Ingredient Item/Ingredient Sprite".show()
 
 func player_InteractItems():

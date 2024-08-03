@@ -15,6 +15,7 @@ var bullet_box: bool = false
 var is_crafting: bool = false
 
 func _ready():
+	check_icon_ui(false)
 	$ProgressBar3D/SubViewport/ProgressBar2D.max_value = $CraftingTimer.wait_time
 	$ProgressBar3D/SubViewport/ProgressBar2D.value = 0
 
@@ -65,8 +66,24 @@ func progress_ui():
 		$ProgressBar3D.show()
 		$ProgressBar3D/SubViewport/ProgressBar2D.max_value = $CraftingTimer.wait_time
 		$ProgressBar3D/SubViewport/ProgressBar2D.value = $CraftingTimer.wait_time - $CraftingTimer.time_left
+		check_icon_ui(false)
 	else:
 		$ProgressBar3D.hide()
+		check_icon_ui(true)
+
+func check_icon_ui(show_icon: bool):
+	match show_icon:
+		true:
+			if ore_copper: $"IngredientInfo3D/SubViewport/Ingredient List/ore_copper".show()
+			else: $"IngredientInfo3D/SubViewport/Ingredient List/ore_copper".hide()
+			if ore_zinc: $"IngredientInfo3D/SubViewport/Ingredient List/ore_zinc".show()
+			else: $"IngredientInfo3D/SubViewport/Ingredient List/ore_zinc".hide()
+			if bullet_box: $"IngredientInfo3D/SubViewport/Ingredient List/bullet_box".show()
+			else: $"IngredientInfo3D/SubViewport/Ingredient List/bullet_box".hide()
+		false:
+			$"IngredientInfo3D/SubViewport/Ingredient List/ore_copper".hide()
+			$"IngredientInfo3D/SubViewport/Ingredient List/ore_zinc".hide()
+			$"IngredientInfo3D/SubViewport/Ingredient List/bullet_box".hide()
 
 func _on_crafting_timer_timeout():
 	is_crafting = false

@@ -15,6 +15,7 @@ var gunpowder_box: bool = false
 var is_crafting: bool = false
 
 func _ready():
+	check_icon_ui(false)
 	$ProgressBar3D/SubViewport/ProgressBar2D.max_value = $CraftingTimer.wait_time
 	$ProgressBar3D/SubViewport/ProgressBar2D.value = 0
 
@@ -65,8 +66,24 @@ func progress_ui():
 		$ProgressBar3D.show()
 		$ProgressBar3D/SubViewport/ProgressBar2D.max_value = $CraftingTimer.wait_time
 		$ProgressBar3D/SubViewport/ProgressBar2D.value = $CraftingTimer.wait_time - $CraftingTimer.time_left
+		check_icon_ui(false)
 	else:
 		$ProgressBar3D.hide()
+		check_icon_ui(true)
+
+func check_icon_ui(show_icon: bool):
+	match show_icon:
+		true:
+			if ore_saltpetre: $"IngredientInfo3D/SubViewport/Ingredient List/ore_saltpetre".show()
+			else: $"IngredientInfo3D/SubViewport/Ingredient List/ore_saltpetre".hide()
+			if ore_sulphur: $"IngredientInfo3D/SubViewport/Ingredient List/ore_sulphur".show()
+			else: $"IngredientInfo3D/SubViewport/Ingredient List/ore_sulphur".hide()
+			if gunpowder_box: $"IngredientInfo3D/SubViewport/Ingredient List/gunpowder_box".show()
+			else: $"IngredientInfo3D/SubViewport/Ingredient List/gunpowder_box".hide()
+		false:
+			$"IngredientInfo3D/SubViewport/Ingredient List/ore_saltpetre".hide()
+			$"IngredientInfo3D/SubViewport/Ingredient List/ore_sulphur".hide()
+			$"IngredientInfo3D/SubViewport/Ingredient List/gunpowder_box".hide()
 
 func _on_crafting_timer_timeout():
 	is_crafting = false

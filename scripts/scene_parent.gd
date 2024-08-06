@@ -93,6 +93,9 @@ func default_state(): # Default state for items, being called only on preparatio
 		if Function.search_regex("mortar", item_list.get_child(i).id):
 			item_list.get_child(i).default_state()
 			print("Flushing ", item_list.get_child(i))
+		if Function.search_regex("ore", item_list.get_child(i).id):
+			item_list.get_child(i).reset()
+			print("Flushing ", item_list.get_child(i))
 	for projectile in %Projectiles.get_child_count():
 		%Projectiles.get_child(projectile).queue_free()
 

@@ -14,6 +14,15 @@ var is_collecting: bool = false # state if true then it progress the time
 var collecting_time: float = 2.0 # in seconds
 var progress_time: float = 0.0 # in seconds
 
+func reset():
+	is_collecting = false
+	$ProgressBar3D.hide()
+	$ProgressBar3D/SubViewport/ProgressBar2D.value = 0
+	$Audio/Progress.stop()
+	$Audio/Break.stop()
+	local_requestor = null
+	progress_time = 0.0
+
 func _process(delta):
 	if is_collecting:
 		$ProgressBar3D.show()

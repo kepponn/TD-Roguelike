@@ -15,11 +15,16 @@ func _ready():
 func take(requestor):
 	if items_count > 0:
 		items_count -= 1
-		requestor.player_holdedMats = items_display
-		requestor.player_isHoldingItem = true
-		requestor.player_checkIngredientItem()
-		requestor.player_ableInteract = false
-		print("Picked up ", requestor.player_holdedMats)
+		if Function.search_regex("player", requestor.id):
+			requestor.player_holdedMats = items_display
+			requestor.player_isHoldingItem = true
+			requestor.player_checkIngredientItem()
+			requestor.player_ableInteract = false
+			print("Picked up ", requestor.player_holdedMats)
+		elif requestor.id == "conveyor_grabber":
+			print("Conveyor grabber taking ", items_display)
+			return items_display
+			# Then after this the conveyor_grabber call for check_self() to update the models
 		print(items_display, items_count)
 	else:
 		print("there is nothing to take from storage")
@@ -30,7 +35,10 @@ func put(requestor, items):
 		# set limiter if needed for items
 		items_display = items
 		items_count += 1
-		clean_requestor(requestor)
+		if Function.search_regex("player", requestor.id):
+			clean_requestor(requestor)
+		elif requestor.id == "conveyor_setter":
+			print("Conveyor setter is sending ", items)
 		print(items_display, items_count)
 	else:
 		print("items displayed is different to what this storage store! or it is already maxed-out!")

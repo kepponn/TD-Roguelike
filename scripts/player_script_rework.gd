@@ -346,30 +346,7 @@ func player_checkItemRange(item, enable: bool = true):
 
 func player_checkIngredientItem():
 	# Future rework to cast the texture icon directly to Sprite3D
-	match player_holdedMats:
-		"":
-			$"Node3D/Ingredient Item/Ingredient Sprite".hide()
-		"ammo_box":
-			$"Node3D/Ingredient Item/Ingredient Sprite".texture = load("res://assets/icon/ingredients/ammo_box.png")
-			$"Node3D/Ingredient Item/Ingredient Sprite".show()
-		"gunpowder_box":
-			$"Node3D/Ingredient Item/Ingredient Sprite".texture = load("res://assets/icon/ingredients/gunpowder_barrel.png")
-			$"Node3D/Ingredient Item/Ingredient Sprite".show()
-		"bullet_box":
-			$"Node3D/Ingredient Item/Ingredient Sprite".texture = load("res://assets/icon/ingredients/bullet_case.png")
-			$"Node3D/Ingredient Item/Ingredient Sprite".show()
-		"ore_copper":
-			$"Node3D/Ingredient Item/Ingredient Sprite".texture = load("res://assets/icon/ingredients/ore/ore_copper.png")
-			$"Node3D/Ingredient Item/Ingredient Sprite".show()
-		"ore_saltpetre":
-			$"Node3D/Ingredient Item/Ingredient Sprite".texture = load("res://assets/icon/ingredients/ore/ore_saltpetre.png")
-			$"Node3D/Ingredient Item/Ingredient Sprite".show()
-		"ore_sulphur":
-			$"Node3D/Ingredient Item/Ingredient Sprite".texture = load("res://assets/icon/ingredients/ore/ore_sulphur.png")
-			$"Node3D/Ingredient Item/Ingredient Sprite".show()
-		"ore_zinc":
-			$"Node3D/Ingredient Item/Ingredient Sprite".texture = load("res://assets/icon/ingredients/ore/ore_zinc.png")
-			$"Node3D/Ingredient Item/Ingredient Sprite".show()
+	Function.check_sprite(player_holdedMats, $"Node3D/Ingredient Item/Ingredient Sprite")
 
 func player_InteractItems():
 	#================================================ PREPARATION PHASE ==================================================================================================

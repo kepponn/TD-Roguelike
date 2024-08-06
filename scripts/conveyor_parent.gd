@@ -66,6 +66,10 @@ func _process(_delta):
 		elif grabber.id == "crafter" and grabber.prod_ammo_box == 1:
 			recieveItem(grabber.conveyor_get_product())
 			_grabber_tween()
+		elif grabber.id == "storage_box" and grabber.items_count > 0:
+			recieveItem(grabber.take(self))
+			grabber.check_self()
+			_grabber_tween()
 	# Setter to put item into whatever needed
 	elif !Global.preparation_phase and !inv.is_empty() and setter != null and self.id == "conveyor_setter" and tweening == false and tween_finished == false:
 		if setter.id == "crafter":
@@ -75,6 +79,10 @@ func _process(_delta):
 				_setter_tween()
 		elif setter.id == "drone_station":
 			if inv[0] == "ammo_box" and setter.base_ammo < 3:
+				_setter_tween()
+		elif setter.id == "storage_box":
+			# this will send the item to storage box if the storage is empty or if the items are the same
+			if !setter.is_used or setter.items_display == inv[0] and setter.items_count < setter.items_count_max:
 				_setter_tween()
 	# Pusher to push current item to the next conveyor / Send item to next conveyor
 	elif !Global.preparation_phase and !inv.is_empty() and next_conveyor != null and tweening == false and tween_finished == false:
@@ -107,6 +115,8 @@ func _setter_is_finished():
 		if inv[0] == "ammo_box":
 			setter.conveyor_put_ammo()
 			inv.pop_back()
+	elif setter.id == "storage_box":
+		setter.put(self, inv.pop_back())
 	item_sprite.global_position = item_placeholder.global_position
 
 func _grabber_tween():
@@ -145,16 +155,7 @@ func takeItem():
 
 func checkItemSprite():
 	if !inv.is_empty():
-		match inv[0]:
-			"ammo_box":
-				$ItemPlaceholder/ItemSprite.texture = load("res://assets/icon/ammo-box.png")
-				$ItemPlaceholder/ItemSprite.show()
-			"gunpowder_box":
-				$ItemPlaceholder/ItemSprite.texture = load("res://assets/icon/powder.png")
-				$ItemPlaceholder/ItemSprite.show()
-			"bullet_box":
-				$ItemPlaceholder/ItemSprite.texture = load("res://assets/icon/shotgun-rounds.png")
-				$ItemPlaceholder/ItemSprite.show()
+		Function.check_sprite(inv[0], $ItemPlaceholder/ItemSprite)
 	else:
 		$ItemPlaceholder/ItemSprite.hide()
 
@@ -167,13 +168,13 @@ func _on_next_conveyor_body_entered(body):
 func _on_grabber_body_entered(body):
 	if self.id == "conveyor_grabber" and body.is_class("StaticBody3D") and body.get_parent().name == 'Item':
 		# Filter for what to grab based on the ids
-		if Function.search_regex("bullet_box", body.id) or Function.search_regex("gunpowder_box", body.id) or Function.search_regex("crafter", body.id):
+		if Function.search_regex("bullet_box", body.id) or Function.search_regex("gunpowder_box", body.id) or Function.search_regex("crafter", body.id) or Function.search_regex("storage_box", body.id):
 			grabber = body
 			print(self.name, " is grabing resources from ", body.name)
 
 func _on_setter_body_entered(body):
 	if self.id == "conveyor_setter" and body.is_class("StaticBody3D") and body.get_parent().name == 'Item':
 		# Filter for what to grab based on the ids
-		if Function.search_regex("crafter", body.id) or Function.search_regex("drone", body.id):
+		if Function.search_regex("crafter", body.id) or Function.search_regex("drone", body.id) or Function.search_regex("storage_box", body.id):
 			setter = body
 			print(self.name, " is able to set resources to ", body.name)

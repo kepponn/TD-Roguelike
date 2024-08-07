@@ -21,11 +21,6 @@
 
 [sub_resource type="Environment" id="Environment_m6ppc"]
 background_color = Color(0.52549, 0.52549, 0.52549, 1)
-ambient_light_source = 1
-reflected_light_source = 1
-ssao_enabled = true
-ssil_enabled = true
-fog_enabled = true
 volumetric_fog_enabled = true
 volumetric_fog_density = 0.0125
 adjustment_enabled = true
@@ -53,7 +48,7 @@ size = 20.0
 environment = SubResource("Environment_m6ppc")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
-transform = Transform3D(0.739631, 0.568243, -0.360618, 0, 0.535827, 0.844328, 0.673012, -0.624491, 0.396314, 0, 0, 0)
+transform = Transform3D(0.707106, 0.579228, -0.40558, 0, 0.573576, 0.819152, 0.707106, -0.579228, 0.40558, 0, 0, 0)
 light_color = Color(0.815686, 0.815686, 0.815686, 1)
 shadow_enabled = true
 shadow_bias = 0.04

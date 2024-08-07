@@ -5,6 +5,7 @@ var id: String = "storage_box"
 var type: String = "storage"
 
 var is_used: bool = false
+var is_instanced: bool = false
 var items_display: String # this should be whatever below the $Models
 var items_count: int = 0
 var items_count_max: int = 3
@@ -53,47 +54,178 @@ func check_self(): # refactor this into check_self() and call it when something 
 	if items_count == 0:
 		items_display = ""
 		is_used = false
+		is_instanced = false
+		check_item_count()
 	else:
 		is_used = true
 	if is_used:
 		match items_display:
 			"ammo_box":
-				$Models/ammo_box.show()
-				check_self_item()
+				if !is_instanced:
+					var mesh = load("res://models/object/ammo_box.obj")
+					var mats = load("res://models/materials/ammo_box_toon.tres")
+					$"Models/1".mesh = mesh
+					$"Models/1".material_override = mats
+					$"Models/1".position = Vector3(0.015, -0.194, 0.204)
+					$"Models/1".rotation_degrees = Vector3(0, 0, 0)
+					$"Models/1".scale = Vector3(1, 1, 1)
+					$"Models/2".mesh = mesh
+					$"Models/2".material_override = mats
+					$"Models/2".position = Vector3(0.015, -0.194, -0.258)
+					$"Models/2".rotation_degrees = Vector3(0, 0, 0)
+					$"Models/2".scale = Vector3(1, 1, 1)
+					$"Models/3".mesh = mesh
+					$"Models/3".material_override = mats
+					$"Models/3".position = Vector3(0.018, 0.217, -0.019)
+					$"Models/3".rotation_degrees = Vector3(0, 7.2, 0)
+					$"Models/3".scale = Vector3(1, 1, 1)
+					is_instanced = true
+				check_item_count()
 			"bullet_box":
-				$Models/bullet_box.show()
-				check_self_item()
+				if !is_instanced:
+					var mats = load("res://models/materials/bullet_case_toon.tres")
+					$"Models/1".mesh = load("res://models/object/bullet-p1.obj")
+					$"Models/1".material_override = mats
+					$"Models/1".position = Vector3(-0.002, 0.032, -0.015)
+					$"Models/1".rotation_degrees = Vector3(0, 0, 0)
+					$"Models/1".scale = Vector3(1, 1, 1)
+					$"Models/2".mesh = load("res://models/object/bullet-p2.obj")
+					$"Models/2".material_override = mats
+					$"Models/2".position = Vector3(-0.0046, 0.047, -0.055)
+					$"Models/2".rotation_degrees = Vector3(0, 0, 0)
+					$"Models/2".scale = Vector3(1, 1, 1)
+					$"Models/3".mesh = load("res://models/object/bullet-p3.obj")
+					$"Models/3".material_override = mats
+					$"Models/3".position = Vector3(0.027, 0.04, -0.025)
+					$"Models/3".rotation_degrees = Vector3(0, 7.2, 0)
+					$"Models/3".scale = Vector3(1, 1, 1)
+					is_instanced = true
+				check_item_count()
 			"gunpowder_box":
-				$Models/gunpowder_box.show()
-				check_self_item()
+				if !is_instanced:
+					var mesh = load("res://models/object/barrel.obj")
+					var mats = load("res://models/materials/wood_alternative_toon.tres")
+					$"Models/1".mesh = mesh
+					$"Models/1".material_override = mats
+					$"Models/1".position = Vector3(0.251, 0.209, 0.169)
+					$"Models/1".rotation_degrees = Vector3(0, 7.6, 0)
+					$"Models/1".scale = Vector3(1, 1, 1)
+					$"Models/2".mesh = mesh
+					$"Models/2".material_override = mats
+					$"Models/2".position = Vector3(-0.238, 0.209, 0.081)
+					$"Models/2".rotation_degrees = Vector3(0, 0, 0)
+					$"Models/2".scale = Vector3(1, 1, 1)
+					$"Models/3".mesh = mesh
+					$"Models/3".material_override = mats
+					$"Models/3".position = Vector3(0.098, 0.209, -0.249)
+					$"Models/3".rotation_degrees = Vector3(0, 18.1, 0)
+					$"Models/3".scale = Vector3(1, 1, 1)
+					is_instanced = true
+				check_item_count()
 			"ore_copper":
-				$Models/ore_copper.show()
-				check_self_item()
+				if !is_instanced:
+					var mesh = load("res://models/object/basic-ore.obj")
+					var mats = load("res://models/materials/ore_copper_toon.tres")
+					$"Models/1".mesh = mesh
+					$"Models/1".material_override = mats
+					$"Models/1".position = Vector3(0.127, 0.209, 0.156)
+					$"Models/1".rotation_degrees = Vector3(0, -155.3, 0)
+					$"Models/1".scale = Vector3(0.57, 0.57, 0.57)
+					$"Models/2".mesh = mesh
+					$"Models/2".material_override = mats
+					$"Models/2".position = Vector3(-0.145, 0.105, -0.046)
+					$"Models/2".rotation_degrees = Vector3(0, 62.7, 0)
+					$"Models/2".scale = Vector3(0.494, 0.36, 0.568)
+					$"Models/3".mesh = mesh
+					$"Models/3".material_override = mats
+					$"Models/3".position = Vector3(0.127, -0.076, -0.223)
+					$"Models/3".rotation_degrees = Vector3(0, -64.2, 0)
+					$"Models/3".scale = Vector3(0.461, 0.449, 0.505)
+					is_instanced = true
+				check_item_count()
 			"ore_zinc":
-				$Models/ore_zinc.show()
-				check_self_item()
+				if !is_instanced:
+					var mesh = load("res://models/object/basic-ore.obj")
+					var mats = load("res://models/materials/ore_zinc_toon.tres")
+					$"Models/1".mesh = mesh
+					$"Models/1".material_override = mats
+					$"Models/1".position = Vector3(0.127, 0.209, 0.156)
+					$"Models/1".rotation_degrees = Vector3(0, -155.3, 0)
+					$"Models/1".scale = Vector3(0.57, 0.57, 0.57)
+					$"Models/2".mesh = mesh
+					$"Models/2".material_override = mats
+					$"Models/2".position = Vector3(-0.145, 0.105, -0.046)
+					$"Models/2".rotation_degrees = Vector3(0, 62.7, 0)
+					$"Models/2".scale = Vector3(0.494, 0.36, 0.568)
+					$"Models/3".mesh = mesh
+					$"Models/3".material_override = mats
+					$"Models/3".position = Vector3(0.127, -0.076, -0.223)
+					$"Models/3".rotation_degrees = Vector3(0, -64.2, 0)
+					$"Models/3".scale = Vector3(0.461, 0.449, 0.505)
+					is_instanced = true
+				check_item_count()
 			"ore_sulphur":
-				$Models/ore_sulphur.show()
-				check_self_item()
+				if !is_instanced:
+					var mesh = load("res://models/object/basic-ore.obj")
+					var mats = load("res://models/materials/ore_sulphur_toon.tres")
+					$"Models/1".mesh = mesh
+					$"Models/1".material_override = mats
+					$"Models/1".position = Vector3(0.127, 0.209, 0.156)
+					$"Models/1".rotation_degrees = Vector3(0, -155.3, 0)
+					$"Models/1".scale = Vector3(0.57, 0.57, 0.57)
+					$"Models/2".mesh = mesh
+					$"Models/2".material_override = mats
+					$"Models/2".position = Vector3(-0.145, 0.105, -0.046)
+					$"Models/2".rotation_degrees = Vector3(0, 62.7, 0)
+					$"Models/2".scale = Vector3(0.494, 0.36, 0.568)
+					$"Models/3".mesh = mesh
+					$"Models/3".material_override = mats
+					$"Models/3".position = Vector3(0.127, -0.076, -0.223)
+					$"Models/3".rotation_degrees = Vector3(0, -64.2, 0)
+					$"Models/3".scale = Vector3(0.461, 0.449, 0.505)
+					is_instanced = true
+				check_item_count()
 			"ore_saltpetre":
-				$Models/ore_saltpetre.show()
-				check_self_item()
+				if !is_instanced:
+					var mesh = load("res://models/object/basic-ore.obj")
+					var mats = load("res://models/materials/ore_saltpetre_toon.tres")
+					$"Models/1".mesh = mesh
+					$"Models/1".material_override = mats
+					$"Models/1".position = Vector3(0.127, 0.209, 0.156)
+					$"Models/1".rotation_degrees = Vector3(0, -155.3, 0)
+					$"Models/1".scale = Vector3(0.57, 0.57, 0.57)
+					$"Models/2".mesh = mesh
+					$"Models/2".material_override = mats
+					$"Models/2".position = Vector3(-0.145, 0.105, -0.046)
+					$"Models/2".rotation_degrees = Vector3(0, 62.7, 0)
+					$"Models/2".scale = Vector3(0.494, 0.36, 0.568)
+					$"Models/3".mesh = mesh
+					$"Models/3".material_override = mats
+					$"Models/3".position = Vector3(0.127, -0.076, -0.223)
+					$"Models/3".rotation_degrees = Vector3(0, -64.2, 0)
+					$"Models/3".scale = Vector3(0.461, 0.449, 0.505)
+					is_instanced = true
+				check_item_count()
 	else:
 		for child in $Models.get_children():
 			if child is Node3D and not child is MeshInstance3D:
 				child.hide()
 
-func check_self_item():
+func check_item_count():
 	match items_count:
+		0:
+			$"Models/1".hide()
+			$"Models/2".hide()
+			$"Models/3".hide()
 		1:
-			get_node("Models/"+items_display+"/1").show()
-			get_node("Models/"+items_display+"/2").hide()
-			get_node("Models/"+items_display+"/3").hide()
+			$"Models/1".show()
+			$"Models/2".hide()
+			$"Models/3".hide()
 		2:
-			get_node("Models/"+items_display+"/1").show()
-			get_node("Models/"+items_display+"/2").show()
-			get_node("Models/"+items_display+"/3").hide()
+			$"Models/1".show()
+			$"Models/2".show()
+			$"Models/3".hide()
 		3:
-			get_node("Models/"+items_display+"/1").show()
-			get_node("Models/"+items_display+"/2").show()
-			get_node("Models/"+items_display+"/3").show()
+			$"Models/1".show()
+			$"Models/2".show()
+			$"Models/3".show()

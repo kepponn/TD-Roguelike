@@ -265,10 +265,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 4)
 [node name="ShopObject" parent="World/NavigationRegion3D/Item" index="69" instance=ExtResource("27_rptph")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, -1)
 
-[node name="Wall" parent="World/NavigationRegion3D/Item" index="70" instance=ExtResource("26_s1bbp")]
+[node name="Wall231" parent="World/NavigationRegion3D/Item" index="70" instance=ExtResource("26_s1bbp")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, 0)
 
-[node name="Wall2" parent="World/NavigationRegion3D/Item" index="71" instance=ExtResource("27_7cryl")]
+[node name="Wall2333" parent="World/NavigationRegion3D/Item" index="71" instance=ExtResource("27_7cryl")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 1, 1)
 
 [node name="GateController" parent="." index="8"]

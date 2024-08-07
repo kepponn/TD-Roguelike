@@ -346,7 +346,8 @@ func player_checkItemRange(item, enable: bool = true):
 
 func player_checkIngredientItem():
 	# Future rework to cast the texture icon directly to Sprite3D
-	Function.check_sprite(player_holdedMats, $"Node3D/Ingredient Item/Ingredient Sprite")
+	#Function.check_sprite(player_holdedMats, $"Node3D/Ingredient Item/Ingredient Sprite")
+	Function.check_item_model_3d(player_holdedMats, $"Node3D/Ingredient Item/Ingredient Mesh", Vector3(0.556, 0.678, 0))
 
 func player_InteractItems():
 	#================================================ PREPARATION PHASE ==================================================================================================

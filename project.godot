@@ -375,3 +375,7 @@ debug_camera={
 [navigation]
 
 3d/default_cell_size=0.1
+
+[rendering]
+
+anti_aliasing/quality/screen_space_aa=1

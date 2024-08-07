@@ -1,0 +1,16 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://25v0oq7iiyye"]
+
+[ext_resource type="Shader" uid="uid://csoycldt3cu6w" path="res://models/shaders/shaders_toon_outline.tres" id="1_wg2jm"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tbh4r"]
+render_priority = 0
+shader = ExtResource("1_wg2jm")
+shader_parameter/albedo = null
+shader_parameter/grow = 0.025
+
+[resource]
+next_pass = SubResource("ShaderMaterial_tbh4r")
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.890196, 0.670588, 0, 1)
+roughness = 0.4

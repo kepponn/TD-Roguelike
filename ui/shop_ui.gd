@@ -54,48 +54,8 @@ func seed_item(seeder, property): # property are taken from item_rate where it M
 	seeder.find_child("Price").text = str(property_temp.price)
 	seeder.item_name = str(property_temp.id)
 	seeder.item_price = property_temp.price
+	seeder.setter(property_temp)
 	
-	if "attack_damage" in property_temp:
-		seeder.AttackDamageText = property_temp.attack_damage
-	if "attack_range" in property_temp:
-		seeder.AttackRangeText = property_temp.attack_range
-		if property_temp.id == "mortar":
-			seeder.AttackRangeText = str(property_temp.attack_rangeMin) + "~" + str(property_temp.attack_rangeMax)
-		if property_temp.id == "wall_spiked":
-			seeder.AttackRangeText = "1"
-	if "attack_speed" in property_temp:
-		seeder.AttackSpeedText = property_temp.attack_speed
-	if "bullet_maxammo" in property_temp:
-		seeder.AmmoText = property_temp.bullet_maxammo
-	if "bonus_range" in property_temp:
-		seeder.AttackRangeBuffText = "+" + str(property_temp.bonus_range)
-	if "bonus_attack" in property_temp:
-		seeder.AttackDamageBuffText = "+" + str(property_temp.bonus_attack)
-	if "base_ammo" in property_temp:
-		seeder.DroneAmmoCapacityText = property_temp.max_ammo
-		
-	
-	#if Function.search_regex("turret", property_temp.id):
-		#seeder.AttackDamageText = property_temp.attack_damage
-		#seeder.AttackRangeText = property_temp.attack_range
-		#seeder.AttackSpeedText = property_temp.attack_speed
-		#seeder.AmmoText = property_temp.bullet_maxammo
-	#if Function.search_regex("mortar", property_temp.id):
-		#seeder.AttackDamageText = property_temp.attack_damage
-		#seeder.AttackRangeText = str(property_temp.attack_rangeMin) + "-" + str(property_temp.attack_rangeMax)
-		#seeder.AttackSpeedText = property_temp.attack_speed
-	#match property_temp.id:
-		#"wall_spiked":
-			#seeder.AttackDamageText = property_temp.attack_damage
-			#seeder.AttackRangeText = "1"
-			#seeder.AttackSpeedText = property_temp.attack_speed
-		#"wall_mountable":
-			#seeder.AttackRangeBuffText = "+1"
-		#"enhancement":
-			#seeder.AttackDamageBuffText = property_temp.bonus_attack
-		#"drone_station":
-			#seeder.AttackRangeText = property_temp.area_range
-			#seeder.DroneAmmoCapacityText = property_temp.base_ammo
 
 func randomize_shopItem():
 	var rng = RandomNumberGenerator.new()

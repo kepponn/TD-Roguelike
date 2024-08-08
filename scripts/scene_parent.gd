@@ -15,6 +15,7 @@ var has_defensive_structure = false
 # -------------------- Setup new scene level
 # 1. Put your level gridmap in child of %NavigationRegion3D
 # 2. Adjust position of the following: Player, Spawner, Defend_Point and Shop accordingly
+# 3. If you want to have enviromental-decal (that block navigation): Put the item in $World/NavigationRegion3D/Enviroment
 
 # -------------------- Ready and process below
 

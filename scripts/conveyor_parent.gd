@@ -112,7 +112,7 @@ func _process(_delta):
 			# this will send the item to storage box if the storage is empty or if the items are the same
 			if !setter.is_crafting and !setter.bullet_box:
 				if !setter.ore_copper and inv[0] == "ore_copper":
-					setter.ore_copper == true
+					setter.ore_copper = true
 					_setter_tween()
 				elif !setter.ore_zinc and inv[0] == "ore_zinc":
 					setter.ore_zinc = true

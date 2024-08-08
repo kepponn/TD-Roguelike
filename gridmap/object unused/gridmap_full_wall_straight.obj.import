@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://dpo4novn3sygs"
+path="res://.godot/imported/gridmap_full_wall_straight.obj-f3da6ded65b3c5425151b345c4c8d881.mesh"
+
+[deps]
+
+files=["res://.godot/imported/gridmap_full_wall_straight.obj-f3da6ded65b3c5425151b345c4c8d881.mesh"]
+
+source_file="res://gridmap/object unused/gridmap_full_wall_straight.obj"
+dest_files=["res://.godot/imported/gridmap_full_wall_straight.obj-f3da6ded65b3c5425151b345c4c8d881.mesh", "res://.godot/imported/gridmap_full_wall_straight.obj-f3da6ded65b3c5425151b345c4c8d881.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

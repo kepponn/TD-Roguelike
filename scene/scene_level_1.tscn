@@ -12,7 +12,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 1, 6)
 [node name="Defend_Point" parent="Path" index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 1, -6)
 
-[node name="Environtment" type="GridMap" parent="World/NavigationRegion3D" index="0"]
+[node name="Gridmap" type="GridMap" parent="World/NavigationRegion3D" index="0"]
 mesh_library = ExtResource("2_trwqw")
 cell_size = Vector3(1, 1, 1)
 cell_center_x = false

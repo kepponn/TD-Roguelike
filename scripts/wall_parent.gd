@@ -60,22 +60,22 @@ func ready_up():
 		#%S.hide()
 
 func _on_n_body_entered(body):
-	if body.is_class("StaticBody3D") and Function.search_regex("wall", body.id) or body.is_class("GridMap"):
+	if body.get_parent().name == 'Item' and body.is_class("StaticBody3D") and Function.search_regex("wall", body.id) or body.is_class("GridMap"):
 		if self.get_parent().name == 'Item':
 			#print("N show")
 			%N.show()
 func _on_w_body_entered(body):
-	if body.is_class("StaticBody3D") and Function.search_regex("wall", body.id) or body.is_class("GridMap"):
+	if body.get_parent().name == 'Item' and body.is_class("StaticBody3D") and Function.search_regex("wall", body.id) or body.is_class("GridMap"):
 		if self.get_parent().name == 'Item':
 			#print("W show")
 			%W.show()
 func _on_e_body_entered(body):
-	if body.is_class("StaticBody3D") and Function.search_regex("wall", body.id) or body.is_class("GridMap"):
+	if body.get_parent().name == 'Item' and body.is_class("StaticBody3D") and Function.search_regex("wall", body.id) or body.is_class("GridMap"):
 		if self.get_parent().name == 'Item':
 			#print("E show")
 			%E.show()
 func _on_s_body_entered(body):
-	if body.is_class("StaticBody3D") and Function.search_regex("wall", body.id) or body.is_class("GridMap"):
+	if body.get_parent().name == 'Item' and body.is_class("StaticBody3D") and Function.search_regex("wall", body.id) or body.is_class("GridMap"):
 		if self.get_parent().name == 'Item':
 			#print("S show")
 			%S.show()

@@ -11,6 +11,7 @@ func _ready():
 
 func sell_ui(requestor, item):
 	local_requestor = requestor
+	$InspectedItemUI.setter(item)
 	# Check the price make it half price to sell or 0 if it have no price
 	if "price" in item:
 		sell_price = int(item.price * 0.5)
@@ -36,6 +37,7 @@ func _on_no_pressed():
 	quit_and_flush_requestor()
 
 func quit_and_flush_requestor():
+	$InspectedItemUI.reset()
 	self.hide()
 	await get_tree().create_timer(0.15).timeout
 	local_requestor.player_lockInput = false

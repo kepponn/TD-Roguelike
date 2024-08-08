@@ -20,8 +20,51 @@ var DroneAmmoCapacityText
 @onready var AttackRangeBuffLabel = $MarginContainer/HBoxContainer/ItemImage/StatusContainer/AttackRangeBuffBg/AttackRangeBuffLabel
 @onready var DroneAmmoCapacityLabel = $MarginContainer/HBoxContainer/ItemImage/StatusContainer/DroneAmmoCapacityBg/DroneAmmoCapacityLabel
 
+func reset():
+	AttackDamageText = null
+	AttackRangeText = null
+	AttackSpeedText = null
+	AmmoText = null
+	AttackDamageBuffText = null
+	AttackRangeBuffText = null
+	DroneAmmoCapacityText = null
+
 # using process is too slow and the timing is fucked up
-func setter():
+func setter(Item):
+	if "attack_damage" in Item and Item.attack_damage != null:
+		AttackDamageText = str(Item.attack_damage)
+		if Item.buff_isEnchanted:
+			AttackDamageText = AttackDamageText + "+" + str(Item.enchanted_bonus)
+	if "attack_range" in Item:
+		AttackRangeText = str(Item.attack_range)
+		if Function.search_regex("mortar", Item.id):
+			AttackRangeText = str(Item.attack_rangeMin) + "~" + str(Item.attack_rangeMax)
+		if Item.id == "wall_spiked":
+			AttackRangeText = "1"
+	if "attack_speed" in Item:
+		AttackSpeedText = Item.attack_speed
+	if "is_mountable_occupied" in Item:
+		if Item.is_mountable_occupied:
+			AttackDamageText = str(Item.currently_mountable_item.attack_damage)
+			AttackRangeText = str(Item.currently_mountable_item.attack_range)
+			AttackSpeedText = str(Item.currently_mountable_item.attack_speed)
+			AmmoText = str(Item.currently_mountable_item.bullet_maxammo)
+			if Item.currently_mountable_item.buff_isEnchanted:
+				AttackDamageText = AttackDamageText + "+" + str(Item.currently_mountable_item.enchanted_bonus)
+			if Item.currently_mountable_item.buff_isMounted:
+				AttackRangeText = AttackRangeText + "+" + str(Item.currently_mountable_item.mounted_bonus)
+	if "bullet_maxammo" in Item:
+		AmmoText = str(Item.bullet_maxammo)
+	if "bonus_range" in Item and !Item.is_mountable_occupied:
+		AttackRangeBuffText = "+" + str(Item.bonus_range)
+	if "bonus_attack" in Item:
+		AttackDamageBuffText = "+" + str(Item.bonus_attack)
+	if "base_ammo" in Item:
+		DroneAmmoCapacityText = str(Item.max_ammo)
+	
+	update_UI()
+	
+func update_UI():
 	if AttackDamageText != null:
 		AttackDamageLabel.text = str(AttackDamageText)
 		$MarginContainer/HBoxContainer/ItemImage/StatusContainer/AttackDamageBg.show()

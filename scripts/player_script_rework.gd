@@ -485,40 +485,11 @@ func player_CheckItems():
 		else:
 			player_inspectedItem = player_interactedItem_Temp
 		
-		if "attack_damage" in player_inspectedItem and player_inspectedItem.attack_damage != null:
-			inspectedItem_UI.AttackDamageText = str(player_inspectedItem.attack_damage)
-			if player_inspectedItem.buff_isEnchanted:
-				inspectedItem_UI.AttackDamageText = inspectedItem_UI.AttackDamageText + "+" + str(player_inspectedItem.enchanted_bonus)
-		if "attack_range" in player_inspectedItem:
-			inspectedItem_UI.AttackRangeText = str(player_inspectedItem.attack_range)
-			if Function.search_regex("mortar", player_inspectedItem.id):
-				inspectedItem_UI.AttackRangeText = str(player_inspectedItem.attack_rangeMin) + "~" + str(player_inspectedItem.attack_rangeMax)
-			if player_inspectedItem.id == "wall_spiked":
-				inspectedItem_UI.AttackRangeText = "1"
-		if "attack_speed" in player_inspectedItem:
-			inspectedItem_UI.AttackSpeedText = player_inspectedItem.attack_speed
-		if "is_mountable_occupied" in player_inspectedItem:
-			if player_inspectedItem.is_mountable_occupied:
-				inspectedItem_UI.AttackDamageText = str(player_inspectedItem.currently_mountable_item.attack_damage)
-				inspectedItem_UI.AttackRangeText = str(player_inspectedItem.currently_mountable_item.attack_range)
-				inspectedItem_UI.AttackSpeedText = str(player_inspectedItem.currently_mountable_item.attack_speed)
-				inspectedItem_UI.AmmoText = str(player_inspectedItem.currently_mountable_item.bullet_maxammo)
-				if player_inspectedItem.currently_mountable_item.buff_isEnchanted:
-					inspectedItem_UI.AttackDamageText = inspectedItem_UI.AttackDamageText + "+" + str(player_inspectedItem.currently_mountable_item.enchanted_bonus)
-				if player_inspectedItem.currently_mountable_item.buff_isMounted:
-					inspectedItem_UI.AttackRangeText = inspectedItem_UI.AttackRangeText + "+" + str(player_inspectedItem.currently_mountable_item.mounted_bonus)
-		if "bullet_maxammo" in player_inspectedItem:
-			inspectedItem_UI.AmmoText = str(player_inspectedItem.bullet_maxammo)
-		if "bonus_range" in player_inspectedItem and !player_inspectedItem.is_mountable_occupied:
-			inspectedItem_UI.AttackRangeBuffText = "+" + str(player_inspectedItem.bonus_range)
-		if "bonus_attack" in player_inspectedItem:
-			inspectedItem_UI.AttackDamageBuffText = "+" + str(player_inspectedItem.bonus_attack)
-		if "base_ammo" in player_inspectedItem:
-			inspectedItem_UI.DroneAmmoCapacityText = str(player_inspectedItem.max_ammo)
 		# Using setter function to set new data into inspectedItem_UI
-		inspectedItem_UI.setter()
+		inspectedItem_UI.setter(player_inspectedItem)
 		# This is the limiter for card-info, which will show the card if the inspected property have at least 1 icon
 		# This prevent inspect item with empty card structure
+		# Later on every Items will be able to be Checked/Inspected so this will not be used
 		for card_info in inspectedItem_UI.ui_icon_parent.get_children():
 			if card_info.visible:
 				player_checkItemRange(player_inspectedItem, true)
@@ -528,13 +499,7 @@ func player_CheckItems():
 		# This basically check if the temp is changed or player see 'empty' grid
 		if player_inspectedItem != player_interactedItem:
 			player_checkItemRange(player_inspectedItem, false)
-			inspectedItem_UI.AttackDamageText = null
-			inspectedItem_UI.AttackRangeText = null
-			inspectedItem_UI.AttackSpeedText = null
-			inspectedItem_UI.AmmoText = null
-			inspectedItem_UI.AttackDamageBuffText = null
-			inspectedItem_UI.AttackRangeBuffText = null
-			inspectedItem_UI.DroneAmmoCapacityText = null
+			inspectedItem_UI.reset()
 			inspectedItem_UI.hide()
 
 func player_InspectItemsArea():

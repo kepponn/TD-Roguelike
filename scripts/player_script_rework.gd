@@ -64,15 +64,33 @@ func _ready():
 	else:
 		print("InputMap: ", self.id, " is using keyboard (default settings)")
 
-func _physics_process(delta):
-	
+func _process(_delta):
+	# Get button focus, need to always have one!
 	if player_lastButtonFocused != null:
 		player_lastButtonFocused.grab_focus()
 		player_lastButtonFocused = null
 	
 	DEBUG_turret_targeting_DEBUG()
 	
-	# navigation.bake_navigation_mesh()
+	player_interactionZoneProcess() # This process renew where the interaction zone are (snapped into grid)
+	player_placementPreviewProcess() # 3d blueprint-like when holding item
+	if !player_lockInput: # Which mean if enable this thing will not be processed
+		player_model()
+		open_shop() # wtf is doink here
+		mountable_wall() # wtf is doink here
+		#player_InteractItems()
+		match Global.preparation_phase:
+			true:
+				player_InteractItem_Preparation()
+			false:
+				player_InteractItem_Defense()
+		player_CheckItems() # card-like shit going to refactor right now
+		#player_InspectItemsArea() # old shit to show area of currently holded item, unused
+		player_RotateItems()
+	ready()
+	esc()
+
+func _physics_process(delta):
 	# for the player to be on ground via gravity
 	if not is_on_floor():
 		velocity.y -= gravity * delta
@@ -90,18 +108,7 @@ func _physics_process(delta):
 	
 	if !player_lockInput: # Which mean if enable this thing will not be processed
 		move_and_slide()
-		player_model()
-		open_shop()
-		mountable_wall()
-		player_InteractItems()
-		player_CheckItems()
-		#player_InspectItemsArea()
-		player_RotateItems()
 	player_rotation(direction)
-	player_interactionZoneProcess()
-	player_placementPreviewProcess()
-	ready()
-	esc()
 
 func DEBUG_turret_targeting_DEBUG():
 	if Input.is_action_just_pressed("debug_camera"):
@@ -153,7 +160,7 @@ func default_state(): # this being called by scene to reset the player state
 func ready():
 	if Input.is_action_just_pressed(start):
 		scene.request_defense_phase(self)
-	
+
 func esc():
 	if Input.is_action_just_pressed(exit):
 		player_lastButtonFocused = get_viewport().gui_get_focus_owner()
@@ -349,6 +356,100 @@ func player_checkIngredientItem():
 	#Function.check_sprite(player_holdedMats, $"Node3D/Ingredient Item/Ingredient Sprite")
 	Function.check_item_model_3d(self, player_holdedMats, $"Node3D/Ingredient Item/Ingredient Mesh")
 
+func player_InteractItem_Preparation():
+	if Input.is_action_just_pressed(interact):
+		match player_ableInteract: # This being set by bottom most function that check the interaction zone
+			true:
+				if !player_isHoldingItem: # PICK UP ITEM - NOT HOLDING item and HAVE INTERACTABLE item
+					player_isHoldingItem = true
+					# When the player decided to interact with the current item `player_interactedItem_Temp` (which always changing depend on the circumstance)
+					# It will save the `player_interactedItem_Temp` into `player_interactedItem` to be used
+					player_interactedItem = player_interactedItem_Temp
+					player_holdItem(player_interactedItem)
+					print("Player - Pick-up " + str(player_interactedItem) + " from " + str(player_interactedItem.position))
+					# Maybe not needed because if item is moved over character's head
+					# Then interaction zone body exited will triggered to change player_ableInteract to false
+					player_ableInteract = false
+				if player_isHoldingItem and player_ableToDrop: # SWAP ITEM - HOLDING an items and HAVE INTERACTABLE item
+					print("Player - Swapping " + str(player_interactedItem) + " with " + str(player_interactedItem_Temp))
+					# All this line is the basic for item swapping
+					# Swap held item property to on-ground item property
+					player_swapItem(player_interactedItem, player_interactedItem_Temp)
+					# Take on-ground item
+					player_interactedItem = player_interactedItem_Temp
+					print("Player - Now holding " + str(player_interactedItem) + " as result from swapping item")
+					player_holdItem(player_interactedItem)
+			false:
+				if player_isHoldingItem and player_ableToDrop: # DROP DOWN ITEM - HOLDING an item and NOT INTERACTING with other items
+					# Should change the name of item placeholder into someting more unique, for now it stand as %Item
+					player_putItem(player_interactedItem)
+					print("Player - Dropping " + str(player_interactedItem) + " to " + str(player_interactedItem.position))
+					# print(%"Interaction Zone".global_position)
+					# print(player_interactedItem.position)
+					player_isHoldingItem = false
+					player_interactedItem = null
+
+func player_InteractItem_Defense():
+	# I dont fucking know anymore
+	
+	if Input.is_action_pressed(interact):
+		if player_ableInteract == true and player_isHoldingItem == false and "type" in player_interactedItem_Temp and player_interactedItem_Temp.type == "ingredients":
+				if Function.search_regex("ore", player_interactedItem_Temp.id):
+					if Input.is_action_pressed(interact): player_interactedItem_Temp.start_collecting(self)
+					else: player_interactedItem_Temp.stop_collecting()
+	
+	if Input.is_action_just_pressed(interact):
+		match player_ableInteract:
+			true:
+				if player_interactedItem_Temp.has_method("controlled"): # SHOOT MORTAR
+					player_interactedItem_Temp.shoot()
+				if player_interactedItem_Temp.has_method("reload") and player_holdedMats == "ammo_box": # RELOAD TURRET - HOLDING an AMMO and HAVE INTERACTABLE TURRET
+					if player_interactedItem_Temp.bullet_ammo != player_interactedItem_Temp.bullet_maxammo and !player_interactedItem_Temp.requesting_droneReload:
+						print("Player - Reloading ", player_interactedItem_Temp)
+						player_interactedItem_Temp.reload()
+						player_isHoldingItem = false
+						player_holdedMats = ""
+						player_checkIngredientItem()
+				if player_interactedItem_Temp.id == "drone_station" and player_holdedMats == "ammo_box": # RELOAD DRONE - HOLDING an AMMO and HAVE INTERACTABLE DRONE
+					player_interactedItem_Temp.add_ammoToBase()
+					player_checkIngredientItem()
+				match player_isHoldingItem: # INGREDIENT PICK-DROP BEHAVIOUR
+					false: # PICK UP INGREDIENT
+						if "type" in player_interactedItem_Temp: # CRAFTER / STORAGE
+							# being use for chemistry and foundry
+							if player_interactedItem_Temp.type == "crafter":
+								player_interactedItem_Temp.take(self)
+							# being use for multi-purpose storage
+							elif player_interactedItem_Temp.type == "storage":
+								player_interactedItem_Temp.take(self)
+						elif Function.search_regex("conveyor", player_interactedItem_Temp.id): # CONVEYOR TAKE
+							if !player_interactedItem_Temp.inv.is_empty():
+								player_holdedMats = player_interactedItem_Temp.takeItem()
+								player_isHoldingItem = true
+								player_checkIngredientItem()
+								player_ableInteract = false
+					true: # DROP INGREDIENT
+						if player_holdedMats == player_interactedItem_Temp.id: # DROP BACK
+							print("Player - Dropped back ", player_holdedMats)
+							player_isHoldingItem = false
+							player_holdedMats = ""
+							player_checkIngredientItem()
+						elif "type" in player_interactedItem_Temp: # CRAFTER / STORAGE
+							# this being use for chemistry and foundry
+							if player_interactedItem_Temp.type == "crafter":
+								player_interactedItem_Temp.put(self, player_holdedMats)
+							# being use for multi-purpose storage
+							elif player_interactedItem_Temp.type == "storage":
+								player_interactedItem_Temp.put(self, player_holdedMats)
+						elif Function.search_regex("conveyor", player_interactedItem_Temp.id): # CONVEYOR DROP
+							if player_interactedItem_Temp.inv.is_empty():
+								player_interactedItem_Temp.recieveItem(player_holdedMats)
+								player_isHoldingItem = false
+								player_holdedMats = ""
+								player_checkIngredientItem()
+			false:
+				pass
+
 func player_InteractItems():
 	#================================================ PREPARATION PHASE ==================================================================================================
 	if Global.preparation_phase:
@@ -523,20 +624,31 @@ func player_RotateItems():
 			player_rotateItemProcess()
 
 func _on_interaction_zone_body_entered(body):
-	if player_isHoldingItem:
-		if body.is_class("GridMap"): # disable drop if the interaction area collide with gridmap
-			player_ableToDrop = false
-		elif body.is_class("StaticBody3D") and body.get_parent().name == 'Environment':
-			player_ableToDrop = false
-	if body.is_class("StaticBody3D") and body.get_parent().name == 'Item':
-		player_interactedItem_Temp = body
-		player_ableInteract = true
+	match Global.preparation_phase:
+		true:
+			if player_isHoldingItem:
+				if body.is_class("GridMap"): # disable drop if the interaction area collide with gridmap
+					player_ableToDrop = false
+				elif body.is_class("StaticBody3D") and body.get_parent().name == 'Environment':
+					player_ableToDrop = false
+			if body.is_class("StaticBody3D") and body.get_parent().name == 'Item':
+				player_interactedItem_Temp = body
+				player_ableInteract = true
+		false:
+			if body.is_class("StaticBody3D") and body.get_parent().name == 'Item':
+				player_interactedItem_Temp = body
+				player_ableInteract = true
 
 func _on_interaction_zone_body_exited(body):
-	if player_isHoldingItem:
-		if body.is_class("GridMap"): # enable drop if the interaction area collide with gridmap
-			player_ableToDrop = true
-		elif body.is_class("StaticBody3D") and body.get_parent().name == 'Environment':
-			player_ableToDrop = true
-	if body.is_class("StaticBody3D") and body.get_parent().name == 'Item':
-		player_ableInteract = false
+	match Global.preparation_phase:
+		true:
+			if player_isHoldingItem:
+				if body.is_class("GridMap"): # enable drop if the interaction area collide with gridmap
+					player_ableToDrop = true
+				elif body.is_class("StaticBody3D") and body.get_parent().name == 'Environment':
+					player_ableToDrop = true
+			if body.is_class("StaticBody3D") and body.get_parent().name == 'Item':
+				player_ableInteract = false
+		false:
+			if body.is_class("StaticBody3D") and body.get_parent().name == 'Item' and body == player_interactedItem:
+				player_ableInteract = false

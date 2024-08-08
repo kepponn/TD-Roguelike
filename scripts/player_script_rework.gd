@@ -312,7 +312,7 @@ func player_rotateItemProcess():
 		if !Function.search_regex("mortar", player_interactedItem.id):
 			# rotate in-hand item
 			# since this item in in hand it will need to pass grid_check() function
-			print("Rotating on-hand " + str(player_interactedItem) + " to " + str(player_interactedItem.rotation_degrees))
+			print("Player - Rotating on-hand " + str(player_interactedItem) + " to " + str(player_interactedItem.rotation_degrees))
 			player_interactedItem.rotation_degrees += Vector3(0, 90, 0)
 			audio_randomSelector($Audio/Pop, -10)
 	elif !player_isHoldingItem and player_ableInteract and player_interactedItem_Temp != null:
@@ -325,7 +325,7 @@ func player_rotateItemProcess():
 			pass # Dont move my wall!
 		else:
 			player_interactedItem.rotation_degrees += Vector3(0, 90, 0)
-			print("Rotating on-ground " + str(player_interactedItem) + " to " + str(player_interactedItem.rotation_degrees))
+			print("Player - Rotating on-ground " + str(player_interactedItem) + " to " + str(player_interactedItem.rotation_degrees))
 			audio_randomSelector($Audio/Pop, -10)
 
 func player_checkItemRange(item, enable: bool = true):
@@ -347,7 +347,7 @@ func player_checkItemRange(item, enable: bool = true):
 func player_checkIngredientItem():
 	# Future rework to cast the texture icon directly to Sprite3D
 	#Function.check_sprite(player_holdedMats, $"Node3D/Ingredient Item/Ingredient Sprite")
-	Function.check_item_model_3d(player_holdedMats, $"Node3D/Ingredient Item/Ingredient Mesh", Vector3(0.556, 0.678, 0))
+	Function.check_item_model_3d(self, player_holdedMats, $"Node3D/Ingredient Item/Ingredient Mesh")
 
 func player_InteractItems():
 	#================================================ PREPARATION PHASE ==================================================================================================
@@ -359,7 +359,7 @@ func player_InteractItems():
 			# It will save the `player_interactedItem_Temp` into `player_interactedItem` to be used
 			player_interactedItem = player_interactedItem_Temp
 			player_holdItem(player_interactedItem)
-			print("Pick-up " + str(player_interactedItem) + " from " + str(player_interactedItem.position))
+			print("Player - Pick-up " + str(player_interactedItem) + " from " + str(player_interactedItem.position))
 			# Maybe not needed because if item is moved over character's head
 			# Then interaction zone body exited will triggered to change player_ableInteract to false
 			player_ableInteract = false
@@ -368,7 +368,7 @@ func player_InteractItems():
 		elif player_ableInteract == false and player_isHoldingItem == true and player_ableToDrop == true and Input.is_action_just_pressed(interact):
 			# Should change the name of item placeholder into someting more unique, for now it stand as %Item
 			player_putItem(player_interactedItem)
-			print("Dropping " + str(player_interactedItem) + " to " + str(player_interactedItem.position))
+			print("Player - Dropping " + str(player_interactedItem) + " to " + str(player_interactedItem.position))
 			# print(%"Interaction Zone".global_position)
 			# print(player_interactedItem.position)
 			player_isHoldingItem = false
@@ -376,13 +376,13 @@ func player_InteractItems():
 			
 		# SWAP ITEM - HOLDING an items and HAVE INTERACTABLE item
 		elif player_ableInteract == true and player_isHoldingItem == true and player_ableToDrop == true and Input.is_action_just_pressed(interact) and player_interactedItem_Temp.id != "gate":
-			print("Swapping " + str(player_interactedItem) + " with " + str(player_interactedItem_Temp))
+			print("Player - Swapping " + str(player_interactedItem) + " with " + str(player_interactedItem_Temp))
 			# All this line is the basic for item swapping
 			# Swap held item property to on-ground item property
 			player_swapItem(player_interactedItem, player_interactedItem_Temp)
 			# Take on-ground item
 			player_interactedItem = player_interactedItem_Temp
-			print("Now holding " + str(player_interactedItem) + " as result from swapping item")
+			print("Player - Now holding " + str(player_interactedItem) + " as result from swapping item")
 			player_holdItem(player_interactedItem)
 			
 	#================================================ DEFENSE PHASE ==================================================================================================

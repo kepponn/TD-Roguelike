@@ -1,6 +1,10 @@
 extends StaticBody3D
 class_name Conveyor_Parent
 
+# There is only 2 type of conveyor
+# conveyor_basic : able to PUSH item and SET item into something
+# conveyor_grabber : (basic) + able to TAKE item from PREVIOUS something
+
 var id: String # "conveyor" or "conveyor_grabber" or "conveyor_setter"
 var price: int
 
@@ -14,6 +18,7 @@ var speed = 1.2
 #Used for tweening and main mechanism
 @onready var item_placeholder = $ItemPlaceholder
 @onready var item_sprite = $ItemPlaceholder/ItemSprite
+@onready var item_mesh = $ItemPlaceholder/ItemMesh
 
 var tween
 var tweening = false
@@ -21,7 +26,8 @@ var tween_finished = false
 
 func _ready():
 	active_state(false)
-	$ItemPlaceholder/ItemSprite.hide()
+	item_sprite.hide()
+	item_mesh.hide()
 
 func reset():
 	if tween:
@@ -29,7 +35,8 @@ func reset():
 	inv.clear()
 	tweening = false
 	tween_finished = false
-	item_sprite.global_position = item_placeholder.global_position
+	#item_sprite.global_position = item_placeholder.global_position
+	item_mesh.global_position = item_placeholder.global_position
 
 func active_state(enable: bool = true):
 	match enable:
@@ -71,7 +78,8 @@ func _process(_delta):
 			grabber.check_self()
 			_grabber_tween()
 	# Setter to put item into whatever needed
-	elif !Global.preparation_phase and !inv.is_empty() and setter != null and self.id == "conveyor_setter" and tweening == false and tween_finished == false:
+	#elif !Global.preparation_phase and !inv.is_empty() and setter != null and self.id == "conveyor_setter" and tweening == false and tween_finished == false:
+	elif !Global.preparation_phase and !inv.is_empty() and setter != null and (self.id == "conveyor_basic" or self.id == "conveyor_grabber") and tweening == false and tween_finished == false:
 		if setter.id == "crafter":
 			if inv[0] == "gunpowder_box" and setter.mats_gunpowder_box == 0:
 				_setter_tween()
@@ -90,7 +98,8 @@ func _process(_delta):
 		if next_conveyor.inv.is_empty() or next_conveyor.tweening == true:
 			tweening = true
 			tween = get_tree().create_tween()
-			tween.tween_property(item_sprite, "global_position", next_conveyor.item_placeholder.global_position, speed)
+			tween.tween_property(item_mesh, "global_position", next_conveyor.item_placeholder.global_position, speed)
+			#tween.tween_property(item_sprite, "global_position", next_conveyor.item_placeholder.global_position, speed)
 			tween.connect("finished", _tween_is_finished)
 			
 	if !Global.preparation_phase and !inv.is_empty() and next_conveyor != null and tween_finished == true and next_conveyor.inv.is_empty():
@@ -100,7 +109,8 @@ func _process(_delta):
 func _setter_tween():
 	tweening = true
 	tween = get_tree().create_tween()
-	tween.tween_property(item_sprite, "global_position", setter.global_position, speed)
+	#tween.tween_property(item_sprite, "global_position", setter.global_position, speed)
+	tween.tween_property(item_mesh, "global_position", setter.global_position, speed)
 	tween.connect("finished", _setter_is_finished)
 
 func _setter_is_finished():
@@ -117,13 +127,17 @@ func _setter_is_finished():
 			inv.pop_back()
 	elif setter.id == "storage_box":
 		setter.put(self, inv.pop_back())
-	item_sprite.global_position = item_placeholder.global_position
+	#item_sprite.global_position = item_placeholder.global_position
+	item_mesh.hide()
+	item_mesh.global_position = item_placeholder.global_position
 
 func _grabber_tween():
 	tweening = true
 	tween = get_tree().create_tween()
-	item_sprite.position = $Grabber.position
-	tween.tween_property(item_sprite, "global_position", item_placeholder.global_position, speed)
+	#item_sprite.position = $Grabber.position
+	#tween.tween_property(item_sprite, "global_position", item_placeholder.global_position, speed)
+	item_mesh.position = $Grabber.position
+	tween.tween_property(item_mesh, "global_position", item_placeholder.global_position, speed)
 	tween.connect("finished", _grabber_is_finished)
 
 func _grabber_is_finished():
@@ -138,43 +152,49 @@ func _tween_is_finished():
 func sendItem(to):
 	to.recieveItem(inv.pop_back())
 	checkItemSprite()
-	item_sprite.global_position = item_placeholder.global_position
+	item_mesh.global_position = item_placeholder.global_position
+	#item_sprite.global_position = item_placeholder.global_position
 	
 func recieveItem(item):
 	inv.push_back(item)
 	checkItemSprite()
-	#print(self.name, " now have ", inv)
+	#print("Conveyor - ", self.name, " now have ", inv)
 
 func takeItem():
 	if tween:
 		tween.kill()
 	tweening = false
 	tween_finished = false
-	item_sprite.global_position = item_placeholder.global_position
+	item_mesh.global_position = item_placeholder.global_position
+	#item_sprite.global_position = item_placeholder.global_position
 	return inv.pop_back()
 
 func checkItemSprite():
 	if !inv.is_empty():
-		Function.check_sprite(inv[0], $ItemPlaceholder/ItemSprite)
+		#Function.check_sprite(inv[0], $ItemPlaceholder/ItemSprite)
+		Function.check_item_model_3d(self, inv[0], item_mesh)
 	else:
-		$ItemPlaceholder/ItemSprite.hide()
+		item_mesh.hide()
+		#item_sprite.hide()
 
 func _on_next_conveyor_body_entered(body):
 	if body.is_class("StaticBody3D") and body.get_parent().name == 'Item':
 		if Function.search_regex("conveyor", body.id):
 			next_conveyor = body
-			print(self.name, " the next conveyor is ", body.name)
+			print("Conveyor - ", self.name, " the next conveyor is ", body.name)
 
 func _on_grabber_body_entered(body):
 	if self.id == "conveyor_grabber" and body.is_class("StaticBody3D") and body.get_parent().name == 'Item':
 		# Filter for what to grab based on the ids
 		if Function.search_regex("bullet_box", body.id) or Function.search_regex("gunpowder_box", body.id) or Function.search_regex("crafter", body.id) or Function.search_regex("storage_box", body.id):
 			grabber = body
-			print(self.name, " is grabing resources from ", body.name)
+			print("Conveyor - ", self.name, " is grabing resources from ", body.name)
 
 func _on_setter_body_entered(body):
-	if self.id == "conveyor_setter" and body.is_class("StaticBody3D") and body.get_parent().name == 'Item':
+	# since "conveyor_setter" isnt a thing anymore this will do
+	#if self.id == "conveyor_setter" and body.is_class("StaticBody3D") and body.get_parent().name == 'Item':
+	if (self.id == "conveyor_basic" or self.id == "conveyor_grabber") and body.is_class("StaticBody3D") and body.get_parent().name == 'Item':
 		# Filter for what to grab based on the ids
 		if Function.search_regex("crafter", body.id) or Function.search_regex("drone", body.id) or Function.search_regex("storage_box", body.id):
 			setter = body
-			print(self.name, " is able to set resources to ", body.name)
+			print("Conveyor - ", self.name, " is able to set resources to ", body.name)

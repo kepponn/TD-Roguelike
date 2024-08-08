@@ -76,4 +76,4 @@ func take(requestor):
 	requestor.player_isHoldingItem = true
 	requestor.player_checkIngredientItem()
 	requestor.player_ableInteract = false
-	print("Picked up ", requestor.player_holdedMats)
+	print("Ore - Picked up ", requestor.player_holdedMats)

@@ -21,14 +21,14 @@ func take(requestor):
 			requestor.player_isHoldingItem = true
 			requestor.player_checkIngredientItem()
 			requestor.player_ableInteract = false
-			print("Picked up ", requestor.player_holdedMats)
+			print("Storage - Picked up ", requestor.player_holdedMats)
 		elif requestor.id == "conveyor_grabber":
-			print("Conveyor grabber taking ", items_display)
+			print("Storage - Conveyor grabber taking ", items_display)
 			return items_display
 			# Then after this the conveyor_grabber call for check_self() to update the models
-		print(items_display, items_count)
+		#print("Storage - Contain ", items_display, " x", items_count)
 	else:
-		print("there is nothing to take from storage")
+		print("Storage - There is nothing in the storage")
 	check_self()
 
 func put(requestor, items):
@@ -37,12 +37,13 @@ func put(requestor, items):
 		items_display = items
 		items_count += 1
 		if Function.search_regex("player", requestor.id):
+			print("Storage - Put down ", requestor.player_holdedMats)
 			clean_requestor(requestor)
 		elif requestor.id == "conveyor_setter":
-			print("Conveyor setter is sending ", items)
-		print(items_display, items_count)
+			print("Storage - Conveyor setter is sending ", items)
+		#print("Storage - Contain ", items_display, " x", items_count)
 	else:
-		print("items displayed is different to what this storage store! or it is already maxed-out!")
+		print("Storage - Items displayed is different to what this storage store! or it is already maxed-out!")
 	check_self()
 
 func clean_requestor(requestor):
@@ -66,17 +67,17 @@ func check_self(): # refactor this into check_self() and call it when something 
 					var mats = load("res://models/materials/ammo_box_toon.tres")
 					$"Models/1".mesh = mesh
 					$"Models/1".material_override = mats
-					$"Models/1".position = Vector3(0.015, -0.194, 0.204)
+					$"Models/1".position = Vector3(0.015, -0.103, 0.204)
 					$"Models/1".rotation_degrees = Vector3(0, 0, 0)
 					$"Models/1".scale = Vector3(1, 1, 1)
 					$"Models/2".mesh = mesh
 					$"Models/2".material_override = mats
-					$"Models/2".position = Vector3(0.015, -0.194, -0.258)
+					$"Models/2".position = Vector3(0.015, -0.103, -0.258)
 					$"Models/2".rotation_degrees = Vector3(0, 0, 0)
 					$"Models/2".scale = Vector3(1, 1, 1)
 					$"Models/3".mesh = mesh
 					$"Models/3".material_override = mats
-					$"Models/3".position = Vector3(0.018, 0.217, -0.019)
+					$"Models/3".position = Vector3(0.018, 0.308, -0.019)
 					$"Models/3".rotation_degrees = Vector3(0, 7.2, 0)
 					$"Models/3".scale = Vector3(1, 1, 1)
 					is_instanced = true
@@ -86,17 +87,17 @@ func check_self(): # refactor this into check_self() and call it when something 
 					var mats = load("res://models/materials/bullet_case_toon.tres")
 					$"Models/1".mesh = load("res://models/object/bullet-p1.obj")
 					$"Models/1".material_override = mats
-					$"Models/1".position = Vector3(-0.002, 0.032, -0.015)
+					$"Models/1".position = Vector3(0.112, 0.004, 0.204)
 					$"Models/1".rotation_degrees = Vector3(0, 0, 0)
 					$"Models/1".scale = Vector3(1, 1, 1)
 					$"Models/2".mesh = load("res://models/object/bullet-p2.obj")
 					$"Models/2".material_override = mats
-					$"Models/2".position = Vector3(-0.0046, 0.047, -0.055)
-					$"Models/2".rotation_degrees = Vector3(0, 0, 0)
+					$"Models/2".position = Vector3(-0.24, -0.167, 0.003)
+					$"Models/2".rotation_degrees = Vector3(0, -5.7, 0)
 					$"Models/2".scale = Vector3(1, 1, 1)
 					$"Models/3".mesh = load("res://models/object/bullet-p3.obj")
 					$"Models/3".material_override = mats
-					$"Models/3".position = Vector3(0.027, 0.04, -0.025)
+					$"Models/3".position = Vector3(0.162, -0.185, -0.202)
 					$"Models/3".rotation_degrees = Vector3(0, 7.2, 0)
 					$"Models/3".scale = Vector3(1, 1, 1)
 					is_instanced = true
@@ -107,17 +108,17 @@ func check_self(): # refactor this into check_self() and call it when something 
 					var mats = load("res://models/materials/wood_alternative_toon.tres")
 					$"Models/1".mesh = mesh
 					$"Models/1".material_override = mats
-					$"Models/1".position = Vector3(0.251, 0.209, 0.169)
+					$"Models/1".position = Vector3(0.251, 0.025, 0.169)
 					$"Models/1".rotation_degrees = Vector3(0, 7.6, 0)
 					$"Models/1".scale = Vector3(1, 1, 1)
 					$"Models/2".mesh = mesh
 					$"Models/2".material_override = mats
-					$"Models/2".position = Vector3(-0.238, 0.209, 0.081)
+					$"Models/2".position = Vector3(-0.238, 0.025, 0.081)
 					$"Models/2".rotation_degrees = Vector3(0, 0, 0)
 					$"Models/2".scale = Vector3(1, 1, 1)
 					$"Models/3".mesh = mesh
 					$"Models/3".material_override = mats
-					$"Models/3".position = Vector3(0.098, 0.209, -0.249)
+					$"Models/3".position = Vector3(0.098, 0.025, -0.249)
 					$"Models/3".rotation_degrees = Vector3(0, 18.1, 0)
 					$"Models/3".scale = Vector3(1, 1, 1)
 					is_instanced = true

@@ -32,10 +32,9 @@ func check_sprite(match_this, sprite_path):
 				sprite_path.texture = load("res://assets/icon/ingredients/ore/ore_zinc.png")
 				sprite_path.show()
 
-func check_item_model_3d(match_this, model_path, model_default_position):
-	model_path.scale = Vector3(1, 1, 1)
+# The models used in here need to have 0 translation and have centered point (volume)
+func check_item_model_3d(requestor, match_this, model_path):
 	model_path.rotation_degrees = Vector3(0, 43.2, 0)
-	model_path.position = model_default_position
 	match match_this:
 			"":
 				model_path.hide()
@@ -43,13 +42,16 @@ func check_item_model_3d(match_this, model_path, model_default_position):
 				model_path.mesh = load("res://models/object/ammo_box.obj")
 				model_path.material_override = load("res://models/materials/ammo_box_toon.tres")
 				model_path.scale = Vector3(1, 1, 1)
-				model_path.rotation_degrees = Vector3(0, 90, 0)
+				if Function.search_regex("player", requestor.id):
+					model_path.rotation_degrees = Vector3(0, 90, 0)
+				elif Function.search_regex("conveyor", requestor.id):
+					model_path.rotation_degrees = Vector3(0, 0, 0)
 				model_path.show()
 			"bullet_box":
 				model_path.mesh = load("res://models/object/bullet-p1.obj")
 				model_path.material_override = load("res://models/materials/bullet_case_toon.tres")
 				model_path.scale = Vector3(0.9, 0.9, 0.9)
-				model_path.position = model_default_position - Vector3(0.140, 0, 0)
+				model_path.rotation_degrees = Vector3(0, -108.1, 0)
 				model_path.show()
 			"gunpowder_box":
 				model_path.mesh = load("res://models/object/barrel.obj")

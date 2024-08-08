@@ -70,8 +70,14 @@ func _process(_delta):
 		if grabber.id == "bullet_box" or grabber.id == "gunpowder_box":
 			recieveItem(str(grabber.id))
 			_grabber_tween()
-		elif grabber.id == "crafter" and grabber.prod_ammo_box == 1:
-			recieveItem(grabber.conveyor_get_product())
+		elif grabber.id == "crafter_chemistry" and grabber.gunpowder_box:
+			recieveItem(grabber.take(self))
+			_grabber_tween()
+		elif grabber.id == "crafter_foundry" and grabber.bullet_box:
+			recieveItem(grabber.take(self))
+			_grabber_tween()
+		elif grabber.id == "crafter" and grabber.ammo_box:
+			recieveItem(grabber.take(self))
 			_grabber_tween()
 		elif grabber.id == "storage_box" and grabber.items_count > 0:
 			recieveItem(grabber.take(self))
@@ -81,9 +87,9 @@ func _process(_delta):
 	#elif !Global.preparation_phase and !inv.is_empty() and setter != null and self.id == "conveyor_setter" and tweening == false and tween_finished == false:
 	elif !Global.preparation_phase and !inv.is_empty() and setter != null and (self.id == "conveyor_basic" or self.id == "conveyor_grabber") and tweening == false and tween_finished == false:
 		if setter.id == "crafter":
-			if inv[0] == "gunpowder_box" and setter.mats_gunpowder_box == 0:
+			if inv[0] == "gunpowder_box" and !setter.gunpowder_box:
 				_setter_tween()
-			elif inv[0] == "bullet_box" and setter.mats_bullet_box == 0:
+			elif inv[0] == "bullet_box" and !setter.bullet_box:
 				_setter_tween()
 		elif setter.id == "drone_station":
 			if inv[0] == "ammo_box" and setter.base_ammo < 3:
@@ -91,7 +97,26 @@ func _process(_delta):
 		elif setter.id == "storage_box":
 			# this will send the item to storage box if the storage is empty or if the items are the same
 			if !setter.is_used or setter.items_display == inv[0] and setter.items_count < setter.items_count_max:
+				#setter.items_count += 1
 				_setter_tween()
+		elif setter.id == "crafter_chemistry":
+			# this will send the item to storage box if the storage is empty or if the items are the same
+			if !setter.is_crafting and !setter.gunpowder_box:
+				if !setter.ore_saltpetre and inv[0] == "ore_saltpetre":
+					setter.ore_saltpetre = true
+					_setter_tween()
+				elif !setter.ore_sulphur and inv[0] == "ore_sulphur":
+					setter.ore_sulphur = true
+					_setter_tween()
+		elif setter.id == "crafter_foundry":
+			# this will send the item to storage box if the storage is empty or if the items are the same
+			if !setter.is_crafting and !setter.bullet_box:
+				if !setter.ore_copper and inv[0] == "ore_copper":
+					setter.ore_copper == true
+					_setter_tween()
+				elif !setter.ore_zinc and inv[0] == "ore_zinc":
+					setter.ore_zinc = true
+					_setter_tween()
 	# Pusher to push current item to the next conveyor / Send item to next conveyor
 	elif !Global.preparation_phase and !inv.is_empty() and next_conveyor != null and tweening == false and tween_finished == false:
 		# This check for the next conveyor once (therefore if you put item in that conveyor it will stack for a while)
@@ -118,14 +143,28 @@ func _setter_is_finished():
 	tweening = false
 	if setter.id == "crafter":
 		if inv[0] == "gunpowder_box":
-			setter.conveyor_put_ingredient(inv.pop_back())
+			setter.gunpowder_box = true
 		elif inv[0] == "bullet_box":
-			setter.conveyor_put_ingredient(inv.pop_back())
+			setter.bullet_box = true
+		setter.put(self, inv.pop_back())
+	if setter.id == "crafter_chemistry":
+		if inv[0] == "ore_saltpetre":
+			setter.ore_saltpetre = false
+		elif inv[0] == "ore_sulphur":
+			setter.ore_sulphur = false
+		setter.put(self, inv.pop_back())
+	elif setter.id == "crafter_foundry":
+		if inv[0] == "ore_copper":
+			setter.ore_copper = false
+		elif inv[0] == "ore_zinc":
+			setter.ore_zinc = false
+		setter.put(self, inv.pop_back())
 	elif setter.id == "drone_station":
 		if inv[0] == "ammo_box":
 			setter.conveyor_put_ammo()
 			inv.pop_back()
 	elif setter.id == "storage_box":
+		#setter.items_count -= 1
 		setter.put(self, inv.pop_back())
 	#item_sprite.global_position = item_placeholder.global_position
 	item_mesh.hide()

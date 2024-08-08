@@ -457,9 +457,9 @@ func player_InteractItems():
 				# being use for multi-purpose storage
 				elif player_interactedItem_Temp.type == "storage":
 					player_interactedItem_Temp.put(self, player_holdedMats)
-			elif player_interactedItem_Temp.id == "crafter":
-				player_interactedItem_Temp.get_ingredient(player_holdedMats)
-				player_checkIngredientItem()
+			#elif player_interactedItem_Temp.id == "crafter":
+				#player_interactedItem_Temp.get_ingredient(player_holdedMats)
+				#player_checkIngredientItem()
 				#CHANGE CRAFTER VARIABLE
 			elif player_interactedItem_Temp.id == "drone_station" and player_holdedMats == "ammo_box":
 				player_interactedItem_Temp.add_ammoToBase()

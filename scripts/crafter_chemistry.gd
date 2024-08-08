@@ -29,37 +29,53 @@ func reset():
 func take(requestor):
 	if gunpowder_box:
 		gunpowder_box = false
-		requestor.player_holdedMats = "gunpowder_box"
-		requestor.player_isHoldingItem = true
-		requestor.player_checkIngredientItem()
-		requestor.player_ableInteract = false
-		print("Picked up ", requestor.player_holdedMats, " from chemistry")
+		if Function.search_regex("player", requestor.id):
+			requestor.player_holdedMats = "gunpowder_box"
+			requestor.player_isHoldingItem = true
+			requestor.player_checkIngredientItem()
+			requestor.player_ableInteract = false
+			print("Picked up ", requestor.player_holdedMats, " from chemistry")
+		elif requestor.id == "conveyor_grabber":
+			print("Crafter Chemistry - Conveyor grabber taking gunpowder_box")
+			return "gunpowder_box"
 	else:
 		print("Nothing to take from chemistry")
 
 func put(requestor, items):
-	if items == "ore_saltpetre" and !ore_saltpetre:
-		ore_saltpetre = true
-		clean_requestor(requestor)
-	elif items == "ore_sulphur" and !ore_sulphur:
-		ore_sulphur = true
-		clean_requestor(requestor)
-	else:
-		print("Cannot put ingredient ", requestor.player_holdedMats, " because chemistry is full, or do you put wrong ingredient?")
+	if !gunpowder_box:
+		if items == "ore_saltpetre" and !ore_saltpetre:
+			ore_saltpetre = true
+			check_requestor(requestor)
+		elif items == "ore_sulphur" and !ore_sulphur:
+			ore_sulphur = true
+			check_requestor(requestor)
+		
+		craft()
 
+	
+func check_requestor(requestor):
+	if Function.search_regex("player", requestor.id):
+		print("Crafter Chemistry - Put down ", requestor.player_holdedMats)
+		clean_requestor(requestor)
+	elif Function.search_regex("conveyor", requestor.id):
+		print("Crafter Chemistry - Conveyor setter is sending ")
+	
 func clean_requestor(requestor):
 	requestor.player_holdedMats = ""
 	requestor.player_isHoldingItem = false
 	requestor.player_checkIngredientItem()
 
+func craft():
+	if ore_sulphur and ore_saltpetre and !is_crafting and !gunpowder_box:
+		is_crafting = true
+		$CraftingTimer.start()
+		print("chemistry craft start")
+
 func _process(_delta):
 	progress_ui()
 	if gunpowder_box:
 		pass # show icon for this / item ready
-	if ore_saltpetre and ore_sulphur and !is_crafting and !gunpowder_box:
-		is_crafting = true
-		$CraftingTimer.start()
-		print("chemistry craft start")
+	
 
 func progress_ui():
 	if is_crafting:

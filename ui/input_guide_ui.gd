@@ -183,7 +183,7 @@ func _process(_delta):
 					"bullet_box":
 						update_visibility_and_text(E, controller_A, true, "Pick up Bullet")
 					"crafter":
-						if player.player_interactedItem_Temp.prod_ammo_box > 0:
+						if player.player_interactedItem_Temp.ammo_box:
 							update_visibility_and_text(E, controller_A, true, "Pick up Ammo")
 			# Player is holding item
 			elif player.player_ableInteract and player.player_isHoldingItem:

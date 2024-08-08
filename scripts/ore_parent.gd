@@ -11,7 +11,7 @@ var type: String = "ingredients" # why have a type? so player didnt need to chec
 
 var local_requestor # being filled by player when interacting, what happen if 2 player interact the same time?
 var is_collecting: bool = false # state if true then it progress the time
-var collecting_time: float = 2.0 # in seconds
+var collecting_time: float = 0.5 # in seconds
 var progress_time: float = 0.0 # in seconds
 
 func reset():

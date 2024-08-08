@@ -39,7 +39,7 @@ func put(requestor, items):
 		if Function.search_regex("player", requestor.id):
 			print("Storage - Put down ", requestor.player_holdedMats)
 			clean_requestor(requestor)
-		elif requestor.id == "conveyor_setter":
+		elif Function.search_regex("conveyor", requestor.id):
 			print("Storage - Conveyor setter is sending ", items)
 		#print("Storage - Contain ", items_display, " x", items_count)
 	else:

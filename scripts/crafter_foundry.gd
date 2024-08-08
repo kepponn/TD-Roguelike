@@ -29,37 +29,52 @@ func reset():
 func take(requestor):
 	if bullet_box:
 		bullet_box = false
-		requestor.player_holdedMats = "bullet_box"
-		requestor.player_isHoldingItem = true
-		requestor.player_checkIngredientItem()
-		requestor.player_ableInteract = false
-		print("Picked up ", requestor.player_holdedMats, " from chemistry station")
+		if Function.search_regex("player", requestor.id):
+			requestor.player_holdedMats = "bullet_box"
+			requestor.player_isHoldingItem = true
+			requestor.player_checkIngredientItem()
+			requestor.player_ableInteract = false
+			print("Picked up ", requestor.player_holdedMats, " from chemistry station")
+		elif requestor.id == "conveyor_grabber":
+			print("Crafter Foundry - Conveyor grabber taking bullet_box")
+			return "bullet_box"
 	else:
 		print("Nothing to take from chemistry station")
 
 func put(requestor, items):
-	if items == "ore_copper" and !ore_copper:
-		ore_copper = true
+	if !bullet_box:
+		if items == "ore_copper" and !ore_copper:
+			ore_copper = true
+			check_requestor(requestor)
+		elif items == "ore_zinc" and !ore_zinc:
+			ore_zinc = true
+			check_requestor(requestor)
+		craft()
+
+
+func check_requestor(requestor):
+	if Function.search_regex("player", requestor.id):
+		print("Crafter Foundry - Put down ", requestor.player_holdedMats)
 		clean_requestor(requestor)
-	elif items == "ore_zinc" and !ore_zinc:
-		ore_zinc = true
-		clean_requestor(requestor)
-	else:
-		print("Cannot put ingredient ", requestor.player_holdedMats, " because foundry is full, or do you put wrong ingredient?")
+	elif Function.search_regex("conveyor", requestor.id):
+		print("Crafter Foundry - Conveyor setter is sending ")
 
 func clean_requestor(requestor):
 	requestor.player_holdedMats = ""
 	requestor.player_isHoldingItem = false
 	requestor.player_checkIngredientItem()
 
-func _process(_delta):
-	progress_ui()
-	if bullet_box:
-		pass # show icon for this / item ready
+func craft():
 	if ore_copper and ore_zinc and !is_crafting and !bullet_box:
 		is_crafting = true
 		$CraftingTimer.start()
 		print("foundry craft start")
+
+func _process(_delta):
+	progress_ui()
+	if bullet_box:
+		pass # show icon for this / item ready
+
 
 func progress_ui():
 	if is_crafting:

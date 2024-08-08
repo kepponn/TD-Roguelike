@@ -82,7 +82,6 @@ mesh = SubResource("ArrayMesh_sbyta")
 skeleton = NodePath("")
 
 [node name="CraftingTimer" type="Timer" parent="."]
-wait_time = 3.0
 one_shot = true
 
 [node name="ProgressBar3D" type="Sprite3D" parent="."]

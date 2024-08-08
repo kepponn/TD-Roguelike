@@ -138,7 +138,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_ug688")
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_xmhvd"]
-viewport_path = NodePath("CraftingProgress3D/SubViewport")
+viewport_path = NodePath("ProgressBar3D/SubViewport")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kj4wb"]
 bg_color = Color(0.215686, 0.215686, 0.215686, 0.72549)
@@ -204,17 +204,17 @@ skeleton = NodePath("")
 wait_time = 3.0
 one_shot = true
 
-[node name="CraftingProgress3D" type="Sprite3D" parent="."]
+[node name="ProgressBar3D" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 billboard = 1
 texture = SubResource("ViewportTexture_xmhvd")
 
-[node name="SubViewport" type="SubViewport" parent="CraftingProgress3D"]
+[node name="SubViewport" type="SubViewport" parent="ProgressBar3D"]
 disable_3d = true
 transparent_bg = true
 size = Vector2i(102, 17)
 
-[node name="CraftingProgress2D" type="ProgressBar" parent="CraftingProgress3D/SubViewport"]
+[node name="ProgressBar2D" type="ProgressBar" parent="ProgressBar3D/SubViewport"]
 offset_left = 1.0
 offset_top = 1.0
 offset_right = 101.0
@@ -241,17 +241,17 @@ size_flags_horizontal = 4
 size_flags_vertical = 0
 alignment = 1
 
-[node name="GunpowderIcon" type="TextureRect" parent="IngredientInfo3D/SubViewport/Ingredient List"]
+[node name="gunpowder_box" type="TextureRect" parent="IngredientInfo3D/SubViewport/Ingredient List"]
 layout_mode = 2
 texture = ExtResource("4_kxbja")
 expand_mode = 3
 
-[node name="BulletIcon" type="TextureRect" parent="IngredientInfo3D/SubViewport/Ingredient List"]
+[node name="bullet_box" type="TextureRect" parent="IngredientInfo3D/SubViewport/Ingredient List"]
 layout_mode = 2
 texture = ExtResource("5_2lgyt")
 expand_mode = 3
 
-[node name="AmmoIcon" type="TextureRect" parent="IngredientInfo3D/SubViewport/Ingredient List"]
+[node name="ammo_box" type="TextureRect" parent="IngredientInfo3D/SubViewport/Ingredient List"]
 layout_mode = 2
 texture = ExtResource("6_6lnid")
 expand_mode = 3

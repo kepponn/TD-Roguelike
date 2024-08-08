@@ -15,3 +15,4 @@ specular_mode = 1
 albedo_color = Color(0.337255, 0.313726, 0.305882, 1)
 metallic = 0.2
 roughness = 0.7
+grow_amount = -0.244

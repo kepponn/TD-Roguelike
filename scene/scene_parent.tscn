@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://bajk04l7oocqf"]
+[gd_scene load_steps=19 format=3 uid="uid://bajk04l7oocqf"]
 
 [ext_resource type="Script" path="res://scripts/scene_parent.gd" id="1_7h58t"]
 [ext_resource type="AudioStream" uid="uid://benfdpyeb1uyp" path="res://assets/audio/bgm/game-music-loop-7-145285.mp3" id="2_eecwo"]
@@ -19,13 +19,6 @@
 [ext_resource type="PackedScene" uid="uid://r2mchdb2drmr" path="res://ui/ingame_ui.tscn" id="26_ov2ag"]
 [ext_resource type="PackedScene" uid="uid://b163wrbe72fm5" path="res://ui/ingame_menu.tscn" id="28_76s64"]
 
-[sub_resource type="Environment" id="Environment_m6ppc"]
-background_color = Color(0.52549, 0.52549, 0.52549, 1)
-volumetric_fog_enabled = true
-volumetric_fog_density = 0.0125
-adjustment_enabled = true
-adjustment_saturation = 1.25
-
 [node name="Scene" type="Node3D"]
 script = ExtResource("1_7h58t")
 
@@ -43,9 +36,6 @@ projection = 1
 size = 20.0
 
 [node name="Environment" type="Node" parent="."]
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
-environment = SubResource("Environment_m6ppc")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment"]
 transform = Transform3D(0.707106, 0.579228, -0.40558, 0, 0.573576, 0.819152, 0.707106, -0.579228, 0.40558, 0, 0, 0)

@@ -6,8 +6,9 @@ const JUMP_VELOCITY = 4.5
 var id = "player"
 
 @onready var scene = get_node('/root/Scene')
-@onready var holded_item = %"Holded Item"
-@onready var parent_item = get_node('/root/Scene/World/NavigationRegion3D/Item') # All items location
+@onready var holded_item_path = %"Holded Item" # Holded item is a fucking path and not an item property
+@onready var parent_item_path = get_node('/root/Scene/World/NavigationRegion3D/Item') # All moveable items location
+@onready var ingredient_item_path = %"Ingredient Mesh"
 #@onready var inspectedItem_UI_Sprite = get_node('/root/Scene/UI/InspectedItemUI3D')
 #@onready var inspectedItem_UIOLD = get_node('/root/Scene/UI/InspectedItemUI3D/SubViewport/InspectedItemUI')
 @onready var inspectedItem_UI = get_node('/root/Scene/UI/Control/InspectedItemUI')
@@ -15,14 +16,17 @@ var id = "player"
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 var player_ableInteract: bool = false
-var player_isHoldingItem: bool = false
+# player_isHoldingItem: set true if player is holding world-stuff like wall/turret/etc
+# But also being utilized by defending phase? Is this shadowing player_holdedMats?
+var player_isHoldingItem: bool = false 
 var player_ableToDrop: bool = true # Check interaction area of player is it able to drop something there?
-var player_inspectedItem
-var player_interactedItem
-var player_interactedItem_Temp
+var player_inspectedItem # Filled in when you click inspect
+var player_interactedItem # Filled in because you HARD-interact with stuff like PICK-UP
+var player_interactedItem_Temp # Filled in because you see item infront of you
 
-var player_holdedMats: String
+var player_holdedMats: String # Being utilized exclusively by defending phase
 
+# This 2 parameter sets for controller and UI navigation on menus
 var player_lockInput: bool = false
 var player_lastButtonFocused
 
@@ -46,8 +50,8 @@ var exit = "exit"
 func _ready():
 	# Stop the audio temporary
 	$Audio/MoveSfx.stream_paused = true
-	# Hide all the ingredient icons (being used in defense phase)
-	$"Node3D/Ingredient Item/Ingredient Sprite".hide()
+	# Hide all the ingredient item (being used in defense phase)
+	ingredient_item_path.hide()
 	
 	if Input.get_connected_joypads().has(controller_index):
 		print("InputMap: ", self.id, " is using controller ", "GUID: ", Input.get_joy_guid(controller_index), " | INFO: ", Input.get_joy_info(controller_index), " | NAME: ", Input.get_joy_name(controller_index))
@@ -70,25 +74,25 @@ func _process(_delta):
 		player_lastButtonFocused.grab_focus()
 		player_lastButtonFocused = null
 	
-	DEBUG_turret_targeting_DEBUG()
+	# Debug stuff whatever
+	DEBUG_STUFF_PUT_HERE_DEBUG()
 	
 	player_interactionZoneProcess() # This process renew where the interaction zone are (snapped into grid)
-	player_placementPreviewProcess() # 3d blueprint-like when holding item
 	if !player_lockInput: # Which mean if enable this thing will not be processed
-		player_model()
-		open_shop() # wtf is doink here
-		mountable_wall() # wtf is doink here
-		#player_InteractItems()
+		player_model_tween()
+		#player_InteractItems() # Being replaced by player_interactItemPreparation() & player_interactItemDefense()
 		match Global.preparation_phase:
 			true:
-				player_InteractItem_Preparation()
+				player_interactItemPreparation()
+				# shop and mountable wall chenanigans already refactored into player_interactItemPreparation()
+				player_placementPreviewProcess() # blueprint-like when player_isHoldingItem is true
 			false:
-				player_InteractItem_Defense()
+				player_interactItemDefense()
 		player_CheckItems() # card-like shit going to refactor right now
 		#player_InspectItemsArea() # old shit to show area of currently holded item, unused
 		player_RotateItems()
-	ready()
-	esc()
+	ready_up_start_wave()
+	esc_main_menu_ingame()
 
 func _physics_process(delta):
 	# for the player to be on ground via gravity
@@ -110,7 +114,7 @@ func _physics_process(delta):
 		move_and_slide()
 	player_rotation(direction)
 
-func DEBUG_turret_targeting_DEBUG():
+func DEBUG_STUFF_PUT_HERE_DEBUG():
 	if Input.is_action_just_pressed("debug_camera"):
 		scene.camera_swap()
 	if player_interactedItem_Temp != null:
@@ -125,28 +129,6 @@ func DEBUG_turret_targeting_DEBUG():
 			elif player_interactedItem_Temp.id == "wall_mountable" and player_interactedItem_Temp.is_mountable_occupied:
 				player_interactedItem_Temp.currently_mountable_item.check_target_priority()
 
-func open_shop(): # this actually include shop and sell as well
-	if player_ableInteract and player_interactedItem_Temp != null:
-		# Open shop action (using regex just in case there is 2 shop terminal in the scene)
-		if (player_interactedItem_Temp.name == "Shop" or Function.search_regex("Shop", player_interactedItem_Temp.name)) and Input.is_action_just_pressed(inspect) and Global.preparation_phase == true:
-			player_interactedItem_Temp.open_shop(self)
-		# Sell item action
-		elif player_interactedItem_Temp.name == "Sell" and Input.is_action_just_pressed(inspect) and player_isHoldingItem and Global.preparation_phase == true:
-			player_interactedItem_Temp.sell(self, player_interactedItem)
-
-func mountable_wall():
-	# This check for preparation phase, if true then this process will be accessible
-	if player_interactedItem_Temp != null and Global.preparation_phase: # Check wall_mountable
-		if player_interactedItem_Temp.has_method("mount") and Input.is_action_just_pressed(inspect): # check for wall_mountable function
-			if player_ableInteract and player_isHoldingItem and player_interactedItem_Temp.currently_mountable_item == null:
-				player_interactedItem_Temp.mount(true)
-				player_interactedItem = null
-			elif player_ableInteract and !player_isHoldingItem and player_interactedItem_Temp.currently_mountable_item != null:
-				player_interactedItem_Temp.mount(false)
-				# This to disable continous area check when dismounted
-				player_inspectedItem = player_interactedItem
-				player_checkItemRange(player_inspectedItem, false)
-
 func player_interactionZoneProcess():
 	$"Node3D/Interaction Zone/CollisionShape3D".global_position = check_grid(%"Interaction Zone", $"Node3D/Interaction Zone/CollisionShape3D")
 
@@ -157,27 +139,28 @@ func default_state(): # this being called by scene to reset the player state
 	player_holdedMats = ""
 	player_checkIngredientItem()
 
-func ready():
+func ready_up_start_wave():
 	if Input.is_action_just_pressed(start):
 		scene.request_defense_phase(self)
 
-func esc():
+func esc_main_menu_ingame():
 	if Input.is_action_just_pressed(exit):
 		player_lastButtonFocused = get_viewport().gui_get_focus_owner()
 		scene.pause()
 
-func player_rotation(direction):
+func player_rotation(direction, weight: float = 0.32):
+	# more weight mean faster rotation
 	if direction != Vector3.ZERO and !player_lockInput:
 		var target_rotation = atan2(direction.x, direction.z) - PI / 2
 		# more of math wizardry, last param in lerp_angle() determine how fast the character rotate
-		$Node3D.rotation.y = lerp_angle($Node3D.rotation.y, target_rotation, 0.25)
+		$Node3D.rotation.y = lerp_angle($Node3D.rotation.y, target_rotation, weight)
 		$Audio/MoveSfx.stream_paused = false
 	else:
 		$Audio/MoveSfx.stream_paused = true
 	# rotation of items are being modified by this code while being held on hand
 	# and repaired back to grid by check_grid()
 
-func player_model():
+func player_model_tween():
 	var modelHand_Tween = get_tree().create_tween()
 	if player_ableInteract and (Input.is_action_just_pressed(check) or Input.is_action_just_pressed(inspect) or Input.is_action_just_pressed(rotate)):
 		# This tween is being replaced by if-statement below, therefore only show a little hand movement
@@ -221,8 +204,10 @@ func check_grid(import_pos, export_pos):
 
 func player_placementPreviewProcess():
 	# This is the essential process function for player_placementPreview()
-	if %"Placement Item".get_child_count() > 0:
-		%"Placement Item".get_child(0).process_mode = PROCESS_MODE_DISABLED # Need to be executed here, the player_placementPreview function cannot handle the request
+	#if %"Placement Item".get_child_count() > 0:
+	if player_isHoldingItem: # Simpler way to check and maintain
+		# Process is already disabled when instantiating the items in player_placementPreview() function
+		#%"Placement Item".get_child(0).process_mode = PROCESS_MODE_DISABLED # Need to be executed here, the player_placementPreview function cannot handle the request
 		# Blue material when able to drop items or (unique) place item on top of mounted wall 
 		if player_ableToDrop and !player_ableInteract or (player_ableInteract and player_interactedItem_Temp.has_method("mount") and Function.search_regex("turret", %"Placement Item".get_child(0).id)):
 			player_placementPreviewMaterial(%"Placement Item".get_child(0), "blue")
@@ -272,6 +257,7 @@ func player_placementPreview(enable: bool):
 		#print("Creating preview for "+ str(player_interactedItem.id))
 		var path_temp: String = "res://scene/"+str(player_interactedItem.id)+".tscn"
 		var item_temp = load(path_temp).instantiate()
+		item_temp.process_mode = PROCESS_MODE_DISABLED
 		# Check if the scene have "Models" node inside
 		%"Placement Item".add_child(item_temp, true)
 	if !enable:
@@ -285,7 +271,7 @@ func player_holdItem(item) -> void: # need to return something so the last timer
 	$Audio/SelectSfx.play()
 	player_placementPreview(true)
 	#inspectedItem_UI_Sprite.hide()
-	item.reparent(holded_item, true) # Change the item parent into `%"Holded Item"` which reside in player node
+	item.reparent(holded_item_path, true) # Change the item parent into `%"Holded Item"` which reside in player node
 	item.set_collision_layer_value(1, false) # Remove the collision layer from the item while being held in-hand
 	#item.position = Vector3(0.5, 1, 0) # Set item position to be on top of player
 	var holdItem_Tween = get_tree().create_tween()
@@ -297,7 +283,7 @@ func player_putItem(item):
 	$Audio/SelectSfx.play()
 	player_placementPreview(false)
 	#inspectedItem_UI_Sprite.hide()
-	item.reparent(parent_item, true) # Change the item parent into `%Item` node
+	item.reparent(parent_item_path, true) # Change the item parent into `%Item` node
 	#item.set_collision_layer_value(1, true) # Enable the collision layer of the item
 	# Check the grid of item when putting down to the world
 	var putItem_Tween = get_tree().create_tween()
@@ -309,7 +295,7 @@ func player_putItem(item):
 func player_swapItem(held_item, ground_item):
 	player_placementPreview(false)
 	#inspectedItem_UI_Sprite.hide()
-	held_item.reparent(parent_item, true) 
+	held_item.reparent(parent_item_path, true) 
 	held_item.set_collision_layer_value(1, true)
 	held_item.position = ground_item.position # Swap the position property from held item to ground item
 	held_item.rotation.y = 0 # Repair the Y-AXIS rotation to default
@@ -352,11 +338,10 @@ func player_checkItemRange(item, enable: bool = true):
 			item.currently_mountable_item.visible_range.hide()
 
 func player_checkIngredientItem():
-	# Future rework to cast the texture icon directly to Sprite3D
-	#Function.check_sprite(player_holdedMats, $"Node3D/Ingredient Item/Ingredient Sprite")
-	Function.check_item_model_3d(self, player_holdedMats, $"Node3D/Ingredient Item/Ingredient Mesh")
+	# (Done) Future rework to cast the texture icon directly to Sprite3D
+	Function.check_item_model_3d(self, player_holdedMats, ingredient_item_path)
 
-func player_InteractItem_Preparation():
+func player_interactItemPreparation():
 	if Input.is_action_just_pressed(interact):
 		match player_ableInteract: # This being set by bottom most function that check the interaction zone
 			true:
@@ -388,16 +373,26 @@ func player_InteractItem_Preparation():
 					# print(player_interactedItem.position)
 					player_isHoldingItem = false
 					player_interactedItem = null
+	elif Input.is_action_just_pressed(inspect):
+		match player_ableInteract: # This being set by bottom most function that check the interaction zone
+			true:
+				if player_interactedItem_Temp.has_method("mount"): # MOUNTING TURRET - wall_mountable function
+					if player_isHoldingItem and !player_interactedItem_Temp.is_mountable_occupied: # Mounting turret
+						player_interactedItem_Temp.mount(self, player_interactedItem, true)
+					elif !player_isHoldingItem and player_interactedItem_Temp.is_mountable_occupied: # De-mount turret
+						player_interactedItem_Temp.mount(self, player_interactedItem, false)
+				if Function.search_regex("Shop", player_interactedItem_Temp.name): # SHOP
+					# Using regex just in case there is 2 shop terminal in the scene. want single shop only? use this instead: player_interactedItem_Temp.name == "Shop"
+					player_interactedItem_Temp.open_shop(self)
+				if player_interactedItem_Temp.name == "Sell" and player_isHoldingItem: # SELL
+					player_interactedItem_Temp.sell(self, player_interactedItem)
 
-func player_InteractItem_Defense():
-	# I dont fucking know anymore
-	
+func player_interactItemDefense():
 	if Input.is_action_pressed(interact):
 		if player_ableInteract == true and player_isHoldingItem == false and "type" in player_interactedItem_Temp and player_interactedItem_Temp.type == "ingredients":
 				if Function.search_regex("ore", player_interactedItem_Temp.id):
 					if Input.is_action_pressed(interact): player_interactedItem_Temp.start_collecting(self)
 					else: player_interactedItem_Temp.stop_collecting()
-	
 	if Input.is_action_just_pressed(interact):
 		match player_ableInteract:
 			true:

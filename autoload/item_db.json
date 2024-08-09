@@ -102,8 +102,8 @@
 	"price": 180,
 	"mountable": false,
 	"spiked": true,
-	"attack_damage": 1,
-	"attack_speed": 3
+	"attack_damage": 10,
+	"attack_speed": 1
   },
   "enhancement": {
 	"price": 250,

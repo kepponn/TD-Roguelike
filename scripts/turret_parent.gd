@@ -107,12 +107,15 @@ func ready_up():
 	$RayCast3DTemp.hide() # This being utilized in target_priority
 
 func start_process():
-	if self.id == "turret_plasma": lock_on_static()
-	else: lock_on()
-	target_priority_lock_on()
-	shoot()
-	update_range_visual()
-	update_UI()
+	match Global.preparation_phase:
+		true:
+			update_range_visual()
+		false:
+			if self.id == "turret_plasma": lock_on_static()
+			else: lock_on()
+			target_priority_lock_on()
+			shoot()
+			update_UI()
 
 func update_status(buff: String, enable: bool = false, buff_effect: int = 0):
 	var mounted_effect = 0

@@ -273,6 +273,7 @@ func player_holdItem(item) -> void: # need to return something so the last timer
 	#inspectedItem_UI_Sprite.hide()
 	item.reparent(holded_item_path, true) # Change the item parent into `%"Holded Item"` which reside in player node
 	item.set_collision_layer_value(1, false) # Remove the collision layer from the item while being held in-hand
+	#item.process_mode = PROCESS_MODE_DISABLED
 	#item.position = Vector3(0.5, 1, 0) # Set item position to be on top of player
 	var holdItem_Tween = get_tree().create_tween()
 	holdItem_Tween.tween_property(item, "position", Vector3(0.5, 1, 0), 0.15)
@@ -291,12 +292,14 @@ func player_putItem(item):
 	#item.position = check_grid(%"Interaction Zone", item)
 	await get_tree().create_timer(0.15).timeout
 	item.set_collision_layer_value(1, true)
+	#item.process_mode = PROCESS_MODE_INHERIT
 
-func player_swapItem(held_item, ground_item):
+func player_swapItem(held_item, ground_item): # This function only called once when spawing and then call player_holdItem() to take the new item
 	player_placementPreview(false)
 	#inspectedItem_UI_Sprite.hide()
 	held_item.reparent(parent_item_path, true) 
 	held_item.set_collision_layer_value(1, true)
+	#held_item.process_mode = PROCESS_MODE_INHERIT
 	held_item.position = ground_item.position # Swap the position property from held item to ground item
 	held_item.rotation.y = 0 # Repair the Y-AXIS rotation to default
 

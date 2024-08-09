@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://do6c0rly15pw"]
+[gd_scene load_steps=18 format=3 uid="uid://do6c0rly15pw"]
 
 [ext_resource type="PackedScene" uid="uid://yby5mmthp0iq" path="res://scene/enemy_parent.tscn" id="1_4cu8r"]
 [ext_resource type="Script" path="res://scripts/enemy_scout.gd" id="2_hb1ay"]
@@ -164,6 +164,9 @@ shadow_mesh = SubResource("ArrayMesh_fnmju")
 [sub_resource type="ViewportTexture" id="ViewportTexture_7nki2"]
 viewport_path = NodePath("HealthBar3D/SubViewport")
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_074hj"]
+viewport_path = NodePath("DamageInfo3D/SubViewport")
+
 [node name="Enemy" instance=ExtResource("1_4cu8r")]
 script = ExtResource("2_hb1ay")
 
@@ -216,3 +219,6 @@ skeleton = NodePath("")
 
 [node name="HealthBar3D" parent="." index="3"]
 texture = SubResource("ViewportTexture_7nki2")
+
+[node name="DamageInfo3D" parent="." index="4"]
+texture = SubResource("ViewportTexture_074hj")

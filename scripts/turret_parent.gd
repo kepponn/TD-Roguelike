@@ -105,11 +105,13 @@ func ready_up():
 	$RayCast3DTemp.target_position.z = -attack_range
 	$RayCast3D.hide()
 	$RayCast3DTemp.hide() # This being utilized in target_priority
+	$AmmoBar3D.hide()
 
 func start_process():
 	match Global.preparation_phase:
 		true:
 			update_range_visual()
+			$AmmoBar3D.hide()
 		false:
 			if self.id == "turret_plasma": lock_on_static()
 			else: lock_on()

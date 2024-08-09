@@ -21,7 +21,8 @@ var slow_multiplier = 0
 var max_HP: int
 var direction: Vector3
 
-
+var damage_info_tween
+var damage_info_tween_position
 
 # This is actually fucked up...
 # CollisionShape3D difference WILL affect how the navigation is processed
@@ -31,6 +32,8 @@ func ready_up():
 	max_HP = HP
 	call_deferred("nav_setup")
 	$Audio/SpawnSfx.play()
+	$DamageInfo3D.hide()
+	damage_info_tween_position = $DamageInfo3D.position
 
 func check_self():
 	if HP <= 0:
@@ -66,9 +69,29 @@ func nav_setup():
 	direction = nav.get_next_path_position() - global_position
 	direction = direction.normalized()
 	
-func hit(damage):
+func hit(damage, damage_type: String = "normal"):
+	damage_info(damage, damage_type)
 	HP = HP - damage
 	check_self()
+	
+func damage_info(damage, damage_type: String = "normal"):
+	$DamageInfo3D.show()
+	$DamageInfo3D/SubViewport/Label.text = str(damage)
+	match damage_type: # add unique damage effect here!
+		"normal":
+			$DamageInfo3D/SubViewport/Label.self_modulate = Color("ffffffff")
+		"burn":
+			$DamageInfo3D/SubViewport/Label.self_modulate = Color("ff3610")
+		"cold":
+			$DamageInfo3D/SubViewport/Label.self_modulate = Color("00ddf5")
+	if damage_info_tween:
+		damage_info_tween.kill()
+		$DamageInfo3D.position = damage_info_tween_position
+		$DamageInfo3D.modulate = Color("ffffffff")
+	damage_info_tween = get_tree().create_tween()
+	damage_info_tween.parallel().tween_property($DamageInfo3D, "position", $DamageInfo3D.position + Vector3(0.3, 0.7, 0), 0.6)
+	damage_info_tween.parallel().tween_property($DamageInfo3D, "modulate", Color("ffffff00"), 0.6)
+	
 #--------------------------------------------------------- EFFECT ------------------------------------------------------------
 # BURN EFFECT
 func burned(damage, ticktime):
@@ -79,6 +102,7 @@ func burned(damage, ticktime):
 
 func _on_burn_tick_timer_timeout():
 	HP = HP - burn_damage
+	damage_info(burn_damage, "burn")
 	check_self()
 	print(self.name, " is taking burn damage")
 	burn_tick_timer.start()

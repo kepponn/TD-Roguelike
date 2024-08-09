@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://yby5mmthp0iq"]
+[gd_scene load_steps=9 format=3 uid="uid://yby5mmthp0iq"]
 
 [ext_resource type="Script" path="res://scripts/enemy_parent.gd" id="1_qro0o"]
+[ext_resource type="LabelSettings" uid="uid://dotnrlsqqm6na" path="res://assets/font/damage_number.tres" id="2_nlc8v"]
 [ext_resource type="AudioStream" uid="uid://bjw6eoibkxp5" path="res://assets/audio/sfx/mixkit-arcade-mechanical-bling-210.mp3" id="2_rmav3"]
 [ext_resource type="AudioStream" uid="uid://b3om5s62o78ha" path="res://assets/audio/sfx/mixkit-mechanical-crate-pick-up-3154.mp3" id="3_4ega7"]
 
@@ -30,6 +31,9 @@ corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_00j55"]
+viewport_path = NodePath("DamageInfo3D/SubViewport")
 
 [node name="Enemy" type="CharacterBody3D"]
 safe_margin = 0.025
@@ -63,6 +67,27 @@ theme_override_styles/background = SubResource("StyleBoxFlat_4ixv2")
 theme_override_styles/fill = SubResource("StyleBoxFlat_1kxvq")
 value = 100.0
 show_percentage = false
+
+[node name="DamageInfo3D" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.33169, 0)
+billboard = 1
+texture = SubResource("ViewportTexture_00j55")
+
+[node name="SubViewport" type="SubViewport" parent="DamageInfo3D"]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(70, 40)
+
+[node name="Label" type="Label" parent="DamageInfo3D/SubViewport"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "DMG"
+label_settings = ExtResource("2_nlc8v")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Audio" type="Node" parent="."]
 

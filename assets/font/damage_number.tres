@@ -1,0 +1,9 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://dotnrlsqqm6na"]
+
+[ext_resource type="FontFile" uid="uid://cxvusk35yis3l" path="res://assets/font/Dadlygood.otf" id="1_guw7r"]
+
+[resource]
+font = ExtResource("1_guw7r")
+font_size = 38
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)

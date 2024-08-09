@@ -81,15 +81,6 @@ script = ExtResource("1_0crpl")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_a3nlv")
 
-[node name="OmniLight3D" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.519074, 0)
-light_color = Color(0.878431, 0, 0.34902, 1)
-shadow_enabled = true
-shadow_opacity = 0.6
-distance_fade_enabled = true
-omni_range = 1.4
-omni_attenuation = 0.535887
-
 [node name="Models" type="Node3D" parent="."]
 
 [node name="heart" type="MeshInstance3D" parent="Models"]
@@ -101,3 +92,12 @@ skeleton = NodePath("")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
 mesh = SubResource("ArrayMesh_gjvdf")
 skeleton = NodePath("")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Models"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.519074, 0)
+light_color = Color(0.878431, 0, 0.34902, 1)
+shadow_enabled = true
+shadow_opacity = 0.6
+distance_fade_enabled = true
+omni_range = 1.4
+omni_attenuation = 0.535887

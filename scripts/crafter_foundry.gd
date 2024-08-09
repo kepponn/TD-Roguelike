@@ -68,13 +68,16 @@ func craft():
 	if ore_copper and ore_zinc and !is_crafting and !bullet_box:
 		is_crafting = true
 		$CraftingTimer.start()
+		$Sfx.play()
 		print("foundry craft start")
 
 func _process(_delta):
 	progress_ui()
-	if bullet_box:
-		pass # show icon for this / item ready
-
+	match is_crafting:
+		true:
+			$Models/FurnaceLight.light_energy = 5
+		false:
+			$Models/FurnaceLight.light_energy = 2
 
 func progress_ui():
 	if is_crafting:
@@ -105,5 +108,6 @@ func _on_crafting_timer_timeout():
 	ore_copper = false
 	ore_zinc = false
 	bullet_box = true
+	$Sfx.stop()
 	print("foundry craft finished")
 	

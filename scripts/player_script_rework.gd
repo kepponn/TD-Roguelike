@@ -133,9 +133,9 @@ func player_interactionZoneProcess():
 	$"Node3D/Interaction Zone/CollisionShape3D".global_position = check_grid(%"Interaction Zone", $"Node3D/Interaction Zone/CollisionShape3D")
 
 func default_state(): # this being called by scene to reset the player state
-	player_ableInteract = false
+	#player_ableInteract = false
 	player_isHoldingItem = false
-	player_interactedItem_Temp = null
+	#player_interactedItem_Temp = null
 	player_holdedMats = ""
 	player_checkIngredientItem()
 
@@ -239,6 +239,8 @@ func player_placementPreviewMaterial(node, color):
 			if models is MeshInstance3D: # Savekeeping just in case, but anything in models node should be mesh!
 				models.material_override = item_preview_material
 				# Unique cases for nested "Head", "Body", "Spike"
+			elif models is Light3D: # Get all the light to off
+				models.set_param(0, 0)
 			elif models is Node3D and (models.name == "Head" or models.name == "Body" or models.name == "Spike" or models.name == "Drone"):
 				for child_models in models.get_children():
 					if child_models is MeshInstance3D:
@@ -391,11 +393,6 @@ func player_interactItemPreparation():
 					player_interactedItem_Temp.sell(self, player_interactedItem)
 
 func player_interactItemDefense():
-	if Input.is_action_pressed(interact):
-		if player_ableInteract == true and player_isHoldingItem == false and "type" in player_interactedItem_Temp and player_interactedItem_Temp.type == "ingredients":
-				if Function.search_regex("ore", player_interactedItem_Temp.id):
-					if Input.is_action_pressed(interact): player_interactedItem_Temp.start_collecting(self)
-					else: player_interactedItem_Temp.stop_collecting()
 	if Input.is_action_just_pressed(interact):
 		match player_ableInteract:
 			true:
@@ -447,7 +444,12 @@ func player_interactItemDefense():
 								player_checkIngredientItem()
 			false:
 				pass
-
+	# COLLECTING INGREDIENT (HOLD MECHANIC ON STUFF PROGRESSING WITH TIME)
+	if player_ableInteract == true and player_isHoldingItem == false and "type" in player_interactedItem_Temp and player_interactedItem_Temp.type == "ingredients":
+		if Function.search_regex("ore", player_interactedItem_Temp.id):
+			if Input.is_action_just_released(interact): player_interactedItem_Temp.stop_collecting()
+			elif Input.is_action_pressed(interact): player_interactedItem_Temp.start_collecting(self)
+			
 func player_InteractItems():
 	#================================================ PREPARATION PHASE ==================================================================================================
 	if Global.preparation_phase:
@@ -615,11 +617,12 @@ func player_InspectItemsArea():
 func player_RotateItems():
 	if Input.is_action_just_pressed(rotate):
 		# Unique interaction with mortar when rotating instead it rotate the aiming of the mortar
-		if player_interactedItem_Temp != null and Function.search_regex("mortar", player_interactedItem_Temp.id) and !player_isHoldingItem:
-			player_interactedItem_Temp.controlled()
-		# Rotate everything else with +90deg
-		elif Global.preparation_phase and player_interactedItem_Temp.id != "gate":
-			player_rotateItemProcess()
+		if player_interactedItem_Temp != null:
+			if Function.search_regex("mortar", player_interactedItem_Temp.id) and !player_isHoldingItem:
+				player_interactedItem_Temp.controlled()
+			# Rotate everything else with +90deg
+			elif Global.preparation_phase and player_interactedItem_Temp.id != "gate":
+				player_rotateItemProcess()
 
 func _on_interaction_zone_body_entered(body):
 	match Global.preparation_phase:

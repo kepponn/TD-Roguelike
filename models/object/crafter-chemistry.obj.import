@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://bu3j3ttbk3tln"
+path="res://.godot/imported/crafter-chemistry.obj-10a07859d646743879365fe5ba1971a5.mesh"
+
+[deps]
+
+files=["res://.godot/imported/crafter-chemistry.obj-10a07859d646743879365fe5ba1971a5.mesh"]
+
+source_file="res://models/object/crafter-chemistry.obj"
+dest_files=["res://.godot/imported/crafter-chemistry.obj-10a07859d646743879365fe5ba1971a5.mesh", "res://.godot/imported/crafter-chemistry.obj-10a07859d646743879365fe5ba1971a5.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

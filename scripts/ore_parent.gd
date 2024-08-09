@@ -75,5 +75,5 @@ func take(requestor):
 			requestor.player_holdedMats = "ore_zinc"
 	requestor.player_isHoldingItem = true
 	requestor.player_checkIngredientItem()
-	requestor.player_ableInteract = false
+	#requestor.player_ableInteract = false
 	print("Ore - Picked up ", requestor.player_holdedMats)

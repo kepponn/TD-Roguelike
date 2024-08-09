@@ -51,7 +51,6 @@ func put(requestor, items):
 			check_requestor(requestor)
 		
 		craft()
-
 	
 func check_requestor(requestor):
 	if Function.search_regex("player", requestor.id):
@@ -69,13 +68,20 @@ func craft():
 	if ore_sulphur and ore_saltpetre and !is_crafting and !gunpowder_box:
 		is_crafting = true
 		$CraftingTimer.start()
+		$Sfx.play()
 		print("chemistry craft start")
 
 func _process(_delta):
 	progress_ui()
+	match is_crafting:
+		true:
+			$Models/FireLight.light_energy = 5
+			$Models/Color.material_override = load("res://assets/shaders/gray_opacity.tres")
+		false:
+			$Models/FireLight.light_energy = 2
+			$Models/Color.material_override = load("res://assets/shaders/blue_opacity.tres")
 	if gunpowder_box:
-		pass # show icon for this / item ready
-	
+		$Models/Color.material_override = load("res://assets/shaders/gray_opacity.tres")
 
 func progress_ui():
 	if is_crafting:
@@ -106,5 +112,6 @@ func _on_crafting_timer_timeout():
 	ore_saltpetre = false
 	ore_sulphur = false
 	gunpowder_box = true
+	$Sfx.stop()
 	print("chemistry craft finished")
 	

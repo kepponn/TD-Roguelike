@@ -56,7 +56,12 @@ func on_tweening_y_finished():
 	$CannonBall.hide()
 	
 	for enemy in enemies_array:
-		enemy.hit(explosion_damage)
+		if req_id == "mortar_pyro":
+			enemy.hit(explosion_damage, "burn")
+		elif req_id == "mortar_cryo":
+			enemy.hit(explosion_damage, "cold")
+		else: # being hit by normal mortar
+			enemy.hit(explosion_damage)
 		
 	if req_id == "mortar_cryo" or req_id == "mortar_pyro":
 		$LingeringEffect.show()
